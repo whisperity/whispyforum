@@ -6,6 +6,7 @@
  */
 
 @charset "iso-8859-2";
+body {  } /* Normál testszöveg */
 
 /* Dobozok */
 div.leftbox { width: 25%; height: 85%; position:relative; float:left}
@@ -33,5 +34,79 @@ span.formHeader {font-family: Times New Roman; font-size: 14pt; font-style: ital
 
 form { background-color: #CCCCCC}
 
+span.star { color: #FF0000; font-weight: bold } /* * szimbólum (pl. 'A *-gal jelölt mezõk kitöltése kötelezõ */
+
 /* Felhasználói box */
 div.userbox { background-color: #CCCCCC }
+
+/* Regisztráció */
+span.regHeader { }
+
+/* Táblázatok */
+table { }
+td { }
+tr { }
+
+/* Kis felbukkanó szövegdobozkák egérmozgatáskor */
+
+a.feature-extra:hover {
+    background-color: transparent;
+	text-decoration:none;
+ 	cursor: help;
+}
+
+.feature-extra span.hover {
+    background-color: #FFFFFF;
+	display: none;
+	border: 2px solid #000000;
+	position: absolute;
+	color: #333333;
+	text-decoration: none;
+	width: 250px;
+	padding: 6px;
+	margin: 10px;
+}
+
+.feature-extra span.hover span.h3 {
+	margin-top: 1px;
+	color: #000000;
+	border-bottom: 1px solid #BBBBBB;
+	font-family: Arial,Helvetica,sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	text-transform: uppercase;
+	display: block;
+	margin-bottom: 3px;
+	padding-bottom: 2px;
+}
+
+a.feature-extra:hover span.hover {
+	display:block;
+	text-decoration:none;
+}
+
+table.table1 tbody td.break {
+	padding:0;
+	padding-top:4px;
+}
+
+blockquote.website {
+	font-size: 1em;
+	margin-left: 0;
+}
+
+span.inlinecode
+{
+	background-color:#EFEFEF;
+	border:1px solid #DDDDDD;
+	color:#2E8B57;
+	font-family:Monaco,"Andale Mono","Courier New",Courier,mono;
+	font-size:1.2em;
+	font-size-adjust:none;
+	font-stretch:normal;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:normal;
+	overflow:auto;
+}
