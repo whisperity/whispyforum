@@ -151,6 +151,8 @@ function Datum( $ev, $honap, $nap ) // A megadott formátum alapján egy dátum�
 	unset($fajl);
 	unset($sor);
 	
+	print("<link rel='stylesheet' type='text/css' href='themes/" .THEME_NAME. "/style.css'>"); // Stíluslap
+	
 	if ( $Hmsg['title'] == '' )
 	{
 		Hibauzenet("ERROR", "Nem lett elég paraméter megadva a hibaüzenet generáláshoz", "Nem lett megadva a hiba címsora a hibaüzenet generálásakor a következő helyen: <b>" .$Hmsg['fajl']. "</b> a következő sorban: <b>" .$Hmsg['line']. "</b>");
@@ -174,6 +176,11 @@ function Datum( $ev, $honap, $nap ) // A megadott formátum alapján egy dátum�
 		if ($Hmsg['tipus'] == "CRITICAL") // Ha kritikus (CRITICAL) a hiba, a futtatás megakad.
 			die("A script futtatása megszakítva a következő helyen: <b>" . $Hmsg['fajl'] . "</b> fájl <b>" . $Hmsg['line'] . ".</b> sora.");
 	}
+ }
+ 
+ function IpCim() // IP cím lekérdezése
+ {
+	return $_SERVER['REMOTE_ADDR']; // Visszaküldjük az IP címet
  }
  
 ?>

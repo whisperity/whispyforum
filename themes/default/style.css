@@ -7,9 +7,15 @@
 
 @charset "iso-8859-2";
 
+/* Dobozok */
+div.leftbox { width: 25%; height: 85%; position:relative; float:left}
+div.centerbox { width: 50%; height: 85%; position:relative; float:left }
+div.rightbox { width: 25%; height: 85%; position:relative; float:left }
+div.headerbox { width: 100%; height: 7% }
+div.footerbox { width: 100%; height: 7% }
+
 /* Hibaüzenet box */
 div.hibabox { width:100%; height:100px; margin:0; padding:0; }
-p.formText   { font-family: Microsoft Sans Serif; font-size: 10pt }
 div.hibacim { font-family:MS Sans Serif; font-size:14pt; text-decoration:underline; font-weight:bold; margin-left:80px  }
 div.hibakep { width:80px; position:absolute;float:left; height:80px  }
 div.hibaszoveg { margin-left: 80px}
@@ -18,6 +24,8 @@ div.hibaszoveg { margin-left: 80px}
 input { border: 1px solid #0099CC;
 	background-color: #FFFFFF;
 	color: #000000; }
+	
+p.formText   { font-family: Microsoft Sans Serif; font-size: 10pt }
 
 input:focus { border-style: dashed; }
 
