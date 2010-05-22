@@ -32,3 +32,6 @@ input:focus { border-style: dashed; }
 span.formHeader {font-family: Times New Roman; font-size: 14pt; font-style: italic}
 
 form { background-color: #CCCCCC}
+
+/* Felhasználói box */
+div.userbox { background-color: #CCCCCC }
