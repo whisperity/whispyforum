@@ -22,6 +22,4 @@ function HibauzenetHelp()
 	print('A következő beírásával: <b>Hibauzenet("CRITICAL", "Próba", "Csak meghalok!", __FILE__, __LINE__)</b> beírásával a következő hibaüzenet kapod:');
 	Hibauzenet("CRITICAL", "Próba", "Csak meghalok!", __FILE__, __LINE__);
 }
-
-HibauzenetHelp();
 ?>
