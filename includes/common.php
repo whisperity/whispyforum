@@ -36,6 +36,7 @@ function Inicialize ( $pagename )
  require('includes/functions.php'); // Funkciótár
  require('mysql.php'); // MySQL kezelési osztály ($sql)
  require('user.php'); // Felhasználó és munkamenetfolyamat (session) kezelési osztály
+ require('sendmail.php'); // Levélküldési osztály
  
  // Témafájl betöltése
  print("<link rel='stylesheet' type='text/css' href='themes/" .THEME_NAME. "/style.css'>");
@@ -49,8 +50,17 @@ function Inicialize ( $pagename )
  print("<div class='leftbox'>"); // Bal odali doboz
  $user->CheckIfLoggedIn($_SESSION['username']); // Megnézzük, hogy belépett-e már a user
  //$templates->DoLeftBox(); // Bal oldali további modulok
+ 
+ /* TEMPORARY CODE Begin */
+ print("<div class='userbox'><a href='registration.php'>Regisztráció</a></div>");
+ /* TEMPORARY CODE End */
+ 
  print("</div><div class='centerbox'>"); // Középső doboz
  //$templates->DoCenter($pagename); // Középső modulok
+}
+
+function DoFooter() // Középső rész elküldése után
+{
  print("</div><div class='rightbox'>"); // Jobb oldali doboz
  //$templates->DoRight(); // Jobboldali modulok
  print("</div>"); // Dobozzárás
