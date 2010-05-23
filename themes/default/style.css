@@ -36,6 +36,17 @@ form { background-color: #CCCCCC}
 
 span.star { color: #FF0000; font-weight: bold } /* * szimbólum (pl. 'A *-gal jelölt mezõk kitöltése kötelezõ */
 
+/* Elküldési ûrlapmezõ <fieldset> */
+fieldset.submit-buttons {
+	text-align: center;
+	vertical-align: middle;
+}
+
+fieldset.submit-buttons input {
+	vertical-align: middle;
+}
+
+
 /* Felhasználói box */
 div.userbox { background-color: #CCCCCC }
 
@@ -49,7 +60,7 @@ tr { }
 
 /* Kis felbukkanó szövegdobozkák egérmozgatáskor */
 
-a.feature-extra:hover {
+a:hover.feature-extra {
     background-color: transparent;
 	text-decoration:none;
  	cursor: help;
@@ -80,7 +91,7 @@ a.feature-extra:hover {
 	padding-bottom: 2px;
 }
 
-a.feature-extra:hover span.hover {
+a:hover.feature-extra span.hover {
 	display:block;
 	text-decoration:none;
 }
