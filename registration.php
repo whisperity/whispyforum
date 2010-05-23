@@ -157,15 +157,18 @@
 			}
 		
 			// Ha nincs ilyen felhasználó
-			//if ($regisztralt == 1)
-			//{
+			if ($regisztralt == 1)
+			{
+				$acToken = md5($_GET['username'] . "|" . md5($_GET['password']) . "|" . Datum("normal","nagybetu","dL")); // Aktiválási kulcs generálása
 				$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']. "user 
-	(username, pwd, email, realName, activated, regip, regsessid) VALUES ('" .$_GET['username']. "', '" .md5($_GET['password']). "', '" .$_GET['email']. "', '" .$_GET['realname']. "', '0', '" .IpCim(). "', '" .session_id(). "')"); // Adatok elmentése
+	(username, pwd, email, realName, activated, activateToken, regip, regsessid) VALUES ('" .$_GET['username']. "', '" .md5($_GET['password']). "', '" .$_GET['email']. "', '" .$_GET['realname']. "', '0', '" .$acToken. "', '" .IpCim(). "', '" .session_id(). "')"); // Adatok elmentése
 		
-				print("A regisztráció megtörtént! A további részleteket tartalmazó e-mailt elküldtük a következő e-mail címre: <b>" .$_GET['email']. "</b>.<br>Kövesd a levélben található utasításokat!"); // Értesítés
-				$mail->SendRegistrationMail($_GET['username'], $_GET['password'], $_GET['email']); // Elküldjük a levelet
+				print("A regisztráció megtörtént!<br>A további részleteket tartalmazó e-mailt elküldtük a következő e-mail címre: <b>" .$_GET['email']. "</b>.<br>Kövesd a levélben található utasításokat!"); // Értesítés
+				
+				$mail->SendRegistrationMail($_GET['username'], $_GET['password'], $_GET['email'], $acToken, $_GET['realname']); // Elküldjük a levelet
 			//}
 		}
 		break;
+	}
  }
 ?>
