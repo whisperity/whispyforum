@@ -15,7 +15,7 @@
 	'dbuser' => '', // Belépési név
 	'dbpass' => '', // Jelszó
 	'dbname' => '', // Adatbázis neve
-	'tbprfx' => '', // Táblanév prefixum
+	'tbprf' => '', // Táblanév prefixum
  );
  
  define('THEME_NAME', 'default'); // Téma neve
