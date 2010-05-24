@@ -26,13 +26,14 @@ class user // Definiáljuk az osztályt (felhasználók)
 		$sql->Connect();
 		
 		$adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .$un. "'"));
-		if ( md5($pw) == $adat['pwd'])
+		
+		if ( (md5($pw) == $adat['pwd']) && ($adat['activated'] ==1 ) )
 		{
 			$session->StartSession($un, $pw); // Munkamenet indítása
+			$this->GetUserLevel();
 		} else {
-			Hibauzenet("WARNING", "Nem sikerült a bejelentkezés", "A felhasználónév nem megfelelő");
+			Hibauzenet("WARNING", "Nem sikerült a bejelentkezés", "A felhasználónév nem megfelelő, vagy még nem aktiváltad a felhasználód.<br><a href='usractivate.php?username=" .$un. "'>Aktiválási űrlap megnyitása</a>");
 		}
-		
 	}
 	
 	function Logout() // Kijelentkezés
@@ -43,19 +44,68 @@ class user // Definiáljuk az osztályt (felhasználók)
 		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET loggedin='0', cursessid='', curip='0.0.0.0' WHERE username='" .$_SESSION['username']. "' AND pwd='" .md5($_SESSION['pass']). "'");
 		
 		// Session kiűrítése
-		$_SESSION['loggedin']=0;
-		$_SESSION['username']='';
-		$_SESSION['pass']='';
+		$session->Purge();
 		
 		header("Localtion: " .$_SERVER['PHP_SELF']. "");
 		session_write_close();
 	}
+	
 	function DoControlForm() // Felhasználói panel
 	{
-		print("<div class='userbox'><span class='formHeader'>Üdvözlünk, " .$_SESSION['username']. "!</span><br>
-		<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+		print("<div class='userbox'><span class='formHeader'>Üdvözlünk, ");
+		
+		$this->GetUserLevel();
+		$this->GetUserRealName();
+		
+		// Köszöntjük a felhasználót a valódi nevén (ha megadata)
+		if ($_SESSION['realName'] == $NULL)
+		{
+			print ($_SESSION['username']);
+		} else { // Ha nem, a usernevén
+			print ($_SESSION['realName'] ." (". $_SESSION['username'] .")");
+		}
+		
+		print("!</span><br>");
+		print("<p class='formText'>Felhasználói szinted: " .$_SESSION['userLevelTXT']. "<br><a href='ucp.php'>Felhasználói vezérlőpult</a>");
+		if ( $_SESSION['userLevel'] == 3) // Ha a felhasználó admin linket írunk az admin vezérlőpultra
+			print("<br><a href='admin.php'>Adminisztrátor vezérlőpult</a>");
+		
+		print("</p><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
 		<input type='hidden' name='cmd' value='logoutusr'>
 		<input type='submit' value='Kijelentkezés'></form>");
+		print("</div>");
+	}
+	
+	function GetUserLevel() // Felhasználó szintjének megállapítása
+	{
+		global $cfg, $sql;
+		$adat = mysql_fetch_array($sql->Lekerdezes("SELECT userLevel FROM " .$cfg['tbprf']. "user WHERE username='" .$_SESSION['username']. "' AND pwd='" .md5($_SESSION['pass']). "'")); // Bekérjük a session adatokat és IP-t
+		
+		$_SESSION['userLevel'] = $adat['userLevel']; // Tároljuk a felhasználó szintjét
+		
+		switch ($adat['userLevel']) // Beállítjuk a szöveges userLevel értéket (userLevelTXT)
+		{
+			case 0:
+				$_SESSION['userLevelTXT'] = 'Nincs aktiválva';
+				break;
+			case 1:
+				$_SESSION['userLevelTXT'] = 'Felhasználó';
+				break;
+			case 2:
+				$_SESSION['userLevelTXT'] = 'Moderátor';
+				break;
+			case 3:
+				$_SESSION['userLevelTXT'] = 'Adminisztrátor';
+				break;
+		}
+	}
+	
+	function GetUserRealName() // Felhasználó valódi nevének megállapítása
+	{
+		global $cfg, $sql;
+		$adat = mysql_fetch_array($sql->Lekerdezes("SELECT realName FROM " .$cfg['tbprf']. "user WHERE username='" .$_SESSION['username']. "' AND pwd='" .md5($_SESSION['pass']). "'")); // Bekérjük a session adatokat és IP-t
+		
+		$_SESSION['realName'] = $adat['realName']; // Tároljuk a felhasználó szintjét
 	}
 	
 	function ForcedLogout() // Kényszerített kiléptetés
@@ -79,7 +129,7 @@ class user // Definiáljuk az osztályt (felhasználók)
 	}
 }
 
-class session // Osztálydefiniálás: Munkamenetkezelés
+class session // Munkamenet (session) kezelő osztály
 {
 	function StartSession( $username, $pass ) // Munkamenet elindítása, bejelentkeztetés
 	{
@@ -104,6 +154,17 @@ class session // Osztálydefiniálás: Munkamenetkezelés
 		} else {
 			$user->ForcedLogout(); // Kényszerített kiléptetés
 		}
+	}
+	
+	function Purge() // Session kiürítése
+	{
+		$_SESSION['username'] = "";
+		$_SESSION['pass'] = "";
+		$_SESSION['userLevel'] = "";
+		$_SESSION['userLevelTXT'] = "";
+		$_SESSION['loggedin'] = 0;
+		$_SESSION['realName'] = "";
+		
 	}
 }
 	
