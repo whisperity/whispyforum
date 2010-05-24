@@ -120,14 +120,14 @@
 			// Regisztráció finalizálása
 			global $cfg, $sql, $mail;
 		
-			$regisztralt=1; // Induljunk ki abból, hogy a regisztráció sikerülni fog...
+			$regisztralt = 1; // Induljunk ki abból, hogy a regisztráció sikerülni fog...
 		
 			// Megnézzük, van-e már ilyen nevű user
 			$adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .$_GET['username']. "'"));
 			if ( $adat[0] != "" )
 			{
 				Hibauzenet("ERROR", "Már létezik ilyen nevű felhasználó: " .$_GET['username']); // Hibaüzeneti ablak generálása
-				$regisztralt=0; // Később ellenőrizendő változó állítása
+				$regisztralt = 0; // Később ellenőrizendő változó állítása
 				print("<form method='GET' action='" .$_SERVER['PHP_SELF']. "'>
 				<input type='hidden' name='regPos' value='1'>
 				<input type='hidden' name='username'>
