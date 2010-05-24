@@ -38,7 +38,8 @@ class sendmail // Definiáljuk az osztályt
 			
 			$headers  = 'MIME-Version: 1.0' . "\r\n" . 'Content-type: text/html; charset=utf-8' . "\r\n"; // Levél fejlécek (mime-típus, html-levél)
 			$headers .= 'Reply-To: ' .$cfg['webmaster_email'] . "\r\n" . 'X-Mailer: PHP/' . phpversion() . "\r\n" . 'Website-domain: ' .$cfg['phost']; // Válaszcím, levélküldő típusa, weboldal URL
-			$activateLink = "http://" .$cfg['phost']. "/usractivate.php?token=" .$token;
+			
+			$activateLink = "http://" .$cfg['phost']. "/usractivate.php?token=" .$token. "&username=" .$name;
 			$acLinkNoToken = "http://" .$cfg['phost']. "/usractivate.php";
 			
 			$message .= "A regisztrációd a weboldalon (" .$cfg['pname']. ") sikeres volt.<br>A belépési adataid a következőek<br><ul><li>Felhasználónév: " .$name. "</li>";
