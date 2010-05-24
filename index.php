@@ -8,6 +8,7 @@
 */
  
  include('includes/common.php'); // Betöltjük a portálrendszer alapscriptjeit (common.php elvégzi)
- Inicialize('index.php'); 
+ Inicialize('index.php');
+ 
  
 ?>
