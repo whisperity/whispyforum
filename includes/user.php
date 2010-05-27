@@ -16,8 +16,8 @@ class user // Definiáljuk az osztályt (felhasználók)
  <p class='formText'>Felhasználói név: <input type='text' name='username'></p>
  <p class='formText'>Jelszó: <input type='password' name='pwd'></p>
  <input type='submit' value='Bejelentkezés'>
- <input type='hidden' name='cmd' value='loginusr'>
- </form><br>");
+ <input type='hidden' name='cmd' value='loginusr'><br>
+ <a href='registration.php'>Regisztráció</a></form><br>");
 	}
 	
 	function Login ( $un, $pw ) // Bejelentkeztetés
