@@ -171,4 +171,6 @@
 		break;
 	}
  }
+ 
+ DoFooter();
 ?>
