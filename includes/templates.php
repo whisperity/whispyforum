@@ -14,9 +14,7 @@ class templates // Osztálydeklaráció
 		global $cfg, $sql;
 		
 		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."modules WHERE side='1'"); // Bal oldalra beállított modulok bekérése
-
 		while ($sor = mysql_fetch_array($adat, MYSQL_ASSOC)) { // Modulok adatainak olvasása
-		
 			switch ($sor['type']) { // Típus alapú szelektálás
 				case 'menu': // Ha menü
 					$this->Menu($sor['id'], $sor['name']);
@@ -32,9 +30,7 @@ class templates // Osztálydeklaráció
 		global $cfg, $sql;
 		
 		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."modules WHERE side='2'"); // Bal oldalra beállított modulok bekérése
-
 		while ($sor = mysql_fetch_array($adat, MYSQL_ASSOC)) { // Modulok adatainak olvasása
-		
 			switch ($sor['type']) { // Típus alapú szelektálás
 				case 'menu': // Ha menü
 					$this->Menu($sor['id'], $sor['name']);
