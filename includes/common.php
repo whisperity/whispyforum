@@ -64,6 +64,7 @@ function DoFooter() // Középső rész elküldése után
 {
  print("</div><div class='rightbox'>"); // Jobb oldali doboz
  
+ global $templates;
  $templates->DoRight(); // Jobb oldali modulok
  
  print("</div>"); // Dobozzárás
