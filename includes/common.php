@@ -27,7 +27,6 @@ function Lablec()
 
 function Inicialize ( $pagename )
 {
-	
  session_start(); // Elindítjuk a munkafolyamatot
   
  /* SZÜKSÉGES FÁJLOK BETÖLTÉSE */
@@ -35,14 +34,15 @@ function Inicialize ( $pagename )
  
  // Funkciótárak és osztályok betöltése
  require('includes/functions.php'); // Funkciótár
- require('mysql.php'); // MySQL kezelési osztály ($sql)
- require('user.php'); // Felhasználó és munkamenetfolyamat (session) kezelési osztály
- require('sendmail.php'); // Levélküldési osztály
+ require('includes/mysql.php'); // MySQL kezelési osztály ($sql)
+ require('includes/user.php'); // Felhasználó és munkamenetfolyamat (session) kezelési osztály
+ require('includes/sendmail.php'); // Levélküldési osztály
+ require('includes/templates.php'); // Modulkezelő
  
  // Témafájl betöltése
  print("<link rel='stylesheet' type='text/css' href='themes/" .THEME_NAME. "/style.css'>");
  /* */
- 
+  
  /* INICIALIZÁLÁS */
  $sql->Connect(); // Csatlakozás az adatbázisszerverhez
  
@@ -52,12 +52,9 @@ function Inicialize ( $pagename )
 	
 	print("<div class='leftbox'>"); // Bal odali doboz
 	$user->CheckIfLoggedIn($_SESSION['username']); // Megnézzük, hogy belépett-e már a user
-	//$templates->DoLeftBox(); // Bal oldali további modulok
- 
-	/* TEMPORARY CODE Begin */
-	print("<div class='userbox'><a href='registration.php'>Regisztráció</a></div>");
-	/* TEMPORARY CODE End */
- 
+	
+	$templates->DoLeft(); // Bal oldali modulok
+	
 	print("</div><div class='centerbox'>"); // Középső doboz
 	//$templates->DoCenter($pagename); // Középső modulok
  }
@@ -66,7 +63,9 @@ function Inicialize ( $pagename )
 function DoFooter() // Középső rész elküldése után
 {
  print("</div><div class='rightbox'>"); // Jobb oldali doboz
- //$templates->DoRight(); // Jobboldali modulok
+ 
+ $templates->DoRight(); // Jobb oldali modulok
+ 
  print("</div>"); // Dobozzárás
  
  Lablec(); // Lábléc

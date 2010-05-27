@@ -17,7 +17,7 @@ class user // Definiáljuk az osztályt (felhasználók)
  <p class='formText'>Jelszó: <input type='password' name='pwd'></p>
  <input type='submit' value='Bejelentkezés'>
  <input type='hidden' name='cmd' value='loginusr'>
- </form>");
+ </form><br>");
 	}
 	
 	function Login ( $un, $pw ) // Bejelentkeztetés
@@ -165,6 +165,7 @@ class session // Munkamenet (session) kezelő osztály
 		$_SESSION['loggedin'] = 0;
 		$_SESSION['realName'] = "";
 		
+		session_destroy();
 	}
 }
 	
