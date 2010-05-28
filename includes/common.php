@@ -55,7 +55,8 @@ function Inicialize ( $pagename )
 	
 	$templates->DoLeft(); // Bal oldali modulok
 	
-	print("</div><div class='centerbox'>"); // Középső doboz
+	print("</div>
+    <div class='centerbox'>"); // Középső doboz
 	//$templates->DoCenter($pagename); // Középső modulok
  }
 }

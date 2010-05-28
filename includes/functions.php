@@ -7,8 +7,11 @@
    funkciókat tartalmazó weblap-kód (nincs nyers output)
 */
  
-function Datum( $ev, $honap, $nap ) // A megadott formátum alapján egy dátumérték létrehozása
+function Datum( $ev, $honap, $nap, $ora, $perc, $masodperc, $epoch = '' ) // A megadott formátum alapján egy dátumérték létrehozása
 { 
+ if ($epoch == '') // Ha nincs megadva a unix-epoch stíilusú időérték, akkor az aktuális időt mutatjuk
+	$epoch = time(); // Ez biztosítja, hogy a függvény képes legyen az adatbázisban tárolt dátumot magyar típussal megjeleníteni
+	
  $honapok = array(  // Létrehozzuk a hónapok neveit
   1 => "Január",
   2 => "Február",
@@ -58,44 +61,78 @@ function Datum( $ev, $honap, $nap ) // A megadott formátum alapján egy dátum�
 
  switch ($ev) { // Év
 	case "normal": // Normal(?)
-		$Aev = date(Y) . ". ";
+		$Aev = date(Y, $epoch) . ". ";
 		break;
  }
  switch ($honap) { // Hónap
 	case "n": // Vezető nullák nélkül
-		$Ahonap = date(n).".";
+		$Ahonap = date(n, $epoch).". ";
 		break;
 	case "m": // Vezető nullákkal
-		$Ahonap = date(m).".";
+		$Ahonap = date(m, $epoch).". ";
 		break;
 	case "kisbetu":  // Kisbetűvel
-		$Ahonap = $honapokKB[date(n)]." ";
+		$Ahonap = $honapokKB[date(n, $epoch)]." ";
 		break;
 	case "nagybetu": // Nagybetűvel
-		$Ahonap = $honapok[date(n)]." ";
+		$Ahonap = $honapok[date(n, $epoch)]." ";
 		break;
  }
  switch ($nap) {
 	case "d": // Vezető nullákkal
-		$Anap = date(d) .".";
+		$Anap = date(d, $epoch) .".";
 		break;
 	case "j": // Vezető nullák nélkül
-		$Anap = date(j) .".";
+		$Anap = date(j, $epoch) .".";
 		break;
 	case "l": // Nap neve kisbetűvel
-		$Anap = $hetNapjaiKB[date(N)];
+		$Anap = $hetNapjaiKB[date(N, $epoch)];
 		break;
 	case "L": // Nap neve nagybetűvel
-		$Anap = $hetNapjai[date(N)];
+		$Anap = $hetNapjai[date(N, $epoch)];
 		break;
 	case "dl": // Nap száma vezető nullákkal és neve kisbetűvel
-		$Anap = date(d) .". ". $hetNapjaiKB[date(N)];
+		$Anap = date(d) .". ". $hetNapjaiKB[date(N, $epoch)];
 		break;
 	case "dL": // Nap száma vezető nullákkal és neve nagybetűvel
-		$Anap = date(d) .". ". $hetNapjai[date(N)];
+		$Anap = date(d) .". ". $hetNapjai[date(N, $epoch)];
 		break;
  }
-	return $Aev.$Ahonap.$Anap; // A függvény visszaküldi az egymás mellé rakott értékeket
+ 
+ switch ($ora) {
+	case "H": // 24 órás formátum, vezetőnullákkal
+		$Aora = date(H, $epoch) .":";
+		break;
+	}
+ switch ($perc) {
+	case "i": // Vezető nullákkal
+		$Aperc = date(i, $epoch);
+		break;
+	}
+	
+ switch ($masodperc) {
+	case "s": // Vezető nullákkal, kettősponttal
+		$Amp = ":". date(s, $epoch);
+	}
+	
+	$visszater = $Aev.$Ahonap.$Anap; // A dátum alapértelmezésben az év-hó-nap formátum
+	
+	if ( ($Aora != '') || ($Aperc != '') ||($Amp != '') ) { // Ha időpontot is megadtunk, hozzácsapjuk
+		
+		$visszater = $visszater. " ".$Aora.$Aperc.$Amp;
+	}
+		
+	return $visszater; // A függvény visszaküldi az egymás mellé rakott értékeket
+}
+
+function Ido ( $tipus = 1 ) // Idő visszaadása
+{
+	switch ($tipus) {
+		case 1:
+			return date('H:i:s');
+		case 2:
+			return date('H:i');
+	}
 }
 
 /* Meghajtó tárterület */
@@ -104,7 +141,7 @@ function Datum( $ev, $honap, $nap ) // A megadott formátum alapján egy dátum�
    $types = array( 'B', 'KB', 'MB', 'GB', 'TB' );
    for( $i = 0; $bytes >= 1024 && $i < ( count( $types ) -1 ); $bytes /= 1024, $i++ );
    return( round( $bytes, 2 ) . " " . $types[$i] );
- }
+ } 
  
  function UresTerulet($drive)
  {
