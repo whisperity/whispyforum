@@ -14,15 +14,16 @@ header('Content-type: text/html; charset=iso-8859-2'); // Szükséges
 <html>
 
 <head> 
-<title>CSS bemutató oldal</title>
+<title>Témához elérhetõ képek listázása</title>
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
 <a href="index.php"><< Megjelenés</a>
 <br>
-<table>
+<table border="1">
 	<tr>
+		<th></th>
 		<th>Kép</th>
 		<th>Fájlnév</th>
 		<th>Fájlméret</th>
@@ -30,11 +31,12 @@ header('Content-type: text/html; charset=iso-8859-2'); // Szükséges
 	</tr>
 
 <?php
-	function RajzKep($kepName, $leiras = '')
+	function RajzKep($kepNum, $kepName, $leiras = '')
 	{
 		
 		print("
 		<tr>
+			<td>" .$kepNum. "</td>
 			<td><img src='" .$kepName. "'></td>
 			<td><a href='" .$kepName. "'>" .$kepName. "</a></td>
 			<td>" .DecodeSize(filesize($kepName)). "</td>
@@ -42,10 +44,20 @@ header('Content-type: text/html; charset=iso-8859-2'); // Szükséges
 		</tr>"); // Egy kép kiírása-rajzolása
 	}
 	
-	RajzKep('warning.png', 'Hibaüzenet ablakban figyelmeztetés szimbólum');
-	RajzKep('error.png', 'Hibaüzenet ablakban hiba/kritikus hiba szimbólum');
-	RajzKep('x.bmp', 'Üres semmi');
-	RajzKep('lastpost.gif', 'Fórumban az utolsó hozzászóláshoz ugrás linkjének képe');
+	// Képlista kinyerése a leírófájlból
+	$data = @file_get_contents('images.lst');
+	$sorok = explode("\r\n", $data);
+	$kepSzam = $sorok[0];
+	
+	for ($i == 1; $i <= $kepSzam; $i++)
+	{
+		$kep = explode(",", $sorok[$i]);
+		
+		if ( $kep[0] != "")
+			RajzKep($i, $kep[0], $kep[1]);
+	}
+	
+	
 // Zárás
 ?>
 </table>
