@@ -38,7 +38,7 @@
 		if ( $adat['activated'] == 0 )
 		{
 			// Aktiválunk
-			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET activated='1', userLevel='1' WHERE username='" .$_GET['username']. "'");
+			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET activated='1', userLevel='1', activatedate=" .strtotime("now"). " WHERE username='" .$_GET['username']. "'");
 			print("<div class='infobox'>Az felhasználód (" .$_GET['username']. ") mostantól aktiválva van.");
 		} else {
 			Hibauzenet("ERROR", "Ez a felhasználó már aktiválva van!");
