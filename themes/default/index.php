@@ -1,3 +1,7 @@
+<?php
+header('Content-type: text/html; charset=iso-8859-2'); // Szükséges
+?>
+
 <html>
 
 <head> 
@@ -6,6 +10,8 @@
 </head>
 
 <body>
+<a href="images.php">Képek >></a>
+<br>
 body
 <div class="headerbox">
 	div.headerbox
@@ -60,7 +66,18 @@ body
 		fieldset.submit-buttons
 		<input type="button" value="fieldset button 1">
 		<input type="button" value="fieldset button 2">
-	</form>
+	</fieldset>
+	<hr>
+	<table class="forum">
+		<tr>
+			<th class="forumheader">th.forumheader</th>
+			<th class="forumheader">th.forumheader</th>
+		</tr>
+		<tr>
+			<td class="forumlist">td.forumlist</td>
+			<td class="forumlist">td.forumlist</td>
+		</tr>
+	</table>
 </div>
 
 <div class="rightbox">
