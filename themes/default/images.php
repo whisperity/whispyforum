@@ -21,6 +21,7 @@ header('Content-type: text/html; charset=iso-8859-2'); // Szükséges
 <body>
 <a href="index.php"><< Megjelenés</a>
 <br>
+<h2>Képek</h2>
 <table border="1">
 	<tr>
 		<th></th>
@@ -39,7 +40,7 @@ header('Content-type: text/html; charset=iso-8859-2'); // Szükséges
 			<td>" .$kepNum. "</td>
 			<td><img src='" .$kepName. "'></td>
 			<td><a href='" .$kepName. "'>" .$kepName. "</a></td>
-			<td>" .DecodeSize(filesize($kepName)). "</td>
+			<td>" .DecodeSize(@filesize($kepName)). "</td>
 			<td>" .$leiras. "</td>
 		</tr>"); // Egy kép kiírása-rajzolása
 	}
@@ -61,6 +62,39 @@ header('Content-type: text/html; charset=iso-8859-2'); // Szükséges
 // Zárás
 ?>
 </table>
+<h2>Hangulatjelek (emoteiconok)</h2>
+<table border="1">
+	<tr>
+		<th>Megjelenés</th>
+		<th>Kód</th>
+	</tr>
+<?php
+	function RajzSmile($kepName, $kepKod = '')
+	{
+		
+		print("
+		<tr>
+			<td><img src='emote/" .$kepName. "'></td>
+			<td>" .$kepKod. "</td>
+		</tr>"); // Egy emoteicon kiírása-rajzolása
+	}
+	
+	// Emoteicon lista kinyerése a leírófájlból
+	$data2 = @file_get_contents('emotes.lst');
+	$sorok2 = explode("\r\n", $data2);
+	$kepSzam2 = $sorok2[0];
+	
+	for ($j == 1; $j <= $kepSzam2; $j++)
+	{
+		$kep2 = explode(",", $sorok2[$j]);
+		
+		if ( $kep2[0] != "")
+			RajzSmile($kep2[0], $kep2[1]);
+	}
+// Zárás
+?>
+</table>	
+	
 </body>
 
 </html>
