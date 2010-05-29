@@ -30,7 +30,7 @@ class user // Definiáljuk az osztályt (felhasználók)
 		if ( (md5($pw) == $adat['pwd']) && ($adat['activated'] ==1 ) )
 		{
 			$session->StartSession($un, $pw); // Munkamenet indítása
-			$this->GetUserLevel();
+			$this->GetUserData();
 		} else {
 			Hibauzenet("WARNING", "Nem sikerült a bejelentkezés", "A felhasználónév nem megfelelő, vagy még nem aktiváltad a felhasználód.<br><a href='usractivate.php?username=" .$un. "'>Aktiválási űrlap megnyitása</a>");
 		}
@@ -54,8 +54,7 @@ class user // Definiáljuk az osztályt (felhasználók)
 	{
 		print("<div class='userbox'><span class='formHeader'>Üdvözlünk, ");
 		
-		$this->GetUserLevel();
-		$this->GetUserRealName();
+		$this->GetUserData();
 		
 		// Köszöntjük a felhasználót a valódi nevén (ha megadata)
 		if ($_SESSION['realName'] == $NULL)
@@ -76,10 +75,10 @@ class user // Definiáljuk az osztályt (felhasználók)
 		print("</div>");
 	}
 	
-	function GetUserLevel() // Felhasználó szintjének megállapítása
+	function GetUserData() // Felhasználó adatok cachelése sessionbe
 	{
 		global $cfg, $sql;
-		$adat = mysql_fetch_array($sql->Lekerdezes("SELECT userLevel FROM " .$cfg['tbprf']. "user WHERE username='" .$_SESSION['username']. "' AND pwd='" .md5($_SESSION['pass']). "'")); // Bekérjük a session adatokat és IP-t
+		$adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .$_SESSION['username']. "' AND pwd='" .md5($_SESSION['pass']). "'")); // Bekérjük az adatokat
 		
 		$_SESSION['userLevel'] = $adat['userLevel']; // Tároljuk a felhasználó szintjét
 		
@@ -98,14 +97,10 @@ class user // Definiáljuk az osztályt (felhasználók)
 				$_SESSION['userLevelTXT'] = 'Adminisztrátor';
 				break;
 		}
-	}
-	
-	function GetUserRealName() // Felhasználó valódi nevének megállapítása
-	{
-		global $cfg, $sql;
-		$adat = mysql_fetch_array($sql->Lekerdezes("SELECT realName FROM " .$cfg['tbprf']. "user WHERE username='" .$_SESSION['username']. "' AND pwd='" .md5($_SESSION['pass']). "'")); // Bekérjük a session adatokat és IP-t
-		
-		$_SESSION['realName'] = $adat['realName']; // Tároljuk a felhasználó szintjét
+		$_SESSION['realName'] = $adat['realName']; // Tároljuk a felhasználó igazi nevét
+		$_SESSION['postCount'] = $adat['postCount']; // Tároljuk a felhasználó hozzászólásszámát
+		$_SESSION['regdate'] = $adat['regdate']; // Regisztrálás időpontja
+		$_SESSION['userID'] = $adat['id']; // Felhasználó ID
 	}
 	
 	function ForcedLogout() // Kényszerített kiléptetés
@@ -165,6 +160,8 @@ class session // Munkamenet (session) kezelő osztály
 		$_SESSION['userLevelTXT'] = "";
 		$_SESSION['loggedin'] = 0;
 		$_SESSION['realName'] = "";
+		$_SESSION['postCount'] = 0;
+		$_SESSION['regDate'] = 0;
 		
 		session_destroy();
 	}

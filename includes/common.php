@@ -45,6 +45,7 @@ function Inicialize ( $pagename )
   
  /* INICIALIZÁLÁS */
  $sql->Connect(); // Csatlakozás az adatbázisszerverhez
+ $user->GetUserData(); // Felhasználó adatainak frissítése
  
  if ($pagename != "admin.php") // Az admin.php-n ezeknek NEM kell megjelenniük
  {
