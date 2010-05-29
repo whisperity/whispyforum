@@ -11,7 +11,7 @@ class user // Definiáljuk az osztályt (felhasználók)
 {
 	function DoLoginForm() // Bejelentkezési űrlap létrehozása
 	{
-		print("<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+		print("<form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
 	<span class='formHeader'>Bejelentkezés</span>
  <p class='formText'>Felhasználói név: <input type='text' name='username'></p>
  <p class='formText'>Jelszó: <input type='password' name='pwd'></p>
@@ -70,7 +70,7 @@ class user // Definiáljuk az osztályt (felhasználók)
 		if ( $_SESSION['userLevel'] == 3) // Ha a felhasználó admin linket írunk az admin vezérlőpultra
 			print("<br><a href='admin.php'>Adminisztrátor vezérlőpult</a>");
 		
-		print("</p><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+		print("</p><form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
 		<input type='hidden' name='cmd' value='logoutusr'>
 		<input type='submit' value='Kijelentkezés'></form>");
 		print("</div>");
@@ -151,6 +151,7 @@ class session // Munkamenet (session) kezelő osztály
 		if ( ($sid == $adat['cursessid']) && ($ip == $adat['curip']) ) // Egyezés ellenörzése (ip cím és session ID)
 		{
 			$_SESSION['loggedin'] = 1; // Be vagyunk jelentkeztetve
+			
 		} else {
 			$user->ForcedLogout(); // Kényszerített kiléptetés
 		}
@@ -179,9 +180,9 @@ class session // Munkamenet (session) kezelő osztály
 	$session = new session();
 	
 	/* Ha van bejövő felhasználónév-jelszó kombó, beléptetjük a usert */
-	if ( ($_GET['username'] != $NULL) && ($_GET['pwd'] != $NULL) && ($_GET['cmd'] == 'loginusr') )
-		$user->Login($_GET['username'], $_GET['pwd']);
+	if ( ($_POST['username'] != $NULL) && ($_POST['pwd'] != $NULL) && ($_POST['cmd'] == 'loginusr') )
+		$user->Login($_POST['username'], $_POST['pwd']);
 	
-	if ( $_GET['cmd'] == 'logoutusr' )
+	if ( $_POST['cmd'] == 'logoutusr' )
 		$user->Logout(); // Felhasználó kiléptetése
 ?>
