@@ -26,6 +26,8 @@ div.headerbox { width: 100%;
 div.footerbox { width: 100%;
 	height: 7% }
 
+div.messagebox { background-color: #FEDCBA; }
+
 /* Menü */
 div.menubox { font-family: Comic Sans MS;
 	font-size: 10pt;
@@ -68,6 +70,12 @@ p.formText   { font-family: Microsoft Sans Serif;
 
 input:focus { border-style: dashed }
 
+textarea { border: 1px solid #0099CC;
+	background-color: #FFFFFF;
+	color: #000000; }
+
+textarea:focus { border-style: dashed }
+
 span.formHeader {font-family: Times New Roman;
 	font-size: 14pt;
 	font-style: italic }
@@ -77,6 +85,13 @@ form { background-color: #CCCCCC}
 span.star { color: #FF0000;
 	font-weight: bold } /* * szimbólum (pl. 'A *-gal jelölt mezõk kitöltése kötelezõ */
 
+div.postbox { width: 80%;
+	position:relative;
+	float:left }
+div.postright { width: 20%;
+	position:relative;
+	float:left }
+	
 /* Elküldési ûrlapmezõ <fieldset> */
 fieldset.submit-buttons {
 	text-align: center;
@@ -213,3 +228,4 @@ p.header {
 }
 
 h3.postheader { color: #666666 }
+h2.header { color: #777777 }

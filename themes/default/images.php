@@ -21,6 +21,7 @@ header('Content-type: text/html; charset=iso-8859-2'); // Szükséges
 <body>
 <a href="index.php"><< Megjelenés</a>
 <br>
+<a name="images">
 <h2>Képek</h2>
 <table border="1">
 	<tr>
@@ -62,6 +63,7 @@ header('Content-type: text/html; charset=iso-8859-2'); // Szükséges
 // Zárás
 ?>
 </table>
+<a name="emoticons">
 <h2>Hangulatjelek (emoteiconok)</h2>
 <table border="1">
 	<tr>

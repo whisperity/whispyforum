@@ -96,6 +96,15 @@ body
 			<dd>dd</dd>
 		</dl>
 	</div>
+	<hr><br><br><br><br><br>
+	<textarea>textarea</textarea>
+	<hr>
+	<h2 class="header">h2.header</h2>
+	<hr>
+	<div class="messagebox">div.messagebox</div>
+	<hr>
+	<div class="postbox">div.postbox</div>
+	<div class="postright">div.postright</div>
 </div>
 
 <div class="rightbox">
