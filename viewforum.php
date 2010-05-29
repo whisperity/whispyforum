@@ -28,7 +28,7 @@
 		<td class='forumlist'><p><a href='viewtopics.php?id=" .$sor['id']. "'>" .$sor['name']. "</a><br>" .$sor['description']. "</p></td>
 		<td class='forumlist'>" .$sor['topics']. "</td>
 		<td class='forumlist'>" .$sor['posts']. "</td>
-		<td class='forumlist'><p>" .Datum("normal","m","d","H","i","s", $sor['lastpostdate']). "<br>" .$adat2['username']. "<a href='viewtopic.php?id=" .$sor['lpTopic']. "#pid" .$sor['lpId']. "'><img src='themes/" .THEME_NAME. "/lastpost.gif' border='0'></a></p></td>
+		<td class='forumlist'><p>" .Datum("normal","m","d","H","i","s", $sor['lastpostdate']). "<br>" .$adat2['username']. "<a href='viewtopic.php?id=" .$sor['lpTopic']. "#pid" .$sor['lpId']. "'><img src='themes/" .THEME_NAME. "/lastpost.gif' border='0' alt='Ugrás a legutolsó hozzászóláshoz'></a></p></td>
 		</tr>"); // Fórum sor
 	}
 	

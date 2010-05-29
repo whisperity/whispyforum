@@ -17,12 +17,20 @@
  $adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."posts WHERE tId='" .$_GET['id']. "'"); // Témák betöltése az adott fórumból
  
  /* Fórum id megállapítása */
- $sor2 = mysql_fetch_array($sql->Lekerdezes("SELECT fId FROM " .$cfg['tbprf']."topics WHERE id='" .$_GET['id']. "'"), MYSQL_ASSOC);
+ $sor2 = mysql_fetch_array($sql->Lekerdezes("SELECT fId, locked FROM " .$cfg['tbprf']."topics WHERE id='" .$_GET['id']. "'"), MYSQL_ASSOC);
  $forumId = $sor2['fId'];
  
  $sor3 = mysql_fetch_array($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."forum WHERE id='" .$forumId. "'"), MYSQL_ASSOC);
- print("<p class='header'><a href='viewtopics.php?id=" .$forumId. "'><< Vissza a fórumhoz (" .$sor3['name']. ")</a></p>"); // Visszatérési link kiírása
+ print("<p class='header'><a href='viewtopics.php?id=" .$forumId. "'><< Vissza a fórumhoz (" .$sor3['name']. ")</a><img src='themes/" .THEME_NAME. "/x.bmp'>"); // Visszatérési link kiírása
  
+ /* Hozzászólási link / lezártsági kép */
+ if ($sor2['locked'] == 0)
+ {
+	print("<a href='newpost.php?id=" .$_GET['id']. "'>Új hozzászólás</a>"); // Hozzászólási link
+ } else {
+	print("<img src='/themes/" .THEME_NAME. "/forum_read_locked.png' alt='A téma lezárva, nem küldhető újabb hozzászólás'>");
+ }
+ print("</p>");
  /* +1 megtekintés hozzáadása */
  $sor4 = mysql_fetch_array($sql->Lekerdezes("SELECT opens FROM " .$cfg['tbprf']."topics WHERE id='" .$_GET['id']. "'"), MYSQL_ASSOC);
  $sql->Lekerdezes("UPDATE " .$cfg['tbprf']."topics SET opens='" .($sor4['opens']+1). "' WHERE id='" .$_GET['id']. "'");
@@ -47,9 +55,15 @@
 			break;
 	}
 	
+	/* Hózzászólás formázása */
+	$postBody = $sor['post']; // Nyers
+	$postBody = EmoticonParse($postBody); // Hangulatjelek hozzáadása BB-kódként
+	$postBody = HTMLDestroy($postBody); // HTML kódok nélkül 
+	$postBody = BBDecode($postBody); // BB kódok átalakítása HTML-kóddá (hangulatjeleket képpé)
+	
 	print("<a name='pid" .$sor['id']. "'><div class='post'>"); // Fejléc
 	print("<div class='postbody'><h3 class='postheader'><p class='header'>" .$sor['title']. "</p></h3>"); // Hozzászólás fejléc
-	print("<div class='content'>" .$sor['post']. "</div></div>"); // Hozzászólás
+	print("<div class='content'>" .$postBody. "</div></div>"); // Hozzászólás
 	print("<dl class='postprofile'><dt>" .$adat2['username']. "</dt><br><dd>Rang: " .$usrRang. "</dd><dd>Hozzászólások: " .$adat2['postCount']. "</dd>"); // Hozzászólás adatai (hozzászóló, stb.)
 	print("<dd>Csatlakozott: " .Datum("normal","m","d","H","i","", $adat2['regdate']). "</dd></dl>"); 
 	print("</div>"); // Hozzászólás vége

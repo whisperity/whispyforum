@@ -217,9 +217,9 @@ function Ido ( $tipus = 1 ) // Idő visszaadása
  
  function BBDecode( $BBText )
  {
-	// A function segítségével a BB-kódban tárolt szöveget HTML kóddá alakíthatjuk
-	$bbKod = array("[b]","[/b]","[i]","[/i]","[u]","[/u]","[img]","[/img]","[url=","[/url]","]"); // BB kódok listáéja
-	$htmlTag = array("<b>","</b>","<i>","</i>","<u>","</u>","<img src='","'>","<a href='","</a>","'>"); // HTML tagek listája
+	// A funkció segítségével a BB-kódban tárolt szöveget HTML kóddá alakíthatjuk
+	$bbKod = array("\n","[b]","[/b]","[i]","[/i]","[u]","[/u]","[img]","[/img]","[emote]","[/emote]","[url=","[/url]","]"); // BB kódok listáéja
+	$htmlTag = array("<br>","<b>","</b>","<i>","</i>","<u>","</u>","<img src='","'>","<img src='themes/" .THEME_NAME. "/emote/", "'>","<a href='","</a>","'>"); // HTML tagek listája
 	
 	return str_replace($bbKod, $htmlTag, $BBText); // A függvény visszaküldi a html-lé alakított szöveget
  }
@@ -227,5 +227,21 @@ function Ido ( $tipus = 1 ) // Idő visszaadása
  function HTMLDestroy( $HTMLText ) // HTML kód eltüntetése a szövegből
  {
 	return htmlspecialchars($HTMLText, ENT_QUOTES, 'UTF-8');
+ }
+ 
+ function EmoticonParse ( $emotText) // Hangulatjelek értelmezése
+ {
+	// A funkció segítségével a szövetként tárolt hangulatjeleket ( :P ) képként tudjuk megjeleníteni
+	
+	/* Kisbetűk */
+	$emote = array(":)", ":(", ":h", ":p", ";)", ":o", ":d", ":/", ":neutral:", ":sleep:", ":'(", ":wonder:", ":jawohl:", ":offtopic:", ":spam:", ":owned:", ":banhammer:"); // Emotikon kódok
+	$hrefs = array("[emote]smile.gif[/emote]", "[emote]sad.gif[/emote]", "[emote]cool.gif[/emote]", "[emote]tongue.gif[/emote]", "[emote]wink.gif[/emote]", "[emote]ohmy.gif[/emote]", "[emote]grin.gif[/emote]", "[emote]confused.gif[/emote]", "[emote]neutral.gif[/emote]", "[emote]closedeyes.gif[/emote]", "[emote]cry.gif[/emote]", "[emote]unsure.gif[/emote]", "[emote]jawohl.gif[/emote]", "[emote]offtopic.gif[/emote]", "[emote]owned.gif[/emote]", "[emote]spam.gif[/emote]", "[emote]banhammer.gif[/emote]"); // Direktlinkek
+	
+	$kisbetu = str_replace($emote, $hrefs, $emotText);
+	
+	/* Nagybetűk */
+	$emoteN = array(":)", ":(", ":H", ":P", ";)", ":O", ":D", ":/", ":NEUTRAL:", ":SLEEP:", ":'(", ":WONDER:", ":JAWOHL:", ":OFFTOPIC:", ":SPAM:", ":OWNED:", ":BANHAMMER:");  // Emotikon kódok
+	
+	return str_replace($emoteN, $hrefs, $kisbetu);
  }
 ?>
