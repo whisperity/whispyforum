@@ -215,9 +215,5 @@ function Ido ( $tipus = 1 ) // Idő visszaadása
 	}
  }
  
- function IpCim() // IP cím lekérdezése
- {
-	return $_SERVER['REMOTE_ADDR']; // Visszaküldjük az IP címet
- }
- 
+
 ?>

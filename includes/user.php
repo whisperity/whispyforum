@@ -121,7 +121,7 @@ class user // Definiáljuk az osztályt (felhasználók)
 		
 		if ($username != '')
 		{
-			$session->CheckSession(session_id(), IpCim()); // Ellenörzés
+			$session->CheckSession(session_id(), $_SERVER['REMOTE_ADDR']); // Ellenörzés
 			$this->DoControlForm(); // Belépett panel létrehozása a login helyén
 		} else {
 			$this->DoLoginForm(); // Loginpanel létrehozása
@@ -136,7 +136,7 @@ class session // Munkamenet (session) kezelő osztály
 		global $cfg, $sql;
 		
 		session_start(); // Indítás
-		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET lastip='" .IpCim(). "', lastsessid='" .session_id()."', loggedin='1', cursessid='" .session_id(). "', curip='" .IpCim(). "' WHERE username='" .$username. "' AND pwd='" .md5($pass). "'");
+		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET lastip='" .$_SERVER['REMOTE_ADDR']. "', lastsessid='" .session_id()."', loggedin='1', cursessid='" .session_id(). "', curip='" .$_SERVER['REMOTE_ADDR']. "' WHERE username='" .$username. "' AND pwd='" .md5($pass). "'");
 		$_SESSION['username'] = $username;
 		$_SESSION['pass'] = $pass;
 		
