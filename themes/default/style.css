@@ -160,12 +160,56 @@ span.inlinecode
 }
 
 /* -- Fórum -- */
-/* Fórumlista */
+/* Fórum,téma lista */
 table.forum { background-color:#ABCDEF;
 	border:1px solid #0099CC;
-	
 	}
 
 th.forumheader { }
 
 td.forumlist { }
+
+/* Hozzászólások */
+.post {
+	padding: 0 10px;
+	margin-bottom: 4px;
+	background-repeat: no-repeat;
+	background-position: 100% 0;
+}
+
+.postbody {
+	padding: 0;
+	color: #667281;
+	width: 70%;
+	float: left;
+	clear: both;
+}
+
+p.header {
+	margin: 0 15em 0.6em 0;
+	padding: 0 0 5px 0;
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	line-height: 1.2em;
+}
+
+ .postbody .content {
+	
+}
+.content {
+	overflow: hidden;
+	color: #000000;
+	padding-bottom: 1px;
+}
+
+.postprofile {
+	margin: 5px 0 10px 0;
+
+	color: #000000;
+	border-left: 1px solid #FFFFFF;
+	width: 25%;
+	float: right;
+	display: inline;
+}
+
+h3.postheader { color: #666666 }

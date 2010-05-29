@@ -78,6 +78,24 @@ body
 			<td class="forumlist">td.forumlist</td>
 		</tr>
 	</table>
+	<hr>
+
+	<div class="post">
+		<div class="postbody">
+			<p class="header">p.header</p>
+			<h3 class="postheader"><p class="header">h3.postheader - p.header</p></h3>
+			<div class="content">
+				div.content
+			</div>
+		</div>
+		
+		<dl class="postprofile">
+			<dt>
+				dl.postprofile
+			</dt>
+			<dd>dd</dd>
+		</dl>
+	</div>
 </div>
 
 <div class="rightbox">

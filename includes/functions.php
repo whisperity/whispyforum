@@ -214,4 +214,18 @@ function Ido ( $tipus = 1 ) // Idő visszaadása
 			die("A script futtatása megszakítva a következő helyen: <b>" . $Hmsg['fajl'] . "</b> fájl <b>" . $Hmsg['line'] . ".</b> sora.");
 	}
  }
+ 
+ function BBDecode( $BBText )
+ {
+	// A function segítségével a BB-kódban tárolt szöveget HTML kóddá alakíthatjuk
+	$bbKod = array("[b]","[/b]","[i]","[/i]","[u]","[/u]","[img]","[/img]","[url=","[/url]","]"); // BB kódok listáéja
+	$htmlTag = array("<b>","</b>","<i>","</i>","<u>","</u>","<img src='","'>","<a href='","</a>","'>"); // HTML tagek listája
+	
+	return str_replace($bbKod, $htmlTag, $BBText); // A függvény visszaküldi a html-lé alakított szöveget
+ }
+ 
+ function HTMLDestroy( $HTMLText ) // HTML kód eltüntetése a szövegből
+ {
+	return htmlspecialchars($HTMLText, ENT_QUOTES, 'UTF-8');
+ }
 ?>
