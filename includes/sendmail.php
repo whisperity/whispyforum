@@ -26,7 +26,6 @@ class sendmail // Definiáljuk az osztályt
 <html>
 <head>
   <title>Regisztráció sikeres - " .$cfg['pname']. "</title>
-  <link rel='stylesheet' type='text/css' href='themes/default/style.css'>
 </head><bod>"; // Bevezetés
 			if( $realname != '')
 			{
