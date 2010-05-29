@@ -3,7 +3,7 @@
    http://code.google.com/p/whispyforum/
 */
 
-/* mysql.php
+/* includes/mysql.php
    mySQL kezelési osztály
 */
 

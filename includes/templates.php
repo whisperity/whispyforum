@@ -3,7 +3,7 @@
    http://code.google.com/p/whispyforum/
 */
 
-/* templates.php
+/* includes/templates.php
    oldasávban modul és menükezelő rendszer
 */
 

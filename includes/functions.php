@@ -3,8 +3,8 @@
    http://code.google.com/p/whispyforum/
 */
 
-/* Functions.php
-   funkciókat tartalmazó weblap-kód (nincs nyers output)
+/* includes/functions.php
+   funkciótár
 */
  
 function Datum( $ev, $honap, $nap, $ora, $perc, $masodperc, $epoch = '' ) // A megadott formátum alapján egy dátumérték létrehozása
@@ -214,6 +214,4 @@ function Ido ( $tipus = 1 ) // Idő visszaadása
 			die("A script futtatása megszakítva a következő helyen: <b>" . $Hmsg['fajl'] . "</b> fájl <b>" . $Hmsg['line'] . ".</b> sora.");
 	}
  }
- 
-
 ?>

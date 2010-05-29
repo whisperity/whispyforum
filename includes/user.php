@@ -3,7 +3,7 @@
    http://code.google.com/p/whispyforum/
 */
 
-/* user.php
+/* includes/user.php
    felhasználó és munkamenetfolyamat (session) kezelési osztály
 */
 

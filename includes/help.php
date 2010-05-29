@@ -3,7 +3,7 @@
    http://code.google.com/p/whispyforum/
 */
 
-/* Help.php
+/* includes/help.php
    output leírásokat tartalmazó script
 */ 
  function AllHelp()

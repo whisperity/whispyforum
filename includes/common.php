@@ -3,7 +3,7 @@
    http://code.google.com/p/whispyforum/
 */
 
-/* common.php
+/* includes/common.php
    minden weboldalról meghívandó betöltőscript
 */
 
