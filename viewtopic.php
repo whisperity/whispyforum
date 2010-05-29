@@ -32,12 +32,14 @@
  }
  print("</p>");
  /* +1 megtekintés hozzáadása */
- $sor4 = mysql_fetch_array($sql->Lekerdezes("SELECT opens FROM " .$cfg['tbprf']."topics WHERE id='" .$_GET['id']. "'"), MYSQL_ASSOC);
+ $sor4 = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE id='" .$_GET['id']. "'"), MYSQL_ASSOC);
  $sql->Lekerdezes("UPDATE " .$cfg['tbprf']."topics SET opens='" .($sor4['opens']+1). "' WHERE id='" .$_GET['id']. "'");
+ 
+ print("<h3 class='header'><p class='header'>" .$sor4['name']. "</p></h3>"); // Fejléc
  
  while ($sor = mysql_fetch_array($adat, MYSQL_ASSOC)) { // Hozzászólások listázása
 	// Felhasználók nevének betöltése
-	$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['user']. "'"), MYSQL_ASSOC);
+	$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['uId']. "'"), MYSQL_ASSOC);
 	
 	switch ($adat2['userLevel']) // Beállítjuk a szöveges userLevel értéket (userLevelTXT)
 	{
@@ -56,13 +58,13 @@
 	}
 	
 	/* Hózzászólás formázása */
-	$postBody = $sor['post']; // Nyers
+	$postBody = $sor['pText']; // Nyers
 	$postBody = EmoticonParse($postBody); // Hangulatjelek hozzáadása BB-kódként
 	$postBody = HTMLDestroy($postBody); // HTML kódok nélkül 
 	$postBody = BBDecode($postBody); // BB kódok átalakítása HTML-kóddá (hangulatjeleket képpé)
 	
 	print("<a name='pid" .$sor['id']. "'><div class='post'>"); // Fejléc
-	print("<div class='postbody'><h3 class='postheader'><p class='header'>" .$sor['title']. "</p></h3>"); // Hozzászólás fejléc
+	print("<div class='postbody'><h3 class='postheader'><p class='header'>" .$sor['pTitle']. "</p></h3>"); // Hozzászólás fejléc
 	print("<div class='content'>" .$postBody. "</div></div>"); // Hozzászólás
 	print("<dl class='postprofile'><dt>" .$adat2['username']. "</dt><br><dd>Rang: " .$usrRang. "</dd><dd>Hozzászólások: " .$adat2['postCount']. "</dd>"); // Hozzászólás adatai (hozzászóló, stb.)
 	print("<dd>Csatlakozott: " .Datum("normal","m","d","H","i","", $adat2['regdate']). "</dd></dl>"); 
