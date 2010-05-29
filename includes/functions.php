@@ -218,8 +218,8 @@ function Ido ( $tipus = 1 ) // Idő visszaadása
  function BBDecode( $BBText )
  {
 	// A funkció segítségével a BB-kódban tárolt szöveget HTML kóddá alakíthatjuk
-	$bbKod = array("\n","[b]","[/b]","[i]","[/i]","[u]","[/u]","[img]","[/img]","[emote]","[/emote]","[url=","[/url]","]"); // BB kódok listáéja
-	$htmlTag = array("<br>","<b>","</b>","<i>","</i>","<u>","</u>","<img src='","'>","<img src='themes/" .THEME_NAME. "/emote/", "'>","<a href='","</a>","'>"); // HTML tagek listája
+	$bbKod = array("[img]","[/img]", "\n","[b]","[/b]","[i]","[/i]","[u]","[/u]","[url]","[/url]", "[/a]"); // BB kódok listája
+	$htmlTag = array("<img src='","'>", "<br>","<b>","</b>","<i>","</i>","<u>","</u>","<a href='http://","'>","</a>"); // HTML tagek listája
 	
 	return str_replace($bbKod, $htmlTag, $BBText); // A függvény visszaküldi a html-lé alakított szöveget
  }
@@ -234,13 +234,13 @@ function Ido ( $tipus = 1 ) // Idő visszaadása
 	// A funkció segítségével a szövetként tárolt hangulatjeleket ( :P ) képként tudjuk megjeleníteni
 	
 	/* Kisbetűk */
-	$emote = array(":)", ":(", ":h", ":p", ";)", ":o", ":d", ":/", ":neutral:", ":sleep:", ":'(", ":wonder:", ":jawohl:", ":offtopic:", ":spam:", ":owned:", ":banhammer:"); // Emotikon kódok
-	$hrefs = array("[emote]smile.gif[/emote]", "[emote]sad.gif[/emote]", "[emote]cool.gif[/emote]", "[emote]tongue.gif[/emote]", "[emote]wink.gif[/emote]", "[emote]ohmy.gif[/emote]", "[emote]grin.gif[/emote]", "[emote]confused.gif[/emote]", "[emote]neutral.gif[/emote]", "[emote]closedeyes.gif[/emote]", "[emote]cry.gif[/emote]", "[emote]unsure.gif[/emote]", "[emote]jawohl.gif[/emote]", "[emote]offtopic.gif[/emote]", "[emote]owned.gif[/emote]", "[emote]spam.gif[/emote]", "[emote]banhammer.gif[/emote]"); // Direktlinkek
+	$emote = array(":)", ":(", ":h", ":p", ";)", ":o", ":d", ":confused:", ":neutral:", ":sleep:", ":'(", ":wonder:", ":jawohl:", ":offtopic:", ":spam:", ":wned:", ":banhammer:"); // Emotikon kódok
+	$hrefs = array("[img]/themes/" .THEME_NAME. "/emote/smile.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/sad.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/cool.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/tongue.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/wink.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/ohmy.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/grin.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/confused.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/neutral.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/closedeyes.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/cry.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/unsure.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/jawohl.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/offtopic.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/spam.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/owned.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/banhammer.gif[/img]"); // Direktlinkek
 	
 	$kisbetu = str_replace($emote, $hrefs, $emotText);
 	
 	/* Nagybetűk */
-	$emoteN = array(":)", ":(", ":H", ":P", ";)", ":O", ":D", ":/", ":NEUTRAL:", ":SLEEP:", ":'(", ":WONDER:", ":JAWOHL:", ":OFFTOPIC:", ":SPAM:", ":OWNED:", ":BANHAMMER:");  // Emotikon kódok
+	$emoteN = array(":)", ":(", ":H", ":P", ";)", ":O", ":D", ":CONFUSED:", ":NEUTRAL:", ":SLEEP:", ":'(", ":WONDER:", ":JAWOHL:", ":OFFTOPIC:", ":SPAM:", ":WNED:", ":BANHAMMER:");  // Emotikon kódok
 	
 	return str_replace($emoteN, $hrefs, $kisbetu);
  }
