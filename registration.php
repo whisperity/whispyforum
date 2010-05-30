@@ -19,12 +19,22 @@
 	case '': // Nincs érték, vagy
 	case 0: // 0-s érték
 		// Kezdés, feltételek
-		print("Regisztrációs feltételek");
+		print("A regisztrációval elfogadod, hogy az internetes kapcsolathoz illő jómodort megtartod, nem küldesz be obszcén szöveget.<br>A fórum tulajdonosainak kijelentését, miszerint a tulajdonosok nem vállalnak felelősséget egy esetleges adatvesztés esetén, elfogadod.");
+		
 		print("<form method='POST' action='" .$_SERVER['PHP_SELF']."'>
-		<p class='formText'><input type='checkbox' name='elfogad' value='yes'> A regisztrációs feltételeket elolvastam, megértettem és elfogadtam, valamint kijelentem, hogy elmúltam 13 éves</p>
 		<input type='hidden' name='regPos' value=1>
-		<input type='submit' value='Tovább >> (adatok megadása)'>
-		</form>");
+		<p class='formText'>");
+		
+		// A regisztráció ki/be kapcsolt állapotától függően letiltott/engedélyezett checkboxokat küldünk.
+		if ( ALLOW_REGISTRATION == 0 )
+		{	
+			print("<input type='checkbox' name='elfogad' value='yes' disabled='disabled'>A regisztrációs feltételekben foglaltakat elolvastam, megértettem és elfogadom</input></p>");
+			print("<input type='submit' value='Az oldal üzemeltetői kikapcsolták a regisztrációt' disabled='yes'>");
+		} else {
+			print("<input type='checkbox' name='elfogad' value='yes'>A regisztrációs feltételekben foglaltakat elolvastam, megértettem és elfogadom</input></p>");
+			print("<input type='submit' value='Tovább >>'>");
+		}
+		print("</form>");
 		break;
 	case 1:
 		// Adatok megadása
