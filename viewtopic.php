@@ -66,7 +66,7 @@
 	print("<a name='pid" .$sor['id']. "'><div class='post'>"); // Fejléc
 	print("<div class='postbody'><h3 class='postheader'><p class='header'>" .$sor['pTitle']. "</p></h3>"); // Hozzászólás fejléc
 	print("<div class='content'>" .$postBody. "</div></div>"); // Hozzászólás
-	print("<dl class='postprofile'><dt>" .$adat2['username']. "</dt><br><dd>Rang: " .$usrRang. "</dd><dd>Hozzászólások: " .$adat2['postCount']. "</dd>"); // Hozzászólás adatai (hozzászóló, stb.)
+	print("Hozzászólás időpontja: " .Datum("normal","m","d","H","i","",$sor['pDate']). " <dl class='postprofile'><dt>" .$adat2['username']. "</dt><br><dd>Rang: " .$usrRang. "</dd><dd>Hozzászólások: " .$adat2['postCount']. "</dd>"); // Hozzászólás adatai (hozzászóló, stb.)
 	print("<dd>Csatlakozott: " .Datum("normal","m","d","H","i","", $adat2['regdate']). "</dd></dl>"); 
 	print("</div>"); // Hozzászólás vége
 	}
