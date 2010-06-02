@@ -33,6 +33,6 @@
  );
  
  define('THEME_NAME', 'default'); // Téma neve
- define('ALLOW_REGISTRATION', 0); // Regisztráció engedélyezése (0 - nem, 1 - igen)
+ define('ALLOW_REGISTRATION', 1); // Regisztráció engedélyezése (0 - nem, 1 - igen)
 
 ?>

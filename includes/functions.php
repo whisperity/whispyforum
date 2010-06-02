@@ -219,7 +219,7 @@ function Ido ( $tipus = 1 ) // Idő visszaadása
  {
 	// A funkció segítségével a BB-kódban tárolt szöveget HTML kóddá alakíthatjuk
 	$bbKod = array("[img]","[/img]", "\n","[b]","[/b]","[i]","[/i]","[u]","[/u]","[url]","[/url]", "[/a]"); // BB kódok listája
-	$htmlTag = array("<img src='","'>", "<br>","<b>","</b>","<i>","</i>","<u>","</u>","<a href='http://","'>","</a>"); // HTML tagek listája
+	$htmlTag = array("<img src='","'>", "<br>","<b>","</b>","<i>","</i>","<u>","</u>","<a href='","'>","</a>"); // HTML tagek listája
 	
 	return str_replace($bbKod, $htmlTag, $BBText); // A függvény visszaküldi a html-lé alakított szöveget
  }
