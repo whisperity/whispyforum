@@ -35,7 +35,7 @@
 				// Fórum hozzászólásszámok bekérése
 				$sor3 = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."forum WHERE id='" .$sor2['fId']. "'"), MYSQL_ASSOC); // Fórum sor
 				// Hozzászólás beküldése
-				$sql->Lekerdezes("INSERT INTO posts(tId, uId, pTime, pTitle, pText, pDate) VALUES ( " .$_POST["id"]. ", '" .$_SESSION["userID"]. "', '" .time(). "', '" .$_POST["title"]. "', '" .$_POST['post']. "', '" .time(). "')"); // Beküldés az adatbázisba
+				$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."posts(tId, uId, pTitle, pText, pDate) VALUES ( " .$_POST["id"]. ", '" .$_SESSION["userID"]. "', '" .$_POST["title"]. "', '" .$_POST['post']. "', '" .time(). "')"); // Beküldés az adatbázisba
 				
 				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."topics SET replies='" .($sor2['replies']+1). "' WHERE id='" .$_POST['id']. "'"); // Hozzászólásszám növelése a témán
 				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "forum SET posts='" .($sor3['posts']+1). "' WHERE id='" .$sor2['fId']. "'"); // Hozzászólásszám növelése a fórumon

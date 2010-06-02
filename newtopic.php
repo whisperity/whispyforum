@@ -31,9 +31,9 @@
 			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."forum SET topics='" .($sor2['topics']+1). "', posts='" .($sor2['posts']+1)."' WHERE id='" .$fId. "'"); // Fórum témaszám és postszám növelése
 			$topicSzam = mysql_num_rows($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics"));
 			$postSzam = mysql_num_rows($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."posts"));
-			$sql->Lekerdezes("INSERT INTO " .$cfg['topics']. "topics(fId, name,	type, startdate, startuser, lastpostdate, lastuser, replies, opens, lpId, locked)
+			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']. "topics(fId, name,	type, startdate, startuser, lastpostdate, lastuser, replies, opens, lpId, locked)
 			VALUES('" .$fId. "', '" .$_POST['Ttitle']. "', '1', '" .time(). "', '" .$_SESSION['userid']. "', '" .time(). "', '" .$_SESSION['userid']. "', '1', '0', '" .($postSzam+1). "', '0')"); // Téma hozzáadása
-			$sql->Lekerdezes("INSERT INTO posts(tId, uId, pTime, pTitle, pText, pDate) VALUES ( " .($topicSzam+1). ", '" .$_SESSION["userID"]. "', '" .time(). "', '" .$_POST["title"]. "', '" .$_POST['post']. "', '" .time(). "')"); // Post hozzáadása
+			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."posts(tId, uId, pTitle, pText, pDate) VALUES ( " .($topicSzam+1). ", '" .$_SESSION["userID"]. "', '" .$_POST["title"]. "', '" .$_POST['post']. "', '" .time(). "')"); // Post hozzáadása
 			
 			print("<div class='messagebox'>Az új témát létrehoztam!<br><a href='viewtopics.php?id=" .$_POST['id']. "'>Vissza a fórumhoz</a></div>"); // Visszatérési link
 			die(); // A többi kód nem fut le!
