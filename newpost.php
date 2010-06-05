@@ -52,7 +52,7 @@
 			<div class='postbox'><p class='formText'>Hozzászólás:<br></a>
 			<textarea rows='20' name='post' cols='70'>" .$_POST['post']. "</textarea></div>
 			<div class='postright'>"); // Bal oldali rész
-			print("<a href='/themes/" .THEME_NAME. "/images.php#emoticons' target='_blank'>Hangulatjelek</a>"); // Emoticon ablak
+			print("<a href='/themes/" .THEME_NAME. "/images.php#emoticons' target='_blank'>Hangulatjelek</a><img src='/themes/" .THEME_NAME. "/x.bmp'><a href='/includes/help.php?cmd=BB' target='_blank'>BB-kódok</a>"); // Emoticon, BB-kód ablak
 			print("</div>
 			</p>
 			<input type='hidden' name='id' value='" .$tId. "'>
