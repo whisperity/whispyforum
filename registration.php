@@ -28,8 +28,8 @@
 		// A regisztráció ki/be kapcsolt állapotától függően letiltott/engedélyezett checkboxokat küldünk.
 		if ( ALLOW_REGISTRATION == 0 )
 		{	
-			print("<input type='checkbox' name='elfogad' value='yes' disabled='disabled'>A regisztrációs feltételekben foglaltakat elolvastam, megértettem és elfogadom</input></p>");
-			print("<input type='submit' value='Az oldal üzemeltetői kikapcsolták a regisztrációt' disabled='yes'>");
+			print("<input type='checkbox' name='elfogad' value='yes' disabled>A regisztrációs feltételekben foglaltakat elolvastam, megértettem és elfogadom</input></p>");
+			print("<input type='submit' value='Az oldal üzemeltetői kikapcsolták a regisztrációt' disabled>");
 		} else {
 			print("<input type='checkbox' name='elfogad' value='yes'>A regisztrációs feltételekben foglaltakat elolvastam, megértettem és elfogadom</input></p>");
 			print("<input type='submit' value='Tovább >>'>");
