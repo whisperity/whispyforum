@@ -41,6 +41,12 @@ span.menutitle { font-size:10.5pt;
 
 a.menuitem { margin-left: 10px }
 
+/* Regisztráció */
+span.regNem { margin-left: 10px;
+	color: #5B00FF }
+span.regThis { margin-left: 10px;
+	color: #543210 }
+
 /* Hibaüzenet box */
 div.hibabox { width:100%;
 	height:100px;
@@ -84,13 +90,6 @@ form { background-color: #CCCCCC}
 
 span.star { color: #FF0000;
 	font-weight: bold } /* * szimbólum (pl. 'A *-gal jelölt mezõk kitöltése kötelezõ */
-
-div.postbox { width: 80%;
-	position:relative;
-	float:left }
-div.postright { width: 20%;
-	position:relative;
-	float:left }
 	
 /* Elküldési ûrlapmezõ <fieldset> */
 fieldset.submit-buttons {
@@ -229,3 +228,10 @@ p.header {
 
 h3.postheader { color: #666666 }
 h2.header { color: #777777 }
+
+div.postbox { width: 80%;
+	position:relative;
+	float:left }
+div.postright { width: 20%;
+	position:relative;
+	float:left }

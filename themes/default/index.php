@@ -36,6 +36,9 @@ body
 		</span>
 		<br>
 		<a href="index.htm" class="menuitem">a.menuitem</a>
+		<br>
+		<span class="regNem">span.regNem</span><br>
+		<span class="regThis">span.regThis</span><br>
 		div.menubox
 	</div>
 </div>
