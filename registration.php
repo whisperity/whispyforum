@@ -176,11 +176,12 @@
 				print("A regisztráció megtörtént!<br>A további részleteket tartalmazó e-mailt elküldtük a következő e-mail címre: <b>" .$_POST['email']. "</b>.<br>Kövesd a levélben található utasításokat!"); // Értesítés
 				
 				$mail->SendRegistrationMail($_POST['username'], $_POST['password'], $_POST['email'], $acToken, $_POST['realname']); // Elküldjük a levelet
+				
+				WriteLog("USR_REGISTERED_SUCCESSFULLY",$_POST['username'] .','. md5($_POST['password']) .','. $_POST['email'] .','. $_POST['realname'] .','. $acToken);
 			//}
 		}
 		break;
 	}
  }
- 
  DoFooter();
 ?>

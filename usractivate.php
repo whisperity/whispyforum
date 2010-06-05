@@ -39,7 +39,8 @@
 		{
 			// Aktiválunk
 			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET activated='1', userLevel='1', activatedate=" .strtotime("now"). " WHERE username='" .$_GET['username']. "'");
-			print("<div class='infobox'>Az felhasználód (" .$_GET['username']. ") mostantól aktiválva van.");
+			print("<div class='infobox'>A felhasználód (" .$_GET['username']. ") mostantól aktiválva van.");
+			WriteLog("USR_ACTIVATE", $_GET['username']. "," .$_GET['token']);
 		} else {
 			Hibauzenet("ERROR", "Ez a felhasználó már aktiválva van!");
 		}

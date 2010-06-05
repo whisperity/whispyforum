@@ -209,11 +209,14 @@ function Ido ( $tipus = 1 ) // Idő visszaadása
 	
 		// Elkezdjük kinyomatni a HTML outputot
 		print("<div class='hibabox'><div class='hibakep'><img src='themes/" .THEME_NAME. "/" .$kepnev. "'></div><div class='hibacim'>" .$Hmsg['title']. "</div><div class='hibaszoveg'>" .$Hmsg['desc']. "</div></div>");
-	
+		
+		// Beleírjuk az aktuális értéket a naplóba
+		WriteLog($Hmsg['tipus'], $Hmsg['title']. ',' .$Hmsg['desc']. ',' .$Hmsg['fajl']. ',' .$Hmsg['line']);
+		
 		if ($Hmsg['tipus'] == "CRITICAL") // Ha kritikus (CRITICAL) a hiba, a futtatás megakad.
 			die("A script futtatása megszakítva a következő helyen: <b>" . $Hmsg['fajl'] . "</b> fájl <b>" . $Hmsg['line'] . ".</b> sora.");
 	}
- }
+}
  
  function BBDecode( $BBText )
  {
@@ -243,5 +246,20 @@ function Ido ( $tipus = 1 ) // Idő visszaadása
 	$emoteN = array(":)", ":(", ":H", ":P", ";)", ":O", ":D", ":CONFUSED:", ":NEUTRAL:", ":SLEEP:", ":'(", ":WONDER:", ":JAWOHL:", ":OFFTOPIC:", ":SPAM:", ":WNED:", ":BANHAMMER:");  // Emotikon kódok
 	
 	return str_replace($emoteN, $hrefs, $kisbetu);
+ }
+ 
+ function WriteLog( $micsoda = '', $mit = '' ) // Napló írása
+ {
+  if ( DEBUG_LOG == 1 )
+  {
+	if (! (file_exists('logs/' .Datum("normal","m","d","","",""). 'log')))
+	{
+		// Ha nem létezik a napló fájl, létrehozunk egyet
+		file_put_contents('logs/' .Datum("normal","m","d","","",""). 'log', time(). ',LOG_CREATE');
+	}
+	
+	// Beleírjuk az aktuális értéket a naplóba
+	file_put_contents('logs/' .Datum("normal","m","d","","",""). 'log', "\n" .time(). ',' .$micsoda. ',' .$mit, FILE_APPEND);
+  }
  }
 ?>

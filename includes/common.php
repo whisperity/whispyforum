@@ -44,6 +44,7 @@ function Inicialize ( $pagename )
  /* */
   
  /* INICIALIZÁLÁS */
+ WriteLog("PAGE_VIEW", $_SERVER['REMOTE_ADDR']. ',' .$_SERVER['HTTP_USER_AGENT']);
  $sql->Connect(); // Csatlakozás az adatbázisszerverhez
  $user->GetUserData(); // Felhasználó adatainak frissítése
  
