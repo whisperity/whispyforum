@@ -33,4 +33,18 @@ function HibauzenetHelp()
 	Hibauzenet("CRITICAL", "Próba", "Csak meghalok!", __FILE__, __LINE__);
 }
 
+function UpdateHelp()
+{
+	print("<h2>Frissítéssel kapcsolatos információk</h2>\n
+		Ha azt a hibaüzenetet kapod, hogy a futtatott és a telepített verzió nem egyezik, nem feltétlenül kell aggódnod.
+		<br>Az eltérő verziók használata a legtöbb esetben csak apró kompatibilitási problémákat okoz, azonban, ha a hibaüzenet elszaporodnak, meg kell fontolni a rendszer újratelepítését.<br>A fejlesztők dolgoznak egy egyesítőscripten, mellyel az újratelepítés nélkül lehetne az adatbázist frissíteni, azonban ez még a jövő zenéje. Addig is, az adatbázist a telepítőscripttel (<a href='../install/index.php'>itt elérhető</a>) telepítheted újra.");
+}
+
+switch ($_GET['cmd'])
+{
+	case "Update":
+		UpdateHelp();
+		break;
+}
+
 ?>
