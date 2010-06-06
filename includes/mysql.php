@@ -29,10 +29,14 @@ class mysql // Definiáljuk az osztályt
 			or Hibauzenet("CRITICAL", "A kapcsolat nem zárható le", "", __FILE__, __LINE__);
 	}
 	
-	function Lekerdezes ( $lekerd ) // Lekérdezés
+	function Lekerdezes ( $lekerd, $tipus = 'NORMAL' ) // Lekérdezés
 	{
 		$eredmeny = mysql_query($lekerd)
 			or Hibauzenet("CRITICAL", "A lekérdezés nem futtatható le", "Lekérdezés: <b>" .$lekerd. "</b><br>Nyers MySQL hiba: <b>" .mysql_error(). "</b>", __FILE__, __LINE__);
+		
+		if ( $tipus == 'INSTALL' ) // Ha telepítéskori a lekérdezés (lásd: /install/database.php), naplózunk
+			file_put_contents('logs/install.log', "\r\n\r\n\r\nSQL-QUERY: " .$lekerd. "\r\n\r\n\r\n", FILE_APPEND);
+		
 		return $eredmeny;
 	}
 }
