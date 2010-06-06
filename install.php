@@ -17,10 +17,23 @@
  $instPos = 0; // Kezdeti lépés: 0
  $instPos = $_GET['pos']; // A lépés a beérkező lépés adat
  
+ function Naplo ( $szoveg, $ido = FALSE )
+ {
+	// Napló írása
+	if ( $ido == FALSE )
+	{
+		file_put_contents('logs/install.log', "\r\n" .$szoveg, FILE_APPEND); // Időérték nélkül
+	} else {
+		file_put_contents('logs/install.log', "\r\n" .$szoveg. ": " .Datum("normal","nagybetu","dL","H","i","s"). " ( " .time(). " )", FILE_APPEND); // Időértékkel
+	}
+ }
+ 
  // Telepítettség ellenörzése
  if ( file_exists('install.lock') )
  {	
 	print("A portálrendszer már telepítve van. Kérlek töröld az <i>install.lock</i> fájlt a rendszerből");
+	file_put_contents('logs/install.log', "Telepítés megkezdve: " .Datum("normal","nagybetu","dL","H","i","s"). " ( " .time(). " )");
+	Naplo("A portálrendszer már telepítve van, kérlek töröld az install.lock fájlt!");
 	die();
  }
  
@@ -49,6 +62,7 @@
 		<span class='regNem'>6. Adminisztrátor létrehozása</span><br>
 		<span class='regNem'>7. Befejezés</span>
 		</p></div>");
+		file_put_contents('logs/install.log', "Telepítés megkezdve: " .Datum("normal","nagybetu","dL","H","i","s"). " ( " .time(). " )");
 		break;
 	case 2:
 		// Adatbázis adatainak megadása
@@ -82,7 +96,7 @@
 			<input type='hidden' name='pos' value='3'>
 		</form>");
 		
-		
+		Naplo("Konfigurációs adatok bevitele megkezdve", TRUE);
 		// Oldalsó menü
 		print("</div><div class='postright'><div class='menubox'><span class='menutitle'>Telepítés</span><br>");
 		print("<p>
@@ -98,7 +112,7 @@
 	case 3:
 		// Konfigurációs fájl létrehozása
 		print("<div class='postbox'><h3 class='header'><p class='header'>3. Konfigurációs fájl létrehozása</p></h3>"); // Fejléc
-		
+		Naplo("Konfigurációs fájl létrehozása megkezdve", TRUE);
 		if ( ($_GET['dbhost'] == $NULL) || ($_GET['dbuser'] == $NULL) || ($_GET['dbpass'] == $NULL) || ($_GET['dbname'] == $NULL) || ($_GET['phost'] == $NULL) || ($_GET['pname'] == $NULL) || ($_GET['webmaster'] == $NULL) || ($_GET['webmaster_email'] == $NULL) )
 		{
 			// Ha bármelyik szükséges mező üres
@@ -106,6 +120,7 @@
 				<input type='hidden' name='pos' value='2'>
 				<input type='submit' value='<< Vissza (Konfigurációs adatok megadása)'>
 			</form>"); // Visszatérési űrlap
+			Naplo("Szükséges mezők hiányoztak", TRUE);
 		} else {
 			print("Az általad megadott értékek alapján létrehozásra kerül a konfigurációs fájl.");
 			// Konfigurációs fájl mentése
@@ -134,9 +149,9 @@ global \$cfg;
  define('ALLOW_REGISTRATION', " .$_GET['ALLOW_REGISTRATION']. ");
  define('DEBUG_LOG', " .$_GET['DEBUG_LOG']. ");
 ?>";
-			//$handle = fopen('config.php', 'w'); // Fájl nyitása (új létrehozása)
-			//fwrite($handle, $konfig); // Fájl írása
 			file_put_contents('config.php', $konfig);
+			Naplo("config.php létrehozva", TRUE);
+			Naplo("Konfigurációs fájl:\r\n" .$konfig. "\r\n\r\n");
 			
 			if ( file_get_contents('config.php') != $konfig )
 			{
@@ -145,6 +160,7 @@ global \$cfg;
 " .file_get_contents('config.php'). "</textarea><textarea rows='50' cols='55'>Szükséges tartalom:
 
 " .$konfig. "</textarea>");
+			Naplo("A tartalom nem egyezett", TRUE);
 			} else {
 				print("<h3>A fájl létrehozása sikeres</h3>
 				<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
@@ -171,25 +187,31 @@ global \$cfg;
 		include('config.php'); // Konfigurációs fájl
 		$link = @mysql_connect($cfg['dbhost'], $cfg['dbuser'], $cfg['dbpass']); // Az $sql->Connect; helyett most ezt használjuk
 		
+		Naplo("Kapcsolat tesztelése megkezdve", TRUE);
+		
 		print("<div class='postbox'><h3 class='header'><p class='header'>4. Adatbáziskapcsolat tesztelése</p></h3>"); // Fejléc
 		if ( $link == FALSE )
 		{
 			// Ha nem sikerült a kapcsolódás
-			print("Az adatbázishoz való kapcsolódás nem sikerült! Lehetséges, hogy a megadott adatok érvénytelenek, vagy az adatbázis szerver nem érhető el.
+			print("Az adatbázishoz való kapcsolódás nem sikerült! Lehetséges, hogy a megadott adatok érvénytelenek, vagy az adatbázis szerver nem érhető el.<br>Nyers hibaüzenet: <code>" .mysql_error(). "</code><br>
 			<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
 				<p class='formText'>Kérlek válassz egyet az alábbi letőségek közül<br>
 					<input type='radio' value='2' name='pos'><< Vissza (Konfigurációs adatok megadása)<br>
 					<input type='radio' value='4' name='pos' checked><> Újra próbálkozás</p>
 				<input type='submit' value='Választás megerősítése'>
 			</form>");
+			
+			Naplo("Sikertelen kapcsolódás a szerverhez", TRUE);
 		} else {
+			Naplo("Sikeres kapcsolódás", TRUE);
+			
 			print("Az adatbázisszerverhez való csatlakozás sikeres volt!
 			<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
 				<input type='hidden' value='5' name='pos'>
 				<input type='submit' value='Tovább >> (Táblák létrehozása)'>
 			</form>");
 		}
-		print("");
+		@mysql_close($link); // Kapcsolat zárása
 		
 		// Oldalsó menü
 		print("</div><div class='postright'><div class='menubox'><span class='menutitle'>Telepítés</span><br>");
@@ -205,9 +227,16 @@ global \$cfg;
 		break;
 	case 5:
 		// Táblák létrehozása
-		print("<div class='postbox'>
-		");
+		include('config.php'); // Konfigurációs fájl
+		$sql->Connect(); // Maradunk a megszokott kapcsolódási módnál
+		print("<div class='postbox'><h3 class='header'><p class='header'>5. Táblák létrehozása</p></h3>"); // Fejléc
+		print("Most kerül sor a táblák létrehozására a háttérben, az adatbázisban. Kérlek, ezután ne módosítsd a konfigurációs fájl tartalmát! A végrehajtott tevékenységekről alább megjelennek az információk.<br>"); // Információ
 		
+		include('install/database.php'); // Egyszerűen betöltjük a megfelelő fájlt és lefut a script.
+		print("<br>A táblák létrehozása sikeresen befejeződött!<br><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+				<input type='hidden' value='6' name='pos'>
+				<input type='submit' value='Tovább >> (Adminisztrátor létrehozása)'>
+			</form>"); // Továbblépési űrlap
 		
 		// Oldalsó menü
 		print("</div><div class='postright'><div class='menubox'><span class='menutitle'>Telepítés</span><br>");
@@ -223,6 +252,7 @@ global \$cfg;
 		break;
 	case 6:
 		// Adminisztrátor létrehozása
+		Naplo("Adminisztrátori fiók létrehozása megkezdve", TRUE);
 		print("<div class='postbox'>
 		");
 		
@@ -241,6 +271,7 @@ global \$cfg;
 		break;
 	case 7:
 		// Befejezés
+		Naplo("Telepítés befejezve...", TRUE);
 		print("<div class='postbox'>
 		");
 		
@@ -268,5 +299,4 @@ global \$cfg;
 	<b>Kiadás dátuma:</b> " .RELEASE_DATE. "</div>");
 	
  print("</div>"); // Jobb oldali doboz (div class='rightbox') zárása
- //include('install/database.php'); // Táblák létrehozása
 ?>
