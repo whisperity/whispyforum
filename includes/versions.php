@@ -8,6 +8,7 @@
 */
 
 	/* Verzióinformációk beállítása */
-	define('RELEASE_TYPE', 'dev');
-	define('VERSION', '0.0');
+	define('RELEASE_TYPE', ''); // Kiadás típusa (dev-fejlesztői, rc-kiadásra jelölt, pre-kiadás előtti, beta, stable-stabil, ...)
+	define('VERSION', ''); // Verziószám
+	define('RELEASE_DATE', ""); // Kiadás dátuma (nem unix időben)
 ?>

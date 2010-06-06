@@ -32,7 +32,7 @@ function CheckVersion()
 	// Verzióadatok tesztelése
 	$adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."version"), MYSQL_ASSOC);
 	if ( ($adat["RELEASE_TYPE"] != RELEASE_TYPE) || ($adat["VERSION"] != VERSION) )
-		Hibauzenet("ERROR", "A futó verzió nem egyezik a telepített verzióval", "Futó verzió: <b>" .RELEASE_TYPE. " " .VERSION. "</b><br>Telepített verzió: <b>" .$adat['RELEASE_TYPE']. " " .$adat['VERSION']. "</b><br>Bővebb információ: <a href='includes/help.php?cmd=Update' target='_blank'>kattints ide</a>");
+		Hibauzenet("ERROR", "A futó verzió nem egyezik a telepített verzióval", "Futó verzió: <b>" .RELEASE_TYPE. " " .VERSION. " (" .RELEASE_DATE. ")</b><br>Telepített verzió: <b>" .$adat['RELEASE_TYPE']. " " .$adat['VERSION']. " (" .$adat['RELEASE_DATE']. ")</b><br>Bővebb információ: <a href='includes/help.php?cmd=Update' target='_blank'>kattints ide</a>");
 	
 }
 
