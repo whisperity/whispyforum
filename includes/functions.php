@@ -214,7 +214,8 @@ function Ido ( $tipus = 1 ) // Idő visszaadása
 		WriteLog($Hmsg['tipus'], $Hmsg['title']. ',' .$Hmsg['desc']. ',' .$Hmsg['fajl']. ',' .$Hmsg['line']);
 		
 		if ($Hmsg['tipus'] == "CRITICAL") // Ha kritikus (CRITICAL) a hiba, a futtatás megakad.
-			die("A script futtatása megszakítva a következő helyen: <b>" . $Hmsg['fajl'] . "</b> fájl <b>" . $Hmsg['line'] . ".</b> sora.");
+			//die("A script futtatása megszakítva a következő helyen: <b>" . $Hmsg['fajl'] . "</b> fájl <b>" . $Hmsg['line'] . ".</b> sora.");
+			die("Kritikus hiba miatt a futtatás megszakadt!");
 	}
 }
  
