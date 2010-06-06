@@ -8,11 +8,9 @@
 */
  
  /* Szükséges fájlok betöltése */
- include('config.php'); // Konfigurációs állomány
  include('includes/mysql.php'); // Adatbázis osztály
  include('includes/functions.php'); // Funkcióosztály
  include('includes/versions.php'); // Verzióadatok
- $sql->Connect(); // Kapcsolódás a szerverhez
  print("<link rel='stylesheet' type='text/css' href='themes/default/style.css'>"); // Témaaadatok
  print("<center><h2 class='header'>Telepítés</h2></center>"); // Címsor
  
@@ -55,10 +53,10 @@
 	case 2:
 		// Adatbázis adatainak megadása
 		print("<div class='postbox'><h3 class='header'><p class='header'>2. Konfigurációs adatok megadása</p></h3>");
-		print("
+		print("A portálrendszer használatához szükséges néhány fontos adat, melyet egy fájlban tárolunk majd a webszerveren. Kérlek töltsd ki az alábbi űrlapot a megfelelő adatokkal (néhány esetben beírtunk alapértelmezett értékeket, ezeket csak indokolt esetben módosítsd!
 		<br>
 		<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
-			<p class='formText'>Adatbázisszerver címe<a class='feature-extra'><span class='hover'><span class='h3'>Adatbázisszerver címe</span>A szerver elérhetősége, a legtöbb esetben <i>localhost</i></span><sup>?</sup></a><span class='star'>*</span>: <input type='text' name='dbhost'><br>
+			<p class='formText'>Adatbázisszerver címe<a class='feature-extra'><span class='hover'><span class='h3'>Adatbázisszerver címe</span>A szerver elérhetősége, a legtöbb esetben <i>localhost</i></span><sup>?</sup></a><span class='star'>*</span>: <input type='text' name='dbhost' value='localhost'><br>
 			Belépési felhasználó<span class='star'>*</span>: <input type='text' name='dbuser'><br>
 			Jelszó<span class='star'>*</span>: <input type='text' name='dbpass'><br>
 			Adatbázis neve:<span class='star'>*</span>: <input type='text' name='dbname'><br>
@@ -74,7 +72,7 @@
 			<p class='formText'>Webmester neve<span class='star'>*</span>: <input type='text' name='webmaster'><br>
 			Webmester e-mail címe<span class='star'>*</span>: <input type='text' name='webmaster_email' value='webmaster@" .$_SERVER['SERVER_ADDR']. "'></p>
 			
-			<p class='formText'>Kiválasztott fórumtéma: <select size='1' name='THEME_NAME'>
+			<p class='formText'>Kiválasztott téma: <select size='1' name='THEME_NAME'>
 			<option>default</option>
 			</select><br>
 			Regisztráció engedélyezése: <input type='radio' value='0' name='ALLOW_REGISTRATION'>Nem <input type='radio' name='ALLOW_REGISTRATION' value='1' checked>Igen<br>
@@ -99,15 +97,63 @@
 		break;
 	case 3:
 		// Konfigurációs fájl létrehozása
+		print("<div class='postbox'><h3 class='header'><p class='header'>3. Konfigurációs fájl létrehozása</p></h3>"); // Fejléc
 		
 		if ( ($_GET['dbhost'] == $NULL) || ($_GET['dbuser'] == $NULL) || ($_GET['dbpass'] == $NULL) || ($_GET['dbname'] == $NULL) || ($_GET['phost'] == $NULL) || ($_GET['pname'] == $NULL) || ($_GET['webmaster'] == $NULL) || ($_GET['webmaster_email'] == $NULL) )
 		{
 			// Ha bármelyik szükséges mező üres
-			
+			print("Nem töltöttél ki minden szükséges mezőt a folytatáshoz.<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+				<input type='hidden' name='pos' value='2'>
+				<input type='submit' value='<< Vissza (Konfigurációs adatok megadása)'>
+			</form>"); // Visszatérési űrlap
 		} else {
+			print("Az általad megadott értékek alapján létrehozásra kerül a konfigurációs fájl.");
 			// Konfigurációs fájl mentése
+			$konfig = "<?php 
+global \$cfg;
+\$cfg = array(
+	'dbhost' => '" .$_GET['dbhost']. "',
+	'dbuser' => '" .$_GET['dbuser']. "',
+	'dbpass' => '" .$_GET['dbpass']. "',
+	'dbname' => '" .$_GET['dbname']. "',
+	'tbprf' => '" .$_GET['tbprf']. "',
+
+	'SMTP' => '" .$_GET['SMTP']. "',
+	'smtp_port' => " .$_GET['smtp_port']. ",
+	'sendmail_from' => '" .$_GET['sendmail_from']. "',
+	'sendmail_html' => " .$_GET['sendmail_html']. ",
+
+	'phost' => '" .$_GET['phost']. "',
+	'pname' => '" .$_GET['pname']. "',
+
+	'webmaster' => '" .$_GET['webmaster']. "',
+	'webmaster_email' => '" .$_GET['webmaster_email']. "',
+ );
+ 
+ define('THEME_NAME', '" .$_GET['THEME_NAME']. "');
+ define('ALLOW_REGISTRATION', " .$_GET['ALLOW_REGISTRATION']. ");
+ define('DEBUG_LOG', " .$_GET['DEBUG_LOG']. ");
+?>";
+			//$handle = fopen('config.php', 'w'); // Fájl nyitása (új létrehozása)
+			//fwrite($handle, $konfig); // Fájl írása
+			file_put_contents('config.php', $konfig);
 			
+			if ( file_get_contents('config.php') != $konfig )
+			{
+				print("<h3>A fájl létrehozása nem sikerült</h3>A <i>config.php</i> állomány nem írható, vagy a beleírt tartalom nem egyezik a szükséges tartalommal. Kérlek, kézileg hozd létre én mentsd el a konfigurációs fájlt.<br><textarea rows='50' cols='55' disabled>Aktuális tartalom (config.php):
+				
+" .file_get_contents('config.php'). "</textarea><textarea rows='50' cols='55'>Szükséges tartalom:
+
+" .$konfig. "</textarea>");
+			} else {
+				print("<h3>A fájl létrehozása sikeres</h3>
+				<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+					<input type='hidden' name='pos' value='4'>
+					<input type='submit' value='Tovább >> (Adatbáziskapcsolat tesztelése)'>
+				</form>");
+			}
 		}
+		
 		// Oldalsó menü
 		print("</div><div class='postright'><div class='menubox'><span class='menutitle'>Telepítés</span><br>");
 		print("<p>
@@ -122,9 +168,28 @@
 		break;
 	case 4:
 		// Adatbáziskapcsolat tesztelése
-		print("<div class='postbox'>
-		");
+		include('config.php'); // Konfigurációs fájl
+		$link = @mysql_connect($cfg['dbhost'], $cfg['dbuser'], $cfg['dbpass']); // Az $sql->Connect; helyett most ezt használjuk
 		
+		print("<div class='postbox'><h3 class='header'><p class='header'>4. Adatbáziskapcsolat tesztelése</p></h3>"); // Fejléc
+		if ( $link == FALSE )
+		{
+			// Ha nem sikerült a kapcsolódás
+			print("Az adatbázishoz való kapcsolódás nem sikerült! Lehetséges, hogy a megadott adatok érvénytelenek, vagy az adatbázis szerver nem érhető el.
+			<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+				<p class='formText'>Kérlek válassz egyet az alábbi letőségek közül<br>
+					<input type='radio' value='2' name='pos'><< Vissza (Konfigurációs adatok megadása)<br>
+					<input type='radio' value='4' name='pos' checked><> Újra próbálkozás</p>
+				<input type='submit' value='Választás megerősítése'>
+			</form>");
+		} else {
+			print("Az adatbázisszerverhez való csatlakozás sikeres volt!
+			<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+				<input type='hidden' value='5' name='pos'>
+				<input type='submit' value='Tovább >> (Táblák létrehozása)'>
+			</form>");
+		}
+		print("");
 		
 		// Oldalsó menü
 		print("</div><div class='postright'><div class='menubox'><span class='menutitle'>Telepítés</span><br>");
