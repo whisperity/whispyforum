@@ -177,7 +177,7 @@
 			{
 				$acToken = md5($_POST['username'] . "|" . md5($_POST['password']) . "|" . Datum("normal","nagybetu","dL","H","i","s")); // Aktiválási kulcs generálása
 				$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']. "user 
-	(username, pwd, email, realName, activated, activateToken, regip, regsessid, regdate) VALUES ('" .$_POST['username']. "', '" .md5($_POST['password']). "', '" .$_POST['email']. "', '" .$_POST['realname']. "', '0', '" .$acToken. "', '" .$_SERVER['REMOTE_ADDR']. "', '" .session_id(). "', " .strtotime("now"). ")"); // Adatok elmentése
+	(username, pwd, email, realName, activated, activateToken, regip, regsessid, regdate) VALUES ('" .$_POST['username']. "', '" .md5($_POST['password']). "', '" .$_POST['email']. "', '" .$_POST['realname']. "', '0', '" .$acToken. "', '" .$_SERVER['REMOTE_ADDR']. "', '" .session_id(). "', " .time(). ")"); // Adatok elmentése
 		
 				print("A regisztráció megtörtént!<br>A további részleteket tartalmazó e-mailt elküldtük a következő e-mail címre: <b>" .$_POST['email']. "</b>.<br>Kövesd a levélben található utasításokat!"); // Értesítés
 				
