@@ -302,7 +302,7 @@ global \$cfg;
 		print("A portálrendszered telepítése ezzel befejeződött. Az alább található gombra kattintva használatba veheted a portálodat.<br>Biztonsági okokból kérlek távolítsd el a telepítési mappádból az <b>install.php</b> fájlt és a teljes <b>/install</b> mappát. Amíg ezt nem teszed meg, az oldal felett könnyen átvehető az irányítás. Az <b>install.lock</b> fájlt hagyd meg!<br>
 			<form action='index.php' method='POST'>
 				<input type='submit' value='Tovább >> (Telepítés befejezése)'>
-		</form>Telepítési napló:<br><textarea rows='20' cols='80'>" .file_get_contents('logs/install.log'). "</textarea>");
+		</form>Telepítési napló:<br><textarea rows='20' cols='80' disabled>" .file_get_contents('logs/install.log'). "</textarea>");
 		
 		// Oldalsó menü
 		print("</div><div class='postright'><div class='menubox'><span class='menutitle'>Telepítés</span><br>");
