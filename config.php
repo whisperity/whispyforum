@@ -34,5 +34,5 @@
  
  define('THEME_NAME', 'default'); // Téma neve
  define('ALLOW_REGISTRATION', 1); // Regisztráció engedélyezése (0 - nem, 1 - igen)
- define('DEBUG_LOG', 0); // Napló írása (0 - nem, 1 - igen)
+ define('LOG_DEPTH'', 0); // Napló mélysége (0 - ki, 1 - hibák, 2 - lapmegtekintések)
 ?>

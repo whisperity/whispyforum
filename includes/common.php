@@ -45,8 +45,9 @@ function Inicialize ( $pagename )
  /* */
   
  /* INICIALIZÁLÁS */
- WriteLog("PAGE_VIEW", $_SERVER['REMOTE_ADDR']. ',' .$_SERVER['HTTP_USER_AGENT']);
  $sql->Connect(); // Csatlakozás az adatbázisszerverhez
+ $user->GetUserData(); // Felhasználó adatainak frissítése
+ WriteLog("PAGE_VIEW", $pagename. ',' .$_SERVER['REMOTE_ADDR']. ',' .$_SERVER['HTTP_USER_AGENT']. ',' .$_SESSION['username']. ',' .$_SESSION['userLevelTXT']);
  
  /* Telepítettség ellenörzése */
  if ( !file_exists('install.lock') )
@@ -56,8 +57,6 @@ function Inicialize ( $pagename )
  $adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."version"), MYSQL_ASSOC);
  if ( ($adat["RELEASE_TYPE"] != RELEASE_TYPE) || ($adat["VERSION"] != VERSION) )
 	Hibauzenet("CRITICAL", "A futó verzió nem egyezik a telepített verzióval", "Futó verzió: <b>" .RELEASE_TYPE. " " .VERSION. " (" .RELEASE_DATE. ")</b><br>Telepített verzió: <b>" .$adat['RELEASE_TYPE']. " " .$adat['VERSION']. " (" .$adat['RELEASE_DATE']. ")</b><br>Bővebb információ: <a href='includes/help.php?cmd=Update' target='_blank'>kattints ide</a>");
-
- $user->GetUserData(); // Felhasználó adatainak frissítése
  
  if ($pagename != "admin.php") // Az admin.php-n ezeknek NEM kell megjelenniük
  {

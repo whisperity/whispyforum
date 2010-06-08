@@ -251,16 +251,29 @@ function Ido ( $tipus = 1 ) // Idő visszaadása
  
  function WriteLog( $micsoda = '', $mit = '' ) // Napló írása
  {
-  if ( DEBUG_LOG == 1 )
+  if ( LOG_DEPTH > 0 )
   {
-	if (! (file_exists('logs/' .Datum("normal","m","d","","",""). 'log')))
+	if (! (file_exists('logs/site.log')))
 	{
 		// Ha nem létezik a napló fájl, létrehozunk egyet
-		file_put_contents('logs/' .Datum("normal","m","d","","",""). 'log', time(). ',LOG_CREATE');
+		file_put_contents('logs/site.log',time(). ',LOG_CREATE');
 	}
 	
 	// Beleírjuk az aktuális értéket a naplóba
-	file_put_contents('logs/' .Datum("normal","m","d","","",""). 'log', "\n" .time(). ',' .$micsoda. ',' .$mit, FILE_APPEND);
+	// naplómélységi adattól függően
+	switch ( $micsoda )
+	{
+		case "PAGE_VIEW":
+			if ( LOG_DEPTH >= 2 )
+				file_put_contents('logs/site.log', "\n" .time(). ',' .$micsoda. ',' .$mit, FILE_APPEND);
+			break;
+		case "WARNING":
+		case "ERROR":
+		case "CRITICAL":
+			if ( LOG_DEPTH >= 1 )
+				file_put_contents('logs/site.log', "\n" .time(). ',' .$micsoda. ',' .$mit, FILE_APPEND);
+			break;
+	}
   }
  }
 ?>
