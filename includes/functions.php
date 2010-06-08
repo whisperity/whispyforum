@@ -264,13 +264,18 @@ function Ido ( $tipus = 1 ) // Idő visszaadása
 	switch ( $micsoda )
 	{
 		case "PAGE_VIEW":
-			if ( LOG_DEPTH >= 2 )
+			if ( LOG_DEPTH >= 3 )
 				file_put_contents('logs/site.log', "\n" .time(). ',' .$micsoda. ',' .$mit, FILE_APPEND);
 			break;
 		case "WARNING":
 		case "ERROR":
 		case "CRITICAL":
 			if ( LOG_DEPTH >= 1 )
+				file_put_contents('logs/site.log', "\n" .time(). ',' .$micsoda. ',' .$mit, FILE_APPEND);
+			break;
+		case "USR_REGISTERED_SUCCESSFULLY":
+		case "USR_ACTIVATE":
+			if ( LOG_DEPTH >= 2 )
 				file_put_contents('logs/site.log', "\n" .time(). ',' .$micsoda. ',' .$mit, FILE_APPEND);
 			break;
 	}
