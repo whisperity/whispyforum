@@ -67,7 +67,7 @@ class user // Definiáljuk az osztályt (felhasználók)
 		print("!</span><br>");
 		print("<p class='formText'>Felhasználói szinted: " .$_SESSION['userLevelTXT']. "<br><a href='ucp.php'>Felhasználói vezérlőpult</a>");
 		if ( $_SESSION['userLevel'] == 3) // Ha a felhasználó admin linket írunk az admin vezérlőpultra
-			print("<br><a href='admin.php'>Adminisztrátor vezérlőpult</a>");
+			print("<br><a href='admin.php'>Adminisztrátori vezérlőpult</a>");
 		
 		print("</p><form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
 		<input type='hidden' name='cmd' value='logoutusr'>
