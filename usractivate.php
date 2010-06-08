@@ -9,6 +9,7 @@
  
  include('includes/common.php');
  Inicialize('usractivate.php');
+ SetTitle("Felhasználó aktiválása");
  
  global $cfg, $sql, $user;
  

@@ -25,6 +25,11 @@
  </tr>"); // Fejléc
  
  global $cfg, $sql;
+ 
+ /* Fórum címe, weblapfejléc */
+ $forumCime = mysql_fetch_array($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."forum WHERE id='" .$_GET['id']. "'"), MYSQL_ASSOC);
+ SetTitle($forumCime["name"]);
+ 
  /* Közlemények */
  $adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE fId='" .$_GET['id']. "' AND type='2'"); // Közlemények betöltése az adott fórumból
  

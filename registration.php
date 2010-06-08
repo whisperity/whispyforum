@@ -9,6 +9,7 @@
  
  include('includes/common.php'); // Betöltjük a portálrendszer alapscriptjeit (common.php elvégzi)
  Inicialize('registration.php');
+ SetTitle("Regisztráció");
  
  $regPos = $_POST['regPos']; // Regisztrációs lépés
  

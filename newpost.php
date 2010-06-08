@@ -9,6 +9,7 @@
 
  include('includes/common.php'); // Betöltjük a portálrendszer alapscriptjeit (common.php elvégzi)
  Inicialize('newpost.php');
+ SetTitle("Új hozzászólás");
  
  if ($_SESSION['loggedin'] != 1) { // Ha a felhasználó nincs bejelentkezve, nem szólhat hozzá
 	Hibauzenet("ERROR", "Amíg nem jelentkezel be, nem küldhetsz hozzászólást");
@@ -25,7 +26,6 @@
 	{
 		Hibauzenet("ERROR", "A megadott azonosítójú téma nem létezik");
 	} else {
-		
 		if ( ($_POST['title'] != $NULL) && ($_POST['post'] != $NULL) )
 		{
 			// Ha van bejövő adat a hozzászólásról

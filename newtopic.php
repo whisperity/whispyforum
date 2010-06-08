@@ -9,6 +9,7 @@
 
 	include('includes/common.php');
 	Inicialize('viewtopics.php');
+	SetTitle("Új téma");
 	
 	/* Fórum ID beállítása a bejövő adatok alapján */
 	if ( $_GET['id'] != $NULL)

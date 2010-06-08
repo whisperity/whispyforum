@@ -17,8 +17,9 @@
  $adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."posts WHERE tId='" .$_GET['id']. "'"); // Témák betöltése az adott fórumból
  
  /* Fórum id megállapítása */
- $sor2 = mysql_fetch_array($sql->Lekerdezes("SELECT fId, locked FROM " .$cfg['tbprf']."topics WHERE id='" .$_GET['id']. "'"), MYSQL_ASSOC);
+ $sor2 = mysql_fetch_array($sql->Lekerdezes("SELECT name, fId, locked FROM " .$cfg['tbprf']."topics WHERE id='" .$_GET['id']. "'"), MYSQL_ASSOC);
  $forumId = $sor2['fId'];
+ SetTitle($sor2['name']);
  
  $sor3 = mysql_fetch_array($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."forum WHERE id='" .$forumId. "'"), MYSQL_ASSOC);
  print("<p class='header'><a href='viewtopics.php?id=" .$forumId. "'><< Vissza a fórumhoz (" .$sor3['name']. ")</a><img src='themes/" .THEME_NAME. "/x.bmp'>"); // Visszatérési link kiírása

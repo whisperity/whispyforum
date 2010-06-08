@@ -9,6 +9,7 @@
  
  include('includes/common.php');
  Inicialize('viewforum.php');
+ SetTitle("Fórum");
  
  print("<table class='forum'>
  <tr>

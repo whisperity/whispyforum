@@ -13,7 +13,7 @@
  include('includes/versions.php'); // Verzióadatok
  print("<link rel='stylesheet' type='text/css' href='themes/default/style.css'>"); // Témaaadatok
  print("<center><h2 class='header'>Telepítés</h2></center>"); // Címsor
- 
+ print("<title>WhispyFórum - Telepítés</title>"); // HTML-címsor
  $instPos = 0; // Kezdeti lépés: 0
  $instPos = $_POST['pos']; // A lépés a beérkező lépés adat
  
