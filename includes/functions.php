@@ -263,10 +263,6 @@ function Ido ( $tipus = 1 ) // Idő visszaadása
 	// naplómélységi adattól függően
 	switch ( $micsoda )
 	{
-		case "PAGE_VIEW":
-			if ( LOG_DEPTH >= 3 )
-				file_put_contents('logs/site.log', "\n" .time(). ',' .$micsoda. ',' .$mit, FILE_APPEND);
-			break;
 		case "WARNING":
 		case "ERROR":
 		case "CRITICAL":
@@ -276,6 +272,19 @@ function Ido ( $tipus = 1 ) // Idő visszaadása
 		case "USR_REGISTERED_SUCCESSFULLY":
 		case "USR_ACTIVATE":
 			if ( LOG_DEPTH >= 2 )
+				file_put_contents('logs/site.log', "\n" .time(). ',' .$micsoda. ',' .$mit, FILE_APPEND);
+			break;
+		case "PAGE_VIEW":
+			if ( LOG_DEPTH >= 3 )
+				file_put_contents('logs/site.log', "\n" .time(). ',' .$micsoda. ',' .$mit, FILE_APPEND);
+			break;
+		case "SQL_CONNECT_SELECTDB":
+		case "SQL_DC":
+			if ( LOG_DEPTH >= 4)
+				file_put_contents('logs/site.log', "\n" .time(). ',' .$micsoda, FILE_APPEND);
+			break;
+		case "SQL":
+			if ( LOG_DEPTH >= 4)
 				file_put_contents('logs/site.log', "\n" .time(). ',' .$micsoda. ',' .$mit, FILE_APPEND);
 			break;
 	}

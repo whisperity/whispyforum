@@ -20,6 +20,7 @@ class mysql // Definiáljuk az osztályt
 		// A megadott adatbázis kiválasztása (vagy hibaüzenet generálása)
 		@mysql_select_db($cfg['dbname'])
 			or Hibauzenet("CRITICAL", "Az adatbázis (" .$cfg['dbname']. ") nem választható ki", "", __FILE__, __LINE__);
+		WriteLog("SQL_CONNECT_SELECTDB");
 	}
 	
 	function Disconnect() // Lekapcsolódás a szerverről
@@ -27,10 +28,14 @@ class mysql // Definiáljuk az osztályt
 		// Zárjuk a kapcsolatot
 		@mysql_close()
 			or Hibauzenet("CRITICAL", "A kapcsolat nem zárható le", "", __FILE__, __LINE__);
+		
+		WriteLog("SQL_DC");
 	}
 	
 	function Lekerdezes ( $lekerd, $tipus = 'NORMAL' ) // Lekérdezés
 	{
+		WriteLog("SQL", $lekerd);
+		
 		$eredmeny = mysql_query($lekerd)
 			or Hibauzenet("CRITICAL", "A lekérdezés nem futtatható le", "Lekérdezés: <b>" .$lekerd. "</b><br>Nyers MySQL hiba: <b>" .mysql_error(). "</b>", __FILE__, __LINE__);
 		

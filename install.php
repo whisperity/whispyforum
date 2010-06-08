@@ -94,7 +94,8 @@
 				<option value='0'>semmi (napló kikapcsolása)</option>
 				<option value='1'>közepes (hibaüzenetek)</option>
 				<option value='2'>mély (felhasználók)</option>
-				<option value='2'>mélyebb (lapmegtekintések)</option>
+				<option value='3'>mélyebb (lapmegtekintések)</option>
+				<option value='4'>legmélyebb (SQL-kérések)</option>
 				</select><br>
 			
 			<input type='submit' value='Tovább >> (Konfigurációs fájl létrehozása)'>
