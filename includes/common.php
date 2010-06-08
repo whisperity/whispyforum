@@ -85,4 +85,18 @@ function DoFooter() // Középső rész elküldése után
  
  Lablec(); // Lábléc
 }
+
+function SetTitle( $fejlec ) // HTML fejléc létrehozása
+{
+global $cfg; // Konfigurációs tömb
+
+ if ($fejlec == '')
+ {
+	// Ha nincs fejléc paraméter megadva a hívókódban
+	print("<title>" .$cfg['pname']. "</title>"); // Csak a weblap neve a fejléc
+ } else {
+	// Ellenkező esetben, ha van
+	print("<title>" .$cfg['pname']. " - " .$fejlec. "</title>"); // Weblap neve - weblap címe
+ }
+}
 ?>
