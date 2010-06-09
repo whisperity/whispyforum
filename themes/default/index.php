@@ -11,6 +11,7 @@ header('Content-type: text/html; charset=iso-8859-2'); // Szükséges
 
 <body>
 <a href="images.php">Képek >></a>
+<a href="emoticons.php">Hangulatjelek >></a>
 <br>
 body
 <div class="headerbox">
