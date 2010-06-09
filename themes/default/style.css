@@ -10,21 +10,19 @@ body {  } /* Normál testszöveg */
 
 /* Dobozok */
 div.leftbox { width: 25%;
-	height: 85%;
-	position:relative;
+	height: 92%;
+	position: relative;
 	float:left }
 div.centerbox { width: 50%;
-	height: 85%;
-	position:relative;
+	height: 92%;
+	position: relative;
 	float:left }
 div.rightbox { width: 25%;
-	height: 85%;
-	position:relative;
+	height: 92%;
+	position: relative;
 	float:left }
-div.headerbox { width: 100%;
-	height: 7% }
-div.footerbox { width: 100%;
-	height: 7% }
+div.headerbox { position: relative;
+	height: 8% }
 
 div.messagebox { background-color: #FEDCBA; }
 
@@ -40,6 +38,7 @@ span.menutitle { font-size:10.5pt;
 	font-weight: bold }
 
 a.menuitem { margin-left: 10px }
+p.menuItem { margin-left: 10px }
 
 /* Regisztráció */
 span.regNem { margin-left: 10px;
