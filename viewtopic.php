@@ -67,9 +67,9 @@
 	print("<a name='pid" .$sor['id']. "'><div class='post'>"); // Fejléc
 	print("<div class='postbody'><h3 class='postheader'><p class='header'>" .$sor['pTitle']. "</p></h3>"); // Hozzászólás fejléc
 	print("<div class='content'>" .$postBody. "</div></div>"); // Hozzászólás
-	print("<div class='postright'>Hozzászólás időpontja: " .Datum("normal","m","d","H","i","",$sor['pDate']). "<p><b>" .$adat2['username']. "</b><br>Rang: " .$usrRang. "<br>Hozzászólások: " .$adat2['postCount']. "<br>"); // Hozzászólás adatai (hozzászóló, stb.)
+	print("<div class='postright'>Hozzászólás időpontja: <b>" .Datum("normal","kisbetu","dL","H","i","s",$sor['pDate']). "</b><p><b>" .$adat2['username']. "</b><br>Rang: " .$usrRang. "<br>Hozzászólások: " .$adat2['postCount']. "<br>"); // Hozzászólás adatai (hozzászóló, stb.)
 	print("Csatlakozott: " .Datum("normal","m","d","H","i","", $adat2['regdate']). ""); // Hozzászóló adatai
-	print("</div>"); // Hozzászólás vége
+	print("</div></div>"); // Hozzászólás vége
 	}
 	
  DoFooter();

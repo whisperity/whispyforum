@@ -11,7 +11,7 @@
  Inicialize('viewforum.php');
  SetTitle("Fórum");
  
- print("<table class='forum'>
+ print("<div align='center'><center><table class='forum'>
  <tr>
 	<th class='forumheader'>Fórum neve</th>
 	<th class='forumheader'>Témák</th>
@@ -32,6 +32,6 @@
 		<td class='forumlist'><p>" .Datum("normal","m","d","H","i","s", $sor['lastpostdate']). "<br>" .$adat2['username']. "<a href='viewtopic.php?id=" .$sor['lpTopic']. "#pid" .$sor['lpId']. "'><img src='themes/" .THEME_NAME. "/lastpost.gif' border='0' alt='Ugrás a legutolsó hozzászóláshoz'></a></p></td>
 		</tr>"); // Fórum sor
 	}
-	
+	print("</table></center></div>"); // Táblázat zárása
  DoFooter();
 ?>

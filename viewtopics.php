@@ -15,7 +15,7 @@
  
  print("<p class='header'><a href='viewforum.php'><< Vissza a fórumokhoz</a><img src='themes/" .THEME_NAME. "/x.bmp'><a href='newtopic.php?id=" .$_GET['id']. "'>Új téma hozzáadása</a></p>"); // Visszatérési link kiírása
  
- print("<table class='forum'>
+ print("<div align='center'><center><table class='forum'>
  <tr>
 	<th class='forumheader'></th>
 	<th class='forumheader'>Témák</th>
@@ -96,5 +96,6 @@
 		</tr>"); // Téma sor
 	}
  /* Többi téma vége */
+ print("</table></center></div>"); // Táblázat zárása
  DoFooter();
 ?>
