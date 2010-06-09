@@ -40,7 +40,12 @@
 				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."topics SET replies='" .($sor2['replies']+1). "' WHERE id='" .$_POST['id']. "'"); // Hozzászólásszám növelése a témán
 				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "forum SET posts='" .($sor3['posts']+1). "' WHERE id='" .$sor2['fId']. "'"); // Hozzászólásszám növelése a fórumon
 				
+				/* Felhasználó hozzászólásszámának növelése */
+				$sor4 = mysql_fetch_array($sql->Lekerdezes("SELECT postCount FROM " .$cfg['tbprf']."user WHERE id='" .$_SESSION['userID']. "'"), MYSQL_ASSOC); // Felhasználó hozzászólásszáma
+				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET postCount='" .($sor4['postCount']+1). "'");
+				
 				print("<div class='messagebox'>Hozzászólásod elküldve!<br><a href='viewtopic.php?id=" .$_POST['id']. "'>Vissza a témához</a></div>"); // Visszatérési link
+				DoFooter();
 				die(); // A többi kód nem fut le!
 			}
 			
@@ -52,7 +57,8 @@
 			<div class='postbox'><p class='formText'>Hozzászólás:<br></a>
 			<textarea rows='20' name='post' cols='70'>" .$_POST['post']. "</textarea></div>
 			<div class='postright'>"); // Bal oldali rész
-			print("<a href='/themes/" .THEME_NAME. "/images.php#emoticons' target='_blank'>Hangulatjelek</a><img src='/themes/" .THEME_NAME. "/x.bmp'><a href='/includes/help.php?cmd=BB' target='_blank'>BB-kódok</a>"); // Emoticon, BB-kód ablak
+			print("<a href='/themes/" .THEME_NAME. "/emoticons.php' onClick=\"window.open('/themes/" .THEME_NAME. "/emoticons.php', 'popupwindow', 'width=192,heigh=600,scrollbars=yes'); return false;\">Hangulatjelek</a>
+			<a href='/includes/help.php?cmd=BB' onClick=\"window.open('includes/help.php?cmd=BB', 'popupwindow', 'scrollbars=yes'); return false;\">BB-kódok</a>"); // Emoticon, BB-kód ablak
 			print("</div>
 			</p>
 			<input type='hidden' name='id' value='" .$tId. "'>

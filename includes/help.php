@@ -45,6 +45,9 @@ switch ($_GET['cmd'])
 	case "Update":
 		UpdateHelp();
 		break;
+	case "BB":
+		
+		break;
 }
 
 ?>
