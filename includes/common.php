@@ -14,12 +14,18 @@ function Fejlec()
 	
 	// KÓD IDE //
 	print("</div>"); // Blokkzárás
+	
+	/* A footer elcsúszás kiiktatása végett egy láthatatlan táblázatba kerül a középső rész */
+	print("<table class='centerdiv'><tr>");
 }
 
 function Lablec()
 {
+	/* A footer elcsúszást védelem vége */
+	print("</td></tr></table>");
+	
 	// Lábléc létrehozása
-	print("<div class='menubox'><span class='menutitle'>Információk</span><br><p class='menuItem'>"); // Blokknyitás
+	print("<div class='footerbox'>"); // Blokknyitás
 	/* Generálás vége, generálási idő kiszámítása */
 	global $start_time;
 	
@@ -32,7 +38,7 @@ function Lablec()
 	print("<a href=''>WhispyFórum " .RELEASE_TYPE. " " .VERSION. " (" .RELEASE_DATE. ")</a>");
 	print("<br>A generálás " .$genIdo. " másodpercig tartott");
 	
-	print("</p></div>"); // Blokkzárás
+	print("</div>"); // Blokkzárás
 }
 
 function Inicialize ( $pagename )
@@ -81,20 +87,20 @@ function Inicialize ( $pagename )
  {
 	Fejlec(); // Fejléc
 	
-	print("<div class='leftbox'>"); // Bal odali doboz
+	print("<td class='left' valign='top'>"); // Bal odali doboz
 	$user->CheckIfLoggedIn($_SESSION['username']); // Megnézzük, hogy belépett-e már a user
 	
 	$templates->DoLeft(); // Bal oldali modulok
 	
-	print("</div>
-    <div class='centerbox'>"); // Középső doboz
+	print("</td>
+    <td class='center' valign='top'>"); // Középső doboz
 	//$templates->DoCenter($pagename); // Középső modulok
  }
 }
 
 function DoFooter() // Középső rész elküldése után
 {
- print("</div><div class='rightbox'>"); // Jobb oldali doboz
+ print("</td><td class='right' valign='top'>"); // Jobb oldali doboz
  
  global $templates;
  $templates->DoRight(); // Jobb oldali modulok

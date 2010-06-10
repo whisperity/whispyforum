@@ -9,20 +9,13 @@
 body {  } /* Normál testszöveg */
 
 /* Dobozok */
-div.leftbox { width: 25%;
-	height: 92%;
-	position: relative;
-	float:left }
-div.centerbox { width: 50%;
-	height: 92%;
-	position: relative;
-	float:left }
-div.rightbox { width: 25%;
-	height: 92%;
-	position: relative;
-	float:left }
-div.headerbox { position: relative;
-	height: 8% }
+/* Weboldal felosztása */
+div.headerbox { width: 100%; }
+div.footerbox { width: 100%; }
+td.left { width: 20% }
+td.center { width: 60% }
+td.right { width: 20% }
+table.centerdiv { width: 100% }
 
 div.messagebox { background-color: #FEDCBA; }
 
