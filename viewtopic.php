@@ -25,12 +25,16 @@
  print("<p class='header'><a href='viewtopics.php?id=" .$forumId. "'><< Vissza a fórumhoz (" .$sor3['name']. ")</a><img src='themes/" .THEME_NAME. "/x.bmp'>"); // Visszatérési link kiírása
  
  /* Hozzászólási link / lezártsági kép */
- if ($sor2['locked'] == 0)
+ if ( $_SESSION['loggedin'] == 1)
  {
-	print("<a href='newpost.php?id=" .$_GET['id']. "'>Új hozzászólás</a>"); // Hozzászólási link
- } else {
-	print("<img src='/themes/" .THEME_NAME. "/forum_read_locked.png' alt='A téma lezárva, nem küldhető újabb hozzászólás'>");
+	if ($sor2['locked'] == 0)
+	{
+		print("<a href='newpost.php?id=" .$_GET['id']. "'>Új hozzászólás</a>"); // Hozzászólási link
+	} else {
+		print("<img src='/themes/" .THEME_NAME. "/forum_read_locked.png' alt='A téma lezárva, nem küldhető újabb hozzászólás'>");
+	}
  }
+ 
  print("</p>");
  /* +1 megtekintés hozzáadása */
  $sor4 = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE id='" .$_GET['id']. "'"), MYSQL_ASSOC);
