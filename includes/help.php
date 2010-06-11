@@ -6,12 +6,8 @@
 /* includes/help.php
    output leírásokat tartalmazó script
 */ 
- function AllHelp()
- {
-	DatumHelp();
-	IdoHelp();
-	HibauzenetHelp(); // Végére, mert dieoltat
- }
+ 
+ @include("functions.php");
  
 function DatumHelp()
  {
@@ -40,13 +36,60 @@ function UpdateHelp()
 		<br>Az eltérő verziók használata a legtöbb esetben csak apró kompatibilitási problémákat okoz, azonban, ha a hibaüzenet elszaporodnak, meg kell fontolni a rendszer újratelepítését.<br>A fejlesztők dolgoznak egy egyesítőscripten, mellyel az újratelepítés nélkül lehetne az adatbázist frissíteni, azonban ez még a jövő zenéje. Addig is, az adatbázist a telepítőscripttel (<a href='../install/index.php'>itt elérhető</a>) telepítheted újra.");
 }
 
+function BBCodeHelp()
+{
+	print("<h2>BB-kódok</h2>\n
+		A BB-kódok az internetes fórumok újításai, melyben a szövegszerkesztési elemeket a HTML-kód helyett BB-kódokban írjuk. Ez a legtöbb esetben biztonsági intézkedésként került bele a rendszerekbe, hogy a HTML-kódok értelmezését letiltsuk.
+	<br><br>
+	<table>
+	<tr>
+		<th></th>
+		<th>Használat</th>
+		<th>Példa</th>
+		<th>Példa (ahogy megjelenik)</th>
+	</tr>
+	<tr>
+		<td>Félkövér</td>
+		<td><code>[b]szöveg[/b]</code></td>
+		<td><code>[b]ez egy félkövér szöveg[/b]</code></td>
+		<td>" .BBDecode("[b]ez egy félkövér szöveg[/b]"). "</td>
+	</tr>
+	<tr>
+		<td>Dőlt</td>
+		<td><code>[i]szöveg[/i]</code></td>
+		<td><code>[i]ez egy dőlt szöveg[/i]</code></td>
+		<td>" .BBDecode("[i]ez egy dőlt szöveg[/i]"). "</td>
+	</tr>
+	<tr>
+		<td>Aláhúzott</td>
+		<td><code>[u]szöveg[/u]</code></td>
+		<td><code>[u]ez egy aláhúzott szöveg[/u]</code></td>
+		<td>" .BBDecode("[u]ez egy aláhúzott szöveg[/u]"). "</td>
+	</tr>
+	<tr>
+		<td>URL hivatkozás</td>
+		<td><code>[url]url-link[/url]megjelenítendő szöveg[/a]</td>
+		<td><code>[url]http://hu.wikipedia.org[/url]Wikipédia[/a]</td>
+		<td>" .BBDecode("[url]http://hu.wikipedia.org[/url]Wikipédia[/a]"). "</td>
+	</tr>
+	<tr>
+		<td>Kép</td>
+		<td><code>[img]képhivatkozás[/img]</td>
+		<td><code>[img]http://www.google.hu/logos/worldcupopen10-hp.gif[/img]</td>
+		<td>" .BBDecode("[img]http://www.google.hu/logos/worldcupopen10-hp.gif[/img]"). "</td>
+	</tr>
+	</table>
+Bizonyos BB-kódok mixelhetőek, azonban a weboldalon a BB-kódokat a jelenleg megadott formában kell használni!
+<a href='javascript: self.close()'>Ablak bezárása</a>");
+}
+
 switch ($_GET['cmd'])
 {
 	case "Update":
 		UpdateHelp();
 		break;
 	case "BB":
-		
+		BBCodeHelp();
 		break;
 }
 
