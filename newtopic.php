@@ -30,11 +30,14 @@
 		{
 			// Új téma hozzáadáas
 			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."forum SET topics='" .($sor2['topics']+1). "', posts='" .($sor2['posts']+1)."' WHERE id='" .$fId. "'"); // Fórum témaszám és postszám növelése
+			
 			$topicSzam = mysql_num_rows($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics"));
 			$postSzam = mysql_num_rows($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."posts"));
 			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']. "topics(fId, name,	type, startdate, startuser, lastpostdate, lastuser, replies, opens, lpId, locked)
 			VALUES('" .$fId. "', '" .$_POST['Ttitle']. "', '1', '" .time(). "', '" .$_SESSION['userID']. "', '" .time(). "', '" .$_SESSION['userID']. "', '1', '0', '" .($postSzam+1). "', '0')"); // Téma hozzáadása
 			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."posts(tId, uId, pTitle, pText, pDate) VALUES ( " .($topicSzam+1). ", '" .$_SESSION["userID"]. "', '" .$_POST["title"]. "', '" .$_POST['post']. "', '" .time(). "')"); // Post hozzáadása
+			
+			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "forum SET lpTopic='" .($topicSzam+1). "', lpId='" .($postSzam+1). "' WHERE id='" .$fId. "'"); // Fórum utolsó post és téma adatok beállítása
 			
 			/* Felhasználó hozzászólásszámának növelése */
 			$sor4 = mysql_fetch_array($sql->Lekerdezes("SELECT postCount FROM " .$cfg['tbprf']."user WHERE id='" .$_SESSION['userID']. "'"), MYSQL_ASSOC); // Felhasználó hozzászólásszáma
@@ -43,7 +46,6 @@
 			print("<div class='messagebox'>Az új témát létrehoztam!<br><a href='viewtopics.php?id=" .$_POST['id']. "'>Vissza a fórumhoz</a></div>"); // Visszatérési link
 			DoFooter();
 			die(); // A többi kód nem fut le!
-			
 		}
 		
 		if ( $sor2 == FALSE )
@@ -57,7 +59,7 @@
 			<textarea rows='20' name='post' cols='70'>" .$_POST['post']. "</textarea></div>
 			<div class='postright'>"); // Bal oldali rész
 			print("<a href='/themes/" .THEME_NAME. "/emoticons.php' onClick=\"window.open('/themes/" .THEME_NAME. "/emoticons.php', 'popupwindow', 'width=192,heigh=600,scrollbars=yes'); return false;\">Hangulatjelek</a>
-			<a href='/includes/help.php?cmd=BB' onClick=\"window.open('includes/help.php?cmd=BB', 'popupwindow', 'scrollbars=yes'); return false;\">BB-kódok</a>"); // Emoticon, BB-kód ablak
+			<a href='/includes/help.php?cmd=BB' onClick=\"window.open('includes/help.php?cmd=BB', 'popupwindow', 'width=960,height=750,scrollbars=yes'); return false;\">BB-kódok</a>"); // Emoticon, BB-kód ablak
 			print("</div>
 			</p>
 			<input type='hidden' name='id' value='" .$fId. "'>
