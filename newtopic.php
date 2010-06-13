@@ -55,19 +55,17 @@
 			print("<form action='" .$_SERVER['PHP_SELF']. "' method='POST'><span class='formHeader'>Új téma beküldése: " .$sor2['name']. "</span>
 			<p class='formText'>Téma neve: <input type='text' name='Ttitle' size='70' value='" .$_POST['Ttitle']. "'></p>
 			<p class='formText'>Témakezdő hozzászólás címe: <input type='text' name='title' size='70' value='" .$_POST['title']. "'></p>
-			<div class='postbox'><p class='formText'>Témakezdő kozzászólás:<br></a>
-			<textarea rows='20' name='post' cols='70'>" .$_POST['post']. "</textarea></div>
-			<div class='postright'>"); // Bal oldali rész
+			<p class='formText'>Témakezdő kozzászólás:
+			<textarea rows='20' name='post' cols='70'>" .$_POST['post']. "</textarea></p>"); // Bal oldali rész
 			print("<a href='/themes/" .THEME_NAME. "/emoticons.php' onClick=\"window.open('/themes/" .THEME_NAME. "/emoticons.php', 'popupwindow', 'width=192,heigh=600,scrollbars=yes'); return false;\">Hangulatjelek</a>
 			<a href='/includes/help.php?cmd=BB' onClick=\"window.open('includes/help.php?cmd=BB', 'popupwindow', 'width=960,height=750,scrollbars=yes'); return false;\">BB-kódok</a>"); // Emoticon, BB-kód ablak
-			print("</div>
-			</p>
+			print("
 			<input type='hidden' name='id' value='" .$fId. "'>
 			<fieldset class='submit-buttons'>
 				<input type='submit' name='submit' value='Téma létrehozása'>
 				<input type='submit' name='preview' value='Előnézet'>
 			</fieldset>
-			</form><br>"); // Hozzászólás beküldési űrlap
+			</form>"); // Hozzászólás beküldési űrlap
 			
 			if ( $_POST['preview'] != $NULL )
 			{

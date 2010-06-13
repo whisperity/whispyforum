@@ -55,13 +55,12 @@
 		print("<a href='viewtopic.php?id=" .$tId. "'><< Vissza a témához</a><form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
 			<span class='formHeader'>Új hozzászólás beküldése: " .$sor2['name']. "</span>
 			<p class='formText'>Cím: <input type='text' name='title' size='70' value='" .$_POST['title']. "'></p>
-			<div class='postbox'><p class='formText'>Hozzászólás:<br></a>
+			<div class='postbox'><p class='formText'>Hozzászólás:<br>
 			<textarea rows='20' name='post' cols='70'>" .$_POST['post']. "</textarea></div>
 			<div class='postright'>"); // Bal oldali rész
 			print("<a href='/themes/" .THEME_NAME. "/emoticons.php' onClick=\"window.open('/themes/" .THEME_NAME. "/emoticons.php', 'popupwindow', 'width=192,heigh=600,scrollbars=yes'); return false;\">Hangulatjelek</a>
 			<a href='/includes/help.php?cmd=BB' onClick=\"window.open('includes/help.php?cmd=BB', 'popupwindow', 'width=960,height=750,scrollbars=yes'); return false;\">BB-kódok</a>"); // Emoticon, BB-kód ablak
 			print("</div>
-			</p>
 			<input type='hidden' name='id' value='" .$tId. "'>
 			<fieldset class='submit-buttons'>
 				<input type='submit' name='submit' value='Hozzászólás elküldése'>
