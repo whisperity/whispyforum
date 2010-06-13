@@ -6,7 +6,25 @@
 /* admin.php
    adminisztrációs vezérlőpanel
 */
-
+ 
+ /* Kiválasztjuk a beérkező paraméterekből a beépítendő modult */
+ global $website; // A függvényen belüli meghívódáshoz szükséges global-lá tenni a változót
+ if ( $_POST['site'] != $NULL )
+ {
+	// Ha POST-tal érkeznek az adatok, a POST site lesz az érték
+	$website = $_POST['site'];
+ } else {
+	// Ha nem post, akkor vagy GET-tel jött az adat, vagy sehogy
+	if ( $_GET['site'] != $NULL )
+	{
+		// Ha gettel érkezik, az lesz az érték
+		$website = $_GET['site'];
+	} else {
+		// Sehogy nem érkezett adat
+		$website = $NULL;
+	}
+ }
+ 
  include('includes/common.php'); // Betöltjük a portálrendszer alapscriptjeit (common.php elvégzi)
  Inicialize('admin.php');
  SetTitle("Adminisztrátori vezérlőpult");
@@ -25,8 +43,9 @@
 	// Menüelem létrehozása
 	// (ha az aktuálisan megnyitott modul a kívánt elem, nem csináljuk linnké, hanem egy pöttyöt (•) teszünk elé
 	//  ha nem, linket készítünk)
+	global $website;
 	
-	if ( $_GET['site'] == $modulnev )
+	if ( $website == $modulnev )
 	{
 		print("<a class='menuItem'>• " .$szoveg. "</a><br>");
 	} else {
@@ -37,7 +56,9 @@
  /* Admin menü linkek */
  print("<div class='menubox'>
 		<span class='menutitle'><a class='menuitem' href='admin.php'>Adminisztrátori vezérlőpult</a></span>
-		");
+		
+		<h3 class='postheader'><p class='header'>Fórum</p></h3>");
+	MenuItem("addforum", "Fórum hozzáadása");
 		
 		print("<h3 class='postheader'><p class='header'>Naplózás</p></h3>");
 	MenuItem("log", "Webhelynapló megtekintése");
@@ -48,7 +69,7 @@
  
  print("</td>
  <td class='center' valign='top'>"); // Bal oldali doboz lezárása, középső doboz nyitása
- switch ( $_GET['site'] ) // A GET-tel érkező SITE paraméter alapján megválogatjuk a beillesztendő weboldalat
+ switch ( $website ) // Az érkező SITE paraméter alapján megválogatjuk a beillesztendő weboldalat
  {
 	case 'log':
 		$admin = TRUE;
@@ -57,6 +78,10 @@
 	case 'installlog':
 		$admin = TRUE;
 		include("admin/installlog.php");
+		break;
+	case 'addforum':
+		$admin = TRUE;
+		include("admin/addforum.php");
 		break;
 	default:
 		print("<center><h2 class='header'>Adminisztrátori vezérlőpult</h2></center>

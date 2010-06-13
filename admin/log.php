@@ -157,16 +157,16 @@ switch (LOG_DEPTH)
 		print("semmi (napló kikapcsolása), lentebb a napló archívuma található");
 		break;
 	case 1:
-		print("közepes (hibaüzentek)");
+		print("alacsony (hibaüzentek)");
 		break;
 	case 2:
-		print("mély (felhasználók)");
+		print("közepes (felhasználók)");
 		break;
 	case 3:
-		print("mélyebb (lapmegtekintések)");
+		print("mély (lapmegtekintések)");
 		break;
 	case 4:
-		print("legmélyebb (SQL-kérések)");
+		print("mélyebb (SQL-kérések)");
 		break;
 }
 print(".<br><br><br>");
