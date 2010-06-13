@@ -21,6 +21,8 @@ function Fejlec()
 
 function Lablec()
 {
+	global $cfg;
+	
 	/* A footer elcsúszást védelem vége */
 	print("</td></tr></table>");
 	
@@ -35,9 +37,7 @@ function Lablec()
 	
 	$genIdo = substr(($current_time - $start_time), 0, 5);
 	
-	print("<a href=''>WhispyFórum " .RELEASE_TYPE. " " .VERSION. " (" .RELEASE_DATE. ")</a>");
-	print("<br>A generálás " .$genIdo. " másodpercig tartott");
-	
+	print("WhispyFórum " .RELEASE_TYPE. " " .VERSION. " • Kiadás dátuma: " .RELEASE_DATE. " • <a href='mailto:" .$cfg['webmaster_email']. "'>" .$cfg['webmaster']. "</a> • Az oldal generálása " .$genIdo. " másodpercig tartott");
 	print("</div>"); // Blokkzárás
 }
 
@@ -66,7 +66,7 @@ function Inicialize ( $pagename )
  print("<link rel='stylesheet' type='text/css' href='themes/" .THEME_NAME. "/style.css'>
 ");
  /* */
-  
+ 
  /* INICIALIZÁLÁS */
  $sql->Connect(); // Csatlakozás az adatbázisszerverhez
  $user->GetUserData(); // Felhasználó adatainak frissítése
