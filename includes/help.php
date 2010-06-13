@@ -83,6 +83,59 @@ Bizonyos BB-kódok mixelhetőek, azonban a weboldalon a BB-kódokat a jelenleg m
 <a href='javascript: self.close()'>Ablak bezárása</a>");
 }
 
+function UrlapHelp()
+{
+	print("<h2>Űrlap</h2>
+	
+	<b><span class='star'>Az űrlapkezelő még nem képezi a weboldal szerves részét</span></b> (értsd: nincsen a magkódba töltve), <b><span class='star'>ezért az űrlapmodul használatához külön be kell tölteni az <i>/includes/forms.php</i> fájlt, valamint a globális \$forms változót</span></b> (mely az osztályt kezeli).
+	
+	<br><br>Az osztály segítségével egyszerűbben lehet űrlapokat létrehozni. Az oszály függvényei:<br><br><b>StartForm ( [\$method = GET], [\$action = self], [\$header = ''])</b><br>
+<b>[\$method]</b> [GET] - az űrlap elküldésének metódusa:<ul><li><b>GET</b> - HTTP GET</li><li><b>POST</b> - HTTP POST</li><li><b>NO</b> - nincs elküldés</li></ul>
+<b>[\$action]</b> [self] - az űrlap célja<ul><li><b>self</b> - automatikus átállás a <b>\$_SERVER['PHP_SELF']</b> értékére</li><li><i>egyéb esetben</i> a megadott weboldal</li></ul>
+<b>[\$header]</b> [''] - az űrlap fejléce<hr>");
+	print("<b>Urlapelem ( \$tipus, \$nev, \$ertek, \$size = 25, [\$szoveg = ''], [\$kotelezo = FALSE], [\$aHeader = ''], [\$aText = ''])</b><br>
+<b>\$tipus</b> - az űrlapmező típusa<ul><li><b>text</b> - szövegmező</li><li><b>password</b> - jelszómező</li><li><b>hidden</b> - rejtett mező (vizuálisan nem változtatható az értéke, a kód adja meg)</li><li><b>select</b> - választólista létrehozása</li><li><b>option</b> - a létrehozott listához új opció hozzáadása</li><li><b>select-end</b> - létrehozott választási lista lezárása</li><li><b>submit</b> - elküldőgomb</li></ul>
+<b>\$nev</b> - az űrlapmező neve<br>
+<b>\$ertek</b> - az űrlapmező értéke<blockquote>Ha az űrlapmezőnek tartalmaznia kell a benne előzőleg megadott értéket (pl. egy nem kitöltött kötelező mező esetén, a felhasználót megkíméleni az újra beírogatástól), akkor értéknek <b><code>post-get</code></b> -et kell megadni</blockquote>
+<b>[\$size]</b> [25] - az űrlapmező hossza<blockquote>Csak <b><code>\$tipus = 'text'</code></b> és <b><code>\$tipus = 'password'</code></b> esetén</blockquote>
+<b>[\$szoveg]</b> - az űrlapmező előtt megjelenítendő szöveg<br>
+<b>[\$kotelezo]</b> [FALSE]<ul><li><b>TRUE</b> - A kötelezőséget megjelenítő csillag és a csillagra ráhúzott egérnél megjelenő doboz megjelenítése</li><li><b>FALSE</b> - a mező nem kötelező, a csillag nem jelenik meg</ul>
+<b>[\$aHeader]</b> és <b>[\$aText]</b><blockquote>Ha szeretnénk megjeleníteni egy <sup>?</sup>-ra ráhúzott egér melett egy kis információs dobozt a beviteli mezőnél, a két paraméternek értéket kell adni (<i>\$aHeader</i> a címsor, <i>\$aText</i> a megjelenítendő szöveg). A funkció csak akkor hatásos, ha <b>\$szoveg</b> is kapott értéket!</blockquote><hr>");
+	print("<b>EndForm ()</b> <blockquote>Az űrlap zárása</blockquote><hr>");
+	print("Például: a következő pár sor:<br><br>");
+?>
+<code>
+	$forms->StartForm("GET", "self", "Űrlap");<br>
+	$forms->UrlapElem("text", "fnev", "post-get", 25, "Felhasználói név", TRUE, "Felhasználói név", "Ez lesz később a bejelentkezési neved");<br>
+	$forms->UrlapElem("password", "fpass", "post-get", 25, "Jelszó", TRUE, "Jelszavad", "A jelszó szükséges a belépéshez<br><b>A jelszavadat őrizd biztonságos helyen, rajtad kívül ne tudja senki</b>");<br>
+	$forms->UrlapElem("hidden", "cmd", "Urlap");<br>
+	$forms->UrlapElem("select", "szelekt", "", 1, "Választás", FALSE, "Válassz valamit", "Haha:)");<br>
+	$forms->UrlapElem("option", "Lehetőség 1", "l1");<br>
+	$forms->UrlapElem("option", "Lehetőség 2", "l2");<br>
+	$forms->UrlapElem("select-end", "", "");<br>
+	$forms->UrlapElem("submit", "submit", "Elküldés", 10, "Az űrlap elküldése", FALSE, "Elküldés", "A gombra kattintva elküldheted az űrlapot");<br>
+	$forms->EndForm();<br>
+</code>
+<?php
+	print("<br>a következő űrlapot hozza létre:<br>");
+	
+	@include('forms.php'); // Modul betöltéseű
+	@include('../config.php'); // Konfigurációs fájl (THEME_NAME-hez szükséges)
+	print("<link rel='stylesheet' type='text/css' href='../themes/" .THEME_NAME. "/style.css'>"); // Téma betöltése
+	global $forms; // Osztály betöltése
+	
+	$forms->StartForm("GET", "self", "Űrlap");
+	$forms->UrlapElem("text", "fnev", "post-get", 25, "Felhasználói név", TRUE, "Felhasználói név", "Ez lesz később a bejelentkezési neved");
+	$forms->UrlapElem("password", "fpass", "post-get", 25, "Jelszó", TRUE, "Jelszavad", "A jelszó szükséges a belépéshez<br><b>A jelszavadat őrizd biztonságos helyen, rajtad kívül ne tudja senki</b>");
+	$forms->UrlapElem("hidden", "cmd", "Urlap");
+	$forms->UrlapElem("select", "szelekt", "", 1, "Választás", FALSE, "Válassz valamit", "Haha:)");
+	$forms->UrlapElem("option", "Lehetőség 1", "l1");
+	$forms->UrlapElem("option", "Lehetőség 2", "l2");
+	$forms->UrlapElem("select-end", "", "");
+	$forms->UrlapElem("submit", "submit", "Elküldés", 10, "Az űrlap elküldése", FALSE, "Elküldés", "A gombra kattintva elküldheted az űrlapot");
+	$forms->EndForm();
+}
+
 switch ($_GET['cmd'])
 {
 	case "Update":
@@ -90,6 +143,74 @@ switch ($_GET['cmd'])
 		break;
 	case "BB":
 		BBCodeHelp();
+		break;
+	case "Hibauzenet":
+		HibauzenetHelp();
+		break;
+	case "Datum":
+		DatumHelp();
+		break;
+	case "Urlap":
+		UrlapHelp();
+		break;
+	case "adminTools":
+		/* Választási űrlap létrehozása */
+		@include('forms.php'); // Modul betöltéseű
+		@include('../config.php'); // Konfigurációs fájl (THEME_NAME-hez szükséges)
+		print("<link rel='stylesheet' type='text/css' href='../themes/" .THEME_NAME. "/style.css'>"); // Téma betöltése
+		global $forms; // Osztály betöltése
+		
+		$forms->StartForm("GET", "self", "Kérlek válassz, melyik adminisztrátori eszközről szeretnél információt kapni");
+		$forms->UrlapElem("select", "cmd", "", 1, "Kérlek válassz a lenyíló listából adminisztrátori eszközt", TRUE, "Súgólehetőségek", "Válassz a lenyíló listából, hogy a kívánt súgó oldalára juss");
+		$forms->UrlapElem("option", "A portálrendszer frissítése", "Update");
+		$forms->UrlapElem("option", "", "adminTools");
+		$forms->UrlapElem("option", "<< Vissza a főmenübe", $NULL);
+		$forms->UrlapElem("select-end", "", "");
+		$forms->UrlapElem("submit", "submit", "Elküldés");
+		$forms->EndForm();
+		
+		break;
+	case "DeveloperTools":
+		/* Választási űrlap létrehozása */
+		@include('forms.php'); // Modul betöltéseű
+		@include('../config.php'); // Konfigurációs fájl (THEME_NAME-hez szükséges)
+		print("<link rel='stylesheet' type='text/css' href='../themes/" .THEME_NAME. "/style.css'>"); // Téma betöltése
+		global $forms; // Osztály betöltése
+		
+		$forms->StartForm("GET", "self", "Kérlek válassz, melyik fejlesztői eszközről szeretnél információt kapni");
+		$forms->UrlapElem("select", "cmd", "", 1, "Kérlek válassz a lenyíló listából fejlesztői eszközt", TRUE, "Súgólehetőségek", "Válassz a lenyíló listából, hogy a kívánt súgó oldalára juss");
+		$forms->UrlapElem("option", "Hibaüzenet funkció", "Hibauzenet");
+		$forms->UrlapElem("option", "Dátum funkció", "Datum");
+		$forms->UrlapElem("option", "Űrlapgenerálási osztály", "Urlap");
+		$forms->UrlapElem("option", "", "DeveloperTools");
+		$forms->UrlapElem("option", "<< Vissza a főmenübe", $NULL);
+		$forms->UrlapElem("select-end", "", "");
+		$forms->UrlapElem("submit", "submit", "Elküldés");
+		$forms->EndForm();
+		
+		break;
+	default:
+		/* Választási űrlap létrehozása */
+		@include('forms.php'); // Modul betöltéseű
+		@include('../config.php'); // Konfigurációs fájl (THEME_NAME-hez szükséges)
+		print("<link rel='stylesheet' type='text/css' href='../themes/" .THEME_NAME. "/style.css'>"); // Téma betöltése
+		global $forms; // Osztály betöltése
+		
+		$forms->StartForm("GET", "self", "Kérlek válassz, miről szeretnél információt kapni");
+		$forms->UrlapElem("select", "cmd", "", 1, "Kérlek válassz a lenyíló listából", TRUE, "Súgólehetőségek", "Válassz a lenyíló listából, hogy a kívánt súgó oldalára juss");
+		$forms->UrlapElem("option", "BB-kódok", "BB");
+		$forms->UrlapElem("option", "", $NULL);
+		$forms->UrlapElem("option", "[Adminisztrátori eszközök]", "adminTools");
+		$forms->UrlapElem("option", "A portálrendszer frissítése", "Update");
+		$forms->UrlapElem("option", "", $NULL);
+		$forms->UrlapElem("option", "[Fejlesztőknek]", "DeveloperTools");
+		$forms->UrlapElem("option", "Hibaüzenet funkció", "Hibauzenet");
+		$forms->UrlapElem("option", "Dátum funkció", "Datum");
+		$forms->UrlapElem("option", "Űrlapgenerálási osztály", "Urlap");
+		$forms->UrlapElem("select-end", "", "");
+		$forms->UrlapElem("submit", "submit", "Elküldés");
+		$forms->EndForm();
+		
 		break;
 }
 
