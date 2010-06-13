@@ -166,7 +166,7 @@ switch ($_GET['cmd'])
 		$forms->UrlapElem("option", "", "adminTools");
 		$forms->UrlapElem("option", "<< Vissza a főmenübe", $NULL);
 		$forms->UrlapElem("select-end", "", "");
-		$forms->UrlapElem("submit", "submit", "Elküldés");
+		$forms->UrlapElem("submit", "submit", "Tovább >> (Választás megerősítése)");
 		$forms->EndForm();
 		
 		break;
@@ -185,7 +185,7 @@ switch ($_GET['cmd'])
 		$forms->UrlapElem("option", "", "DeveloperTools");
 		$forms->UrlapElem("option", "<< Vissza a főmenübe", $NULL);
 		$forms->UrlapElem("select-end", "", "");
-		$forms->UrlapElem("submit", "submit", "Elküldés");
+		$forms->UrlapElem("submit", "submit", "Tovább >> (Választás megerősítése)");
 		$forms->EndForm();
 		
 		break;
@@ -208,7 +208,7 @@ switch ($_GET['cmd'])
 		$forms->UrlapElem("option", "Dátum funkció", "Datum");
 		$forms->UrlapElem("option", "Űrlapgenerálási osztály", "Urlap");
 		$forms->UrlapElem("select-end", "", "");
-		$forms->UrlapElem("submit", "submit", "Elküldés");
+		$forms->UrlapElem("submit", "submit", "Tovább >> (Választás megerősítése)");
 		$forms->EndForm();
 		
 		break;

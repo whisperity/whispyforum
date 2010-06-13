@@ -64,7 +64,8 @@
 	MenuItem("log", "Webhelynapló megtekintése");
 	MenuItem("installlog", "Telepítési napló megtekintése");
 	print("
-	<br><a class='menuItem' href='index.php'>Visszatérés a kezdőlapra</a>
+	<br><a class='menuItem' href='includes/help.php' onClick=\"window.open('includes/help.php?cmd=adminTools', 'popupwindow', 'width=800,height=600,resize=no,scrollbars=yes'); return false;\">Súgó megjelenítése</a><br>
+		<a class='menuItem' href='index.php'>Visszatérés a kezdőlapra</a>
 		</div>");
  
  print("</td>

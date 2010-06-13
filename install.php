@@ -32,7 +32,8 @@
  if ( file_exists('install.lock') )
  {	
 	print("A portálrendszer már telepítve van. Kérlek töröld az <i>install.lock</i> fájlt a rendszerből");
-	file_put_contents('logs/install.log', "Telepítés megkezdve: " .Datum("normal","nagybetu","dL","H","i","s"). " ( " .time(). " )");
+	file_put_contents('logs/install.log', "\r\n\r\n\r\n", FILE_APPEND);
+	file_put_contents('logs/install.log', "Telepítés megkezdve: " .Datum("normal","nagybetu","dL","H","i","s"). " ( " .time(). " )", FILE_APPEND);
 	Naplo("A portálrendszer már telepítve van, kérlek töröld az install.lock fájlt!");
 	die();
  }
@@ -92,10 +93,10 @@
 			Regisztráció engedélyezése: <input type='radio' value='0' name='ALLOW_REGISTRATION'>Nem <input type='radio' name='ALLOW_REGISTRATION' value='1' checked>Igen<br>
 			Napló mélysége<a class='feature-extra'><span class='hover'><span class='h3'>Naplómélység</span>A listában lefelé görgetve mélyebbre jut, minden szint tartalmazza a felette lévő szintek összes elemét.</span><sup>?</sup></a>: <select size='1' name='LOG_DEPTH'>
 				<option value='0'>semmi (napló kikapcsolása)</option>
-				<option value='1'>közepes (hibaüzenetek)</option>
-				<option value='2'>mély (felhasználók)</option>
-				<option value='3'>mélyebb (lapmegtekintések)</option>
-				<option value='4'>legmélyebb (SQL-kérések)</option>
+				<option value='1'>alacsony (hibaüzenetek)</option>
+				<option value='2'>közepes (felhasználók)</option>
+				<option value='3'>mély (lapmegtekintések)</option>
+				<option value='4'>mélyebb (SQL-kérések)</option>
 				</select><br>
 			
 			<input type='submit' value='Tovább >> (Konfigurációs fájl létrehozása)'>
