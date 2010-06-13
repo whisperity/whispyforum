@@ -40,7 +40,7 @@ if ( $_GET['cmd'] != $NULL )
 			
 			foreach ($sorok as &$sor) {
 				$tagok = explode(',', $sor);
-				$szoveg .= "    " .Datum("normal", "nagybetu", "dL", "H", "i", "s", $tagok[0]);
+				$szoveg .= "    " .@Datum("normal", "nagybetu", "dL", "H", "i", "s", $tagok[0]);
 				$szoveg .= "                 ";
 				
 				switch ($tagok[1])
@@ -215,7 +215,7 @@ foreach ($sorok as &$ertek) { // Soronkénti értelmezés
 	
 	print("<tr>"); // Új táblázatsor
 	print("<td>" .$sId. "</td>"); // Eseményazonosító (sor száma)
-	print("<td>" .Datum("normal", "m", "dL", "H", "i", "s", $sor[0]). "</td>"); // Időpont
+	print("<td>" .@Datum("normal", "m", "dL", "H", "i", "s", $sor[0]). "</td>"); // Időpont
 	
 	switch ($sor[1]) { // Típus alapján szelektálunk
 		case "LOG_CREATE":
