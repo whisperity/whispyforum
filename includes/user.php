@@ -162,6 +162,7 @@ class session // Munkamenet (session) kezelő osztály
 		$_SESSION['realName'] = "";
 		$_SESSION['postCount'] = 0;
 		$_SESSION['regDate'] = 0;
+		$_SESSION['userID'] = 0;
 		
 		session_destroy();
 	}

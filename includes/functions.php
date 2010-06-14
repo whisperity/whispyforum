@@ -125,16 +125,6 @@ function Datum( $ev, $honap, $nap, $ora, $perc, $masodperc, $epoch = '' ) // A m
 	return $visszater; // A függvény visszaküldi az egymás mellé rakott értékeket
 }
 
-function Ido ( $tipus = 1 ) // Idő visszaadása
-{
-	switch ($tipus) {
-		case 1:
-			return date('H:i:s');
-		case 2:
-			return date('H:i');
-	}
-}
-
 /* Meghajtó tárterület */
  function DecodeSize( $bytes ) // Fájlméret dekódolása emberileg értelmezhető formátumba
  {
@@ -155,7 +145,6 @@ function Ido ( $tipus = 1 ) // Idő visszaadása
  
  function HasznaltTerulet($drive)
  {
-    $HasznaltTErtek = d;
     return DecodeSize(disk_total_space($drive) - disk_free_space($drive));
  }
  
@@ -233,7 +222,7 @@ function Ido ( $tipus = 1 ) // Idő visszaadása
 	return htmlspecialchars($HTMLText, ENT_QUOTES, 'UTF-8');
  }
  
- function EmoticonParse ( $emotText) // Hangulatjelek értelmezése
+ function EmoticonParse ( $emotText ) // Hangulatjelek értelmezése
  {
 	// A funkció segítségével a szövetként tárolt hangulatjeleket ( :P ) képként tudjuk megjeleníteni
 	
