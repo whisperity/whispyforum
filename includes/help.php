@@ -103,7 +103,7 @@ function FunctionsHelp()
 	<table border='1' cellspacing='1' cellpadding='1'>
 	<tr>
 		<td></td>
-		<th>Változók</th>
+		<th>Paraméterek</th>
 		<th>Visszatérési érték</th>
 	</tr>
 	<tr>
@@ -165,6 +165,11 @@ function FunctionsHelp()
 			</table>
 		</td>
 		<td><b>Nincs</b><br>A funckió a <tt>print()</tt> parancs használatával a képernyőre írja az meghajtó <tt>UresTerulet()</tt>, <tt>TeljesTerulet()</tt> és <tt>HasznaltTerulet()</tt> adatait.</td>
+	</tr>
+	<tr>
+		<th>OsszTerulet</th>
+		<td></td>
+		<td><b>Nincs</b><br>Direkt <tt>print()</tt>-tel kiíródik minden, a gépen lévő meghajtó területértéke</td>
 	</tr>
 	</table>");
 	

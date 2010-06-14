@@ -158,6 +158,22 @@ function Datum( $ev, $honap, $nap, $ora, $perc, $masodperc, $epoch = '' ) // A m
 		print("<h3>A meghajtó " .$drive. " nem érhető el.</h3>");
 	}
  }
+ 
+ function OsszTerulet() // Minden meghajtó területének listázása (automatikusan eléri őket)
+ {
+  for ($i = 67; $i <= 90; $i++)
+    {
+        $drive = chr($i);
+        if (is_dir($drive.':'))
+        {
+            $freespace             = disk_free_space($drive.':');
+            $total_space         = disk_total_space($drive.':');
+			$used_space			 = $total_space - $freespace;
+            $percentage_free     = $freespace ? @round($freespace / $total_space, 2) * 100 : 0;
+            echo $drive.': '.DecodeSize($freespace).' / '.DecodeSize($total_space).' (' .DecodeSize($used_space). ') ['.$percentage_free.'%]<br />';
+        }
+    }
+ }
  /* Meghajtó tárterület kódok vége */
  
  function Hibauzenet( $tipus = 'WARNING', $cim = '', $uzenet = '', $fajl = __FILE__ , $sor = __LINE__ ) // Hibaüzenet generátor
