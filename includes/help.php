@@ -8,9 +8,16 @@
 */ 
  
  @include("functions.php");
+ @include('forms.php'); // Modul betöltéseű
+ @include('../config.php'); // Konfigurációs fájl (THEME_NAME-hez szükséges)
+ print("<link rel='stylesheet' type='text/css' href='../themes/" .THEME_NAME. "/style.css'>"); // Téma betöltése
+ global $forms; // Osztály betöltése
  
-function DatumHelp()
- {
+function FunctionsHelp()
+{
+	print("<h2>Az alábbi részben a portálrendszer egyéb funkcióiról kapsz segítséget. Használatukhoz szükséges, hogy a fájl a portálrendszer keretében fusson</h2>");
+	
+	
 	print("<h2>Dátum</h2><br>A függvény használata: <b>Datum(év,hónap,nap,ora,perc,masodperc,[epoch])</b><br>Év:<ul><li><b>normal</b> - normál megjelenítés (Y, pl. " .Datum("normal","","","","",""). ")</li></ul>");
 	print("Hónap:<ul><li><b>n</b> - hónap száma (0-k nélkül, pl: " .Datum("","n","","","",""). ")</li><li><b>m</b> - hónap száma (nullákkal, pl: " .Datum("","m","","","",""). ")</li><li><b>kisbetu</b> - hónap neve kisbetűvel (pl: " .Datum("","kisbetu","","","",""). ")</li><li><b>nagybetu</b> - hónap neve nagybetűvel (pl. " .Datum("","nagybetu","","","",""). ")</li></ul>");
 	print("Nap:<ul><li><b>d</b> - nap száma vezető nullákkal (pl: " .Datum("","","d","","",""). ")</li><li><b>j</b> - nap száma vezetőnullák nélkül (pl: " .Datum("","","j","","",""). ")</li><li><b>l</b> - a nap neve kisbetűvel (pl: " .Datum("","","l","","",""). ")</li><li><b>L</b> - a nap neve nagybetűvel (pl: " .Datum("","","L","","",""). ")</li><li><b>dl</b> - a nap száma és neve kisbetűvel (pl: " .Datum("","","dl","","",""). ")</li><li><b>dL</b> - a nap száma és neve nagybetűvel (pl: " .Datum("","","dL","","",""). ")</li></ul>");
@@ -19,14 +26,148 @@ function DatumHelp()
 	print("Másodperc:<ul><li><b>s</b> - másodperc (vezető nullákkal, pl: " .Datum("","","","","","s"). ")</li></ul>");
 	print("[Epoch]:<ul><li>A kívánt dátum unix-epoch óta eltelt másodpercben<br>Megadásával egy kívánt időpont kérhető le, megadása nem kötelező, alapesetben a meghíváskori epoch-időt (<code>time();</code>) veszi alapul</li></ul>");
 	print('Az értétek STRING típusúak!<br>Például, hogy ezt a dátumot kapjuk: <i>' .Datum('normal','kisbetu','dL', 'H', 'i', 's'). '</i> , a következőt kell beírni: <b>Datum("normal","kisbetu","dL","H","i","s")</b>');
- }
- 
-function HibauzenetHelp()
-{
+	
+	print("<hr>");
+	
 	print("<h2>Hibaüzenet</h2><br>A függvény használata: <b>Hibauzenet(tipus, cim, leiras, fajl, sor)</b><br>Típus:<ul><li><b>WARNING</b> - figyelmeztetés (sárga felkiáltójel háromszögben</li><li><b>ERROR</b> - hiba (piros körben fehér X)</li><li><b>CRITICAL</b> - hiba, scriptmegszakítással (<i>exit;</i>, piros körben fehér X)</li></ul>");
 	print("Cim: a hiba címsorában megjelenő szöveg<br>Leiras: a hiba leírása (részletes szöveg)<br><b>fajl</b> a megszakítást okozó fájl neve (egyszerűen postolhatod a fájl nevét a <b>__FILE__</b> beírásával)<br><b>sor</b> a megszakítást okozó fájlban lévő sor száma (egyszerűen postolhatod a sort a <b>__LINE__</b> beírásával");
-	print('A következő beírásával: <b>Hibauzenet("CRITICAL", "Próba", "Csak meghalok!", __FILE__, __LINE__)</b> beírásával a következő hibaüzenet kapod:');
-	Hibauzenet("CRITICAL", "Próba", "Csak meghalok!", __FILE__, __LINE__);
+	print('A következő beírásával: <b>Hibauzenet("ERROR", "Próba", "Hibaüzenet!")</b> beírásával a következő hibaüzenet kapod:');
+	Hibauzenet("ERROR", "Próba", "Hibaüzenet!");
+	
+	print("<hr>");
+	
+	print("<h2>BB-kód és emoticon értelmezések</h2><br>A függvények használati sorrendje:<br>");
+?>
+<code>
+	<i>//$szoveg az átalakítani kívánt szöveg nyers tartalma</i><br>
+	$szoveg = EmoticonParse($szoveg); // Hangulatjelek átalakítása [img]kép[/img]-s BB-kóddá<br>
+	$szoveg = HTMLDestroy($szoveg); // HTML kódok átalakítása látható, de működésképtelen szöveggé<br>
+	$szoveg = BBDecode($szoveg); // BB kódok átalakítása HTML-kóddá (hangulatjeleket képpé)<br>
+	<i>//$szoveg mostmár az átalakult szöveget tartalmazza</i>
+</code>
+<?php
+	print("<br>A három function <b>megadott sorrendű</b> egymásutáni használatával az adatbázisban BB-kódként tárolt szöveget (pl. fórum) láthatóvá tesszük, HTML tagekké alakítva megjelenítjük.<br><br>
+	<table border='1' cellspacing='1' cellpadding='1'>
+	<tr>
+		<td></td>
+		<th>Változók</th>
+		<th>Visszatérési érték</th>
+	</tr>
+	<tr>
+		<th>EmoticonParse</th>
+		<td>
+			<table border='0' cellspacing='1' cellpadding='2.5'>
+			<tr>
+				<th>\$emotText</th>
+				<td>A bemeneti BB-kódolt szöveg</td>
+			</tr>
+			</table>
+		</td>
+		<td>A bemenő szöveg hangulatjelei <code>[img]képlink[/img]</code> formátumban</td>
+	</tr>
+	<tr>
+		<th>HTMLDestroy</th>
+		<td>
+			<table border='0' cellspacing='1' cellpadding='2.5'>
+			<tr>
+				<th>\$HTMLText</th>
+				<td>A bemeneti szöveg, tele HTML kódokkal</td>
+			</tr>
+			</table>
+		</td>
+		<td>A bemenő szöveg HTML-kódok eltüntetve a <tt>htmlspecialchars()</tt> segítségével</td>
+	</tr>
+	<tr>
+		<th>BBDecode</th>
+		<td>
+			<table border='0' cellspacing='1' cellpadding='2.5'>
+			<tr>
+				<th>\$BBText</th>
+				<td>A bemeneti szöveg, tele BB kódokkal</td>
+			</tr>
+			</table>
+		</td>
+		<td>A bemenő szöveg BB kódjai értelmezve</td>
+		<td><a href='help.php?cmd=BB' onClick=\"window.open('help.php?cmd=BB', 'popupwindow', 'width=960,height=750,scrollbars=yes'); return false;\">BB-kódok</a></td>
+	</tr>
+	</table>");
+	
+	print("<hr>");
+	
+	print("<h2>Naplóba írás</h2><br>A függvény használata: <b>WriteLog(\$micsoda, \$mit)</b><br>A függvény a szükséges naplómélység ellenőrzése után a megadott eseményt a naplóba vési.<br><br><b>\$micsoda</b>: A naplóba írandó esemény típusa<br><b>\$mit</b>: A beírandó esemény paraméterei (a paramétereket <tt>,</tt>-vel (vessző) kell elválasztani)");
+	
+	print("<hr>");
+	
+	print("<h2>Meghajtó tárterület</h2><br><b>A függvények használaton kívül szerepelnek a kódbázisban!</b><br>");
+	print("<br>A függvények segítségével megtekinthetjük a megadott meghajtó tárterületét<br><br>
+	<table border='1' cellspacing='1' cellpadding='1'>
+	<tr>
+		<td></td>
+		<th>Változók</th>
+		<th>Visszatérési érték</th>
+	</tr>
+	<tr>
+		<th>DecodeSize</th>
+		<td>
+			<table border='0' cellspacing='1' cellpadding='2.5'>
+			<tr>
+				<th>\$bytes</th>
+				<td>Az átváltani kívánt méret bájtban</td>
+			</tr>
+			</table>
+		</td>
+		<td>A megadott méret átváltva KB, MB, GB, TB-ra</td>
+	</tr>
+	<tr>
+		<th>UresTerulet</th>
+		<td>
+			<table border='0' cellspacing='1' cellpadding='2.5'>
+			<tr>
+				<th>\$drive</th>
+				<td>A választott meghajtó betűjele</td>
+			</tr>
+			</table>
+		</td>
+		<td>A megadott meghajtó üres területe a <tt>DecodeSize()</tt> használatával</td>
+	</tr>
+	<tr>
+		<th>TeljesTerulet</th>
+		<td>
+			<table border='0' cellspacing='1' cellpadding='2.5'>
+			<tr>
+				<th>\$drive</th>
+				<td>A választott meghajtó betűjele</td>
+			</tr>
+			</table>
+		</td>
+		<td>A megadott meghajtó teljes tárterülete a <tt>DecodeSize()</tt> használatával</td>
+	</tr>
+	<tr>
+		<th>HasznaltTerulet</th>
+		<td>
+			<table border='0' cellspacing='1' cellpadding='2.5'>
+			<tr>
+				<th>\$drive</th>
+				<td>A választott meghajtó betűjele</td>
+			</tr>
+			</table>
+		</td>
+		<td>A megadott meghajtó felhasznált (foglalt) tárterülete a <tt>DecodeSize()</tt> használatával</td>
+	</tr>
+	<tr>
+		<th>Terulet</th>
+		<td>
+			<table border='0' cellspacing='1' cellpadding='2.5'>
+			<tr>
+				<th>\$drive</th>
+				<td>A választott meghajtó betűjele</td>
+			</tr>
+			</table>
+		</td>
+		<td><b>Nincs</b><br>A funckió a <tt>print()</tt> parancs használatával a képernyőre írja az meghajtó <tt>UresTerulet()</tt>, <tt>TeljesTerulet()</tt> és <tt>HasznaltTerulet()</tt> adatait.</td>
+	</tr>
+	</table>");
+	
 }
 
 function UpdateHelp()
@@ -118,12 +259,7 @@ function UrlapHelp()
 </code>
 <?php
 	print("<br>a következő űrlapot hozza létre:<br>");
-	
-	@include('forms.php'); // Modul betöltéseű
-	@include('../config.php'); // Konfigurációs fájl (THEME_NAME-hez szükséges)
-	print("<link rel='stylesheet' type='text/css' href='../themes/" .THEME_NAME. "/style.css'>"); // Téma betöltése
-	global $forms; // Osztály betöltése
-	
+
 	$forms->StartForm("GET", "self", "Űrlap");
 	$forms->UrlapElem("text", "fnev", "post-get", 25, "Felhasználói név", TRUE, "Felhasználói név", "Ez lesz később a bejelentkezési neved");
 	$forms->UrlapElem("password", "fpass", "post-get", 25, "Jelszó", TRUE, "Jelszavad", "A jelszó szükséges a belépéshez<br><b>A jelszavadat őrizd biztonságos helyen, rajtad kívül ne tudja senki</b>");
@@ -136,6 +272,23 @@ function UrlapHelp()
 	$forms->EndForm();
 }
 
+function SQLHelp()
+{
+	print("<h2>MySQL-kezelés (\$sql)</h2>
+	Az osztály kezeli a MYSQL adatbázist.<br>Az oszály függvényei:<br><br><b>Connect ()</b><br>Kapcsolódás az adatbázisszerverhez<br><pre>Megjegyzés:<br>Az kapcsolódáshoz a <i>config.php</i>-ban megadott adatokat használjuk fel</pre><hr>
+	<b>Disconnect()</b><br>Kapcsolat zárása a szerverrel<br><hr>");
+	print("<b>Lekerdezes ( \$lekerd, [\$tipus = 'NORMAL'])</b><br>
+	<b>\$lekerd</b>: a mysql lekérdezés
+	<br><b>\$tipus</b> ['NORMAL'] - a lekérdezés típusa<ul><li><b>NORMAL</b> - szabványos lekérdezés</li><li><b>INSTALL</b> - telepítéssel kapcsolatos lekérdezés (<i>install.php</i> esetén)</li></ul>
+	<br>Visszatérő érték: a lekérdezés eredménye a <tt>mysql_query(\$lekerd);</tt> használatával");
+}
+
+/* function UserSessionHelp()
+{
+	print("<h2>Felhasználó (\$user) és munkamenetkezelés (<abbr title='Nem összetévesztendő az \$_SESSION szuperglobállal'>\$session</abbr>)</h2>
+	Az osztály segítségével kezelhetünk felhasználói adatokat és munkameneteket.<br>Az osztály függvényei:<br><br><b>func ()</b><br>funcdesc<br><pre>Megjegyzés:<br>funcnote</pre><hr>");
+} */
+
 switch ($_GET['cmd'])
 {
 	case "Update":
@@ -144,21 +297,20 @@ switch ($_GET['cmd'])
 	case "BB":
 		BBCodeHelp();
 		break;
-	case "Hibauzenet":
-		HibauzenetHelp();
-		break;
-	case "Datum":
-		DatumHelp();
+	case "Functions":
+		FunctionsHelp();
 		break;
 	case "Urlap":
 		UrlapHelp();
 		break;
+	case "SQL":
+		SQLHelp();
+		break;
+	//case "UserSession":
+		//UserSessionHelp();
+		//break;
 	case "adminTools":
 		/* Választási űrlap létrehozása */
-		@include('forms.php'); // Modul betöltéseű
-		@include('../config.php'); // Konfigurációs fájl (THEME_NAME-hez szükséges)
-		print("<link rel='stylesheet' type='text/css' href='../themes/" .THEME_NAME. "/style.css'>"); // Téma betöltése
-		global $forms; // Osztály betöltése
 		
 		$forms->StartForm("GET", "self", "Kérlek válassz, melyik adminisztrátori eszközről szeretnél információt kapni");
 		$forms->UrlapElem("select", "cmd", "", 1, "Kérlek válassz a lenyíló listából adminisztrátori eszközt", TRUE, "Súgólehetőségek", "Válassz a lenyíló listából, hogy a kívánt súgó oldalára juss");
@@ -172,16 +324,13 @@ switch ($_GET['cmd'])
 		break;
 	case "DeveloperTools":
 		/* Választási űrlap létrehozása */
-		@include('forms.php'); // Modul betöltéseű
-		@include('../config.php'); // Konfigurációs fájl (THEME_NAME-hez szükséges)
-		print("<link rel='stylesheet' type='text/css' href='../themes/" .THEME_NAME. "/style.css'>"); // Téma betöltése
-		global $forms; // Osztály betöltése
 		
 		$forms->StartForm("GET", "self", "Kérlek válassz, melyik fejlesztői eszközről szeretnél információt kapni");
 		$forms->UrlapElem("select", "cmd", "", 1, "Kérlek válassz a lenyíló listából fejlesztői eszközt", TRUE, "Súgólehetőségek", "Válassz a lenyíló listából, hogy a kívánt súgó oldalára juss");
-		$forms->UrlapElem("option", "Hibaüzenet funkció", "Hibauzenet");
-		$forms->UrlapElem("option", "Dátum funkció", "Datum");
+		$forms->UrlapElem("option", "Funkciók", "Functions");
 		$forms->UrlapElem("option", "Űrlapgenerálási osztály", "Urlap");
+		$forms->UrlapElem("option", "MySQL-kezelő osztály", "SQL");
+		//$forms->UrlapElem("option", "Felhasználó és munkamenetkezelés", "UserSession");
 		$forms->UrlapElem("option", "", "DeveloperTools");
 		$forms->UrlapElem("option", "<< Vissza a főmenübe", $NULL);
 		$forms->UrlapElem("select-end", "", "");
@@ -191,27 +340,16 @@ switch ($_GET['cmd'])
 		break;
 	default:
 		/* Választási űrlap létrehozása */
-		@include('forms.php'); // Modul betöltéseű
-		@include('../config.php'); // Konfigurációs fájl (THEME_NAME-hez szükséges)
-		print("<link rel='stylesheet' type='text/css' href='../themes/" .THEME_NAME. "/style.css'>"); // Téma betöltése
-		global $forms; // Osztály betöltése
-		
+
 		$forms->StartForm("GET", "self", "Kérlek válassz, miről szeretnél információt kapni");
 		$forms->UrlapElem("select", "cmd", "", 1, "Kérlek válassz a lenyíló listából", TRUE, "Súgólehetőségek", "Válassz a lenyíló listából, hogy a kívánt súgó oldalára juss");
 		$forms->UrlapElem("option", "BB-kódok", "BB");
-		$forms->UrlapElem("option", "", $NULL);
-		$forms->UrlapElem("option", "[Adminisztrátori eszközök]", "adminTools");
-		$forms->UrlapElem("option", "A portálrendszer frissítése", "Update");
-		$forms->UrlapElem("option", "", $NULL);
-		$forms->UrlapElem("option", "[Fejlesztőknek]", "DeveloperTools");
-		$forms->UrlapElem("option", "Hibaüzenet funkció", "Hibauzenet");
-		$forms->UrlapElem("option", "Dátum funkció", "Datum");
-		$forms->UrlapElem("option", "Űrlapgenerálási osztály", "Urlap");
+		$forms->UrlapElem("option", "Adminisztrátori eszközök >>", "adminTools");
+		$forms->UrlapElem("option", "Fejlesztői segítségnyújtás >>", "DeveloperTools");
 		$forms->UrlapElem("select-end", "", "");
 		$forms->UrlapElem("submit", "submit", "Tovább >> (Választás megerősítése)");
 		$forms->EndForm();
 		
 		break;
 }
-
 ?>
