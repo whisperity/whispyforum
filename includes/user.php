@@ -11,12 +11,29 @@ class user // Definiáljuk az osztályt (felhasználók)
 {
 	function DoLoginForm() // Bejelentkezési űrlap létrehozása
 	{
+		if ( $_POST['id'] != $NULL )
+		{
+			// Ha POST-tal érkeznek az adatok, a POST site lesz az érték
+			$getid = $_POST['id'];
+		} else {
+			// Ha nem post, akkor vagy GET-tel jött az adat, vagy sehogy
+			if ( $_GET['id'] != $NULL )
+			{
+				// Ha gettel érkezik, az lesz az érték
+				$getid = $_GET['id'];
+			} else {
+				// Sehogy nem érkezett adat
+				$getid = $NULL;
+			}
+		}
+		
 		print("<form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
 	<span class='formHeader'>Bejelentkezés</span>
  <p class='formText'>Felhasználói név: <input type='text' name='username'></p>
  <p class='formText'>Jelszó: <input type='password' name='pwd'></p>
  <input type='submit' value='Bejelentkezés'>
- <input type='hidden' name='cmd' value='loginusr'><br>
+ <input type='hidden' name='cmd' value='loginusr'>
+ <input type='hidden' name='id' value='" .$getid. "'><br>
  <a href='registration.php'>Regisztráció</a></form><br>");
 	}
 	
@@ -69,8 +86,25 @@ class user // Definiáljuk az osztályt (felhasználók)
 		if ( $_SESSION['userLevel'] == 3) // Ha a felhasználó admin linket írunk az admin vezérlőpultra
 			print("<br><a href='admin.php'>Adminisztrátori vezérlőpult</a>");
 		
+		if ( $_POST['id'] != $NULL )
+		{
+			// Ha POST-tal érkeznek az adatok, a POST site lesz az érték
+			$getid = $_POST['id'];
+		} else {
+			// Ha nem post, akkor vagy GET-tel jött az adat, vagy sehogy
+			if ( $_GET['id'] != $NULL )
+			{
+				// Ha gettel érkezik, az lesz az érték
+				$getid = $_GET['id'];
+			} else {
+				// Sehogy nem érkezett adat
+				$getid = $NULL;
+			}
+		}
+
 		print("</p><form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
 		<input type='hidden' name='cmd' value='logoutusr'>
+		<input type='hidden' name='id' value='" .$getid. "'>
 		<input type='submit' value='Kijelentkezés'></form>");
 		print("</div>");
 	}
