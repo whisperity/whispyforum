@@ -27,7 +27,7 @@
  
  print("<h2><center>WhispyFórum exportáció</center></h2>");
  
- $meghajto = ":"; // Ide írd be a használt meghajtód betűjelét!
+ $meghajto = "W:"; // Ide írd be a használt meghajtód betűjelét!
  
  print("<h2>Másolás előtt");
  Terulet($meghajto);
