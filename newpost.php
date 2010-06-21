@@ -39,8 +39,8 @@
 				
 				$lp = mysql_num_rows($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "posts")); // Legutolsó post száma
 				
-				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."topics SET replies='" .($sor2['replies']+1). "', lpId='" .$lp. "' WHERE id='" .$_POST['id']. "'"); // Hozzászólásszám növelése a témán, utolsó post beállítása
-				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "forum SET posts='" .($sor3['posts']+1). "', lpTopic='" .$tId. "' WHERE id='" .$sor2['fId']. "'"); // Hozzászólásszám növelése a fórumon, utolsó téma-post beállítása
+				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."topics SET replies='" .($sor2['replies']+1). "', lpId='" .$lp. "', lastuser='" .$_SESSION['userID']. "' WHERE id='" .$_POST['id']. "'"); // Hozzászólásszám növelése a témán, utolsó post beállítása
+				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "forum SET posts='" .($sor3['posts']+1). "', lpTopic='" .$tId. "', lastuser='" .$_SESSION['userID']. "' WHERE id='" .$sor2['fId']. "'"); // Hozzászólásszám növelése a fórumon, utolsó téma-post beállítása
 				
 				/* Felhasználó hozzászólásszámának növelése */
 				$sor4 = mysql_fetch_array($sql->Lekerdezes("SELECT postCount FROM " .$cfg['tbprf']."user WHERE id='" .$_SESSION['userID']. "'"), MYSQL_ASSOC); // Felhasználó hozzászólásszáma

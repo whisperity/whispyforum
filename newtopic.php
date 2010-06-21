@@ -37,7 +37,7 @@
 			VALUES('" .$fId. "', '" .$_POST['Ttitle']. "', '1', '" .time(). "', '" .$_SESSION['userID']. "', '" .time(). "', '" .$_SESSION['userID']. "', '1', '0', '" .($postSzam+1). "', '0')"); // Téma hozzáadása
 			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."posts(tId, uId, pTitle, pText, pDate) VALUES ( " .($topicSzam+1). ", '" .$_SESSION["userID"]. "', '" .$_POST["title"]. "', '" .$_POST['post']. "', '" .time(). "')"); // Post hozzáadása
 			
-			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "forum SET lpTopic='" .($topicSzam+1). "', lpId='" .($postSzam+1). "' WHERE id='" .$fId. "'"); // Fórum utolsó post és téma adatok beállítása
+			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "forum SET lpTopic='" .($topicSzam+1). "', lpId='" .($postSzam+1). "', lastuser='" .$_SESSION['userID']. "' WHERE id='" .$fId. "'"); // Fórum utolsó post és téma adatok beállítása
 			
 			/* Felhasználó hozzászólásszámának növelése */
 			$sor4 = mysql_fetch_array($sql->Lekerdezes("SELECT postCount FROM " .$cfg['tbprf']."user WHERE id='" .$_SESSION['userID']. "'"), MYSQL_ASSOC); // Felhasználó hozzászólásszáma
@@ -55,7 +55,7 @@
 			print("<form action='" .$_SERVER['PHP_SELF']. "' method='POST'><span class='formHeader'>Új téma beküldése: " .$sor2['name']. "</span>
 			<p class='formText'>Téma neve: <input type='text' name='Ttitle' size='70' value='" .$_POST['Ttitle']. "'></p>
 			<p class='formText'>Témakezdő hozzászólás címe: <input type='text' name='title' size='70' value='" .$_POST['title']. "'></p>
-			<p class='formText'>Témakezdő kozzászólás:
+			<p class='formText'>Témakezdő kozzászólás:<br>
 			<textarea rows='20' name='post' cols='70'>" .$_POST['post']. "</textarea></p>"); // Bal oldali rész
 			print("<a href='/themes/" .THEME_NAME. "/emoticons.php' onClick=\"window.open('/themes/" .THEME_NAME. "/emoticons.php', 'popupwindow', 'width=192,heigh=600,scrollbars=yes'); return false;\">Hangulatjelek</a>
 			<a href='/includes/help.php?cmd=BB' onClick=\"window.open('includes/help.php?cmd=BB', 'popupwindow', 'width=960,height=750,scrollbars=yes'); return false;\">BB-kódok</a>"); // Emoticon, BB-kód ablak
