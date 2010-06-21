@@ -1,3 +1,13 @@
+../admin.php
+../index.php
+../install.php
+../newpost.php
+../newtopic.php
+../registration.php
+../usractivate.php
+../viewforum.php
+../viewtopic.php
+../viewtopics.php
 ../admin/addforum.php
 ../admin/index.php
 ../admin/installlog.php
@@ -32,7 +42,6 @@
 ../themes/default/emote/unsure.gif
 ../themes/default/emote/wink.gif
 ../themes/default/announce.png
-../themes/default/edit_post_icon.gif
 ../themes/default/emotes.lst
 ../themes/default/emoticons.php
 ../themes/default/error.png
@@ -46,14 +55,3 @@
 ../themes/default/style.css
 ../themes/default/warning.png
 ../themes/default/x.bmp
-../admin.php
-../index.php
-../editpost.php
-../install.php
-../newpost.php
-../newtopic.php
-../registration.php
-../usractivate.php
-../viewforum.php
-../viewtopic.php
-../viewtopics.php
