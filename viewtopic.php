@@ -92,15 +92,16 @@
 	}
 	
 	print("</p></h3>"); // Hozzászólás fejléc
-	print("<div class='content'>" .$postBody. "</div></div>"); // Hozzászólás
-	print("<div class='postright'>Hozzászólás időpontja: <b>" .Datum("normal","kisbetu","dL","H","i","s",$sor['pDate']). "</b><p><b>" .$adat2['username']. "</b><br>Rang: " .$usrRang. "<br>Hozzászólások: " .$adat2['postCount']. "<br>"); // Hozzászólás adatai (hozzászóló, stb.)
-	print("Csatlakozott: " .Datum("normal","m","d","H","i","", $adat2['regdate']). ""); // Hozzászóló adatai
+	print("<div class='content'>" .$postBody);
 	if ( $sor['edited'] == 1)
 	{
 		// Ha a post szerkesztett, bekérjük a szerkesztő felhasználó adatait, és kiírjuk hogy mikor szerkesztették
 		$sor5 = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."user WHERE id='" .$sor['euId']. "'"));
 		print("<br>Utoljára szerkesztve: " .Datum("normal","m","d","H","i","s", $sor['eDate']). " (" .$sor5['username']. ")");
 	}
+	print("</div></div>"); // Hozzászólás
+	print("<div class='postright'>Hozzászólás időpontja: <b>" .Datum("normal","kisbetu","dL","H","i","s",$sor['pDate']). "</b><p><b>" .$adat2['username']. "</b><br>Rang: " .$usrRang. "<br>Hozzászólások: " .$adat2['postCount']. "<br>"); // Hozzászólás adatai (hozzászóló, stb.)
+	print("Csatlakozott: " .Datum("normal","m","d","H","i","", $adat2['regdate']). ""); // Hozzászóló adatai
 	print("</div></div>"); // Hozzászólás vége
 	}
 	
