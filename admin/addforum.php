@@ -62,7 +62,7 @@ if ( $_POST['name'] == $NULL )
 
 if ( $_POST['description'] == $NULL )
 {
-	$_POST['description'] = "Ez egy új fórum, melyet '" .$_SESSION['username']. "' hozott létre az admin menü segítségével.\nA pontos idő " .Datum("normal","kisbetu","dL","H","i","s"). ".";
+	$_POST['description'] = "Ez egy új fórum, melyet " .$_SESSION['username']. " hozott létre az admin menü segítségével.\nA pontos idő " .Datum("normal","kisbetu","dL","H","i","s"). ".";
 }
 
 
