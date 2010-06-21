@@ -10,14 +10,27 @@
  include('includes/common.php');
  Inicialize('viewtopic.php');
  
- if ( $_GET['id'] == $NULL )
-	die(Hibauzenet("ERROR","A megadott azonosítójú téma nem létezik"));
+ if ( $_POST['id'] != $NULL )
+ {
+	// Ha POST-tal érkeznek az adatok, a POST site lesz az érték
+	$getid = $_POST['id'];
+ } else {
+	// Ha nem post, akkor vagy GET-tel jött az adat, vagy sehogy
+	if ( $_GET['id'] != $NULL )
+	{
+		// Ha gettel érkezik, az lesz az érték
+		$getid = $_GET['id'];
+	} else {
+		// Sehogy nem érkezett adat
+		$getid = $NULL;
+	}
+ }
   
  global $cfg, $sql;
- $adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."posts WHERE tId='" .$_GET['id']. "'"); // Témák betöltése az adott fórumból
+ $adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."posts WHERE tId='" .$getid. "'"); // Témák betöltése az adott fórumból
  
  /* Fórum id megállapítása */
- $sor2 = mysql_fetch_array($sql->Lekerdezes("SELECT name, fId, locked FROM " .$cfg['tbprf']."topics WHERE id='" .$_GET['id']. "'"), MYSQL_ASSOC);
+ $sor2 = mysql_fetch_array($sql->Lekerdezes("SELECT name, fId, locked FROM " .$cfg['tbprf']."topics WHERE id='" .$getid. "'"), MYSQL_ASSOC);
  $forumId = $sor2['fId'];
  SetTitle($sor2['name']);
  
@@ -29,7 +42,7 @@
  {
 	if ($sor2['locked'] == 0)
 	{
-		print("<a href='newpost.php?id=" .$_GET['id']. "'>Új hozzászólás</a>"); // Hozzászólási link
+		print("<a href='newpost.php?id=" .$getid. "'>Új hozzászólás</a>"); // Hozzászólási link
 	} else {
 		print("<img src='/themes/" .THEME_NAME. "/forum_read_locked.png' alt='A téma lezárva, nem küldhető újabb hozzászólás'>");
 	}
@@ -37,8 +50,8 @@
  
  print("</p>");
  /* +1 megtekintés hozzáadása */
- $sor4 = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE id='" .$_GET['id']. "'"), MYSQL_ASSOC);
- $sql->Lekerdezes("UPDATE " .$cfg['tbprf']."topics SET opens='" .($sor4['opens']+1). "' WHERE id='" .$_GET['id']. "'");
+ $sor4 = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE id='" .$getid. "'"), MYSQL_ASSOC);
+ $sql->Lekerdezes("UPDATE " .$cfg['tbprf']."topics SET opens='" .($sor4['opens']+1). "' WHERE id='" .$getid. "'");
  
  print("<h3 class='header'><p class='header'>" .$sor4['name']. "</p></h3>"); // Fejléc
  
@@ -69,7 +82,16 @@
 	$postBody = BBDecode($postBody); // BB kódok átalakítása HTML-kóddá (hangulatjeleket képpé)
 	
 	print("<div class='post'>"); // Fejléc
-	print("<div class='postbody'><h3 class='postheader'><p class='header'><a name='pid" .$sor['id']. "'></a>" .$sor['pTitle']. "</p></h3>"); // Hozzászólás fejléc
+	print("<div class='postbody'><h3 class='postheader'><p class='header'><a name='pid" .$sor['id']. "'></a>" .$sor['pTitle']. "");
+	if ( ($_SESSION['userLevel'] == 2) || ($_SESSION['userLevel'] == 3) )
+	{
+		if ($sor4['locked'] == 0)
+		{ // Csak nyitott téma esetén szerkeszthetőek a hozzászólások
+			print("\t<a href='editpost.php?pId=" .$sor['id']. "'><img src='/themes/" .THEME_NAME. "/edit_post_icon.gif' alt='Hozzászólás szerkesztése' border='0'></a>");
+		}
+	}
+	
+	print("</p></h3>"); // Hozzászólás fejléc
 	print("<div class='content'>" .$postBody. "</div></div>"); // Hozzászólás
 	print("<div class='postright'>Hozzászólás időpontja: <b>" .Datum("normal","kisbetu","dL","H","i","s",$sor['pDate']). "</b><p><b>" .$adat2['username']. "</b><br>Rang: " .$usrRang. "<br>Hozzászólások: " .$adat2['postCount']. "<br>"); // Hozzászólás adatai (hozzászóló, stb.)
 	print("Csatlakozott: " .Datum("normal","m","d","H","i","", $adat2['regdate']). ""); // Hozzászóló adatai
