@@ -118,7 +118,7 @@ global $cfg; // Konfigurációs tömb
 	print("<title>" .$cfg['pname']. "</title>"); // Csak a weblap neve a fejléc
  } else {
 	// Ellenkező esetben, ha van
-	print("<title>" .$cfg['pname']. " - " .$fejlec. "</title>"); // Weblap neve - weblap címe
+	print("<title>" .$fejlec. " - " .$cfg['pname']. "</title>"); // Weblap neve - weblap címe
  }
 }
 ?>
