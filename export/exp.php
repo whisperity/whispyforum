@@ -78,35 +78,47 @@
 
  /* Mappák létrehozása */
  $dataD = @file_get_contents('dir.lst'); // Mappalista bekérése
- $sorokD = explode("\r\n", $dataD); // Soronkénti tördelés
- foreach ($sorokD as &$ertekD) { 
-	print("<div class='messagebox'>");
-	@mkdir('export_' .$maszk. '/' .$ertekD); // Mappa létrehozása
-	print("• Mappa <b>export_" .$maksz. "/" .$ertekD. "</b> létrehozva</div>
-");
-	$mappaletrehozva++; // +1 mappa
+ if ( $dataD == "" )
+ {
+	// Ha üres a mappalista
+	print("<div class='messagebox'><span class='star'>A mappalista üres!</span></div>");
+ } else {
+	$sorokD = explode("\r\n", $dataD); // Soronkénti tördelés
+	foreach ($sorokD as &$ertekD) { 
+		print("<div class='messagebox'>");
+		@mkdir('export_' .$maszk. '/' .$ertekD); // Mappa létrehozása
+		print("• Mappa <b>export_" .$maksz. "/" .$ertekD. "</b> létrehozva</div>
+	");
+		$mappaletrehozva++; // +1 mappa
+	}
  }
  
  /* Fájlok másolása */
  $dataF = @file_get_contents('fajl.lst'); // Fájllista bekérése
- $sorokF = explode("\r\n", $dataF);
-foreach ($sorokF as &$ertekF) { // Soronkénti értelmezés
-	$sorF = explode(',', $ertekF); // A sorokat szétvagdossuk a ,-k (vesszők) mentén
-	
-	$forras = $sorF[0]; // Forrásfájl URL
-	$a = explode("../", $sorF[0]); // a ../ levágása
-	$cel = 'export_' .$maszk.'/' .$a[1]; // Cél URL
-	
-	print("
-<div class='messagebox'>");
-	$aktualis = @file_get_contents($forras); // Fájl bekérése
-	file_put_contents($cel, $aktualis); // Fájl kiírása az új helyre
-	print("• <b>" .$forras. "</b> (" .DecodeSize(@filesize($forras)). ") --->> <b>/" .$a[1]. "</b> (" .DecodeSize(@filesize($cel)). ") <sup><a href='exp.php?diff=1&from=" .$forras. "&to=" .$cel. "'>megnyitás</a></sup>");
-	print("</div>
+ if ( $dataF == "" )
+ {
+	// Ha üres a fájllista
+	print("<div class='messagebox'><span class='star'>A fájllista üres!</span></div>");
+ } else {
+	$sorokF = explode("\r\n", $dataF);
+	foreach ($sorokF as &$ertekF) { // Soronkénti értelmezés
+		$sorF = explode(',', $ertekF); // A sorokat szétvagdossuk a ,-k (vesszők) mentén
+		
+		$forras = $sorF[0]; // Forrásfájl URL
+		$a = explode("../", $sorF[0]); // a ../ levágása
+		$cel = 'export_' .$maszk.'/' .$a[1]; // Cél URL
+		
+		print("
+	<div class='messagebox'>");
+		$aktualis = @file_get_contents($forras); // Fájl bekérése
+		file_put_contents($cel, $aktualis); // Fájl kiírása az új helyre
+		print("• <b>" .$forras. "</b> (" .DecodeSize(@filesize($forras)). ") --->> <b>/" .$a[1]. "</b> (" .DecodeSize(@filesize($cel)). ") <sup><a href='exp.php?diff=1&from=" .$forras. "&to=" .$cel. "'>megnyitás</a></sup>");
+		print("</div>
 ");
-	$forrasmeret += @filesize($forras); // Össz forrásméret hozzáadva
-	$celmeret += @filesize($cel); // Össz célméret hozzáadva
-	$fileletrehozva++; // +1 fájl
+		$forrasmeret += @filesize($forras); // Össz forrásméret hozzáadva
+		$celmeret += @filesize($cel); // Össz célméret hozzáadva
+		$fileletrehozva++; // +1 fájl
+	}
 }
 
  print("<div class='messagebox'>Az exportálás befejőzödtt!<br><b>" .$mappaletrehozva. "</b> mappa került létrehozásra, összesen <b>" .$fileletrehozva. "</b> fájlt másoltunk át. Az átmásolt fájlok forrásának mérete <b>" .DecodeSize($forrasmeret). "</b> volt, az új méret pedig <b>" .DecodeSize($celmeret). "</b>-tal egyenlő.<br>A fájlaidat az <b>export_" .$maszk. "</b> mappában találod meg.</div>");
