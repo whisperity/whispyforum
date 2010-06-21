@@ -83,7 +83,7 @@
 	
 	print("<div class='post'>"); // Fejléc
 	print("<div class='postbody'><h3 class='postheader'><p class='header'><a name='pid" .$sor['id']. "'></a>" .$sor['pTitle']. "");
-	if ( ($_SESSION['userLevel'] == 2) || ($_SESSION['userLevel'] == 3) )
+	if ( ($_SESSION['userLevel'] == 2) || ($_SESSION['userLevel'] == 3) ||  ($_SESSION['userID'] == $sor['uId']) )
 	{
 		if ($sor4['locked'] == 0)
 		{ // Csak nyitott téma esetén szerkeszthetőek a hozzászólások

@@ -31,11 +31,17 @@
  }
  // Felhasználói rang, felhasználó ellenörzése
  $adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."posts WHERE id='" .$getid. "'")); // Post adatainak bekérése
- if ( $_SESSION['userId'] != $adat['uid'])
-	$jog = 0; // Ha a szerkeszteni kívánt személy nem az eredeti post szerzője, nincs joga szerkeszteni
-	
- if ( ($_SESSION['userLevel'] == 0) || ($_SESSION['userLevel'] == 1) )
+ 
+ if ( ($_SESSION['userLevel'] == 0) || ( $_SESSION['userLevel'] == 1) )
+ {
 	$jog = 0; // Ha a felhasználó userszintje 0 (vendég) vagy 1 (felhasználó), nincs joga szerkeszteni
+	
+	// De ha a felhasználó a hozzászólás szerzője
+	if ( $_SESSION['userID'] == $adat['uId'])
+	{
+		$jog = 1; // Szerkesztési jogát visszadajuk
+	}
+ } // egyéb esetben a felhasználó mod/admin, van joga szerkeszteni
  
  // Téma zároltság ellenörzése
  $sor2 = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE id='" .$adat['tId']. "'")); // Téma sora
@@ -52,6 +58,7 @@
 		// Szerkesztés
 		print("<div class='messagebox'>Hozzászólás sikeresen szerkesztve!<br><a href='viewtopic.php?id=" .$sor2['id']. "#pid" .$getid. "'>Vissza a hozzászóláshoz</a>");
 		
+		DoFooter();
 		die(); // A többi kód ne fusson le
 	}
 	// Hozzászólás, és fórum kiírása
