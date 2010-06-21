@@ -109,6 +109,9 @@
   `pTitle` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `pText` text COLLATE utf8_unicode_ci NOT NULL,
   `pDate` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `edited` TINYINT(1) NOT NULL DEFAULT '0',
+  `euId` INT(10) DEFAULT '0',
+  `eDate` VARCHAR(32) COLLATE utf8_unicode_ci DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Postok
  WOut('tabla', 'posts');

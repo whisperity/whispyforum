@@ -48,10 +48,11 @@
  } else {
 	if ( $_POST['submit'] == "Hozzászólás szerkesztése")
 	{
+		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "posts SET pTitle='" .$_POST['title']. "', pText='" .$_POST['post']. "', edited=1, euId=" .$_SESSION['userID']. ", eDate=" .time(). " WHERE id='" .$getid. "'"); // Hozzászólás frissítése, szerkesztési adatok hozzáírása
 		// Szerkesztés
 		print("<div class='messagebox'>Hozzászólás sikeresen szerkesztve!<br><a href='viewtopic.php?id=" .$sor2['id']. "#pid" .$getid. "'>Vissza a hozzászóláshoz</a>");
 		
-		die();
+		die(); // A többi kód ne fusson le
 	}
 	// Hozzászólás, és fórum kiírása
 	print("<h1><center><p class='header'>Hozzászólás szerkesztése</p></center></h1>");
