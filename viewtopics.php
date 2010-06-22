@@ -57,7 +57,15 @@
 	}
 	
 	print("</td>
-		<td class='forumlist'><p><a href='viewtopic.php?id=" .$sor['id']. "'>" .$sor['name']. "</a><br>Szerző: " .$adat2['username']. " » " .Datum("normal","m","d","H","i","s",$sor['startdate']). "</p></td>
+		<td class='forumlist'><p><a href='viewtopic.php?id=" .$sor['id']. "'>" .$sor['name']. "</a>");
+		
+		if ( ($_SESSION['userLevel'] == 2) || ($_SESSION['userLevel'] == 3) )
+		{
+			// Csak moderátor/admin tud témákat módosítani, törölni
+			print("\t<a href='edittopic.php?tId=" .$sor['id']. "'><img src='/themes/" .THEME_NAME. "/edit_post_icon.gif' border='0' alt='Téma szerkesztése/törlése'></a>\t<a href='edittopic.php?tId=" .$sor['id']. "&cmd=deletetopic'><img src='/themes/" .THEME_NAME. "/icon_delete_post.jpg' alt='Téma törlése' border='0'></a>");
+		}
+		
+		print("<br>Szerző: " .$adat2['username']. " » " .Datum("normal","m","d","H","i","s",$sor['startdate']). "</p></td>
 		<td class='forumlist'>" .$sor['replies']. "</td>
 		<td class='forumlist'>" .$sor['opens']. "</td>
 		<td class='forumlist'><p>" .Datum("normal","m","d","H","i","s",$sor['lastpostdate']). "<br>" .$adat3['username']. "<a href='viewtopic.php?id=" .$sor['id']. "#pid" .$sor['lpId']. "'><img src='themes/" .THEME_NAME. "/lastpost.gif' border='0' alt='Ugrás a legutolsó hozzászóláshoz'></a></p></td>
@@ -90,7 +98,15 @@
 	}
 	
 	print("</td>
-		<td class='forumlist'><p><a href='viewtopic.php?id=" .$sor['id']. "'>" .$sor['name']. "</a><br>Szerző: " .$adat2['username']. " » " .Datum("normal","m","d","H","i","s",$sor['startdate']). "</p></td>
+		<td class='forumlist'><p><a href='viewtopic.php?id=" .$sor['id']. "'>" .$sor['name']. "</a>");
+		
+		if ( ($_SESSION['userLevel'] == 2) || ($_SESSION['userLevel'] == 3) )
+		{
+			// Csak moderátor/admin tud témákat módosítani, törölni
+			print("\t<a href='edittopic.php?tId=" .$sor['id']. "'><img src='/themes/" .THEME_NAME. "/edit_post_icon.gif' border='0' alt='Téma szerkesztése/törlése'></a>\t<a href='edittopic.php?tId=" .$sor['id']. "&cmd=deletetopic'><img src='/themes/" .THEME_NAME. "/icon_delete_post.jpg' alt='Téma törlése' border='0'></a>");
+		}
+		
+		print("<br>Szerző: " .$adat2['username']. " » " .Datum("normal","m","d","H","i","s",$sor['startdate']). "</p></td>
 		<td class='forumlist'>" .$sor['replies']. "</td>
 		<td class='forumlist'>" .$sor['opens']. "</td>
 		<td class='forumlist'><p>" .Datum("normal","m","d","H","i","s",$sor['lastpostdate']). "<br>" .$adat3['username']. "<a href='viewtopic.php?id=" .$sor['id']. "#pid" .$sor['lpId']. "'><img src='themes/" .THEME_NAME. "/lastpost.gif' border='0'></a></p></td>

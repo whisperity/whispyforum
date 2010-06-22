@@ -50,6 +50,7 @@
 ../admin.php
 ../index.php
 ../editpost.php
+../edittopic.php
 ../install.php
 ../newpost.php
 ../newtopic.php
