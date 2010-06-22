@@ -25,28 +25,11 @@
 	// Fájlok összehasonlítása
 	print("<table border='1' cellspacing='1' cellpadding='1' style='width: 100%; height: 95%'>
 		<tr style='width: 100%'>
-			<th style='width: 100%'>
-				Diff
-			</th>
-		</tr>
-		<tr style='width: 100%'>
-			<th style='width: 50%'>
-				" .$_GET['from']. "
-			</th>
-			<th style='width: 50%'>
-				" .$_GET['to']. "
-			</th>
-		<tr>
-		<tr style='width: 100%'>
 			<td style='width: 50%'>
-				<textarea style='width: 100%; height: 100%'>
-					" .file_get_contents($_GET['from']). "
-				</textarea>
+				<textarea style='width: 100%; height: 100%' disabled>" .file_get_contents($_GET['from']). "</textarea>
 			</td>
 			<td style='width: 50%'>
-				<textarea style='width: 100%; height: 100%'>
-					" .file_get_contents($_GET['to']). "
-				</textarea>
+				<textarea style='width: 100%; height: 100%' disabled>" .file_get_contents($_GET['to']). "</textarea>
 			</td>
 		</tr>
 	</table>
@@ -105,7 +88,7 @@
 	<div class='messagebox'>");
 		$aktualis = @file_get_contents($forras); // Fájl bekérése
 		file_put_contents($cel, $aktualis); // Fájl kiírása az új helyre
-		print("• <b>" .$forras. "</b> (" .DecodeSize(@filesize($forras)). ") --->> <b>/" .$a[1]. "</b> (" .DecodeSize(@filesize($cel)). ") <sup><a href='exp.php?diff=1&from=" .$forras. "&to=" .$cel. "'>megnyitás</a></sup>");
+		print("• <b>" .$forras. "</b> (" .DecodeSize(@filesize($forras)). ") --->> <b>/" .$a[1]. "</b> (" .DecodeSize(@filesize($cel)). ") <sup><a href='exp.php?diff=1&from=" .$forras. "&to=" .$cel. "' target='_blank'>megnyitás</a></sup>");
 		print("</div>
 ");
 		$forrasmeret += @filesize($forras); // Össz forrásméret hozzáadva
