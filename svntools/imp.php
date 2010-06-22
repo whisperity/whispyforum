@@ -103,7 +103,7 @@
 	<div class='messagebox'>");
 		$aktualis = @file_get_contents($forras); // Fájl bekérése
 		file_put_contents($cel, $aktualis); // Fájl kiírása az új helyre
-		print("• <b>" .$forras. "</b> (ismeretlen) --->> <b>/" .$a[1]. "</b> (" .DecodeSize(@filesize($cel)). ") <sup><a href='exp.php?diff=1&from=" .$forras. "&to=" .$cel. "'>megnyitás</a></sup>");
+		print("• <b>" .$forras. "</b> (ismeretlen) --->> <b>/" .$a[1]. "</b> (" .DecodeSize(@filesize($cel)). ") <sup><a href='imp.php?diff=1&from=" .$forras. "&to=" .$cel. "'>megnyitás</a></sup>");
 		print("</div>
 ");
 		$forrasmeret += @filesize($forras); // Össz forrásméret hozzáadva
