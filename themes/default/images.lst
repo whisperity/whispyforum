@@ -1,4 +1,4 @@
-9
+10
 warning.png,Hibaüzenet ablakban figyelmeztetés szimbólum
 error.png,Hibaüzenet ablakban hiba/kritikus hiba szimbólum
 x.bmp,Üres semmi
@@ -8,3 +8,4 @@ icon_topic_locked.gif,Lezárt fórumtéma ikon
 announce.png,Közlemény ikon
 forum_read_locked.png,Lezárt téma ikon
 edit_post_icon.gif,Hozzászólás szerkesztése ikon
+icon_delete_post.jpg,Hozzászólás törlése ikon

@@ -4,12 +4,11 @@
 */
 
 /* editpost.php
-   fórum hozzászólás szerkesztése
+   fórum hozzászólás szerkesztése, törlése
 */
  
  include('includes/common.php'); // Betöltjük a portálrendszer alapscriptjeit (common.php elvégzi)
  Inicialize('editpost.php');
- SetTitle("Hozzászólás szerkesztése");
  
  /* Inicializációs rész */
  $jog = 1; // Induljunk ki abból, hogy van jogunk szerkeszteni a hozzászólást
@@ -50,10 +49,36 @@
  
  if ( $jog == 0 )
  {
+	SetTitle("Nincs privilégium");
 	Hibauzenet("ERROR", "Nincs jogod a hozzászólás szerkesztéséhez, vagy a téma le van zárva");
  } else {
+	if ( $_GET['cmd'] == "deletepost" )
+	{
+		SetTitle("Hozzászólás törlése");
+		
+		// Felhasználó hozzászólásszám csökkentése
+		$sor2 = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."user WHERE id='" .$adat['uId']. "'")); // A hozzászólást beküldő felhasználó adatai
+		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."user SET postCount='" .($sor2['postCount']-1). "' WHERE id='" .$adat['uId']. "'"); // -1 hozzászólás a felhasználótól
+		
+		// Téma hozzászólásszám csökkentése
+		$sor3 = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE id='" .$adat['tId']. "'"));
+		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."topics SET replies='" .($sor3['replies']-1). "' WHERE id='" .$adat['tId']. "'");
+		
+		// Fórum hozzászólásszám csökkentése
+		$sor4 = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."forum WHERE id='" .$sor3['fId']. "'"));
+		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."forum SET posts='" .($sor4['posts']-1). "' WHERE id='" .$sor3['fId']. "'");
+		
+		// Hozzászólás eltávolítása az adatbázisból
+		$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."posts WHERE id='" .$getid. "'");
+		// Hozzászólás törlése
+		print("<div class='messagebox'>Hozzászólás sikeresen törölve!<br><a href='viewtopic.php?id=" .$adat['tId']. "#pid" .$getid. "'>Vissza a témához</a>");
+		
+		DoFooter();
+		die(); // A többi kód ne fusson le
+	}
 	if ( $_POST['submit'] == "Hozzászólás szerkesztése")
 	{
+		SetTitle("Hozzászólás szerkesztése");
 		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "posts SET pTitle='" .$_POST['title']. "', pText='" .$_POST['post']. "', edited=1, euId=" .$_SESSION['userID']. ", eDate=" .time(). " WHERE id='" .$getid. "'"); // Hozzászólás frissítése, szerkesztési adatok hozzáírása
 		// Szerkesztés
 		print("<div class='messagebox'>Hozzászólás sikeresen szerkesztve!<br><a href='viewtopic.php?id=" .$sor2['id']. "#pid" .$getid. "'>Vissza a hozzászóláshoz</a>");
@@ -61,6 +86,7 @@
 		DoFooter();
 		die(); // A többi kód ne fusson le
 	}
+	SetTitle("Hozzászólás szerkesztése");
 	// Hozzászólás, és fórum kiírása
 	print("<h1><center><p class='header'>Hozzászólás szerkesztése</p></center></h1>");
 	$postBody = $adat['pText']; // Nyers

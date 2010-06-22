@@ -84,10 +84,10 @@
 	print("<div class='post'>"); // Fejléc
 	print("<div class='postbody'><h3 class='postheader'><p class='header'><a name='pid" .$sor['id']. "'></a>" .$sor['pTitle']. "");
 	if ( ($_SESSION['userLevel'] == 2) || ($_SESSION['userLevel'] == 3) ||  ($_SESSION['userID'] == $sor['uId']) )
-	{
+	{ // Csak moderátor, admin, valamint a hozzászólás beküldője tudja szerkeszteni, törölni a hozzászólást
 		if ($sor4['locked'] == 0)
-		{ // Csak nyitott téma esetén szerkeszthetőek a hozzászólások
-			print("\t<a href='editpost.php?pId=" .$sor['id']. "'><img src='/themes/" .THEME_NAME. "/edit_post_icon.gif' alt='Hozzászólás szerkesztése' border='0'></a>");
+		{ // Csak nyitott téma esetén szerkeszthetőek, törölhetőek a hozzászólások
+			print("\t<a href='editpost.php?pId=" .$sor['id']. "'><img src='/themes/" .THEME_NAME. "/edit_post_icon.gif' alt='Hozzászólás szerkesztése' border='0'></a>\t<a href='editpost.php?pId=" .$sor['id']. "&cmd=deletepost'><img src='/themes/" .THEME_NAME. "/icon_delete_post.jpg' alt='Hozzászólás törlése' border='0'></a>");
 		}
 	}
 	
