@@ -81,7 +81,8 @@
 		}
 		
 		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."topics SET locked='" .$locked. "', type='" .$_GET['type']. "' WHERE id='" .$getid. "'");
-		print("<div class='messagebox'>A téma sikeresen szerkesztve!<br><a href='viewtopics.php?id=" .$sor3['fId']. "'>Vissza a fórumhoz</a>");
+		$sor5 = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE id='" .$getid. "'")); // Téma adatai
+		print("<div class='messagebox'>A téma sikeresen szerkesztve!<br><a href='viewtopics.php?id=" .$sor5['fId']. "'>Vissza a fórumhoz</a>");
 		DoFooter();
 		die(); // A többi kód ne fusson le
 	}
