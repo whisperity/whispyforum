@@ -67,14 +67,14 @@ function Inicialize ( $pagename )
 ");
  /* */
  
+ /* Telepítettség ellenörzése */
+ if ( !file_exists('install.lock') )
+	Hibauzenet("CRITICAL", "A portálrendszer nincs telepítve", "Kérlek futtatsd a telepítőscriptet <a href='install.php'>innen</a>!", __FILE__, __LINE__);
+ 
  /* INICIALIZÁLÁS */
  $sql->Connect(); // Csatlakozás az adatbázisszerverhez
  $user->GetUserData(); // Felhasználó adatainak frissítése
  WriteLog("PAGE_VIEW", $pagename. ',' .$_SERVER['REMOTE_ADDR']. ',' .$_SERVER['HTTP_USER_AGENT']. ',' .$_SESSION['username']. ',' .$_SESSION['userLevelTXT']);
- 
- /* Telepítettség ellenörzése */
- if ( !file_exists('install.lock') )
-	Hibauzenet("CRITICAL", "A portálrendszer nincs telepítve", "Kérlek futtatsd a telepítőscriptet <a href='install.php'>innen</a>!", __FILE__, __LINE__);
  
  /* Verzióadatok elleörzése */
  $adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."version"), MYSQL_ASSOC);
