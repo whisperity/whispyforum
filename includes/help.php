@@ -224,6 +224,12 @@ function BBCodeHelp()
 		<td><code>[img]http://www.google.hu/logos/worldcupopen10-hp.gif[/img]</td>
 		<td>" .BBDecode("[img]http://www.google.hu/logos/worldcupopen10-hp.gif[/img]"). "</td>
 	</tr>
+	<tr>
+		<td>Idézet</td>
+		<td><code>[quote][quoter]idézet eredete[/quoter]idézet szövege[/quote]</code></td>
+		<td><code>[quote][quoter]Winston Churchill[/quoter]A siker nem végleges, a kudarc nem végzetes. A bátorság, hogy folytasd, ez az, ami számít! - Winston Churchill[/quote]</code></td>
+		<td>" .BBDecode("[quote][quoter]Winston Churchill[/quoter]A siker nem végleges, a kudarc nem végzetes. A bátorság, hogy folytasd, ez az, ami számít! - Winston Churchill[/quote]"). "</td>
+	</tr>
 	</table>
 Bizonyos BB-kódok mixelhetőek, azonban a weboldalon a BB-kódokat a jelenleg megadott formában kell használni!
 <a href='javascript: self.close()'>Ablak bezárása</a>");

@@ -227,8 +227,8 @@ function Datum( $ev, $honap, $nap, $ora, $perc, $masodperc, $epoch = '' ) // A m
  function BBDecode( $BBText )
  {
 	// A funkció segítségével a BB-kódban tárolt szöveget HTML kóddá alakíthatjuk
-	$bbKod = array("[img]","[/img]", "\n","[b]","[/b]","[i]","[/i]","[u]","[/u]","[url]","[/url]", "[/a]"); // BB kódok listája
-	$htmlTag = array("<img src='","'>", "<br>","<b>","</b>","<i>","</i>","<u>","</u>","<a href='","'>","</a>"); // HTML tagek listája
+	$bbKod = array("[img]","[/img]", "\n","[b]","[/b]","[i]","[/i]","[u]","[/u]","[url]","[/url]", "[/a]", "[quoter]", "[/quoter]", "[quote]", "[/quote]"); // BB kódok listája
+	$htmlTag = array("<img src='","'>", "<br>","<b>","</b>","<i>","</i>","<u>","</u>","<a href='","'>","</a>", "<p class='header'>", " mondta:</p>", "<blockquote class='quote'>", "</blockquote>"); // HTML tagek listája
 	
 	return str_replace($bbKod, $htmlTag, $BBText); // A függvény visszaküldi a html-lé alakított szöveget
  }

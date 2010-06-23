@@ -227,3 +227,6 @@ div.postbox { width: 80%;
 div.postright { width: 20%;
 	position:relative;
 	float:left }
+
+/* Idézet */
+blockquote.quote {  }
