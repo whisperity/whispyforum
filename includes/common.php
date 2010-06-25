@@ -94,7 +94,7 @@ function Inicialize ( $pagename )
 	
 	print("</td>
     <td class='center' valign='top'>"); // Középső doboz
-	//$templates->DoCenter($pagename); // Középső modulok
+	
  }
 }
 
