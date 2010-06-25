@@ -53,6 +53,7 @@
 ../edittopic.php
 ../install.php
 ../newpost.php
+../news.php
 ../newtopic.php
 ../registration.php
 ../usractivate.php
