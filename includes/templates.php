@@ -19,8 +19,7 @@ class templates // Osztálydeklaráció
 				case 'menu': // Ha menü
 					$this->Menu($sor['id'], $sor['name']);
 					break;
-				case 'module': // Ha modul
-					break;
+				
 			}
 		}
 	}
@@ -35,8 +34,7 @@ class templates // Osztálydeklaráció
 				case 'menu': // Ha menü
 					$this->Menu($sor['id'], $sor['name']);
 					break;
-				case 'module': // Ha modul
-					break;
+				
 			}
 		}
 	}
