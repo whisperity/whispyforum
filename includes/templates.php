@@ -48,7 +48,14 @@ class templates // Osztálydeklaráció
 		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."menuItems WHERE menuId='" .$id. "'");
 		
 		while ($sor = mysql_fetch_array($adat, MYSQL_ASSOC)) {
-			print("<a class='menuitem' href='" .$sor['href']. "'>" .$sor['text']. "</a><br>");
+			$http = explode('://', $sor['href']);
+			
+			print("<a class='menuitem' href='" .$sor['href']. "'>" .$sor['text']. "</a>");
+			
+			if ( $http[0] == "http" )
+				print("<img src='/themes/" .THEME_NAME. "/external_href.jpg' alt='Külső hivatkozás' border='0'>");
+			
+			print("<br>");
 		}
 		
 		print("</p></div><br>"); // Doboz lezárása

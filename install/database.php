@@ -131,9 +131,11 @@
  /* Menüelemek */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."menuitems(menuId, text, href) VALUES
 	('1','Kezdőlap','index.php'),
-	('1','Fórum','viewforum.php')", 'INSTALL'); // Főmenü elemei
+	('1','Fórum','viewforum.php'),
+	('1','Google keresés','http://google.hu')", 'INSTALL'); // Főmenü elemei
  WOut('sor', 'menuitems', 'Főmenü/Kezdőlap');
  WOut('sor', 'menuitems', 'Főmenü/Fórum');
+ WOut('sor', 'menuitems', 'Főmenü/Google keresés (google.hu)');
  
  /* Fórumok */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."forum(name, description, topics, posts, lastpostdate, lastuser, lpTopic, lpId) VALUES
@@ -149,6 +151,11 @@
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."posts(tId, uId, pTitle, pText, pDate) VALUES
 	('1', '1', 'Próbahozzászólás', 'Üdvözlünk az új fórumodban!\nEz egy próbahozzászólás, mely [b]bemutatja[/b] a BB-kódokat, és a többi ügyes dolgot, amit a fejlesztők létrehoztak\n:) ;) :wned: :spam: :banhammer: :wonder:\n\nJó szórakozást!', '" .time(). "')", 'INSTALL'); // Próbahozzászólás
  WOut('sor', 'posts', 'Első fórumod/Első témád/Próbahozzászólás');
+ 
+ /* Hírek */
+ $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."news(title, text, postDate, uId) VALUES
+	('Első híred!', 'Üdvözlünk! Ez egy próba hír, mely bemutatja, hogy itt is [b]használhatóak[/b] [i]a[/i] [u]BB-kódok[/u] és a :jawohl: :banhammer: hangulatjelek :D', " .time(). ", 1)", 'INSTALL"'); // Első híred!
+ WOut('sor', 'news', 'Első híred!');
  
  /* Verzióadatok */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."version (RELEASE_TYPE, VERSION, RELEASE_DATE) VALUES ('" .RELEASE_TYPE. "', '" .VERSION. "', '" .RELEASE_DATE. "')", 'INSTALL'); // Verzióadatok
