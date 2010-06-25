@@ -18,8 +18,9 @@ body
 	div.headerbox
 </div>
 
-<div class="leftbox">
-	div.leftbox
+<table class='centerdiv'>
+<tr>
+<td class='left' valign='top'>
 	<form>
 		<span class="formHeader">span.formHeader</span>
 		<p class="formText">p.formText: 
@@ -42,9 +43,9 @@ body
 		<span class="regThis">span.regThis</span><br>
 		div.menubox
 	</div>
-</div>
+</td>
 
-<div class="centerbox">
+<td class="center" valign='top'>
 	div.centerbox
 	<div class="hibabox">
 		div.hibabox
@@ -109,12 +110,16 @@ body
 	<hr>
 	<div class="postbox">div.postbox</div>
 	<div class="postright">div.postright</div>
-</div>
+	<hr>
+	<blockquote class='quote'>blockquote.quote</blockquote>
+	<div class='newsitem'>div.newsitem</div>
+</td>
 
-<div class="rightbox">
+<td class="right" valign='top'>
 	div.rightbox
-</div>
-
+</td>
+</tr>
+</table>
 <div class="footerbox">
 	div.footerbox
 </div>
