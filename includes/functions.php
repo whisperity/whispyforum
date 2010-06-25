@@ -281,7 +281,7 @@ function Datum( $ev, $honap, $nap, $ora, $perc, $masodperc, $epoch = '' ) // A m
 			break;
 		case "PAGE_VIEW":
 			if ( LOG_DEPTH >= 3 )
-				file_put_contents('logs/site.log', "\n" .time(). ',' .$micsoda. ',' .$mit, FILE_APPEND);
+				file_put_contents('logs/site.log', "\n" .time(). ',' .$micsoda. ',' .$mit. ',' .var_export($_POST, TRUE). ',' .var_export($_GET, TRUE), FILE_APPEND);
 			break;
 		case "SQL_CONNECT_SELECTDB":
 		case "SQL_DC":

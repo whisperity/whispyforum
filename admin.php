@@ -72,6 +72,10 @@
  <td class='center' valign='top'>"); // Bal oldali doboz lezárása, középső doboz nyitása
  switch ( $website ) // Az érkező SITE paraméter alapján megválogatjuk a beillesztendő weboldalat
  {
+	case 'addforum':
+		$admin = TRUE;
+		include("admin/addforum.php");
+		break;
 	case 'log':
 		$admin = TRUE;
 		include("admin/log.php");
@@ -79,10 +83,6 @@
 	case 'installlog':
 		$admin = TRUE;
 		include("admin/installlog.php");
-		break;
-	case 'addforum':
-		$admin = TRUE;
-		include("admin/addforum.php");
 		break;
 	default:
 		print("<center><h2 class='header'>Adminisztrátori vezérlőpult</h2></center>
