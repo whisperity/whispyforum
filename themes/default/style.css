@@ -230,3 +230,6 @@ div.postright { width: 20%;
 
 /* Idézet */
 blockquote.quote {  }
+
+/* Hírek */
+div.newsitem { background-color: #ABCCBA }

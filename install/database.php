@@ -116,6 +116,15 @@
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Postok
  WOut('tabla', 'posts');
  
+ $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."news (
+  `id` INT(10) NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(64) COLLATE utf8_unicode_ci NOT NULL,
+  `text` TEXT COLLATE utf8_unicode_ci NOT NULL,
+  `postDate` VARCHAR(32) COLLATE utf8_unicode_ci NOT NULL,
+  `uId` INT(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Hírek
+ 
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."version (
   `RELEASE_TYPE` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `VERSION` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
@@ -131,10 +140,12 @@
  /* Menüelemek */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."menuitems(menuId, text, href) VALUES
 	('1','Kezdőlap','index.php'),
+	('1','Hírek','news.php'),
 	('1','Fórum','viewforum.php'),
 	('1','Google keresés','http://google.hu')", 'INSTALL'); // Főmenü elemei
  WOut('sor', 'menuitems', 'Főmenü/Kezdőlap');
  WOut('sor', 'menuitems', 'Főmenü/Fórum');
+ WOut('sor', 'menuitems', 'Főmenü/Hírek');
  WOut('sor', 'menuitems', 'Főmenü/Google keresés (google.hu)');
  
  /* Fórumok */
