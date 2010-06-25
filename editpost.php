@@ -12,7 +12,7 @@
  
  /* Inicializációs rész */
  $jog = 1; // Induljunk ki abból, hogy van jogunk szerkeszteni a hozzászólást
- // Adatok bekéréss
+ // Adatok bekérése
  if ( $_POST['pId'] != $NULL )
  {
 	// Ha POST-tal érkeznek az adatok, a POST site lesz az érték
