@@ -123,7 +123,18 @@
   `postDate` VARCHAR(32) COLLATE utf8_unicode_ci NOT NULL,
   `uId` INT(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Hírek
+) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Hírek
+ WOut('tabla', 'news');
+ 
+ $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."news_comments (
+  `id` INT(10) NOT NULL AUTO_INCREMENT,
+  `nId` INT(10) NOT NULL,
+  `uId` INT(10) NOT NULL,
+  `text` TEXT COLLATE utf8_unicode_ci NOT NULL,
+  `postDate` VARCHAR(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Hírhozzászólások
+ WOut('tabla', 'news_comments');
  
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."version (
   `RELEASE_TYPE` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
@@ -167,6 +178,11 @@
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."news(title, text, postDate, uId) VALUES
 	('Első híred!', 'Üdvözlünk! Ez egy próba hír, mely bemutatja, hogy itt is [b]használhatóak[/b] [i]a[/i] [u]BB-kódok[/u] és a :jawohl: :banhammer: hangulatjelek :D', " .time(). ", 1)", 'INSTALL"'); // Első híred!
  WOut('sor', 'news', 'Első híred!');
+ 
+ /* Első hírhozzászólás */
+ $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."news_comments(nId, uId, text, postDate) VALUES
+	(1, 1, 'Első hírhozzászólás', " .time(). ")", 'INSTALL'); // Első hírhozzászólás
+ WOut('sor', 'news_comments', 'Első hírhozzászólás');
  
  /* Verzióadatok */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."version (RELEASE_TYPE, VERSION, RELEASE_DATE) VALUES ('" .RELEASE_TYPE. "', '" .VERSION. "', '" .RELEASE_DATE. "')", 'INSTALL'); // Verzióadatok

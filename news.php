@@ -77,6 +77,44 @@
 		$hirBody = BBDecode($hirBody); // BB kódok átalakítása HTML-kóddá (hangulatjeleket képpé)
 		
 		print("<div class='newsitem'><h2 class='header'><p class='header'>" .$hir['title']. " (" .Datum("normal","kisbetu","dL","H","i","s", $hir['postDate']). ", " .$felhasznaloadat['username']. ")</p></h2><br>" .$hirBody. "</div><br>"); // Hír szövege
+		
+		/* Kommentek */
+		print("<h2 class='header'><p class='header'>Hozzászólások</p></h2>");
+		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."news_comments WHERE nId='" .$_GET['id']. "'");
+		while ( $sor = mysql_fetch_assoc($adat) )
+		{
+			/* Komment formázása */
+			$comBody = $sor['text']; // Nyers
+			$comBody = EmoticonParse($comBody); // Hangulatjelek hozzáadása BB-kódként
+			$comBody = HTMLDestroy($comBody); // HTML kódok nélkül 
+			$comBody = BBDecode($comBody); // BB kódok átalakítása HTML-kóddá (hangulatjeleket képpé)
+			
+			print("<div class='post'><div class='postbody'><div class='content'>" .$comBody. "</div></div><div class='postright'>");
+			
+			/* Hozzászóló adatai */
+			$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['uId']. "'"), MYSQL_ASSOC);
+			
+			switch ($adat2['userLevel']) // Beállítjuk a szöveges userLevel értéket (userLevelTXT)
+			{
+				case 0:
+					$usrRang = 'Nincs aktiválva';
+					break;
+				case 1:
+					$usrRang = 'Felhasználó';
+					break;
+				case 2:
+					$usrRang = 'Moderátor';
+					break;
+				case 3:
+					$usrRang = 'Adminisztrátor';
+					break;
+			}
+			
+			print("Hozzászólás időpontja: <b>" .Datum("normal","kisbetu","dL","H","i","s",$sor['pDate']). "</b><p><b>" .$adat2['username']. "</b><br>Rang: " .$usrRang. "<br>"); // Hozzászólás adatai (hozzászóló, stb.)
+			print("Csatlakozott: " .Datum("normal","m","d","H","i","", $adat2['regdate']). ""); // Hozzászóló adatai
+			print("</div></div>"); // Hozzászólás vége
+		}
+		
 		break;
 	
 	case "newentry": // Új hír beküldése
