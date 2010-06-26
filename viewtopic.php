@@ -93,7 +93,7 @@
 	
 	print("</p></h3>"); // Hozzászólás fejléc
 	print("<div class='content'>" .$postBody);
-	if ( $sor['edited'] == 1)
+	if ( $sor['edited'] == 1 )
 	{
 		// Ha a post szerkesztett, bekérjük a szerkesztő felhasználó adatait, és kiírjuk hogy mikor szerkesztették
 		$sor5 = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."user WHERE id='" .$sor['euId']. "'"));
