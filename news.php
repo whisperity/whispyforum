@@ -115,8 +115,41 @@
 			print("</div></div>"); // Hozzászólás vége
 		}
 		
+		/* Komment beküldése */
+		if ( $_SESSION['userLevel'] == 0)
+		{
+			// A felhasználó nem küldhet hozzászólást
+		} else {
+			print("<br style='clear:both'><form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
+			<span class='formHeader'>Új hozzászólás beküldése</span>
+			<div class='postbox'><p class='formText'>Hozzászólás:<br>
+			<textarea rows='15' name='post' cols='70'></textarea></div>
+			<div class='postright'>"); // Bal oldali rész
+			print("<a href='/themes/" .THEME_NAME. "/emoticons.php' onClick=\"window.open('/themes/" .THEME_NAME. "/emoticons.php', 'popupwindow', 'width=192,heigh=600,scrollbars=yes'); return false;\">Hangulatjelek</a>
+			<a href='/includes/help.php?cmd=BB' onClick=\"window.open('includes/help.php?cmd=BB', 'popupwindow', 'width=960,height=750,scrollbars=yes'); return false;\">BB-kódok</a>"); // Emoticon, BB-kód ablak
+			print("</div>
+			<input type='hidden' name='action' value='postcomment'>
+			<input type='hidden' name='id' value='" .$_GET['id']. "'>
+			<fieldset class='submit-buttons'>
+				<input type='submit' value='Hozzászólás elküldése'>
+			</fieldset>
+			</form><br>"); // Hozzászólás beküldési űrlap
+		}
+		
 		break;
 	
+	case "postcomment": // Hozzászólás beküldése
+		if ( ($_POST['id'] == $NULL) || ($_POST['post'] == $NULL) )
+		{
+			Hibauzenet("ERROR", "Nem küldhető üres hozzászólás, vagy a hozzászólásod egy nem létező hírhez küldted");
+		} else {
+			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."news_comments(nId, uId, text, postDate) VALUES
+				(" .$_POST['id']. ", " .$_SESSION['userID']. ", '" .$_POST['post']. "', " .time(). ")");
+			print("<div class='messagebox'>Hozzászólás sikeresen beküldve<br><a href='news.php?id=" .$_POST['id']. "&action=view'><< Vissza a hírehez</a></div>");
+		}
+		
+		break;
+		
 	case "newentry": // Új hír beküldése
 		print("<form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
 			<span class='formHeader'>Új hír beküldése</span>
@@ -126,7 +159,7 @@
 			<div class='postright'>"); // Bal oldali rész
 			print("<a href='/themes/" .THEME_NAME. "/emoticons.php' onClick=\"window.open('/themes/" .THEME_NAME. "/emoticons.php', 'popupwindow', 'width=192,heigh=600,scrollbars=yes'); return false;\">Hangulatjelek</a>
 			<a href='/includes/help.php?cmd=BB' onClick=\"window.open('includes/help.php?cmd=BB', 'popupwindow', 'width=960,height=750,scrollbars=yes'); return false;\">BB-kódok</a>"); // Emoticon, BB-kód ablak
-			print("</div>
+			print("</div><br style='clear: both'>
 			<input type='hidden' name='action' value='postentry'>
 			<fieldset class='submit-buttons'>
 				<input type='submit' value='Hír beküldése'>
@@ -135,8 +168,12 @@
 		break;
 	
 	case "postentry": // Beküldött hír tárolása
-		$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."news(title, text, postDate, uId) VALUES ('" .$_POST['title']. "', '" .$_POST['post']. "', " .time(). ", " .$_SESSION['userID']. ")");
-		print("<div class='messagebox'>Hír (" .$_POST['title']. ") sikeresen beküldve<br><a href='news.php'><< Vissza a hírekhez</a></div>");
+		if ( ($_POST['title'] != "") && ($_POST['post'] != "") )
+		{
+			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."news(title, text, postDate, uId) VALUES ('" .$_POST['title']. "', '" .$_POST['post']. "', " .time(). ", " .$_SESSION['userID']. ")");
+			print("<div class='messagebox'>Hír (" .$_POST['title']. ") sikeresen beküldve<br><a href='news.php'><< Vissza a hírekhez</a></div>");
+		}
+		
 		break;
  }
  
