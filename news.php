@@ -89,7 +89,14 @@
 			$comBody = HTMLDestroy($comBody); // HTML kódok nélkül 
 			$comBody = BBDecode($comBody); // BB kódok átalakítása HTML-kóddá (hangulatjeleket képpé)
 			
-			print("<div class='post'><div class='postbody'><div class='content'>" .$comBody. "</div></div><div class='postright'>");
+			print("<div class='post'><div class='postbody'>");
+			
+			if ( ($_SESSION['userLevel'] == 2) || ($_SESSION['userLevel'] == 3) ||  ($_SESSION['userID'] == $sor['uId']) )
+			{ // Csak moderátor, admin, valamint a hozzászólás beküldője tudja szerkeszteni, törölni a hozzászólást
+				print("\t<a href='news.php?cid=" .$sor['id']. "&action=cedit'><img src='/themes/" .THEME_NAME. "/edit_post_icon.gif' alt='Hozzászólás szerkesztése' border='0'></a>");
+			}
+			
+			print("<div class='content'>" .$comBody. "</div></div><div class='postright'>");
 			
 			/* Hozzászóló adatai */
 			$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['uId']. "'"), MYSQL_ASSOC);
@@ -149,7 +156,79 @@
 		}
 		
 		break;
+	
+	case "cedit": // Hozzászólás beküldése
+		/* Inicializációs rész */
+		$jog = 1; // Induljunk ki abból, hogy van jogunk szerkeszteni a hozzászólást
 		
+		$getid = $_GET['cid']; // Hozzászólás azonosítója
+		
+		$adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."news_comments WHERE id='" .$getid. "'")); // Hozzászólás adatainak bekérése
+ 
+		if ( ($_SESSION['userLevel'] == 0) || ( $_SESSION['userLevel'] == 1) )
+		{
+			$jog = 0; // Ha a felhasználó userszintje 0 (vendég) vagy 1 (felhasználó), nincs joga szerkeszteni
+	
+			// De ha a felhasználó a hozzászólás szerzője
+			if ( $_SESSION['userID'] == $adat['uId'])
+			{
+				$jog = 1; // Szerkesztési jogát visszadajuk
+			}
+		} // egyéb esetben a felhasználó mod/admin, van joga szerkeszteni
+ 
+		if ( $jog == 0 )
+		{
+			SetTitle("Nincs privilégium");
+			Hibauzenet("ERROR", "Nincs jogod a hozzászólás szerkesztéséhez, vagy a téma le van zárva");
+		} else {
+		
+		if ( $_POST['submit'] == "Hozzászólás szerkesztése")
+		{
+			SetTitle("Hozzászólás szerkesztése");
+			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "news_comments SET text='" .$_POST['post']. "' WHERE id='" .$_POST['cid']. "'"); // Hozzászólás frissítése, szerkesztési adatok hozzáírása
+			
+			$adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."news_comments WHERE id='" .$_POST['cid']. "'")); // Hozzászólás adatainak bekérése
+			
+			// Szerkesztés
+			print("<div class='messagebox'>Hozzászólás sikeresen szerkesztve!<br><a href='news.php?id=" .$adat['nId']. "&action=view'>Vissza a hírhez</a>");
+			
+			DoFooter();
+			die(); // A többi kód ne fusson le
+		}
+		SetTitle("Hozzászólás szerkesztése");
+		// Hozzászólás, és fórum kiírása
+		print("<h1><center><p class='header'>Hozzászólás szerkesztése</p></center></h1>");
+		$postBody = $adat['text']; // Nyers
+		$postBody = EmoticonParse($postBody); // Hangulatjelek hozzáadása BB-kódként
+		$postBody = HTMLDestroy($postBody); // HTML kódok nélkül 
+		$postBody = BBDecode($postBody); // BB kódok átalakítása HTML-kóddá (hangulatjeleket képpé)
+	
+		print("<div class='post'>"); // Fejléc
+		print("<div class='postbody'>");
+		print("<div class='content'>" .$postBody. "</div></div>"); // Hozzászólás
+		print("<div class='postright'>Hozzászólás időpontja: <b>" .Datum("normal","kisbetu","dL","H","i","s",$adat['pDate']). "</b><p><b>" .$adat2['username']. "</b><br>Rang: " .$usrRang. "<br>Hozzászólások: " .$adat2['postCount']. "<br>"); // Hozzászólás adatai (hozzászóló, stb.)
+		print("Csatlakozott: " .Datum("normal","m","d","H","i","", $adat2['regdate']). ""); // Hozzászóló adatai
+		print("</div></div>"); // Hozzászólás vége
+	
+		print("<br style='clear: both'>
+		<form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
+			<span class='formHeader'>Hozzászólás szerkesztése</span>
+			<div class='postbox'><p class='formText'>Hozzászólás:<br>
+			<textarea rows='20' name='post' cols='70'>" .$adat['text']. "</textarea></div>
+			<div class='postright'>"); // Bal oldali rész
+			print("<a href='/themes/" .THEME_NAME. "/emoticons.php' onClick=\"window.open('/themes/" .THEME_NAME. "/emoticons.php', 'popupwindow', 'width=192,heigh=600,scrollbars=yes'); return false;\">Hangulatjelek</a>
+			<a href='/includes/help.php?cmd=BB' onClick=\"window.open('includes/help.php?cmd=BB', 'popupwindow', 'width=960,height=750,scrollbars=yes'); return false;\">BB-kódok</a>"); // Emoticon, BB-kód ablak
+			print("</div>
+			<input type='hidden' name='action' value='cedit'>
+			<input type='hidden' name='cid' value='" .$adat['id']. "'>
+			<fieldset class='submit-buttons'>
+				<input type='submit' name='submit' value='Hozzászólás szerkesztése'>
+			</fieldset>
+			</form><br>");
+		}
+		
+		break;
+	
 	case "newentry": // Új hír beküldése
 		print("<form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
 			<span class='formHeader'>Új hír beküldése</span>
