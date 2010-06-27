@@ -94,7 +94,7 @@
 			
 			if ( ($_SESSION['userLevel'] == 2) || ($_SESSION['userLevel'] == 3) ||  ($_SESSION['userID'] == $sor['uId']) )
 			{ // Csak moderátor, admin, valamint a hozzászólás beküldője tudja szerkeszteni, törölni a hozzászólást
-				print("\t<a href='news.php?cid=" .$sor['id']. "&action=cedit'><img src='/themes/" .THEME_NAME. "/edit_post_icon.gif' alt='Hozzászólás szerkesztése' border='0'></a>\t<a href='news.php?cid=" .$sor['id']. "&cmd=cdelete'><img src='/themes/" .THEME_NAME. "/icon_delete_post.jpg' alt='Hozzászólás törlése' border='0'></a>");
+				print("\t<a href='news.php?cid=" .$sor['id']. "&action=cedit'><img src='/themes/" .THEME_NAME. "/edit_post_icon.gif' alt='Hozzászólás szerkesztése' border='0'></a>\t<a href='news.php?cid=" .$sor['id']. "&action=cdelete'><img src='/themes/" .THEME_NAME. "/icon_delete_post.jpg' alt='Hozzászólás törlése' border='0'></a>");
 			}
 			
 			print("<div class='content'>" .$comBody. "</div></div><div class='postright'>");
@@ -155,7 +155,7 @@
 			SetTitle("Hozzászólás beküldve");
 			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."news_comments(nId, uId, text, postDate) VALUES
 				(" .$_POST['id']. ", " .$_SESSION['userID']. ", '" .$_POST['post']. "', " .time(). ")");
-			print("<div class='messagebox'>Hozzászólás sikeresen beküldve<br><a href='news.php?id=" .$_POST['id']. "&action=view'><< Vissza a hírehez</a></div>");
+			print("<div class='messagebox'>Hozzászólás sikeresen beküldve<br><a href='news.php?id=" .$_POST['id']. "&action=view'><< Vissza a hírhez</a></div>");
 		}
 		
 		break;
@@ -232,7 +232,38 @@
 		}
 		
 		break;
-	
+	case "cdelete": // Hozzászólás törlése
+		SetTitle("Hozzászólás törlése");
+		/* Inicializációs rész */
+		$jog = 1; // Induljunk ki abból, hogy van jogunk szerkeszteni a hozzászólást
+		
+		$getid = $_GET['cid']; // Hozzászólás azonosítója
+		
+		$adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."news_comments WHERE id='" .$getid. "'")); // Hozzászólás adatainak bekérése
+ 
+		if ( ($_SESSION['userLevel'] == 0) || ( $_SESSION['userLevel'] == 1) )
+		{
+			$jog = 0; // Ha a felhasználó userszintje 0 (vendég) vagy 1 (felhasználó), nincs joga szerkeszteni
+		} // egyéb esetben a felhasználó mod/admin, van joga szerkeszteni
+ 
+		if ( $jog == 0 )
+		{
+			SetTitle("Nincs privilégium");
+			Hibauzenet("ERROR", "Nincs jogod a hozzászólás szerkesztéséhez, vagy a téma le van zárva");
+		} else {
+			SetTitle("Hozzászólás törölve");
+			$adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."news_comments WHERE id='" .$getid. "'")); // Hozzászólás adatainak bekérése
+			
+			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."news_comments WHERE id='" .$getid. "'"); // Törlés
+			
+			print("<div class='messagebox'>Hozzászólás sikeresen törölve!<br><a href='news.php?id=" .$adat['nId']. "&action=view'>Vissza a hírhez</a>"); // Visszatérési link (az $adat előbb jött létre, ezért nem zavar be a törlés)
+			
+			// A többi kód ne fusson le
+			DoFooter();
+			die();
+		}
+		
+		break;
 	case "newentry": // Új hír beküldése
 		SetTitle("Új hír beküldése");
 		print("<form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
