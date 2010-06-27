@@ -9,7 +9,6 @@
  
  include('includes/common.php'); // Betöltjük a portálrendszer alapscriptjeit (common.php elvégzi)
  Inicialize('news.php');
- SetTitle("Hírek");
  
   if ( $_POST['action'] != $NULL )
  {
@@ -32,6 +31,7 @@
 	// Ha a beérkező parancs üres, vagy nincs beérkező parancs
 	case $NULL:
 	case "":
+		SetTitle("Hírek");
 		// Kislisttázuk a híreket, mindegyiket, azonban mindig csak az első három bekezdést
 		if ( ($_SESSION['userLevel'] == 2) || ($_SESSION['userLevel'] == 3) )
 			print("<a href='news.php?action=newentry'>Hír beküldése</a><br>"); // Hír beküldése link, ha a felhasználó moderátor/admin
@@ -62,6 +62,7 @@
 		
 		// Bekérjük az aktuális hír adatait (ezt rögtön tömbbé is tömörítjük)
 		$hir = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."news WHERE id='" .$_GET['id']. "'"));
+		SetTitle($hir['title']);
 		
 		// Ha nem létezik ilyen hír, szintén hibaüzenetet generálunk
 		if ( $hir == FALSE )
@@ -93,7 +94,7 @@
 			
 			if ( ($_SESSION['userLevel'] == 2) || ($_SESSION['userLevel'] == 3) ||  ($_SESSION['userID'] == $sor['uId']) )
 			{ // Csak moderátor, admin, valamint a hozzászólás beküldője tudja szerkeszteni, törölni a hozzászólást
-				print("\t<a href='news.php?cid=" .$sor['id']. "&action=cedit'><img src='/themes/" .THEME_NAME. "/edit_post_icon.gif' alt='Hozzászólás szerkesztése' border='0'></a>");
+				print("\t<a href='news.php?cid=" .$sor['id']. "&action=cedit'><img src='/themes/" .THEME_NAME. "/edit_post_icon.gif' alt='Hozzászólás szerkesztése' border='0'></a>\t<a href='news.php?cid=" .$sor['id']. "&cmd=cdelete'><img src='/themes/" .THEME_NAME. "/icon_delete_post.jpg' alt='Hozzászólás törlése' border='0'></a>");
 			}
 			
 			print("<div class='content'>" .$comBody. "</div></div><div class='postright'>");
@@ -127,6 +128,7 @@
 		{
 			// A felhasználó nem küldhet hozzászólást
 		} else {
+			SetTitle("Hozzászólás beküldése");
 			print("<br style='clear:both'><form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
 			<span class='formHeader'>Új hozzászólás beküldése</span>
 			<div class='postbox'><p class='formText'>Hozzászólás:<br>
@@ -150,6 +152,7 @@
 		{
 			Hibauzenet("ERROR", "Nem küldhető üres hozzászólás, vagy a hozzászólásod egy nem létező hírhez küldted");
 		} else {
+			SetTitle("Hozzászólás beküldve");
 			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."news_comments(nId, uId, text, postDate) VALUES
 				(" .$_POST['id']. ", " .$_SESSION['userID']. ", '" .$_POST['post']. "', " .time(). ")");
 			print("<div class='messagebox'>Hozzászólás sikeresen beküldve<br><a href='news.php?id=" .$_POST['id']. "&action=view'><< Vissza a hírehez</a></div>");
@@ -157,7 +160,8 @@
 		
 		break;
 	
-	case "cedit": // Hozzászólás beküldése
+	case "cedit": // Hozzászólás szerkesztése
+		SetTitle("Hozzászólás szerkesztése");
 		/* Inicializációs rész */
 		$jog = 1; // Induljunk ki abból, hogy van jogunk szerkeszteni a hozzászólást
 		
@@ -230,6 +234,7 @@
 		break;
 	
 	case "newentry": // Új hír beküldése
+		SetTitle("Új hír beküldése");
 		print("<form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
 			<span class='formHeader'>Új hír beküldése</span>
 			<p class='formText'>Cím: <input type='text' name='title' size='70' value='" .$_POST['title']. "'></p>
@@ -247,6 +252,7 @@
 		break;
 	
 	case "postentry": // Beküldött hír tárolása
+		SetTitle("Hír beküldve");
 		if ( ($_POST['title'] != "") && ($_POST['post'] != "") )
 		{
 			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."news(title, text, postDate, uId) VALUES ('" .$_POST['title']. "', '" .$_POST['post']. "', " .time(). ", " .$_SESSION['userID']. ")");
