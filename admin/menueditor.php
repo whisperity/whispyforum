@@ -108,7 +108,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 				die("<div class='messagebox'>A modul sikeresen szerkesztve!<br><a href='admin.php?site=menueditor'>Vissza a menüszerkesztőhöz</a></td><td class='right' valign='top'>");
 			}
 			$sor = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."modules WHERE id='" .$_GET['id']. "'"));
-			var_dump($sor);
+			
 			print("<form method='POST' action='" .$_SEVER['PHP_SELF']. "'>
 		<span class='formHeader'>Modul szerkesztése: " .$sor['name']. "</span><br>
 		<p class='formText'>Címsor: <input type='text' name='name' value='" .$sor['name']. "'><br>
