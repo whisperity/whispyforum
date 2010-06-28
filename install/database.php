@@ -67,6 +67,7 @@
   `menuId` int(10) NOT NULL,
   `text` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `href` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `hOrder` INT(5) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Menüelemek
  WOut('tabla', 'menuitems');
@@ -145,7 +146,7 @@
  
  /* Kezdeti adatok */
  /* Modulok */
- $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name,type,side) VALUES('Főmenü','menu','1')", 'INSTALL'); // Főmenü
+ $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name,type,side, hOrder) VALUES('Főmenü','menu','1', 0)", 'INSTALL'); // Főmenü
  WOut('sor', 'modules', 'Főmenü');
  
  /* Menüelemek */
