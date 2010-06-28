@@ -65,10 +65,12 @@
  /* Admin menü linkek */
  print("<div class='menubox'>
 		<span class='menutitle'><a class='menuitem' href='admin.php'>Adminisztrátori vezérlőpult</a></span><br><br>");
-		
+	
 	MenuItem("addforum", "Fórum hozzáadása");
 	MenuItem("log", "Webhelynapló megtekintése");
 	MenuItem("installlog", "Telepítési napló megtekintése");
+	MenuItem("menueditor", "Menüszerkesztő");
+	
 	print("
 	<br><a class='menuItem' href='includes/help.php' onClick=\"window.open('includes/help.php?cmd=adminTools', 'popupwindow', 'width=800,height=600,resize=no,scrollbars=yes'); return false;\">Súgó megjelenítése</a><br>
 		<a class='menuItem' href='index.php'>Visszatérés a kezdőlapra</a>
