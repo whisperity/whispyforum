@@ -73,6 +73,7 @@ function Inicialize ( $pagename )
  
  /* INICIALIZÁLÁS */
  $sql->Connect(); // Csatlakozás az adatbázisszerverhez
+ CheckIfIPBanned(); // Megnézzük, hogy a felhasználó IP-címe bannolva van-e
  $user->GetUserData(); // Felhasználó adatainak frissítése
  WriteLog("PAGE_VIEW", $pagename. ',' .$_SERVER['REMOTE_ADDR']. ',' .$_SERVER['HTTP_USER_AGENT']. ',' .$_SESSION['username']. ',' .$_SESSION['userLevelTXT']);
  
@@ -120,5 +121,31 @@ global $cfg; // Konfigurációs tömb
 	// Ellenkező esetben, ha van
 	print("<title>" .$fejlec. " - " .$cfg['pname']. "</title>"); // Weblap neve - weblap címe
  }
+}
+
+function CheckIfIPBanned() // IP-cím ban ellenörzése
+{
+	global $sql, $cfg;
+	
+	$ipbanok = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."bannedips WHERE ip='" .$_SERVER['REMOTE_ADDR']. "'"));
+	
+	if ( $ipbanok['ip'] == $_SERVER['REMOTE_ADDR'] )
+	{
+		// Ha van IP tiltás az aktuális címen, akkor nem engedélyezzük a felhasználónak a hozzáférést
+		$felhasznalo = mysql_fetch_assoc($sql->Lekerdezes("SELECT username FROM " .$cfg['tbprf']."user WHERE id='" .$ipbanok['uId']. "'"));
+		if ( ($felhasznalo['username'] != $NULL) || ($ipbanok['comment'] != $NULL) )
+			$kitiltasuzenet = "<br>"; // Ha tudjuk a kiltitó felhasználó nevét, vagy van komment, már egy új sor kerül az üzenetbe
+		
+		if ( $felhasznalo['username'] != $NULL )
+			$kitiltasuzenet .= "Kitiltó felhasználó neve: " .$felhasznalo['username']. "<br>"; // Felhasználó nevének kiírása
+		
+		if ( $ipbanok['comment'] != $NULL )
+			$kitiltasuzenet .= "Hozzászólás: " .$ipbanok['comment'];
+		
+		print("<center><table><tr halign='center' valign='center'><td>");
+		Hibauzenet("BAN", "Az IP címed (" .$_SERVER['REMOTE_ADDR']. ") ki lett tiltva a webhelyről!", "A kitiltás időpontja: " .Datum("normal", "kisbetu", "dL", "H", "i", "s", $ipbanok['bandate']).$kitiltasuzenet); // Hibaüzenet megjelenítése (szükség esetén felhasználónévvel és/vagy kommenttel)
+		print("</td></tr></table></center>");
+		die();
+	}
 }
 ?>

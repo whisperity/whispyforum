@@ -208,6 +208,9 @@ function Datum( $ev, $honap, $nap, $ora, $perc, $masodperc, $epoch = '' ) // A m
 			case "CRITICAL":
 				$kepnev = 'error.png';
 				break;
+			case "BAN":
+				$kepnev = 'stop_hand.png';
+				break;
 			default:
 				$kepnev = 'x.bmp';
 		}
@@ -218,9 +221,9 @@ function Datum( $ev, $honap, $nap, $ora, $perc, $masodperc, $epoch = '' ) // A m
 		// Beleírjuk az aktuális értéket a naplóba
 		WriteLog($Hmsg['tipus'], $Hmsg['title']. ',' .$Hmsg['desc']. ',' .$Hmsg['fajl']. ',' .$Hmsg['line']);
 		
-		if ($Hmsg['tipus'] == "CRITICAL") // Ha kritikus (CRITICAL) a hiba, a futtatás megakad.
+		//if ($Hmsg['tipus'] == "CRITICAL") // Ha kritikus (CRITICAL) a hiba, a futtatás megakad.
 			//die("A script futtatása megszakítva a következő helyen: <b>" . $Hmsg['fajl'] . "</b> fájl <b>" . $Hmsg['line'] . ".</b> sora.");
-			die("Kritikus hiba miatt a futtatás megszakadt!");
+			//die("Kritikus hiba miatt a futtatás megszakadt!");
 	}
 }
  

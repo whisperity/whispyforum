@@ -138,6 +138,15 @@
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Hírhozzászólások
  WOut('tabla', 'news_comments');
  
+ $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."bannedips (
+  `ip` VARCHAR(16) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0.0.0.0',
+  `bandate` VARCHAR(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `uId` INT(10) NOT NULL DEFAULT '0',
+  `comment` VARCHAR(512) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // IP kitiltások
+ WOut('tabla', 'bannedips');
+
+ 
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."version (
   `RELEASE_TYPE` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `VERSION` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
