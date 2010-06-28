@@ -28,11 +28,10 @@
 	// Emoteicon lista kinyerése a leírófájlból
 	$data2 = @file_get_contents('emotes.lst');
 	$sorok2 = explode("\r\n", $data2);
-	$kepSzam2 = $sorok2[0];
 	
-	for ($j == 1; $j <= $kepSzam2; $j++)
+	foreach ($sorok2 as &$sor)
 	{
-		$kep2 = explode(",", $sorok2[$j]);
+		$kep2 = explode(",", $sor);
 		
 		if ( $kep2[0] != "")
 			RajzSmile($kep2[0], $kep2[1]);

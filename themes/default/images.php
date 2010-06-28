@@ -48,11 +48,10 @@ header('Content-type: text/html; charset=iso-8859-2'); // Szükséges
 	// Képlista kinyerése a leírófájlból
 	$data = @file_get_contents('images.lst');
 	$sorok = explode("\r\n", $data);
-	$kepSzam = $sorok[0];
 	
-	for ($i == 1; $i <= $kepSzam; $i++)
+	foreach ($sorok as &$sor)
 	{
-		$kep = explode(",", $sorok[$i]);
+		$kep = explode(",", $sor);
 		
 		if ( $kep[0] != "")
 			RajzKep($i, $kep[0], $kep[1]);
