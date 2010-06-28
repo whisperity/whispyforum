@@ -45,7 +45,7 @@ class templates // Osztálydeklaráció
 		
 		print("<div class='menubox'><span class='menutitle'>" .$menuName. "</span><br><p>"); // Menü fejléc
 		
-		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."menuItems WHERE menuId='" .$id. "'");
+		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."menuItems WHERE menuId='" .$id. "' ORDER BY hOrder");
 		
 		while ($sor = mysql_fetch_array($adat, MYSQL_ASSOC)) {
 			$http = explode('://', $sor['href']);

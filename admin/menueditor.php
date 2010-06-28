@@ -89,11 +89,74 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		break;
 	
 	case "viewitems": // Menüelemek megtekintése
+		$menuNev = mysql_fetch_assoc($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."modules WHERE id='" .$_GET['id']. "'"));
+		print("A <b>" .$menuNev['name']. "</b> menü elemeinek szerkesztése.<br><br><div class='userbox'><table border='0' cellspacing='1' cellpadding='1'>
+			<tr>
+				<th>id</th>
+				<th>Függőleges elhelyezkedés</th>
+				<th>Név</th>
+				<th>Hivatkozás</th>				
+			</tr>");
 		
+		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."menuitems WHERE menuId='" .$_GET['id']. "' ORDER BY hOrder");
+		while ( $sor = mysql_fetch_assoc($adat) )
+		{
+			$menuNev = mysql_fetch_assoc($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."modules WHERE id='" .$sor['menuId']. "'"));
+			print("<tr>
+				<td>" .$sor['id']. "</td>
+				<td>" .$sor['hOrder']. "</td>
+				<td>" .$sor['text']. "</td>
+				<td>" .$sor['href']. "</td>
+				<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+				<input type='hidden' name='site' value='menueditor'>
+				<input type='hidden' name='action' value='itemedit'>
+				<input type='hidden' name='id' value='" .$sor['id']. "'>
+				<input type='submit' value='Szerkesztés'>
+			</form></td>
+					
+			</tr>");	
+		}
+		
+		print("</table></div>");
 		break;
 		
 	case "itemedit": // Menüelem szerkesztése
-	
+		if ( $_GET['id'] == $NULL )
+		{
+			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
+		} else {
+			if ( $_POST['parancs'] == "Szerkeszt" )
+			{
+				// A menü szerkesztésének mentése
+				
+				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."menuitems SET text='" .$_POST['text']. "', href='" .$_POST['href']. "', hOrder='" .$_POST['hOrder']. "' WHERE id='" .$_POST['id']. "'");
+				die("<div class='messagebox'>A menüelem sikeresen szerkesztve!<br><a href='admin.php?site=menueditor'>Vissza a menüszerkesztőhöz</a></td><td class='right' valign='top'>");
+			}
+			$sor = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."menuitems WHERE id='" .$_GET['id']. "'"));
+			$sor3 = mysql_fetch_assoc($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."modules WHERE id='" .$sor['menuId']. "'"));
+			print("<form method='POST' action='" .$_SEVER['PHP_SELF']. "'>
+		<span class='formHeader'>Menüelem szerkesztése (" .$sor3['name']. ")</span><br>
+		<p class='formText'>Címsor: <input type='text' name='text' value='" .$sor['text']. "'><br>
+		Hivatkozás<a class='feature-extra'><span class='hover'><span class='h3'>Hivatkozás</span><b>Belső hivatkozásnál:</b> A menüelem hivatkozása a weboldal gyökeréhez (" .$cfg['phost']. "/) képest (pl. a kezdőlaphoz <i>index.php</i>).<br><b>Külső hivatkozásnál:</b> A teljes link, a bevezető <b>http://</b>-rel is (pl. <i>http://google.com</i>)</span><sup>?</sup></a>: 
+		<input type='text' name='href' value='" .$sor['href']. "'><br>
+		Függőleges elhelyezkedés: <input type='text' name='hOrder' value='" .$sor['hOrder']. "' size='3'>\t\t");
+		
+		/* Egy listába tesszük a szerkesztett modullal megegyező oldalon lévő modulokat (hOrder példa) */
+		$oldalmenuk = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."menuitems WHERE menuId='" .$sor['menuId']. "' ORDER BY hOrder");
+		$oldalmenuk_szam = mysql_num_rows($oldalmenuk);
+		
+		print("<br><select size='" .($oldalmenuk_szam+2). "' disabled>");
+		while ( $sor2 = mysql_fetch_assoc($oldalmenuk) )
+			print("<option>" .$sor2['hOrder'].". " .$sor2['text']. "</option>");
+		
+		/* Form zárása */
+		print("</select><a class='feature-extra'><span class='hover'><span class='h3'>Menüoszlop</span>Ez a kis lista vázlatban tartalmazza a megadott menüben található elemeket a függőleges helyzetük (sorszámuk) azonosítójával. A doboz segítségével egy vázlat tekinthető meg a függőleges helyzetek szerint rendezett (<b>mint ahogy az oldalon megjelenik</b>) menüelemekről, a szerkesztés <b>előtt</b>i állapotból.</span><sup>?</sup></a></p><input type='hidden' name='id' value='" .$sor['id']. "'>
+		<input type='hidden' name='action' value='itemedit'>
+		<input type='hidden' name='site' value='menueditor'>
+		<input type='submit' name='parancs' value='Szerkeszt'>
+		</form>");
+		}
+		break;
 		break;
 	case "edit": // Szerkesztés
 		if ( $_GET['id'] == $NULL )
@@ -144,7 +207,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		if ( $sor['side'] == 2)
 			print("jobb");
 		
-		print(" oldalon lévő modulokat a függőleges helyzetük (sorszámuk) azonosítójával. A doboz segítségével  egy vázlat tekinthető meg a függőleges helyzetek szerint rendezett (<b>mint ahogy az oldalon megjelenik</b>) modulokról, a szerkesztés <b>előtt</b>i állapotból.</span><sup>?</sup></a></p><input type='hidden' name='id' value='" .$sor['id']. "'>
+		print(" oldalon lévő modulokat a függőleges helyzetük (sorszámuk) azonosítójával. A doboz segítségével egy vázlat tekinthető meg a függőleges helyzetek szerint rendezett (<b>mint ahogy az oldalon megjelenik</b>) modulokról, a szerkesztés <b>előtt</b>i állapotból.</span><sup>?</sup></a></p><input type='hidden' name='id' value='" .$sor['id']. "'>
 		<input type='hidden' name='action' value='edit'>
 		<input type='hidden' name='site' value='menueditor'>
 		<input type='submit' name='parancs' value='Szerkeszt'>

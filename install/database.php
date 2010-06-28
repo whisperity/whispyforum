@@ -58,6 +58,7 @@
   `name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `type` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `side` tinyint(1) NOT NULL DEFAULT '1',
+  `hOrder` INT(5) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Modulok
  WOut('tabla', 'modules');
@@ -150,10 +151,10 @@
  WOut('sor', 'modules', 'Főmenü');
  
  /* Menüelemek */
- $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."menuitems(menuId, text, href) VALUES
-	('1','Kezdőlap','index.php'),
-	('1','Hírek','news.php'),
-	('1','Fórum','viewforum.php'),
+ $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."menuitems(menuId, text, href, hOrder) VALUES
+	('1','Kezdőlap','index.php', 1),
+	('1','Hírek','news.php', 2),
+	('1','Fórum','viewforum.php', 3),
 	('1','Google keresés','http://google.hu')", 'INSTALL'); // Főmenü elemei
  WOut('sor', 'menuitems', 'Főmenü/Kezdőlap');
  WOut('sor', 'menuitems', 'Főmenü/Fórum');
