@@ -168,7 +168,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 				// A menü szerkesztésének mentése
 				
 				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."modules SET name='" .$_POST['name']. "', type='" .$_POST['type']. "', side='" .$_POST['side']. "', hOrder='" .$_POST['hOrder']. "' WHERE id='" .$_POST['id']. "'");
-				die("<div class='messagebox'>A modul sikeresen szerkesztve!<br><a href='admin.php?site=menueditor'>Vissza a menüszerkesztőhöz</a></td><td class='right' valign='top'>");
+				die("<div class='messagebox'>A modul sikeresen szerkesztve!<br><a href='admin.php?site=menueditor'>Vissza a menüszerkesztőhöz</a></div></td><td class='right' valign='top'>");
 			}
 			$sor = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."modules WHERE id='" .$_GET['id']. "'"));
 			
