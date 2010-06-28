@@ -38,29 +38,35 @@
 	die();
  }
  
- function MenuItem($modulnev, $szoveg)
+ function MenuItem($modulnev, $szoveg, $tipus = 'HREF')
  {
 	// Menüelem létrehozása
 	// (ha az aktuálisan megnyitott modul a kívánt elem, nem csináljuk linnké, hanem egy pöttyöt (•) teszünk elé
 	//  ha nem, linket készítünk)
 	global $website;
 	
-	if ( $website == $modulnev )
+	switch ($tipus)
 	{
-		print("<a class='menuItem'>• " .$szoveg. "</a><br>");
-	} else {
-		print("<a class='menuItem' href='admin.php?site=" .$modulnev. "'>" .$szoveg. "</a><br>");
+		case 'HREF':
+			if ( $website == $modulnev )
+			{
+				print("<a class='menuItem'>• " .$szoveg. "</a><br>");
+			} else {
+				print("<a class='menuItem' href='admin.php?site=" .$modulnev. "'>" .$szoveg. "</a><br>");
+			}
+			
+			break;
+		case 'TITLE':
+			print("<h3 class='postheader'><p class='header'>" .$szoveg. "</p></h3>");
+			break;
 	}
  }
  
  /* Admin menü linkek */
  print("<div class='menubox'>
-		<span class='menutitle'><a class='menuitem' href='admin.php'>Adminisztrátori vezérlőpult</a></span>
+		<span class='menutitle'><a class='menuitem' href='admin.php'>Adminisztrátori vezérlőpult</a></span><br><br>");
 		
-		<h3 class='postheader'><p class='header'>Fórum</p></h3>");
 	MenuItem("addforum", "Fórum hozzáadása");
-		
-		print("<h3 class='postheader'><p class='header'>Naplózás</p></h3>");
 	MenuItem("log", "Webhelynapló megtekintése");
 	MenuItem("installlog", "Telepítési napló megtekintése");
 	print("
@@ -83,6 +89,10 @@
 	case 'installlog':
 		$admin = TRUE;
 		include("admin/installlog.php");
+		break;
+	case 'menueditor':
+		$admin = TRUE;
+		include("admin/menueditor.php");
 		break;
 	default:
 		print("<center><h2 class='header'>Adminisztrátori vezérlőpult</h2></center>
