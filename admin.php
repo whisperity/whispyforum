@@ -66,10 +66,11 @@
  print("<div class='menubox'>
 		<span class='menutitle'><a class='menuitem' href='admin.php'>Adminisztrátori vezérlőpult</a></span><br><br>");
 	
+	MenuItem("menueditor", "Menüszerkesztő");
 	MenuItem("addforum", "Fórum hozzáadása");
 	MenuItem("log", "Webhelynapló megtekintése");
 	MenuItem("installlog", "Telepítési napló megtekintése");
-	MenuItem("menueditor", "Menüszerkesztő");
+	MenuItem("banip", "IP-cím alapú kitiltások kezelése");
 	
 	print("
 	<br><a class='menuItem' href='includes/help.php' onClick=\"window.open('includes/help.php?cmd=adminTools', 'popupwindow', 'width=800,height=600,resize=no,scrollbars=yes'); return false;\">Súgó megjelenítése</a><br>
@@ -80,6 +81,10 @@
  <td class='center' valign='top'>"); // Bal oldali doboz lezárása, középső doboz nyitása
  switch ( $website ) // Az érkező SITE paraméter alapján megválogatjuk a beillesztendő weboldalat
  {
+	case 'menueditor':
+		$admin = TRUE;
+		include("admin/menueditor.php");
+		break;
 	case 'addforum':
 		$admin = TRUE;
 		include("admin/addforum.php");
@@ -92,9 +97,9 @@
 		$admin = TRUE;
 		include("admin/installlog.php");
 		break;
-	case 'menueditor':
+	case 'banip':
 		$admin = TRUE;
-		include("admin/menueditor.php");
+		include("admin/banip.php");
 		break;
 	default:
 		print("<center><h2 class='header'>Adminisztrátori vezérlőpult</h2></center>

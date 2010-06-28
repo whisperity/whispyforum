@@ -139,6 +139,7 @@
  WOut('tabla', 'news_comments');
  
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."bannedips (
+  `id` INT(10) NOT NULL AUTO_INCREMENT,
   `ip` VARCHAR(16) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0.0.0.0',
   `bandate` VARCHAR(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `uId` INT(10) NOT NULL DEFAULT '0',
