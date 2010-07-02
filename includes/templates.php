@@ -62,8 +62,29 @@ class templates // Osztálydeklaráció
 	}
 }
 
- // Létrehozzuk a globális $user változót
+class addons // Addonkezelő osztály
+{
+	function LoadAddons() // Addonok betöltése
+	{
+		global $cfg, $sql;
+		// Az addonok betöltéséhez használjuk az addonokhoz mellékelt INCLUDES.PHP listafájlt
+		// Ez néhány esetben hiányozhat, ezért hiánya esetén nem jelenítünk meg hibaüzenetet
+		
+		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons");
+		while ( $sor = mysql_fetch_assoc($adat) )
+		{
+			@include_once("addons/" .$sor['subdir']. "/includes.php");
+		}
+	}
+}
+
+ // Létrehozzuk a globális $templates változót
  // mellyel meghívhatjuk az osztály függvényeit
  global $templates;
  $templates = new templates();
+ 
+ // Létrehozzuk a globális $addons változót
+ // mellyel meghívhatjuk az osztály függvényeit
+ global $addons;
+ $addons = new addons();
 ?>

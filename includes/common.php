@@ -86,6 +86,7 @@ function Inicialize ( $pagename )
 
  if ($pagename != "admin.php") // Az admin.php-n ezeknek NEM kell megjelenniük
  {
+	$addons->LoadAddons(); // Addonok betöltése
 	Fejlec(); // Fejléc
 	
 	print("<td class='left' valign='top'>"); // Bal odali doboz

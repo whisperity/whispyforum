@@ -147,6 +147,16 @@
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // IP kitiltások
  WOut('tabla', 'bannedips');
 
+ $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."addons (
+  `id` INT(10) NOT NULL AUTO_INCREMENT,
+  `subdir` VARCHAR(128) COLLATE utf8_unicode_ci NOT NULL,
+  `name` VARCHAR(256) COLLATE utf8_unicode_ci NOT NULL,
+  `descr` TEXT COLLATE utf8_unicode_ci NOT NULL,
+  `author` VARCHAR(128) COLLATE utf8_unicode_ci NOT NULL,
+  `authoremail` VARCHAR(128) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Addonok
+ WOut('tabla', 'addons');
  
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."version (
   `RELEASE_TYPE` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
@@ -195,6 +205,10 @@
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."news_comments(nId, uId, text, postDate) VALUES
 	(1, 1, 'Első hírhozzászólás', " .time(). ")", 'INSTALL'); // Első hírhozzászólás
  WOut('sor', 'news_comments', 'Első hírhozzászólás');
+ 
+ /* Addonok */
+ $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."addons(subdir, name, descr, author, authoremail) VALUES ('sample', 'Példa addon', 'Példa addon az addonok működésének bemutatására', 'whisperity', 'whisperity@gmail.com')");
+ WOut('sor', 'addons', 'Példa addon');
  
  /* Verzióadatok */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."version (RELEASE_TYPE, VERSION, RELEASE_DATE) VALUES ('" .RELEASE_TYPE. "', '" .VERSION. "', '" .RELEASE_DATE. "')", 'INSTALL'); // Verzióadatok

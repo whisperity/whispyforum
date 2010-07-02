@@ -72,6 +72,9 @@
 	MenuItem("installlog", "Telepítési napló megtekintése");
 	MenuItem("banip", "IP-cím alapú kitiltások kezelése");
 	
+	MenuItem("", "Addonok", 'TITLE');
+	MenuItem("addons", "Addonok kezelése");
+	
 	print("
 	<br><a class='menuItem' href='includes/help.php' onClick=\"window.open('includes/help.php?cmd=adminTools', 'popupwindow', 'width=800,height=600,resize=no,scrollbars=yes'); return false;\">Súgó megjelenítése</a><br>
 		<a class='menuItem' href='index.php'>Visszatérés a kezdőlapra</a>
@@ -100,6 +103,10 @@
 	case 'banip':
 		$admin = TRUE;
 		include("admin/banip.php");
+		break;
+	case 'addons':
+		$admin = TRUE;
+		include("admin/addons.php");
 		break;
 	default:
 		print("<center><h2 class='header'>Adminisztrátori vezérlőpult</h2></center>
