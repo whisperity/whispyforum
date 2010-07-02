@@ -19,7 +19,9 @@ class templates // Osztálydeklaráció
 				case 'menu': // Ha menü
 					$this->Menu($sor['id'], $sor['name']);
 					break;
-				
+				case 'addonmodule': // Ha egy addon egy modulja
+					$this->LoadAddonModule($sor['id'], $sor['name']);
+					break;
 			}
 		}
 	}
@@ -34,7 +36,9 @@ class templates // Osztálydeklaráció
 				case 'menu': // Ha menü
 					$this->Menu($sor['id'], $sor['name']);
 					break;
-				
+				case 'addonmodule': // Ha egy addon egy modulja
+					$this->LoadAddonModule($sor['id'], $sor['name']);
+					break;
 			}
 		}
 	}
@@ -59,6 +63,14 @@ class templates // Osztálydeklaráció
 		}
 		
 		print("</p></div><br>"); // Doboz lezárása
+	}
+	
+	function LoadAddonModule($id, $name) // Addonmodul betöltése
+	{
+		global $cfg, $sql;
+		
+		include("addons/" .$name);
+		
 	}
 }
 

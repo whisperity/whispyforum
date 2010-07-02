@@ -167,8 +167,11 @@
  
  /* Kezdeti adatok */
  /* Modulok */
- $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name,type,side, hOrder) VALUES('Főmenü','menu','1', 0)", 'INSTALL'); // Főmenü
+ $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name,type,side, hOrder) VALUES
+	('Főmenü','menu','1', 0),
+	('sample/samplemodule.php', 'addonmodule', '1', 1)", 'INSTALL'); // Főmenü
  WOut('sor', 'modules', 'Főmenü');
+ WOut('sor', 'modules', 'sample/samplemodule.php addon-module');
  
  /* Menüelemek */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."menuitems(menuId, text, href, hOrder) VALUES
