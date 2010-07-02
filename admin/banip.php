@@ -85,7 +85,7 @@ if ( $_POST['action'] != $NULL )
 		if ( $_POST['ip'] == $NULL )
 		{
 			print("<form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
-			<p class='formText'>Kitltandó személy IP címe<a class='feature-extra'><span class='hover'><span class='h3'><center><span class='star'>*</span> Kötelezően kitöltendő mező <span class='star'>*</span></center></span>Ezt a mezőt kötelező kitölteni, kitöltése nélkül az űrlap érvénytelenül lesz beadva.</span><span class='star'>*</span></a><a class='feature-extra'><span class='hover'><span class='h3'>IP-cím</span>A kitiltandó IP-cím. Alapesetben a jelenlegi IP-címed tartalmazza, de saját magad nem tilthatod ki.</span><sup>?</sup></a: <input type='text' name='ip' size='18' value='" .$_SERVER['REMOTE_ADDR']. "'><br>
+			<p class='formText'>Kitltandó személy IP címe<a class='feature-extra'><span class='hover'><span class='h3'><center><span class='star'>*</span> Kötelezően kitöltendő mező <span class='star'>*</span></center></span>Ezt a mezőt kötelező kitölteni, kitöltése nélkül az űrlap érvénytelenül lesz beadva.</span><span class='star'>*</span></a><a class='feature-extra'><span class='hover'><span class='h3'>IP-cím</span>A kitiltandó IP-cím. Alapesetben a jelenlegi IP-címed tartalmazza, de saját magad nem tilthatod ki.</span><sup>?</sup></a>: <input type='text' name='ip' size='18' value='" .$_SERVER['REMOTE_ADDR']. "'><br>
 			Komment<a class='feature-extra'><span class='hover'><span class='h3'>Komment</span>Maximum <b>512</b> karakter</span><sup>?</sup></a>: <textarea name='comment' rows='3' cols='40'></textarea>
 			<input type='hidden' name='site' value='banip'>
 			<input type='hidden' name='action' value='newban'>
