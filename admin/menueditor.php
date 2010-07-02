@@ -57,7 +57,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 			
 			if ( $sor['type'] == "menu" )
 				print("menü");
-			if ( $sor['type'] == "addonmodule");
+			if ( $sor['type'] == "addonmodule")
 				print("addon-modul");
 			
 			print("</td>
