@@ -6,5 +6,5 @@
 /* /addons/sample/sample.php
    példaaddon fő scriptje
 */
- 
+ print("Példaaddon sikeresen betöltve!");
 ?>

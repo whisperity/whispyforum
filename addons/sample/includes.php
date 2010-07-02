@@ -6,5 +6,5 @@
 /* /addons/sample/includes.php
    példaaddon betöltendő fájlok listája
 */
- 
+ include("sample.php");
 ?>
