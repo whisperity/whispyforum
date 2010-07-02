@@ -69,8 +69,18 @@ class templates // Osztálydeklaráció
 	{
 		global $cfg, $sql;
 		
-		include("addons/" .$name);
+		/* Addon nevének megállapítása ($name mindig /addonsubdir [/almappa/...] /fájl.php) */
+		$pereknelkul = explode('/', $name);
+		$addonneve = $pereknelkul[0];
+		/* Addon telepítettség ellenörzése */
+		$addon = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons WHERE subdir='" .$addonneve. "'"));
 		
+		if ( $addon == FALSE ) // Ha nem található telepítve ez az addon
+		{
+			Hibauzenet("ERROR", "Nem telepített addon modulja kíván betöltődni", "A <i>" .$addonneve. "</i> addon egyik modulja (" .$name. ") lenne ide betöltve, ám ez az addon nincs telepítve!");
+		} else { // Ha az addon létezik, betöltjük a modul kódját
+			include("addons/" .$name);
+		}
 	}
 }
 

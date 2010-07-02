@@ -4,7 +4,7 @@
 */
 
 /* /addons/sample/includes.php
-   példaaddon betöltendő fájlok listája
+   példaaddon betöltendő fájlok listája (függvénytárak, stb...)
 */
  include("sample.php");
 ?>
