@@ -13,7 +13,25 @@ if ( $admin == 1)
 ?>
 <center><h2 class='header'>Addonok</h2></center>
 <?php
-print("<a href=includes/help.php' onClick=\"window.open('includes/help.php?cmd=Addons-admin', 'popupwindow', 'width=800,height=600,resize=no,scrollbars=yes'); return false;\">Súgó megjelenítése</a>");
+
+if ( ($_GET['action'] == "delete") && ($_GET['id'] != $NULL) )
+{
+	/* Addon törlése */
+	$addonsor = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons WHERE id='" .$_GET['id']. "'")); // Addon adatai
+	if ( file_exists("addons/" .$addonsor['subdir']. "/install.php") ) // Ha megtalálható a szerveren az addon telepítőkódja
+	{
+		include("addons/" .$addonsor['subdir']. "/install.php"); // Betöltjük
+		Uninstall(); // És meghívjuk az törlési kódot
+	} else {
+		Hibauzenet("ERROR", "Az addon telepítőfájla nem található", "Az addont kézileg kell eltávolítani!"); // Hibaüzenet megjelenítése
+	}
+	
+	/* A további kódok ne fussanak le */
+	DoFooter();
+	die();
+}
+
+print("Alább megtalálható a portálrendszerbe jelenleg <b>telepített</b> addonok listája. <a href=includes/help.php' onClick=\"window.open('includes/help.php?cmd=Addons-admin', 'popupwindow', 'width=800,height=600,resize=no,scrollbars=yes'); return false;\">Súgó megjelenítése</a>");
 
 $adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons");
 		
@@ -38,6 +56,7 @@ $adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons");
 			}
 			$meret += filesize("addons/" .$sor['subdir']. "/files.lst");
 			$meret += @filesize("addons/" .$sor['subdir']. "/includes.php");
+			$meret += @filesize("addons/" .$sor['subdir']. "/install.php");
 			
 			print("<tr>
 				<td>" .$sor['subdir']. "</td>
@@ -45,10 +64,20 @@ $adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons");
 				<td>" .DecodeSize($meret). "</td>
 				<td><a href='mailto:" .$sor['authoremail']. "'>" .$sor['author']. "</a></td>
 				<td>" .$sor['descr']. "</td>
+				<td><form action='/admin.php' method='GET'>
+				<input type='hidden' name='site' value='addons'>
+				<input type='hidden' name='action' value='delete'>
+				<input type='hidden' name='id' value='" .$sor['id']. "'>
+				<input type='submit' value='Eltávolítás'>
+			</form></td>
 			</tr>");
 		}
 		
-		print("</table>");
+		print("</table><form action='/admin.php' method='GET'>
+				<input type='hidden' name='site' value='addons'>
+				<input type='hidden' name='action' value='install'>
+				<input type='submit' value='Új addon telepítése'>
+			</form>");
 print("</td><td class='right' valign='top'>"); // Középső doboz zárása, jobboldali üres doboz elhelyezése (td.right-ot az admin.php zárja)
 } else {
 	// Ha nem admin menüből hívódik meg, felhasználó átirányítása az admin menübe
