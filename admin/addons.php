@@ -14,6 +14,23 @@ if ( $admin == 1)
 <center><h2 class='header'>Addonok</h2></center>
 <?php
 
+function Addonmeret($addonsubdir)
+{
+	/* Méret kiszámítása */
+	$meret = 0;
+	$addonfajllista = file_get_contents("addons/" .$addonsubdir. "/files.lst");
+	$fajllistasorok = explode("\r\n", $addonfajllista);
+	foreach ($fajllistasorok as &$fsor)
+	{
+		$meret += filesize("addons/" .$addonsubdir. "/" .$fsor);
+	}
+	$meret += filesize("addons/" .$addonsubdir. "/files.lst");
+	$meret += @filesize("addons/" .$addonsubdir. "/includes.php");
+	$meret += @filesize("addons/" .$addonsubdir. "/install.php");
+	
+	return $meret;
+}
+
 if ( ($_GET['action'] == "delete") && ($_GET['id'] != $NULL) )
 {
 	/* Addon törlése */
@@ -24,6 +41,49 @@ if ( ($_GET['action'] == "delete") && ($_GET['id'] != $NULL) )
 		Uninstall(); // És meghívjuk az törlési kódot
 	} else {
 		Hibauzenet("ERROR", "Az addon telepítőfájla nem található", "Az addont kézileg kell eltávolítani!"); // Hibaüzenet megjelenítése
+	}
+	
+	/* A további kódok ne fussanak le */
+	DoFooter();
+	die();
+}
+if ( $_GET['action'] == "install")
+{
+	/* Új addon telepítése */
+	print("Kérlek az új addon telepítése előtt győződj meg róla, hogy van-e biztonsági mentésed. Az addonokat a fejlesztők nem ellenőrzik, ezért előfordulhat, hogy kártékony kódokat tartalmaznak. Csak megfelelő óvintézkedések végrehajtása után kezdj bele egy addon telepítésébe.<br>
+	<form method='POST' action='" .$_SERVER['PHP_SELF']. "'>
+	<p class='formText'>Kérlek írd be a telepítendő addon almappája (" .$cfg['phost']. "/addons/<i>addonmappa</i>) nevét. Ezután betöltődik az addon telepítőscriptje, mely bizonyos esetben kérhet egyéb adatokat!<br><br>
+	Addon almappa neve: <input type='text' name='addonsubdir' size='50'><br>
+	<input type='hidden' name='site' value='addons'>
+	<input type='hidden' name='action' value='install_script'>
+	<input type='submit' value='Telepítés'>
+	</p></form>");
+	
+	/* A további kódok ne fussanak le */
+	DoFooter();
+	die();
+}
+if ( ($_POST['action'] == "install_script") && ( $_POST['addonsubdir'] != $NULL) )
+{
+	/* Addon telepítése */
+	print("<h3 class='header'><p class='header'>Addon telepítése: <span class='star'>/addons/" .$_POST['addonsubdir']. "</span></p></h3>");
+	
+	/* Megnézzük, hogy ez az addon telepítve van-e */
+	$addonsor = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons WHERE subdir='" .$_POST['addonsubdir']. "'"));
+	if ( $addonsor['subdir'] != $NULL )
+	{
+		Hibauzenet("ERROR", "Ez az addon már telepítésre került");
+		/* A további kódok ne fussanak le */
+		DoFooter();
+		die();
+	}
+	
+	if ( file_exists("addons/" .$_POST['addonsubdir']. "/install.php") ) // Ha megtalálható a szerveren az addon telepítőkódja
+	{
+		include("addons/" .$_POST['addonsubdir']. "/install.php"); // Betöltjük
+		Install(); // Telepítőkód meghívása
+	} else {
+		Hibauzenet("ERROR", "Az addon telepítőfájla nem található", "Az addont kézileg kell telepíteni!"); // Hibaüzenet megjelenítése
 	}
 	
 	/* A további kódok ne fussanak le */
@@ -49,17 +109,6 @@ $adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons");
 		while ( $sor = mysql_fetch_assoc($adat) )
 		{
 			$vanAddon = 1; // Van legalább 1 addon
-			/* Méret kiszámítása */
-			$meret = 0;
-			$addonfajllista = file_get_contents("addons/" .$sor['subdir']. "/files.lst");
-			$fajllistasorok = explode("\r\n", $addonfajllista);
-			foreach ($fajllistasorok as &$fsor)
-			{
-				$meret += filesize("addons/" .$sor['subdir']. "/" .$fsor);
-			}
-			$meret += filesize("addons/" .$sor['subdir']. "/files.lst");
-			$meret += @filesize("addons/" .$sor['subdir']. "/includes.php");
-			$meret += @filesize("addons/" .$sor['subdir']. "/install.php");
 			
 			print("<tr>
 				<td>" .$sor['subdir']. "</td>
