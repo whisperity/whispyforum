@@ -21,7 +21,7 @@ function Fejlec()
 
 function Lablec()
 {
-	global $cfg;
+	global $cfg, $sql;
 	
 	/* A footer elcsúszást védelem vége */
 	print("</td></tr></table>");
@@ -39,6 +39,8 @@ function Lablec()
 	
 	print("WhispyFórum " .RELEASE_TYPE. " " .VERSION. " • Kiadás dátuma: " .RELEASE_DATE. " • <a href='mailto:" .$cfg['webmaster_email']. "'>" .$cfg['webmaster']. "</a> • Az oldal generálása " .$genIdo. " másodpercig tartott");
 	print("</div>"); // Blokkzárás
+	
+	$sql->Disconnect(); // Adatbáziskapcsolat lezárása
 }
 
 function Inicialize ( $pagename )
