@@ -58,7 +58,7 @@ if ( ($_GET['action'] == "delete") && ($_GET['id'] != $NULL) )
 	if ( file_exists("addons/" .$addonsor['subdir']. "/install.php") ) // Ha megtalálható a szerveren az addon telepítőkódja
 	{
 		include("addons/" .$addonsor['subdir']. "/install.php"); // Betöltjük
-		Uninstall(); // És meghívjuk az törlési kódot
+		Uninstall(); // És meghívjuk a törlési kódot
 	} else {
 		Hibauzenet("ERROR", "Az addon telepítőfájla nem található", "Az addont kézileg kell eltávolítani!"); // Hibaüzenet megjelenítése
 	}
