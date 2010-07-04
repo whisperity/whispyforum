@@ -44,8 +44,11 @@ $adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons");
 				<th>Leírás</th>
 			</tr>");
 		
+		$vanAddon = 0; // Alapból nem található addon
+		
 		while ( $sor = mysql_fetch_assoc($adat) )
 		{
+			$vanAddon = 1; // Van legalább 1 addon
 			/* Méret kiszámítása */
 			$meret = 0;
 			$addonfajllista = file_get_contents("addons/" .$sor['subdir']. "/files.lst");
@@ -72,6 +75,10 @@ $adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons");
 			</form></td>
 			</tr>");
 		}
+
+		if ( $vanAddon == 0) // Ha nincs egy addon se telepítve, értesítést jelenítünk meg
+			print("</table><table border='0' cellspacing='1' cellpadding='1'><tr><td><h3 class='postheader'><p class='header'>Nem található telepített addon</p></h3></td></tr>");
+		
 		
 		print("</table><form action='/admin.php' method='GET'>
 				<input type='hidden' name='site' value='addons'>
