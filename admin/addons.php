@@ -13,6 +13,10 @@ if ( $admin == 1)
 ?>
 <center><h2 class='header'>Addonok</h2></center>
 <?php
+function Addonbeallitasok($addonid)
+{
+	/* Addon beállítások megtekintése/állítása */
+}
 
 function Addonmeret($addonsubdir)
 {
@@ -27,6 +31,8 @@ function Addonmeret($addonsubdir)
 	$meret += filesize("addons/" .$addonsubdir. "/files.lst");
 	$meret += @filesize("addons/" .$addonsubdir. "/includes.php");
 	$meret += @filesize("addons/" .$addonsubdir. "/install.php");
+	$meret += @filesize("addons/" .$addonsubdir. "/settings.php");
+	$meret += @filesize("addons/" .$addonsubdir. "/settings.cfg");
 	
 	return $meret;
 }
@@ -48,6 +54,7 @@ if ( ($_GET['action'] == "delete") && ($_GET['id'] != $NULL) )
 	Lablec();
 	die();
 }
+
 if ( $_GET['action'] == "install")
 {
 	/* Új addon telepítése */
@@ -65,6 +72,7 @@ if ( $_GET['action'] == "install")
 	Lablec();
 	die();
 }
+
 if ( ($_POST['action'] == "install_script") && ( $_POST['addonsubdir'] != $NULL) )
 {
 	/* Addon telepítése */
@@ -95,6 +103,12 @@ if ( ($_POST['action'] == "install_script") && ( $_POST['addonsubdir'] != $NULL)
 	die();
 }
 
+/* Addon beállítások meghívása */
+if ( ($_GET['action'] == "settings") && ($_GET['id'] != $NULL) ) // GET-tel érkező ID esetén (addon lista)
+	AddonBeallitasok($_GET['id']);
+if ( ($_POST['action'] == "settings") && ($_POST['id'] != $NULL) ) // POST-tal érkező ID esetén (addon beállítások weboldal)
+	AddonBeallitasok($_POST['id']);
+
 print("Alább megtalálható a portálrendszerbe jelenleg <b>telepített</b> addonok listája. <a href=includes/help.php' onClick=\"window.open('includes/help.php?cmd=Addons-admin', 'popupwindow', 'width=800,height=600,resize=no,scrollbars=yes'); return false;\">Súgó megjelenítése</a>");
 
 $adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons");
@@ -119,14 +133,22 @@ $adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons");
 				<td>" .$sor['name']. "</td>
 				<td>" .DecodeSize(Addonmeret($sor['subdir'])). "</td>
 				<td><a href='mailto:" .$sor['authoremail']. "'>" .$sor['author']. "</a></td>
-				<td>" .$sor['descr']. "</td>
-				<td><form action='/admin.php' method='GET'>
+				<td>" .$sor['descr']. "</td>");
+			
+			if ( $sor['settings'] == "TRUE" ) // Ha vannak az addonnak beállításai, megjelenítjük a hozzá tartozó gombot
+				print("<td><form action='/admin.php' method='GET'>
+				<input type='hidden' name='site' value='addons'>
+				<input type='hidden' name='action' value='settings'>
+				<input type='hidden' name='id' value='" .$sor['id']. "'>
+				<input type='submit' value='Beállítások'>
+			</form></td>");
+			
+			print("<td><form action='/admin.php' method='GET'>
 				<input type='hidden' name='site' value='addons'>
 				<input type='hidden' name='action' value='delete'>
 				<input type='hidden' name='id' value='" .$sor['id']. "'>
 				<input type='submit' value='Eltávolítás'>
-			</form></td>
-			</tr>");
+			</form></td></tr>");
 		}
 
 		if ( $vanAddon == 0) // Ha nincs egy addon se telepítve, értesítést jelenítünk meg

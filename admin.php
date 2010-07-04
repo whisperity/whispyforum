@@ -71,8 +71,6 @@
 	MenuItem("log", "Webhelynapló megtekintése");
 	MenuItem("installlog", "Telepítési napló megtekintése");
 	MenuItem("banip", "IP-cím alapú kitiltások kezelése");
-	
-	MenuItem("", "Addonok", 'TITLE');
 	MenuItem("addons", "Addonok kezelése");
 	
 	print("

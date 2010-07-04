@@ -96,6 +96,7 @@ class addons // Addonkezelő osztály
 		while ( $sor = mysql_fetch_assoc($adat) )
 		{
 			@include_once("addons/" .$sor['subdir']. "/includes.php");
+			@include_once("addons/" .$sor['subdir']. "/settings.cfg");
 		}
 	}
 }

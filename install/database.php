@@ -154,6 +154,7 @@
   `descr` TEXT COLLATE utf8_unicode_ci NOT NULL,
   `author` VARCHAR(128) COLLATE utf8_unicode_ci,
   `authoremail` VARCHAR(128) COLLATE utf8_unicode_ci,
+  `settings` ENUM('FALSE','TRUE') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'FALSE',
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Addonok
  WOut('tabla', 'addons');

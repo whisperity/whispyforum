@@ -21,7 +21,8 @@
 	if ( $_POST['addonsubdir'] != "sample" )
 	{
 		Hibauzenet("ERROR", "Érvénytelen addon almappa", "Az általad megadott addon telepítési almappája: " .$_POST['addonsubdir']. ", azonban ez az addon a <b>sample</b> almappából történő futtatást követeli meg.");
-		DoFooter();
+		print("</td><td class='right' valign='top'>");
+		Lablec();
 		die();
 	}
 	
@@ -33,6 +34,7 @@
 					<dd>Almappa: sample</dd>
 					<dd>Fájlméret: " .DecodeSize(Addonmeret("sample")). "</dd>
 					<dd>Szerző: <a href='mailto:whisperity@gmail.com'>whisperity</a></dd>
+					<dd>Külön állítható beállítások: <span style='color: darkgreen'><b>vannak</b></span></dd>
 				<dt>Leírás:</dt>
 					<dd>Példa addon az addonok működésének bemutatására</dd>
 			</dl>
@@ -43,13 +45,17 @@
 				<input type='hidden' name='position' value=1>
 				<input type='submit' value='Az addon telepítéséhez nyomd meg ezt a gombot'>
 			</form>"); // Kiírjuk az addon adatait, valamint egy űrlapot a továbblépéshez
+			
+			break;
 		case 1:
 			/* Addon telepítése (sql-lekérdezések) */
 			
-			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."addons(subdir, name, descr, author, authoremail) VALUES ('sample', 'Példa addon', 'Példa addon az addonok működésének bemutatására', 'whisperity', 'whisperity@gmail.com')");
+			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."addons(subdir, name, descr, author, authoremail, settings) VALUES ('sample', 'Példa addon', 'Példa addon az addonok működésének bemutatására', 'whisperity', 'whisperity@gmail.com', 'TRUE')");
 			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name, type, side) VALUES ('sample/samplemodule.php', 'addonmodule', 2)");
 			
 			print("<br>Az addon telepítése sikeres volt. <a href='admin.php?site=addons'>Visszatérés az addonok listájához</a>"); // A felhasználó értesítése a sikeres telepítésről
+			
+			break;
 	}
  }
  
