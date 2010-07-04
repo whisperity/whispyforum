@@ -394,7 +394,7 @@ function AddonHelp($tipus)
 			...</code><br><br>
 		<dt>egyéb fájlok</dt>
 			<dd>Ezen felül a mappa tartalmazza a további szükséges fájlokat</dd>
-	</dl><br>A fejlesztés előtt ajánlott átnézni a portálrendszerrel együtt szállított sample addon fájlait, mely példaként minden szükséges fájlt tartalmaz.<br>Az addon fájljait egy úgynevezett kötegelt addonfájlba (.baa fájl) is lehet konvertálni, és azzal szállítani. Ezen fájlok a webböngészőn keresztül a szerverre feltöltve önkicsomagolódnak, és elindítják saját telepítőjüket.");
+	</dl><br>A fejlesztés előtt ajánlott átnézni a portálrendszerrel együtt szállított sample addon fájlait, mely példaként minden szükséges fájlt tartalmaz.<br>Az addon fájljait egy úgynevezett kötegelt addonfájlba (.baa fájl) is lehet konvertálni, és azzal szállítani. Ezen fájlok a webböngészőn keresztül a szerverre feltöltve önkicsomagolódnak, és elindítják saját telepítőjüket.<br>A BAA-fájlokat létrehozó kód <a href='/baacreator/'>itt</a> érhető el.");
 			break;
 	}
 }
