@@ -44,8 +44,7 @@ if ( ($_GET['action'] == "delete") && ($_GET['id'] != $NULL) )
 	}
 	
 	/* A további kódok ne fussanak le */
-	DoFooter();
-	die();
+	die("</td><td class='right' valign='top'>");
 }
 if ( $_GET['action'] == "install")
 {
@@ -60,8 +59,7 @@ if ( $_GET['action'] == "install")
 	</p></form>");
 	
 	/* A további kódok ne fussanak le */
-	DoFooter();
-	die();
+	die("</td><td class='right' valign='top'>");
 }
 if ( ($_POST['action'] == "install_script") && ( $_POST['addonsubdir'] != $NULL) )
 {
@@ -74,8 +72,7 @@ if ( ($_POST['action'] == "install_script") && ( $_POST['addonsubdir'] != $NULL)
 	{
 		Hibauzenet("ERROR", "Ez az addon már telepítésre került");
 		/* A további kódok ne fussanak le */
-		DoFooter();
-		die();
+		die("</td><td class='right' valign='top'>");
 	}
 	
 	if ( file_exists("addons/" .$_POST['addonsubdir']. "/install.php") ) // Ha megtalálható a szerveren az addon telepítőkódja
@@ -87,8 +84,7 @@ if ( ($_POST['action'] == "install_script") && ( $_POST['addonsubdir'] != $NULL)
 	}
 	
 	/* A további kódok ne fussanak le */
-	DoFooter();
-	die();
+	die("</td><td class='right' valign='top'>");
 }
 
 print("Alább megtalálható a portálrendszerbe jelenleg <b>telepített</b> addonok listája. <a href=includes/help.php' onClick=\"window.open('includes/help.php?cmd=Addons-admin', 'popupwindow', 'width=800,height=600,resize=no,scrollbars=yes'); return false;\">Súgó megjelenítése</a>");
