@@ -75,6 +75,7 @@
 			Belépési felhasználó<a class='feature-extra'><span class='hover'><span class='h3'><center><span class='star'>*</span> Kötelezően kitöltendő mező <span class='star'>*</span></center></span>Ezt a mezőt kötelező kitölteni, kitöltése nélkül az űrlap érvénytelenül lesz beadva.</span><span class='star'>*</span></a> <input type='text' name='dbuser'><br>
 			Jelszó<a class='feature-extra'><span class='hover'><span class='h3'><center><span class='star'>*</span> Kötelezően kitöltendő mező <span class='star'>*</span></center></span>Ezt a mezőt kötelező kitölteni, kitöltése nélkül az űrlap érvénytelenül lesz beadva.</span><span class='star'>*</span></a>: <input type='password' name='dbpass'><br>
 			Adatbázis neve:<a class='feature-extra'><span class='hover'><span class='h3'><center><span class='star'>*</span> Kötelezően kitöltendő mező <span class='star'>*</span></center></span>Ezt a mezőt kötelező kitölteni, kitöltése nélkül az űrlap érvénytelenül lesz beadva.</span><span class='star'>*</span></a>: <input type='text' name='dbname'><br>
+			<input type='checkbox' name='createdb' value='yes'>Adatbázis létrehozása<a class='feature-extra'><span class='hover'><span class='h3'>Adatbázis létrehozása</span>Ha még nem hoztál létre adatbázist a portálod számára, a jelölőnégyzet bejelölésével ezt megteheted.</span><sup>?</sup></a><br>
 			Táblanév prefixum<a class='feature-extra'><span class='hover'><span class='h3'>Táblanév prefixum</span>Ha nincs lehetőséged a portálrendszert külön adatbázisba telepíteni (pár szolgáltató egy regisztrációhoz egy adatbázist ad), megadhatsz egy táblanév prefixumot, mely minden táblát meg fog előzni.<br>Például, ha te beírod hogy <b>wf_</b>, a felhasználókat tartalmazó tábla neve <i>user</i> helyett <i><b>wf_</b>user</i> lesz, elkerülve ezzel, más, <i>user</i> nevű táblát használó rendszerekkel való ütközést.</span><sup>?</sup></a>: <input type='text' name='tbprf'></p>
 			<p class='formText'>SMTP szerver címe: <input type='text' name='SMTP'><br>
 			SMTP port száma<a class='feature-extra'><span class='hover'><span class='h3'>SMTP port</span>Kimenő levélszerver portszáma, alapértelmezésben <b>25</b></span><sup>?</sup></a>: <input type='text' name='smtp_port' value='25' size='5'><br>
@@ -172,6 +173,7 @@ global \$cfg;
 				print("<h3>A fájl létrehozása sikeres</h3>
 				<form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
 					<input type='hidden' name='pos' value='4'>
+					<input type='hidden' name='createdb' value='" .$_POST['createdb']. "'>
 					<input type='submit' value='Tovább >> (Adatbáziskapcsolat tesztelése)'>
 				</form>");
 			}
@@ -215,6 +217,7 @@ global \$cfg;
 			print("Az adatbázisszerverhez való csatlakozás sikeres volt!
 			<form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
 				<input type='hidden' value='5' name='pos'>
+				<input type='hidden' name='createdb' value='" .$_POST['createdb']. "'>
 				<input type='submit' value='Tovább >> (Táblák létrehozása)'>
 			</form>");
 		}
@@ -235,9 +238,14 @@ global \$cfg;
 	case 5:
 		// Táblák létrehozása
 		include('config.php'); // Konfigurációs fájl
-		$sql->Connect(); // Maradunk a megszokott kapcsolódási módnál
 		print("<div class='postbox'><h3 class='header'><p class='header'>5. Táblák létrehozása</p></h3>"); // Fejléc
 		print("Most kerül sor a táblák létrehozására a háttérben, az adatbázisban. Kérlek, ezután ne módosítsd a konfigurációs fájl tartalmát! A végrehajtott tevékenységekről alább megjelennek az információk.<br>"); // Információ
+		
+		if ( $_POST['createdb'] == "yes" )
+		{
+			// Adatbázis létrehozása (a felhasználó kérésére)
+			include('install/createdb.php'); // A script betöltésével az adatbázis létrejön
+		}
 		
 		include('install/database.php'); // Egyszerűen betöltjük a megfelelő fájlt és lefut a script.
 		print("<br>A táblák létrehozása sikeresen befejeződött!<br><form action='" .$_SERVER['PHP_SELF']. "' method='POST'>

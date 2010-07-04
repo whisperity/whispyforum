@@ -87,12 +87,17 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 			</tr>");
 		}
 		
-		print("</table></div>");
+		print("</table></div>
+		<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+				<input type='hidden' name='site' value='menueditor'>
+				<input type='hidden' name='action' value='newmodule'>
+				<input type='submit' value='Új modul hozzáadása'>
+			</form>");
 		break;
 	
 	case "viewitems": // Menüelemek megtekintése
 		$menuNev = mysql_fetch_assoc($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."modules WHERE id='" .$_GET['id']. "'"));
-		print("A <b>" .$menuNev['name']. "</b> menü elemeinek szerkesztése.<br><br><div class='userbox'><table border='0' cellspacing='1' cellpadding='1'>
+		print("A(z) <b>" .$menuNev['name']. "</b> menü elemeinek szerkesztése.<br><br><div class='userbox'><table border='0' cellspacing='1' cellpadding='1'>
 			<tr>
 				<th>id</th>
 				<th>Függőleges elhelyezkedés</th>
@@ -119,7 +124,12 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 			</tr>");	
 		}
 		
-		print("</table></div>");
+		print("</table></div><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+				<input type='hidden' name='site' value='menueditor'>
+				<input type='hidden' name='action' value='newmenuentry'>
+				<input type='hidden' name='id' value='" .$_GET['id']. "'>
+				<input type='submit' value='Új elem hozzáadása'>
+			</form>");
 		break;
 		
 	case "itemedit": // Menüelem szerkesztése
@@ -176,7 +186,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 			
 			print("<form method='POST' action='" .$_SEVER['PHP_SELF']. "'>
 		<span class='formHeader'>Modul szerkesztése: " .$sor['name']. "</span><br>
-		<p class='formText'>Címsor: <input type='text' name='name' value='" .$sor['name']. "' size='96'><br>
+		<p class='formText'>Címsor (addon modul esetén /addons mappától relatív hivatkozás): <input type='text' name='name' value='" .$sor['name']. "' size='64'><br>
 		Típus: <input type='radio' name='type' value='menu'");
 			if ( $sor['type'] == "menu") // Ha a modul típusa menü, akkor alapból a menü gomb kerül bejelölésre
 				print(" checked ");
@@ -218,6 +228,79 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		<input type='submit' name='parancs' value='Szerkeszt'>
 		</form>");
 		}
+		break;
+	case "newmodule": // Új modul hozzáadása
+		print("<form method='POST' action='" .$_SEVER['PHP_SELF']. "'>
+		<span class='formHeader'>Modul hozzáadása</span><br>
+		<p class='formText'>Címsor (addon modul esetén /addons mappától relatív hivatkozás): <input type='text' name='name' value='" .$sor['name']. "' size='64'><br>
+		Típus: <input type='radio' name='type' value='menu'");
+			if ( $sor['type'] == "menu") // Ha a modul típusa menü, akkor alapból a menü gomb kerül bejelölésre
+				print(" checked ");
+		
+		print("> Menü <input type='radio' name='type' value='addonmodule'");
+			if ( $sor['type'] == "addonmodule") // Ha a modul egy addon, a megfelelő gomb lesz bejelölve
+			print(" checked ");
+		print("> Addon-modul<br>
+		Oldal: <input type='radio' name='side' value='1'> Bal <input type='radio' name='side' value='2'> Jobb<br>");
+		
+		
+		/* Form zárása */
+		print("<input type='hidden' name='action' value='addnewmodule'>
+		<input type='hidden' name='site' value='menueditor'>
+		<input type='submit' name='parancs' value='Modul hozzáadása'>
+		</form>");
+		
+		break;
+	case "addnewmodule": // Új modul hozzáadása (hozzáadóscript)
+		if ( ($_POST['name'] != $NULL) && ($_POST['side'] != $NULL) && ($_POST['type'] != $NULL) )
+		{
+			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name, type, side) VALUES ('" .$_POST['name']. "', '" .$_POST['type']. "', '" .$_POST['side']. "')"); // Hozzáadás
+			print("<div class='messagebox'>A modul hozzáadása sikeres volt!<br><a href='admin.php?site=menueditor'>Visszatérés a listához</a></div>");
+		} else {
+			header('Location: admin.php?site=menueditor&action=newmodule'); // Visszatérés, ha egy kötelező adat hiányzott
+		}
+		
+		break;
+	case "newmenuentry": // Új menüelem hozzáadása
+		if ( $_GET['id'] != $NULL )
+		{
+			// Ha van bejövő ID érték (kötelező)
+			$menu = mysql_fetch_assoc($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."modules WHERE id='" .$_GET['id']. "'"));
+			print("<form method='POST' action='" .$_SEVER['PHP_SELF']. "'>
+		<span class='formHeader'>Új menüelem hozzáadása a menühöz: " .$menu['name']. "</span><br>
+		<p class='formText'>Címsor: <input type='text' name='text' value='" .$sor['text']. "' size='96'><br>
+		Hivatkozás<a class='feature-extra'><span class='hover'><span class='h3'>Hivatkozás</span><b>Belső hivatkozásnál:</b> A menüelem hivatkozása a weboldal gyökeréhez (" .$cfg['phost']. "/) képest (pl. a kezdőlaphoz <i>index.php</i>).<br><b>Külső hivatkozásnál:</b> A teljes link, a bevezető <b>http://</b>-rel is (pl. <i>http://google.com</i>)</span><sup>?</sup></a>: 
+		<input type='text' name='href' value='" .$sor['href']. "'><br>
+		Függőleges elhelyezkedés: <input type='text' name='hOrder' value='" .$sor['hOrder']. "' size='3'>\t\t");
+		
+		/* Egy listába tesszük a szerkesztett modullal megegyező oldalon lévő modulokat (hOrder példa) */
+		$oldalmenuk = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."menuitems WHERE menuId='" .$_GET['id']. "' ORDER BY hOrder");
+		$oldalmenuk_szam = mysql_num_rows($oldalmenuk);
+		
+		print("<br><select size='" .($oldalmenuk_szam+2). "' disabled>");
+		while ( $sor2 = mysql_fetch_assoc($oldalmenuk) )
+			print("<option>" .$sor2['hOrder'].". " .$sor2['text']. "</option>");
+		
+		/* Form zárása */
+		print("</select><a class='feature-extra'><span class='hover'><span class='h3'>Menüoszlop</span>Ez a kis lista vázlatban tartalmazza a megadott menüben található elemeket a függőleges helyzetük (sorszámuk) azonosítójával. A doboz segítségével egy vázlat tekinthető meg a függőleges helyzetek szerint rendezett (<b>mint ahogy az oldalon megjelenik</b>) menüelemekről, a szerkesztés <b>előtt</b>i állapotból.</span><sup>?</sup></a></p><input type='hidden' name='id' value='" .$_GET['id']. "'>
+		<input type='hidden' name='action' value='addnewmenuentry'>
+		<input type='hidden' name='site' value='menueditor'>
+		<input type='submit' name='parancs' value='Menüelem hozzáadása'>
+		</form>");
+		
+	}
+	
+		break;
+	case "addnewmenuentry": // Menüelem hozzáadása (script)
+		if ( ($_POST['id'] != $NULL) && ( $_POST['text'] != $NULL) && ( $_POST['href'] != $NULL) && ($_POST['hOrder'] != $NULL) )
+		{
+			// Hozzáadás, ha a szükséges értékek megvannak
+			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."menuitems(menuId, text, href, hOrder) VALUES (" .$_POST['id']. ", '" .$_POST['text']. "', '" .$_POST['href']. "', " .$_POST['hOrder']. ")");
+			print("<div class='messagebox'>A menüelem hozzáadása sikeres volt!<br><a href='admin.php?site=menueditor&action=viewitems&id=" .$_POST['id']. "'>Visszatérés a listához</a></div>");
+		} else {
+			header('Location: admin.php?site=menueditor&action=newmenuentry&id=' .$_POST['id']); // Visszatérés, ha egy kötelező adat hiányzott
+		}
+		
 		break;
 }
 

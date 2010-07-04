@@ -6,6 +6,7 @@
 /* install/database.php
    adatbázis tábla létrehozó rendszer
 */
+ $sql->Connect();
  file_put_contents('logs/install.log', "Táblák létrehozása megkezdve: " .Datum("normal","nagybetu","dL","H","i","s"). " ( " .time(). " )", FILE_APPEND); // Naplófájl létrehozása
  function WOut( $tipus, $tabla, $sor = '' )
  {
@@ -143,7 +144,8 @@
   `ip` VARCHAR(16) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0.0.0.0',
   `bandate` VARCHAR(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `uId` INT(10) NOT NULL DEFAULT '0',
-  `comment` VARCHAR(512) COLLATE utf8_unicode_ci DEFAULT NULL
+  `comment` VARCHAR(512) COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`id`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // IP kitiltások
  WOut('tabla', 'bannedips');
 
@@ -168,17 +170,15 @@
  /* Kezdeti adatok */
  /* Modulok */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name,type,side, hOrder) VALUES
-	('Főmenü','menu','1', 0),
-	('sample/samplemodule.php', 'addonmodule', '1', 1)", 'INSTALL'); // Főmenü
+	('Főmenü','menu','1', 0)", 'INSTALL'); // Főmenü
  WOut('sor', 'modules', 'Főmenü');
- WOut('sor', 'modules', 'sample/samplemodule.php addon-module');
  
  /* Menüelemek */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."menuitems(menuId, text, href, hOrder) VALUES
 	('1','Kezdőlap','index.php', 1),
 	('1','Hírek','news.php', 2),
 	('1','Fórum','viewforum.php', 3),
-	('1','Google keresés','http://google.hu')", 'INSTALL'); // Főmenü elemei
+	('1','Google keresés','http://google.hu', 4)", 'INSTALL'); // Főmenü elemei
  WOut('sor', 'menuitems', 'Főmenü/Kezdőlap');
  WOut('sor', 'menuitems', 'Főmenü/Fórum');
  WOut('sor', 'menuitems', 'Főmenü/Hírek');
@@ -214,4 +214,5 @@
  WOut('sor', 'version', 'Verzióadatok: ' .RELEASE_TYPE. " " .VERSION. " (" .RELEASE_DATE. ")");
  
  file_put_contents('logs/install.log', "\r\nTáblák létrehozása befejezve: " .Datum("normal", "nagybetu", "dL", "H", "i", "s"). " ( " .time(). " )", FILE_APPEND); // Napló zárása
+ $sql->Disconnect();
 ?>
