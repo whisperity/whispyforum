@@ -9,8 +9,6 @@
  function SampleAddonFunction()
  {
 	// Ez egy példa function, melyet az addon modulja használ
-	print("A teszt function futtatása sikeres, ez bizonyítja, hogy az addonok fájlai teljesen betöltődtek");
+	print("A pontos idő: " .Datum("normal", "kisbetu", "dL", "H", "i", "s")); // Használja a keretrendszer DATUM functionjét
  }
- 
- print("Üdvözöllek a weboldalon! Ez a sor azt igazolja, hogy a példaaddon sikeresen betöltődött!"); // Értesítés
 ?>
