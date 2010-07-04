@@ -19,7 +19,9 @@ class templates // Osztálydeklaráció
 				case 'menu': // Ha menü
 					$this->Menu($sor['id'], $sor['name']);
 					break;
-				
+				case 'addonmodule': // Ha egy addon egy modulja
+					$this->LoadAddonModule($sor['id'], $sor['name']);
+					break;
 			}
 		}
 	}
@@ -34,7 +36,9 @@ class templates // Osztálydeklaráció
 				case 'menu': // Ha menü
 					$this->Menu($sor['id'], $sor['name']);
 					break;
-				
+				case 'addonmodule': // Ha egy addon egy modulja
+					$this->LoadAddonModule($sor['id'], $sor['name']);
+					break;
 			}
 		}
 	}
@@ -60,10 +64,50 @@ class templates // Osztálydeklaráció
 		
 		print("</p></div><br>"); // Doboz lezárása
 	}
+	
+	function LoadAddonModule($id, $name) // Addonmodul betöltése
+	{
+		global $cfg, $sql;
+		
+		/* Addon nevének megállapítása ($name mindig /addonsubdir [/almappa/...] /fájl.php) */
+		$pereknelkul = explode('/', $name);
+		$addonneve = $pereknelkul[0];
+		/* Addon telepítettség ellenörzése */
+		$addon = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons WHERE subdir='" .$addonneve. "'"));
+		
+		if ( $addon == FALSE ) // Ha nem található telepítve ez az addon
+		{
+			Hibauzenet("ERROR", "Nem telepített addon modulja kíván betöltődni", "A <i>" .$addonneve. "</i> addon egyik modulja (" .$name. ") lenne ide betöltve, ám ez az addon nincs telepítve!");
+		} else { // Ha az addon létezik, betöltjük a modul kódját
+			include("addons/" .$name);
+		}
+	}
 }
 
- // Létrehozzuk a globális $user változót
+class addons // Addonkezelő osztály
+{
+	function LoadAddons() // Addonok betöltése
+	{
+		global $cfg, $sql;
+		// Az addonok betöltéséhez használjuk az addonokhoz mellékelt INCLUDES.PHP listafájlt
+		// Ez néhány esetben hiányozhat, ezért hiánya esetén nem jelenítünk meg hibaüzenetet
+		
+		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons");
+		while ( $sor = mysql_fetch_assoc($adat) )
+		{
+			@include_once("addons/" .$sor['subdir']. "/includes.php");
+			@include_once("addons/" .$sor['subdir']. "/settings.cfg");
+		}
+	}
+}
+
+ // Létrehozzuk a globális $templates változót
  // mellyel meghívhatjuk az osztály függvényeit
  global $templates;
  $templates = new templates();
+ 
+ // Létrehozzuk a globális $addons változót
+ // mellyel meghívhatjuk az osztály függvényeit
+ global $addons;
+ $addons = new addons();
 ?>

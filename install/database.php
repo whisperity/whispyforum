@@ -147,6 +147,16 @@
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // IP kitiltások
  WOut('tabla', 'bannedips');
 
+ $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."addons (
+  `id` INT(10) NOT NULL AUTO_INCREMENT,
+  `subdir` VARCHAR(128) COLLATE utf8_unicode_ci NOT NULL,
+  `name` VARCHAR(256) COLLATE utf8_unicode_ci NOT NULL,
+  `descr` TEXT COLLATE utf8_unicode_ci NOT NULL,
+  `author` VARCHAR(128) COLLATE utf8_unicode_ci,
+  `authoremail` VARCHAR(128) COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`id`)
+) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Addonok
+ WOut('tabla', 'addons');
  
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."version (
   `RELEASE_TYPE` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
@@ -157,8 +167,11 @@
  
  /* Kezdeti adatok */
  /* Modulok */
- $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name,type,side, hOrder) VALUES('Főmenü','menu','1', 0)", 'INSTALL'); // Főmenü
+ $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name,type,side, hOrder) VALUES
+	('Főmenü','menu','1', 0),
+	('sample/samplemodule.php', 'addonmodule', '1', 1)", 'INSTALL'); // Főmenü
  WOut('sor', 'modules', 'Főmenü');
+ WOut('sor', 'modules', 'sample/samplemodule.php addon-module');
  
  /* Menüelemek */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."menuitems(menuId, text, href, hOrder) VALUES
