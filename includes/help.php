@@ -299,6 +299,105 @@ function SQLHelp()
 	print("<h2>Felhasználó (\$user) és munkamenetkezelés (<abbr title='Nem összetévesztendő az \$_SESSION szuperglobállal'>\$session</abbr>)</h2>
 	Az osztály segítségével kezelhetünk felhasználói adatokat és munkameneteket.<br>Az osztály függvényei:<br><br><b>func ()</b><br>funcdesc<br><pre>Megjegyzés:<br>funcnote</pre><hr>");
 } */
+function AddonHelp($tipus)
+{
+	switch ($tipus)
+	{
+		case "admin":
+			print("<h2>Addonok</h2>
+	Ha bővebben érdekel az addonok struktúrája, olvasd el a <a href='help.php?cmd=Addons-developer'>fejlesztőknek szóló</a> leírást is.<br><br>
+	Az addonok különböző bővítmények, melyeket a portál keretrendszere tölt be, és jelenít meg a felhasználóknak.<br><b>Az addonokat majdnem minden esetben <u>NEM</u> a portálrendszer fejlesztői írják, ezért mielőtt egy addont telepítesz, győződj meg róla, hogy az addon használata nem jár biztonsági kockázattal.</b><br>Az addonok telepítése előtt mindig készíts <b>biztonsági mentés</b>t a portálrendszer fájlairól, és az adatbázis adatairól!
+	<br><br>
+	A bővítmények változatos funkciókat tartalmazhatnak, lehetnek megjelenő modulok, funkciógyűjtemények, segédscriptek, stb. Pár dolog azonban közös bennük: a fejlesztők az addonokat a portálrendszerhez írták, és a keretrendszer funkcióit használja, ezért legtöbbször a keretrendszeren kívül futtatva életképtelenek. Az addonok <b>MINDIG</b> csak a /addons mappán belüli, saját maguknak fenntartott mappából futnak, és a portálrendszer osztályaiba nem tölthetik bele magukat. Ezért, ha egy addon a /addons/<i>addon-almappa</i> mappán kívüli (pl. az includes) mappába kíván fájlt tenni, az addonra már gyanúval kell nézni!
+	<br><br>
+	Az addonok karbantartását az <a href='../admin.php?site=addons'>admin menü</a>ből érheted el. A lista tartalmazza minden telepített addon nevét, almappája nevét, szerzőjét (a szerző nevére kattintva e-mailt küldhetsz a szerzőnek), teljes tárterületigényét (a fájlok méretét), valamint leírását. Ezek mellett minden sorban helyet kap egy <b>Eltávolítás</b> gomb is, melyre kattintva betöltődik az addon telepítőkódjának eltávolító része, és az addon törlődik a rendszerből. Előfordulhat, hogy az eltávolítóscript további adatokat kér, vagy információkat jelenít meg.
+	<br>Ha az addon fejlesztői szükségesnek tartják, az addon tartalmazhat egy, a beállításait módosító fájlt is. Ha az addon rendelkezik speciális beállításokkal (melyeket egy fájlba ír), az Eltávolítás gomb mellett megtalálható egy <b>Beállítások</b> gomb is. Erre kattintva betöltődik a beállításokat módosító kód, mely segítségével az addon beállításai módosíthatóak.
+	<br><br>
+	A lista alatt helyet kap egy <b>Új addon telepítése</b> gomb is, melyre kattintva új addont telepíthetünk. A gombra kattintva először megjelennek a főbb biztonsági intézkedésre felszólító figyelmeztetések, majd meg kell adni az addon almappájának nevét. Ezután betöltődik az addon telepítőscriptje, mely telepíti a kívánt addont. Előfordulhat, hogy a telepítőscript további adatokat kér el.");
+			break;
+		case "developer":
+			print("<h2>Addonok</h2>
+	Ha az addonokról szeretnél egy átfogó leírást kapni, olvasd el az <a href='help.php?cmd=Addons-admin'>adminisztrátoroknak/webmestereknek szóló</a> leírást is.<br><br>
+	Az addonokat mindig egy külön almappába kell létrehozni, mely mappa a /addons/<i>almappanév</i> elérési úton foglal helyet. Ez a mappa a következő fájlokat tartalmazhatja:<br>
+		<dl>
+		<dt><b>index.php</b></dt>
+			<dd>Nem szükséges fájl, ám ajánlatos az addon fájlait a direkt módon történő elérés (addon mappa megnyitása az elérési útnak kézi begépelésével a böngészőbe) ellen levédeni, például egy átirányítással. A következő szkript az admin menü addon kezelőjébe irányítja át a kíváncsi felhasználót:<br><code>
+			header('Location: ../admin.php?site=addons');<br>
+			</code></dd>
+		<br>
+		<dt><b>install.php</b></dt>
+			<dd>A portálrendszer telepítő/eltávolító kódja. A fájl két php <span style='color: blue'>function</span>t kell, hogy tartalmazzon, ezeken kívül semmilyen egyéb szöveget (megjegyzéseket kivéve). A telepítéskor az adatbázis <b>addons</b> táblájába kell írni az addon adatait.<br>Átalános struktúrája:<br><code>
+			<span style='color: blue'>function</span> Install()<br>
+			{<br>
+			&nbsp;&nbsp;&nbsp;<span style='color: darkgreen'>/* A portálrendszer telepítőscriptje */</span><br>
+			&nbsp;&nbsp;&nbsp;<span style='color: darkblue'>global</span> <span style='color: darkblue'>\$cfg, \$sql</span>;<br>
+			&nbsp;&nbsp;&nbsp;<span style='color: darkblue'>\$sql</span><span style='color: purple'>-></span>Lekerdezes(<span style='color: grey'>'INSERT INTO '</span> .<span style='color: darkblue'>\$cfg</span>[<span style='color: grey'>'tbprf'</span>]. <span style='color: grey'>'addons(subdir, name, descr, author, authoremail) VALUES (...)'</span>);<br>
+			<br>
+			&nbsp;&nbsp;&nbsp;<span style='color: darkgreen'>/* Létrehozunk egy saját modult is */</span><br>
+			&nbsp;&nbsp;&nbsp;<span style='color: darkblue'>\$sql</span><span style='color: purple'>-></span>Lekerdezes(<span style='color: grey'>'INSERT INTO '</span> .<span style='color: darkblue'>\$cfg</span>[<span style='color: grey'>'tbprf'</span>]. <span style='color: grey'>'modules(name, type, side) VALUES (...)'</span>);<br>
+			}<br>
+			<br>
+			<span style='color: blue'>function</span> Uninstall()<br>
+			{<br>
+			&nbsp;&nbsp;&nbsp;<span style='color: darkgreen'>/* A portálrendszer eltávolítóscriptje */</span><br>
+			}</code><br>
+			A telepítőscriptben található értékek jelentései (<i>addon</i> tábla):<br>
+			<dl>
+				<dt><b>subdir</b></dt>
+					<dd>Az addon almappájának a neve (ha az addonnak lényegtelen milyen almappába települ, lehet dinamikus érték is)</dd>
+				<dt><b>name</b></dt>
+					<dd>Az addon rövid neve</dd>
+				<dt><b>descr</b></dt>
+					<dd>Leírás</dd>
+				<dt><b>author</b></dt>
+					<dd>Szerző neve</dd>
+				<dt><b>authoremail</b></dt>
+					<dd>Szerző e-mail címe</dd>
+			</dl><br>
+			A telepítőscriptben található értékek jelentései (<i>modules</i> tábla):<br>
+			<dl>
+				<dt><b>name</b></dt>
+					<dd>A modul hivatkozása az <b>/addons/</b> mappához relatívan, például: <i>sample/samplemodule.php</i></dd>
+				<dt><b>type</b></dt>
+					<dd>A modul típusa, jelen esetben: <b>addonmodule</b></dd>
+				<dt><b>side</b></dt>
+					<dd>A megjelenítéshez használt oldalsáv oldala: <b>0</b> - bal, <b>1</b> - jobb</dd>
+			</dl>
+			<br>Ha az telepítés több lépcsőből épül fel, az addonkezelési keretrendszer támogatásához a <i>HTTP FORM POST</i> segítségével el kell küldeni pár változót, hogy a telepítés ne csússzon át másik addonra. Ezen felül a programozó az script felépítését elhatározása szerint megírhatja. Az eltávolítási rész <b>NEM</b> épülhet fel különböző lépcsőkből.<br>Az átküldéshez szükséges változók egy űrlapban:<br><code>
+			&lt;form method='POST' action='admin.php'&gt;<br>
+			&nbsp;&nbsp;&nbsp;... további kódok ...<br><br>
+			&nbsp;&nbsp;&nbsp;&lt;input type='hidden' name='site' value='addons'&gt;<br>
+			&nbsp;&nbsp;&nbsp;&lt;input type='hidden' name='action' value='install_script'&gt;<br>
+			&nbsp;&nbsp;&nbsp;&lt;input type='hidden' name='addonsubdir' value='<i>aktuális addon almappa neve</i>'&gt;<br><br>
+			&nbsp;&nbsp;&nbsp;... további kódok ...<br>
+			&lt;/form&gt;
+			</code></dd>
+			<br>
+		<dt><b>includes.php</b></dt>
+			<dd>Ha az addon tartalmaz különböző betöltendő függvénytárakat (az oldalsávban megjelenő modulokat <b>NEM</b> kell ide beírni), ez a fájl a php <span style='color: blue'>include</span><span style='color: grey'>('<i>fájlneve</i>');</span> kódjával betölthető. A fájlra az addon almappájához relatívan kell hivatkozni.</dd>
+			<br>
+		<dt><b>settings.php</b></dt>
+			<dd>Az addon beállításait állító fájl. A beállításokat a <i>HTTP FORM POST</i> használatával kell módosítani, és átküldéskor szükséges a következő változók átadása: <br><code>
+			&lt;form method='POST' action='admin.php'&gt;<br>
+			&nbsp;&nbsp;&nbsp;... további kódok ...<br><br>
+			&nbsp;&nbsp;&nbsp;&lt;input type='hidden' name='site' value='addons'&gt;<br>
+			&nbsp;&nbsp;&nbsp;&lt;input type='hidden' name='action' value='settings'&gt;<br>
+			&nbsp;&nbsp;&nbsp;&lt;input type='hidden' name='id' value=' <span style='color: darkblue'>\$addonid</span> '&gt;<br><br>
+			&nbsp;&nbsp;&nbsp;... további kódok ...<br>
+			&lt;/form&gt;
+			</code><br>Az <span style='color: darkblue'>\$addonid</span> változó a fájl megnyitásakor automatikusan generálódik az addonkezelő által.</dd><br>
+		<dt><b>settings.cfg</b></dt>
+			<dd>Alapjában véve PHP-nyelvű fájl, azonban ezt sok esetben a <i>settings.php</i>-nek ajánlatos létrehozni. Az addon konfigurációját tartalmazza.</dd><br>
+		<dt><b>files.lst</b></dt>
+			<dd>Ha az addon a fenti fájlokon kívül tartalmaz más fájlokat is (és általában tartalmaz), akkor azokat ebben a fájlban kell felsorolni, soronként egy-egy fájlt. A fájl szükséges a karbantartási és integritásellenörzési folyamatokhoz.<br><code>
+			sample.php<br>
+			...</code><br><br>
+		<dt>egyéb fájlok</dt>
+			<dd>Ezen felül a mappa tartalmazza a további szükséges fájlokat</dd>
+	</dl><br>A fejlesztés előtt ajánlott átnézni a portálrendszerrel együtt szállított sample addon fájlait, mely példaként minden szükséges fájlt tartalmaz.");
+			break;
+	}
+}
 
 switch ($_GET['cmd'])
 {
@@ -320,12 +419,19 @@ switch ($_GET['cmd'])
 	//case "UserSession":
 		//UserSessionHelp();
 		//break;
+	case "Addons-admin":
+		AddonHelp('admin');
+		break;
+	case "Addons-developer":
+		AddonHelp('developer');
+		break;
 	case "adminTools":
 		/* Választási űrlap létrehozása */
 		
 		$forms->StartForm("GET", "self", "Kérlek válassz, melyik adminisztrátori eszközről szeretnél információt kapni");
 		$forms->UrlapElem("select", "cmd", "", 1, "Kérlek válassz a lenyíló listából adminisztrátori eszközt", TRUE, "Súgólehetőségek", "Válassz a lenyíló listából, hogy a kívánt súgó oldalára juss");
 		$forms->UrlapElem("option", "A portálrendszer frissítése", "Update");
+		$forms->UrlapElem("option", "Addonok", "Addons-admin");
 		$forms->UrlapElem("option", "", "adminTools");
 		$forms->UrlapElem("option", "<< Vissza a főmenübe", $NULL);
 		$forms->UrlapElem("select-end", "", "");
@@ -342,6 +448,7 @@ switch ($_GET['cmd'])
 		$forms->UrlapElem("option", "Űrlapgenerálási osztály", "Urlap");
 		$forms->UrlapElem("option", "MySQL-kezelő osztály", "SQL");
 		//$forms->UrlapElem("option", "Felhasználó és munkamenetkezelés", "UserSession");
+		$forms->UrlapElem("option", "Addonok", "Addons-developer");
 		$forms->UrlapElem("option", "", "DeveloperTools");
 		$forms->UrlapElem("option", "<< Vissza a főmenübe", $NULL);
 		$forms->UrlapElem("select-end", "", "");
