@@ -209,10 +209,6 @@
 	(1, 1, 'Első hírhozzászólás', " .time(). ")", 'INSTALL'); // Első hírhozzászólás
  WOut('sor', 'news_comments', 'Első hírhozzászólás');
  
- /* Addonok */
- $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."addons(subdir, name, descr, author, authoremail) VALUES ('sample', 'Példa addon', 'Példa addon az addonok működésének bemutatására', 'whisperity', 'whisperity@gmail.com')");
- WOut('sor', 'addons', 'Példa addon');
- 
  /* Verzióadatok */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."version (RELEASE_TYPE, VERSION, RELEASE_DATE) VALUES ('" .RELEASE_TYPE. "', '" .VERSION. "', '" .RELEASE_DATE. "')", 'INSTALL'); // Verzióadatok
  WOut('sor', 'version', 'Verzióadatok: ' .RELEASE_TYPE. " " .VERSION. " (" .RELEASE_DATE. ")");
