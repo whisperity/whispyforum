@@ -42,6 +42,7 @@ function Addonmeret($addonsubdir)
 		$meret += filesize("addons/" .$addonsubdir. "/" .$fsor);
 	}
 	$meret += filesize("addons/" .$addonsubdir. "/files.lst");
+	$meret += @filesize("addons/" .$addonsubdir. "/index.php");
 	$meret += @filesize("addons/" .$addonsubdir. "/includes.php");
 	$meret += @filesize("addons/" .$addonsubdir. "/install.php");
 	$meret += @filesize("addons/" .$addonsubdir. "/settings.php");
@@ -148,7 +149,7 @@ $adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons");
 				<td><a href='mailto:" .$sor['authoremail']. "'>" .$sor['author']. "</a></td>
 				<td>" .$sor['descr']. "</td>");
 			
-			if ( $sor['settings'] == "TRUE" ) // Ha vannak az addonnak beállításai, megjelenítjük a hozzá tartozó gombot
+			if ( file_exists("addons/" .$sor['subdir']. "/settings.php") ) // Ha vannak az addonnak beállításai, megjelenítjük a hozzá tartozó gombot
 				print("<td><form action='/admin.php' method='GET'>
 				<input type='hidden' name='site' value='addons'>
 				<input type='hidden' name='action' value='settings'>
