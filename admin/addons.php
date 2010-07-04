@@ -15,7 +15,20 @@ if ( $admin == 1)
 <?php
 function Addonbeallitasok($addonid)
 {
+	global $cfg, $sql;
+	
 	/* Addon beállítások megtekintése/állítása */
+	$addonsor = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons WHERE id='" .$addonid. "'")); // Addon adatai
+	if ( file_exists("addons/" .$addonsor['subdir']. "/settings.php") ) // Ha megtalálható a szerveren az addon beállítási fájl
+	{
+		include("addons/" .$addonsor['subdir']. "/settings.php"); // Betöltjük
+	}
+	// Egyéb esetben sokminden nem történhet, mivel ha nincs beállítási fájl, ezt a függvényt meghívó gomb sem jelenik meg
+	
+	/* A további kódok ne fussanak le */
+	print("</td><td class='right' valign='top'>");
+	Lablec();
+	die();
 }
 
 function Addonmeret($addonsubdir)
