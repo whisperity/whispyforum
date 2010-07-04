@@ -18,8 +18,8 @@
 	die();
  }
  
- print("<form method='POST' action='" .$_SERVER['PHP_SELF']. "'>
-	<p class='formText'>Saját megjelenítendő szöveg a példaaddonban: <input type='text' name='sajatszoveg' value='" .$peldaaddon_sajatszoveg. "'>
+ print("Példaaddon beálíltásainak módosítása:<br><form method='POST' action='" .$_SERVER['PHP_SELF']. "'>
+	<p class='formText'>Saját megjelenítendő szöveg a példaaddonban:<br><textarea rows='10' cols='30'>" .$peldaaddon_sajatszoveg. "</textarea>
 	<input type='hidden' name='site' value='addons'>
 	<input type='hidden' name='action' value='settings'>
 	<input type='hidden' name='id' value=" .$addonid. ">
