@@ -113,7 +113,7 @@ $adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons");
 			print("<tr>
 				<td>" .$sor['subdir']. "</td>
 				<td>" .$sor['name']. "</td>
-				<td>" .DecodeSize($meret). "</td>
+				<td>" .DecodeSize(Addonmeret($sor['subdir'])). "</td>
 				<td><a href='mailto:" .$sor['authoremail']. "'>" .$sor['author']. "</a></td>
 				<td>" .$sor['descr']. "</td>
 				<td><form action='/admin.php' method='GET'>
