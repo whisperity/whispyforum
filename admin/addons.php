@@ -117,20 +117,20 @@ if ( ($_POST['action'] == "install-batch") ) // Feltöltött BAA fájl kicsomago
 	}
 	$mappa = explode("//////////////////\r\n", $elemek[2]);
 	
-	if ( is_dir("addons/" .$mappa[0]))
+	/* if ( is_dir("addons/" .$mappa[0]))
 	{
 		// Ha már létezik egy ilyen mappa, hibaüzenet megjelenítése és telepítés leállítása
 		Hibauzenet("ERROR", "Már létező mappa", "Az addon telepítéshez szükséges mappája már létrehozásra került");
 		unlink("addons/install.baa"); // Ideiglenes fájl törlése
 		print("<br>/addons/install.baa ideiglenes fájl törölve<br><span style='color: red; font-weight: bold'>telepítés sikertelen: már létező célmappa</span><br><a href='admin.php?site=addons'>Visszatérés az addon-listához</a></div>"); // Értesítés, kicsomagolás befejezése
-		/* A további kódok ne fussanak le */
+		/* A további kódok ne fussanak le */ /*
 		print("</td><td class='right' valign='top'>");
 		Lablec();
 		die();
-	} else {
-		mkdir("addons/" .$mappa[0]); // Addon-mappa létrehozása
+	} else { */
+		@mkdir("addons/" .$mappa[0]); // Addon-mappa létrehozása
 		print("Addonmappa (" .$mappa[0]. ") létrehozva<br>");
-	}
+	//}
 	$meret = 0; // 0 bájt adat került létrehozásra
 	foreach ($elemek as &$elem )
 	{
@@ -227,13 +227,18 @@ $adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons");
 				<td><a href='mailto:" .$sor['authoremail']. "'>" .$sor['author']. "</a></td>
 				<td>" .$sor['descr']. "</td>");
 			
-			if ( file_exists("addons/" .$sor['subdir']. "/settings.php") ) // Ha vannak az addonnak beállításai, megjelenítjük a hozzá tartozó gombot
+			if ( file_exists("addons/" .$sor['subdir']. "/settings.php") ) 
+			{
+				// Ha vannak az addonnak beállításai, megjelenítjük a hozzá tartozó gombot
 				print("<td><form action='/admin.php' method='GET'>
 				<input type='hidden' name='site' value='addons'>
 				<input type='hidden' name='action' value='settings'>
 				<input type='hidden' name='id' value='" .$sor['id']. "'>
 				<input type='submit' value='Beállítások'>
 			</form></td>");
+			} else {
+				print("<td></td>");
+			}
 			
 			print("<td><form action='/admin.php' method='GET'>
 				<input type='hidden' name='site' value='addons'>

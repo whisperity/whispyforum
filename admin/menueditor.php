@@ -71,18 +71,28 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 			print("</td>");
 			
 			if ( $sor['type'] == "menu")
+			{
 				print("<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
 				<input type='hidden' name='site' value='menueditor'>
 				<input type='hidden' name='action' value='viewitems'>
 				<input type='hidden' name='id' value='" .$sor['id']. "'>
 				<input type='submit' value='Menüelemek megtekintése'>
 			</form></td>");
+			} else {
+				print("<td></td>");
+			}
 			
 			print("<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
 				<input type='hidden' name='site' value='menueditor'>
 				<input type='hidden' name='action' value='edit'>
 				<input type='hidden' name='id' value='" .$sor['id']. "'>
 				<input type='submit' value='Szerkesztés'>
+			</form></td>
+			<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+				<input type='hidden' name='site' value='menueditor'>
+				<input type='hidden' name='action' value='delete'>
+				<input type='hidden' name='id' value='" .$sor['id']. "'>
+				<input type='submit' value='Törlés'>
 			</form></td>
 			</tr>");
 		}
@@ -120,7 +130,12 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 				<input type='hidden' name='id' value='" .$sor['id']. "'>
 				<input type='submit' value='Szerkesztés'>
 			</form></td>
-					
+				<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+				<input type='hidden' name='site' value='menueditor'>
+				<input type='hidden' name='action' value='itemdelete'>
+				<input type='hidden' name='id' value='" .$sor['id']. "'>
+				<input type='submit' value='Törlés'>
+			</form></td>
 			</tr>");	
 		}
 		
@@ -131,7 +146,24 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 				<input type='submit' value='Új elem hozzáadása'>
 			</form>");
 		break;
-		
+	case "delete": // Modul törlése
+		if ( $_GET['id'] == $NULL )
+		{
+			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
+		} else {
+			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."modules WHERE id='" .$_GET['id']. "'");
+			die("<div class='messagebox'>A modul sikeresen törölve!<br><a href='admin.php?site=menueditor'>Vissza a menüszerkesztőhöz</a></td><td class='right' valign='top'>");
+		}
+		break;
+	case "itemdelete": // Menüelem törlése
+		if ( $_GET['id'] == $NULL )
+		{
+			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
+		} else {
+			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."menuitems WHERE id='" .$_GET['id']. "'");
+			die("<div class='messagebox'>A menüelem sikeresen törölve!<br><a href='admin.php?site=menueditor'>Vissza a menüszerkesztőhöz</a></td><td class='right' valign='top'>");
+		}
+		break;
 	case "itemedit": // Menüelem szerkesztése
 		if ( $_GET['id'] == $NULL )
 		{
