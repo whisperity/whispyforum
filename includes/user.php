@@ -44,7 +44,7 @@ class user // Definiáljuk az osztályt (felhasználók)
 		
 		$adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .$un. "'"));
 		
-		if ( (md5($pw) == $adat['pwd']) && ($adat['activated'] ==1 ) )
+		if ( (md5($pw) == $adat['pwd']) && ($adat['activated'] == 1 ) )
 		{
 			$session->StartSession($un, $pw); // Munkamenet indítása
 			$this->GetUserData();
@@ -82,7 +82,7 @@ class user // Definiáljuk az osztályt (felhasználók)
 		}
 		
 		print("!</span><br>");
-		print("<p class='formText'>Felhasználói szinted: " .$_SESSION['userLevelTXT']. "<br><a href='ucp.php'>Felhasználói vezérlőpult</a>");
+		print("<p class='formText'>Felhasználói szinted: " .$_SESSION['userLevelTXT']. "<br><a href='profile.php?id=" .$_SESSION['userID']. "'>Profilod megtekintése</a><br><a href='ucp.php'>Felhasználói vezérlőpult</a>");
 		if ( $_SESSION['userLevel'] == 3) // Ha a felhasználó admin linket írunk az admin vezérlőpultra
 			print("<br><a href='admin.php'>Adminisztrátori vezérlőpult</a>");
 		
@@ -165,7 +165,7 @@ class session // Munkamenet (session) kezelő osztály
 		global $cfg, $sql;
 		
 		session_start(); // Indítás
-		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET lastip='" .$_SERVER['REMOTE_ADDR']. "', lastsessid='" .session_id()."', loggedin='1', cursessid='" .session_id(). "', curip='" .$_SERVER['REMOTE_ADDR']. "' WHERE username='" .$username. "' AND pwd='" .md5($pass). "'");
+		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET lastip='" .$_SERVER['REMOTE_ADDR']. "', lastsessid='" .session_id()."', loggedin='1', cursessid='" .session_id(). "', curip='" .$_SERVER['REMOTE_ADDR']. "', lastlogintime='" .time(). "' WHERE username='" .$username. "' AND pwd='" .md5($pass). "'");
 		$_SESSION['username'] = $username;
 		$_SESSION['pass'] = $pass;
 		

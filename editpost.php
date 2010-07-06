@@ -30,7 +30,7 @@
  }
  // Felhasználói rang, felhasználó ellenörzése
  $adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."posts WHERE id='" .$getid. "'")); // Post adatainak bekérése
- 
+ $adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT id, username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$adat['uId']. "'"), MYSQL_ASSOC);
  if ( ($_SESSION['userLevel'] == 0) || ( $_SESSION['userLevel'] == 1) )
  {
 	$jog = 0; // Ha a felhasználó userszintje 0 (vendég) vagy 1 (felhasználó), nincs joga szerkeszteni
@@ -98,7 +98,7 @@
 	print("<div class='postbody'><h3 class='postheader'><p class='header'><a name='pid" .$adat['id']. "'></a>" .$adat['pTitle']. "");
 	print("</p></h3>"); // Hozzászólás fejléc
 	print("<div class='content'>" .$postBody. "</div></div>"); // Hozzászólás
-	print("<div class='postright'>Hozzászólás időpontja: <b>" .Datum("normal","kisbetu","dL","H","i","s",$adat['pDate']). "</b><p><b>" .$adat2['username']. "</b><br>Rang: " .$usrRang. "<br>Hozzászólások: " .$adat2['postCount']. "<br>"); // Hozzászólás adatai (hozzászóló, stb.)
+	print("<div class='postright'>Hozzászólás időpontja: <b>" .Datum("normal","kisbetu","dL","H","i","s",$adat['pDate']). "</b><p><b><a href='profile.php?id=" .$adat2['id']. "'>" .$adat2['username']. "</a></b><br>Rang: " .$usrRang. "<br>Hozzászólások: " .$adat2['postCount']. "<br>"); // Hozzászólás adatai (hozzászóló, stb.)
 	print("Csatlakozott: " .Datum("normal","m","d","H","i","", $adat2['regdate']). ""); // Hozzászóló adatai
 	print("</div></div>"); // Hozzászólás vége
 	

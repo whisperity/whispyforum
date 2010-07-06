@@ -37,8 +37,8 @@
  
  while ($sor = mysql_fetch_array($adat, MYSQL_ASSOC)) { // Témák listázása
 	// Felhasználók nevének betöltése
-	$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT username FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['startuser']. "'"), MYSQL_ASSOC);
-	$adat3 = mysql_fetch_array($sql->Lekerdezes("SELECT username FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['lastuser']. "'"), MYSQL_ASSOC);
+	$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT id, username FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['startuser']. "'"), MYSQL_ASSOC);
+	$adat3 = mysql_fetch_array($sql->Lekerdezes("SELECT id, username FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['lastuser']. "'"), MYSQL_ASSOC);
 	print("<tr>
 		<td class='forumlist'>"); // Ikon
 	
@@ -65,10 +65,10 @@
 			print("\t<a href='edittopic.php?tId=" .$sor['id']. "'><img src='/themes/" .THEME_NAME. "/edit_post_icon.gif' border='0' alt='Téma szerkesztése/törlése'></a>\t<a href='edittopic.php?tId=" .$sor['id']. "&cmd=deletetopic'><img src='/themes/" .THEME_NAME. "/icon_delete_post.jpg' alt='Téma törlése' border='0'></a>");
 		}
 		
-		print("<br>Szerző: " .$adat2['username']. " » " .Datum("normal","m","d","H","i","s",$sor['startdate']). "</p></td>
+		print("<br>Szerző: <a href='profile.php?id=" .$adat2['id']. "'>" .$adat2['username']. "</a> » " .Datum("normal","m","d","H","i","s",$sor['startdate']). "</p></td>
 		<td class='forumlist'>" .$sor['replies']. "</td>
 		<td class='forumlist'>" .$sor['opens']. "</td>
-		<td class='forumlist'><p>" .Datum("normal","m","d","H","i","s",$sor['lastpostdate']). "<br>" .$adat3['username']. "<a href='viewtopic.php?id=" .$sor['id']. "#pid" .$sor['lpId']. "'><img src='themes/" .THEME_NAME. "/lastpost.gif' border='0' alt='Ugrás a legutolsó hozzászóláshoz'></a></p></td>
+		<td class='forumlist'><p>" .Datum("normal","m","d","H","i","s",$sor['lastpostdate']). "<br><a href='profile.php?id=" .$adat3['id']. "'>" .$adat3['username']. "</a><a href='viewtopic.php?id=" .$sor['id']. "#pid" .$sor['lpId']. "'><img src='themes/" .THEME_NAME. "/lastpost.gif' border='0' alt='Ugrás a legutolsó hozzászóláshoz'></a></p></td>
 		</tr>"); // Téma sor
 	}
  /* Közlemények vége */
@@ -77,8 +77,8 @@
  
  while ($sor = mysql_fetch_array($adat, MYSQL_ASSOC)) { // Témák listázása
 	// Felhasználók nevének betöltése
-	$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT username FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['startuser']. "'"), MYSQL_ASSOC);
-	$adat3 = mysql_fetch_array($sql->Lekerdezes("SELECT username FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['lastuser']. "'"), MYSQL_ASSOC);
+	$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT id, username FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['startuser']. "'"), MYSQL_ASSOC);
+	$adat3 = mysql_fetch_array($sql->Lekerdezes("SELECT id, username FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['lastuser']. "'"), MYSQL_ASSOC);
 		
 	print("<tr>
 		<td class='forumlist'>"); // Ikon
@@ -106,10 +106,10 @@
 			print("\t<a href='edittopic.php?tId=" .$sor['id']. "'><img src='/themes/" .THEME_NAME. "/edit_post_icon.gif' border='0' alt='Téma szerkesztése/törlése'></a>\t<a href='edittopic.php?tId=" .$sor['id']. "&cmd=deletetopic'><img src='/themes/" .THEME_NAME. "/icon_delete_post.jpg' alt='Téma törlése' border='0'></a>");
 		}
 		
-		print("<br>Szerző: " .$adat2['username']. " » " .Datum("normal","m","d","H","i","s",$sor['startdate']). "</p></td>
+		print("<br>Szerző: <a href='profile.php?id=" .$adat2['id']. "'>" .$adat2['username']. "</a> » " .Datum("normal","m","d","H","i","s",$sor['startdate']). "</p></td>
 		<td class='forumlist'>" .$sor['replies']. "</td>
 		<td class='forumlist'>" .$sor['opens']. "</td>
-		<td class='forumlist'><p>" .Datum("normal","m","d","H","i","s",$sor['lastpostdate']). "<br>" .$adat3['username']. "<a href='viewtopic.php?id=" .$sor['id']. "#pid" .$sor['lpId']. "'><img src='themes/" .THEME_NAME. "/lastpost.gif' border='0'></a></p></td>
+		<td class='forumlist'><p>" .Datum("normal","m","d","H","i","s",$sor['lastpostdate']). "<br><a href='profile.php?id=" .$adat3['id']. "'>" .$adat3['username']. "</a><a href='viewtopic.php?id=" .$sor['id']. "#pid" .$sor['lpId']. "'><img src='themes/" .THEME_NAME. "/lastpost.gif' border='0'></a></p></td>
 		</tr>"); // Téma sor
 	}
  /* Többi téma vége */

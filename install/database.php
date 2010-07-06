@@ -49,6 +49,7 @@
   `userLevel` tinyint(1) NOT NULL DEFAULT '0',
   `activateToken` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `postCount` int(10) NOT NULL DEFAULT '0',
+  `lastlogintime` VARCHAR(16) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
  ", 'INSTALL'); // Felhasználók

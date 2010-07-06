@@ -43,13 +43,18 @@
 		while ( $sor = mysql_fetch_assoc($adat) )
 		{
 			$felhasznaloadat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."user WHERE id='" .$sor['uId']. "'"));
-			print("<div class='newsitem'><h2 class='header'><p class='header'>" .$sor['title']. " (" .Datum("normal","kisbetu","dL","H","i","s", $sor['postDate']). ", " .$felhasznaloadat['username']. ")</p></h2>
+			print("<div class='newsitem'><h2 class='header'><p class='header'>" .$sor['title']. " (" .Datum("normal","kisbetu","dL","H","i","s", $sor['postDate']). ", <a href='profile.php?id=" .$felhasznaloadat['id']. "'>" .$felhasznaloadat['username']. "</a>)</p></h2>
 "); // Fejléc
 			
 			// Hír első három bekezdésének megjelenítése
 			$bekezdesek = explode("\r\n", $sor['text']);
-			$rovidszoveg = $bekezdesek[0]."<br>".$bekezdesek[1]."<br>".$bekezdesek[2];
-			print($rovidszoveg . "<br><br><a href='news.php?id=" .$sor['id']. "&action=view'>Tovább >> (bővebben, kommentelés)</a></div>");
+			$rovidszoveg = $bekezdesek[0]."\n".$bekezdesek[1]."\n".$bekezdesek[2];
+			/* Hír formázása */
+			$hirBody = $rovidszoveg; // Nyers
+			$hirBody = EmoticonParse($hirBody); // Hangulatjelek hozzáadása BB-kódként
+			$hirBody = HTMLDestroy($hirBody); // HTML kódok nélkül 
+			$hirBody = BBDecode($hirBody); // BB kódok átalakítása HTML-kóddá (hangulatjeleket képpé)
+			print($hirBody . "<br><br><a href='news.php?id=" .$sor['id']. "&action=view'>Tovább >> (bővebben, kommentelés)</a></div>");
 		}
 		
 		break;
@@ -77,7 +82,7 @@
 		$hirBody = HTMLDestroy($hirBody); // HTML kódok nélkül 
 		$hirBody = BBDecode($hirBody); // BB kódok átalakítása HTML-kóddá (hangulatjeleket képpé)
 		
-		print("<div class='newsitem'><h2 class='header'><p class='header'>" .$hir['title']. " (" .Datum("normal","kisbetu","dL","H","i","s", $hir['postDate']). ", " .$felhasznaloadat['username']. ")</p></h2><br>" .$hirBody. "</div><br>"); // Hír szövege
+		print("<div class='newsitem'><h2 class='header'><p class='header'>" .$hir['title']. " (" .Datum("normal","kisbetu","dL","H","i","s", $hir['postDate']). ", <a href='profile.php?id=" .$felhasznaloadat['id']. "'>" .$felhasznaloadat['username']. "</a>)</p></h2><br>" .$hirBody. "</div><br>"); // Hír szövege
 		
 		/* Kommentek */
 		print("<h2 class='header'><p class='header'>Hozzászólások</p></h2>");
@@ -100,7 +105,7 @@
 			print("<div class='content'>" .$comBody. "</div></div><div class='postright'>");
 			
 			/* Hozzászóló adatai */
-			$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['uId']. "'"), MYSQL_ASSOC);
+			$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT id, username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['uId']. "'"), MYSQL_ASSOC);
 			
 			switch ($adat2['userLevel']) // Beállítjuk a szöveges userLevel értéket (userLevelTXT)
 			{
@@ -118,7 +123,7 @@
 					break;
 			}
 			
-			print("Hozzászólás időpontja: <b>" .Datum("normal","kisbetu","dL","H","i","s",$sor['pDate']). "</b><p><b>" .$adat2['username']. "</b><br>Rang: " .$usrRang. "<br>"); // Hozzászólás adatai (hozzászóló, stb.)
+			print("Hozzászólás időpontja: <b>" .Datum("normal","kisbetu","dL","H","i","s",$sor['pDate']). "</b><p><b><a href='profile.php?id=" .$adat2['id']. "'>" .$adat2['username']. "</a></b><br>Rang: " .$usrRang. "<br>"); // Hozzászólás adatai (hozzászóló, stb.)
 			print("Csatlakozott: " .Datum("normal","m","d","H","i","", $adat2['regdate']). ""); // Hozzászóló adatai
 			print("</div></div>"); // Hozzászólás vége
 		}
@@ -168,7 +173,7 @@
 		$getid = $_GET['cid']; // Hozzászólás azonosítója
 		
 		$adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."news_comments WHERE id='" .$getid. "'")); // Hozzászólás adatainak bekérése
- 
+		$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT id, username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$adat['uId']. "'"), MYSQL_ASSOC);
 		if ( ($_SESSION['userLevel'] == 0) || ( $_SESSION['userLevel'] == 1) )
 		{
 			$jog = 0; // Ha a felhasználó userszintje 0 (vendég) vagy 1 (felhasználó), nincs joga szerkeszteni
@@ -210,7 +215,7 @@
 		print("<div class='post'>"); // Fejléc
 		print("<div class='postbody'>");
 		print("<div class='content'>" .$postBody. "</div></div>"); // Hozzászólás
-		print("<div class='postright'>Hozzászólás időpontja: <b>" .Datum("normal","kisbetu","dL","H","i","s",$adat['pDate']). "</b><p><b>" .$adat2['username']. "</b><br>Rang: " .$usrRang. "<br>Hozzászólások: " .$adat2['postCount']. "<br>"); // Hozzászólás adatai (hozzászóló, stb.)
+		print("<div class='postright'>Hozzászólás időpontja: <b>" .Datum("normal","kisbetu","dL","H","i","s",$adat['pDate']). "</b><p><b><a href='profile.php?id=" .$adat2['id']. "'>" .$adat2['username']. "</a></b><br>Rang: " .$usrRang. "<br>Hozzászólások: " .$adat2['postCount']. "<br>"); // Hozzászólás adatai (hozzászóló, stb.)
 		print("Csatlakozott: " .Datum("normal","m","d","H","i","", $adat2['regdate']). ""); // Hozzászóló adatai
 		print("</div></div>"); // Hozzászólás vége
 	

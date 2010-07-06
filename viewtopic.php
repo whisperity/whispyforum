@@ -57,7 +57,7 @@
  
  while ($sor = mysql_fetch_array($adat, MYSQL_ASSOC)) { // Hozzászólások listázása
 	// Felhasználók nevének betöltése
-	$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['uId']. "'"), MYSQL_ASSOC);
+	$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT id, username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['uId']. "'"), MYSQL_ASSOC);
 	
 	switch ($adat2['userLevel']) // Beállítjuk a szöveges userLevel értéket (userLevelTXT)
 	{
@@ -97,10 +97,10 @@
 	{
 		// Ha a post szerkesztett, bekérjük a szerkesztő felhasználó adatait, és kiírjuk hogy mikor szerkesztették
 		$sor5 = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."user WHERE id='" .$sor['euId']. "'"));
-		print("<br>Utoljára szerkesztve: " .Datum("normal","m","d","H","i","s", $sor['eDate']). " (" .$sor5['username']. ")");
+		print("<br>Utoljára szerkesztve: " .Datum("normal","m","d","H","i","s", $sor['eDate']). " (<a href='profile.php?id=" .$sor5['id']. "'>" .$sor5['username']. "</a>)");
 	}
 	print("</div></div>"); // Hozzászólás
-	print("<div class='postright'>Hozzászólás időpontja: <b>" .Datum("normal","kisbetu","dL","H","i","s",$sor['pDate']). "</b><p><b>" .$adat2['username']. "</b><br>Rang: " .$usrRang. "<br>Hozzászólások: " .$adat2['postCount']. "<br>"); // Hozzászólás adatai (hozzászóló, stb.)
+	print("<div class='postright'>Hozzászólás időpontja: <b>" .Datum("normal","kisbetu","dL","H","i","s",$sor['pDate']). "</b><p><b><a href='profile.php?id=" .$adat2['id']. "'>" .$adat2['username']. "</a></b><br>Rang: " .$usrRang. "<br>Hozzászólások: " .$adat2['postCount']. "<br>"); // Hozzászólás adatai (hozzászóló, stb.)
 	print("Csatlakozott: " .Datum("normal","m","d","H","i","", $adat2['regdate']). ""); // Hozzászóló adatai
 	print("</div></div>"); // Hozzászólás vége
 	}
