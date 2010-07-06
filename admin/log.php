@@ -27,7 +27,7 @@ if ( $_GET['cmd'] != $NULL )
 				die("A napló mentéséhez nincs jogosultságod");
 			
 			// A napló mentését eltároljuk a naplóban (mielőtt letöltenénk)
-			file_put_contents('../logs/site.log', "\n" .time(). ',LOG_SAVED', FILE_APPEND);
+			file_put_contents('../logs/site.log', "\n" .time(). ';LOG_SAVED', FILE_APPEND);
 			
 			$fajl = "naplo-" .date("Y.m.d.H_i_s"). ".txt"; // Nem használjuk a Datum() függvényt, hogy elkerüljük a szóközöket
 			$szoveg = "               Dátum-idő               |               Esemény               |                              További infók                              |
@@ -39,7 +39,7 @@ if ( $_GET['cmd'] != $NULL )
 			$tovabbi = "\n                                                                               "; // További részhez ugrás
 			
 			foreach ($sorok as &$sor) {
-				$tagok = explode(',', $sor);
+				$tagok = explode(';', $sor);
 				$szoveg .= "    " .@Datum("normal", "nagybetu", "dL", "H", "i", "s", $tagok[0]);
 				$szoveg .= "                 ";
 				
@@ -132,7 +132,7 @@ Aktiválókulcs (token): " .$tagok[3];
 			file_put_contents('../logs/' .$fajl, "\n" .time(). ',LOG_PURGE', FILE_APPEND); // A törlés beleírása a régi naplóba
 			
 			// A napló mentését eltároljuk a naplóban (miután töröltünk)
-			file_put_contents('../logs/site.log', time(). ',LOG_PURGE'); // Nincs ,FILE_APPEND, a fájl felülíródik
+			file_put_contents('../logs/site.log', time(). ';LOG_PURGE'); // Nincs ,FILE_APPEND, a fájl felülíródik
 			
 			print("Napló sikeresen törölve!"); //Értesítés
 			
@@ -211,7 +211,7 @@ $sId = 0; // 0. sor
 
 foreach ($sorok as &$ertek) { // Soronkénti értelmezés
 	$sId++; // A sor száma növekszik 1-gyel
-	$sor = explode(',', $ertek); // A sorokat szétvagdossuk a ,-k (vesszők) mentén
+	$sor = explode(';', $ertek); // A sorokat szétvagdossuk a ,-k (vesszők) mentén
 	
 	print("<tr>"); // Új táblázatsor
 	print("<td>" .$sId. "</td>"); // Eseményazonosító (sor száma)

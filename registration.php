@@ -184,7 +184,7 @@
 				
 				$mail->SendRegistrationMail($_POST['username'], $_POST['password'], $_POST['email'], $acToken, $_POST['realname']); // Elküldjük a levelet
 				
-				WriteLog("USR_REGISTERED_SUCCESSFULLY",$_POST['username'] .','. md5($_POST['password']) .','. $_POST['email'] .','. $_POST['realname'] .','. $acToken);
+				WriteLog("USR_REGISTERED_SUCCESSFULLY",$_POST['username'] .';'. md5($_POST['password']) .';'. $_POST['email'] .';'. $_POST['realname'] .';'. $acToken);
 			//}
 		}
 		break;

@@ -71,13 +71,13 @@ function Inicialize ( $pagename )
  
  /* Telepítettség ellenörzése */
  if ( !file_exists('install.lock') )
-	Hibauzenet("CRITICAL", "A portálrendszer nincs telepítve", "Kérlek futtatsd a telepítőscriptet <a href='install.php'>innen</a>!", __FILE__, __LINE__);
+	Hibauzenet("BAN", "A portálrendszer nincs telepítve", "Kérlek futtatsd a telepítőscriptet <a href='install.php'>innen</a>!", __FILE__, __LINE__);
  
  /* INICIALIZÁLÁS */
  $sql->Connect(); // Csatlakozás az adatbázisszerverhez
  CheckIfIPBanned(); // Megnézzük, hogy a felhasználó IP-címe bannolva van-e
  $user->GetUserData(); // Felhasználó adatainak frissítése
- WriteLog("PAGE_VIEW", $pagename. ',' .$_SERVER['REMOTE_ADDR']. ',' .$_SERVER['HTTP_USER_AGENT']. ',' .$_SESSION['username']. ',' .$_SESSION['userLevelTXT']);
+ WriteLog("PAGE_VIEW", $pagename. ';' .$_SERVER['REMOTE_ADDR']. ';' .$_SERVER['HTTP_USER_AGENT']. ';' .$_SESSION['username']. ';' .$_SESSION['userLevelTXT']);
  
  /* Verzióadatok elleörzése */
  $adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."version"), MYSQL_ASSOC);

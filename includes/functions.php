@@ -219,7 +219,7 @@ function Datum( $ev, $honap, $nap, $ora, $perc, $masodperc, $epoch = '' ) // A m
 		print("<div class='hibabox'><div class='hibakep'><img src='themes/" .THEME_NAME. "/" .$kepnev. "'></div><div class='hibacim'>" .$Hmsg['title']. "</div><div class='hibaszoveg'>" .$Hmsg['desc']. "</div></div>");
 		
 		// Beleírjuk az aktuális értéket a naplóba
-		WriteLog($Hmsg['tipus'], $Hmsg['title']. ',' .$Hmsg['desc']. ',' .$Hmsg['fajl']. ',' .$Hmsg['line']);
+		WriteLog($Hmsg['tipus'], $Hmsg['title']. ';' .$Hmsg['desc']. ';' .$Hmsg['fajl']. ';' .$Hmsg['line']);
 		
 		//if ($Hmsg['tipus'] == "CRITICAL") // Ha kritikus (CRITICAL) a hiba, a futtatás megakad.
 			//die("A script futtatása megszakítva a következő helyen: <b>" . $Hmsg['fajl'] . "</b> fájl <b>" . $Hmsg['line'] . ".</b> sora.");
@@ -264,7 +264,7 @@ function Datum( $ev, $honap, $nap, $ora, $perc, $masodperc, $epoch = '' ) // A m
 	if (! (file_exists('logs/site.log')))
 	{
 		// Ha nem létezik a napló fájl, létrehozunk egyet
-		file_put_contents('logs/site.log',time(). ',LOG_CREATE');
+		file_put_contents('logs/site.log',time(). ';LOG_CREATE');
 	}
 	
 	// Beleírjuk az aktuális értéket a naplóba
@@ -275,25 +275,25 @@ function Datum( $ev, $honap, $nap, $ora, $perc, $masodperc, $epoch = '' ) // A m
 		case "ERROR":
 		case "CRITICAL":
 			if ( LOG_DEPTH >= 1 )
-				file_put_contents('logs/site.log', "\n" .time(). ',' .$micsoda. ',' .$mit, FILE_APPEND);
+				file_put_contents('logs/site.log', "\n" .time(). ';' .$micsoda. ';' .$mit, FILE_APPEND);
 			break;
 		case "USR_REGISTERED_SUCCESSFULLY":
 		case "USR_ACTIVATE":
 			if ( LOG_DEPTH >= 2 )
-				file_put_contents('logs/site.log', "\n" .time(). ',' .$micsoda. ',' .$mit, FILE_APPEND);
+				file_put_contents('logs/site.log', "\n" .time(). ';' .$micsoda. ';' .$mit, FILE_APPEND);
 			break;
 		case "PAGE_VIEW":
 			if ( LOG_DEPTH >= 3 )
-				file_put_contents('logs/site.log', "\n" .time(). ',' .$micsoda. ',' .$mit. ',' .var_export($_POST, TRUE). ',' .var_export($_GET, TRUE), FILE_APPEND);
+				file_put_contents('logs/site.log', "\n" .time(). ';' .$micsoda. ';' .$mit. ';' .var_export($_POST, TRUE). ';' .var_export($_GET, TRUE), FILE_APPEND);
 			break;
 		case "SQL_CONNECT_SELECTDB":
 		case "SQL_DC":
 			if ( LOG_DEPTH >= 4)
-				file_put_contents('logs/site.log', "\n" .time(). ',' .$micsoda, FILE_APPEND);
+				file_put_contents('logs/site.log', "\n" .time(). ';' .$micsoda, FILE_APPEND);
 			break;
 		case "SQL":
 			if ( LOG_DEPTH >= 4)
-				file_put_contents('logs/site.log', "\n" .time(). ',' .$micsoda. ',' .$mit, FILE_APPEND);
+				file_put_contents('logs/site.log', "\n" .time(). ';' .$micsoda. ';' .$mit, FILE_APPEND);
 			break;
 	}
   }

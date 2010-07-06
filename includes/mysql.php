@@ -27,7 +27,7 @@ class mysql // Definiáljuk az osztályt
 	{
 		// Zárjuk a kapcsolatot
 		@mysql_close()
-			or Hibauzenet("CRITICAL", "A kapcsolat nem zárható le", "", __FILE__, __LINE__);
+			or Hibauzenet("CRITICAL", "A kapcsolat nem zárható le", "Valószínűleg nincs megnyitott kapcsolat", __FILE__, __LINE__);
 		
 		WriteLog("SQL_DC");
 	}
@@ -36,7 +36,7 @@ class mysql // Definiáljuk az osztályt
 	{
 		WriteLog("SQL", $lekerd);
 		
-		$eredmeny = mysql_query($lekerd)
+		$eredmeny = @mysql_query($lekerd)
 			or Hibauzenet("CRITICAL", "A lekérdezés nem futtatható le", "Lekérdezés: <b>" .$lekerd. "</b><br>Nyers MySQL hiba: <b>" .mysql_error(). "</b>", __FILE__, __LINE__);
 		
 		if ( $tipus == 'INSTALL' ) // Ha telepítéskori a lekérdezés (lásd: /install/database.php), naplózunk
