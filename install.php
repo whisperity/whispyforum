@@ -47,7 +47,7 @@
 		// Ha kezdeti lépés
 		// Kezdeti információkat, bevezetőt kiírjuk
 		print("<div class='postbox'><h3 class='header'><p class='header'>1. Bevezetés</p></h3>");
-		print("Köszönjük, hogy a portálmotorunkat használod! Igyekszünk a lehető legnagyobb hatásfokot és kompatibilistást, valamint fejlődést biztosítani, hogy a felhasználóközösségnek örömére váljon ezen rendszer használata.<br>A script, amit jelenleg futtatsz, a portálrendszer első lépésében, a telepítésben segít neked. Segítségével létrehozhatod az alapvető adatbázist és adatokat, valamint egy adminisztrátori felhasználót.");
+		print("Köszönjük, hogy a portálmotorunkat használod! Igyekszünk a lehető legnagyobb hatásfokot és kompatibilistást, valamint fejlődést biztosítani, hogy a felhasználóközösségnek örömére váljon ezen rendszer használata.<br>A script, amit jelenleg futtatsz, a portálrendszer első lépésében, a telepítésben segít neked. Segítségével létrehozhatod az alapvető adatbázist és adatokat, valamint egy adminisztrátori felhasználót.<br>A jobb oldalon láthatod a menüt, a telepítés 7 egyszerű lépésből áll.<br>Ha azt szeretnéd, kezdődjön a telepítés, kattints az alábbi gombra:");
 		print("<form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
 		<input type='hidden' name='pos' value='2'>
 		<input type='submit' value='Tovább >> (Konfigurációs adatok megadása)'>

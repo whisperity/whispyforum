@@ -54,7 +54,12 @@ class templates // Osztálydeklaráció
 		while ($sor = mysql_fetch_array($adat, MYSQL_ASSOC)) {
 			$http = explode('://', $sor['href']);
 			
-			print("<a class='menuitem' href='" .$sor['href']. "'>" .$sor['text']. "</a>");
+			print("<a class='menuitem' href='" .$sor['href']. "'");
+			
+			if ( $http[0] == "http" )
+				print(" target='_blank'");
+			
+			print(">" .$sor['text']. "</a>");
 			
 			if ( $http[0] == "http" )
 				print("<img src='/themes/" .THEME_NAME. "/external_href.jpg' alt='Külső hivatkozás' border='0'>");

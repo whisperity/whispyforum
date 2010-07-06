@@ -386,8 +386,6 @@ function AddonHelp($tipus)
 			&nbsp;&nbsp;&nbsp;... további kódok ...<br>
 			&lt;/form&gt;
 			</code><br>Az <span style='color: darkblue'>\$addonid</span> változó a fájl megnyitásakor automatikusan generálódik az addonkezelő által.</dd><br>
-		<dt><b>settings.cfg</b></dt>
-			<dd>Alapjában véve PHP-nyelvű fájl, azonban ezt sok esetben a <i>settings.php</i>-nek ajánlatos létrehozni. Az addon konfigurációját tartalmazza.</dd><br>
 		<dt><b>files.lst</b></dt>
 			<dd>Ha az addon a fenti fájlokon kívül tartalmaz más fájlokat is (és általában tartalmaz), akkor azokat ebben a fájlban kell felsorolni, soronként egy-egy fájlt. A fájl szükséges a karbantartási és integritásellenörzési folyamatokhoz.<br><code>
 			sample.php<br>
