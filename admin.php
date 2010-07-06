@@ -72,6 +72,7 @@
 	MenuItem("installlog", "Telepítési napló megtekintése");
 	MenuItem("banip", "IP-cím alapú kitiltások kezelése");
 	MenuItem("addons", "Addonok kezelése");
+	MenuItem("checks", "Ellenörzés");
 	
 	print("
 	<br><a class='menuItem' href='includes/help.php' onClick=\"window.open('includes/help.php?cmd=adminTools', 'popupwindow', 'width=800,height=600,resize=no,scrollbars=yes'); return false;\">Súgó megjelenítése</a><br>
@@ -106,10 +107,33 @@
 		$admin = TRUE;
 		include("admin/addons.php");
 		break;
+	case 'checks':
+		$admin = TRUE;
+		include("admin/checks.php");
+		break;
 	default:
+		/* Telepítési információk bekérése */
+		$installock = file_get_contents("install.lock");
+		$instimestamp = explode("INSTALL_LOCK\nINSTALL_TS,", $installock);
+		$instip = explode("\nINSTALL_IP,", $instimestamp[1]);
+		/* $instip[0] = telepítési timestamp, $instip[1] = telepítési IP */
+		
 		print("<center><h2 class='header'>Adminisztrátori vezérlőpult</h2></center>
 		<br>
-		Üdvözöllek az adminisztrátori vezérlőpultban.<br>Ez az a hely, ahol a portálrendszer vezetői, az adminisztrátorok elérhetnek bizonyos, csak az ő jogkörükkel elérhető eszközt. Kérlek, válassz a baloldali menüből.</div><div class='rightbox'></div>");
+		Az adminisztrátori vezérlőpultot csak <i>Adminisztrátor</i> (level 3) jogkörű felhasználók láthatják, és az adott eszközöket is csak ők használhatják.
+		<br style='clear: both'><br><div class='menubox'><span class='menutitle'>Információk</span><br>
+		<p class='formText'>
+			<b>Motor:</b> WhispyForum<br>
+			<b>Kiadás típus:</b> " .RELEASE_TYPE. "<br>
+			<b>Verziószám:</b> " .VERSION. "<br>
+			<b>Kiadás dátuma:</b> " .RELEASE_DATE. "<br>
+			<b>Telepítés időpontja:</b> " .Datum("normal", "kisbetu", "dl", "H", "i", "s", $instip[0]). "<br>
+			<b>Telepítő IP-címe:</b> " .$instip[1]);
+		if ( $_SERVER['REMOTE_ADDR'] == $instip[1] )
+			print(" <span style='color: darkgreen'><b>(Tied)</b></span>");
+		
+		print("</p></div>
+			<br style='clear: both'>");
 		print("</td><td class='right' valign='top'>");
 		break;
  }
