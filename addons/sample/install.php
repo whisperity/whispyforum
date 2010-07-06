@@ -50,6 +50,11 @@
 		case 1:
 			/* Addon telepítése (sql-lekérdezések) */
 			
+			$sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."addonsettings_sample (
+  `variable` VARCHAR(64) COLLATE utf8_unicode_ci NOT NULL,
+  `value` TEXT COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
+			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."addonsettings_sample(variable, value) VALUES ('peldaaddon_sajatszoveg', 'Hello World!')");
 			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."addons(subdir, name, descr, author, authoremail) VALUES ('sample', 'Példa addon', 'Példa addon az addonok működésének bemutatására', 'whisperity', 'whisperity@gmail.com')");
 			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name, type, side) VALUES ('sample/samplemodule.php', 'addonmodule', 2)");
 			
@@ -63,6 +68,9 @@
  {
 	global $cfg, $sql; // Szükséges változók betöltése
 	
+	print("Az addon törlésével a beállítások is törlődtek!");
+	
+	$sql->Lekerdezes("DROP TABLE " .$cfg['tbprf']."addonsettings_sample");
 	$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."modules WHERE name='sample/samplemodule.php'"); // Modul eltávolítása
 	$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."addons WHERE subdir='sample'"); // Addon eltávolítása
 	

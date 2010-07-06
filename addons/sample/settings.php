@@ -6,11 +6,10 @@
 /* /addons/sample/settings.php
    példaaddon beállításfájla
 */
- include_once('addons/sample/settings.cfg'); // Szükséges az aktuális beálltások megtekintéséhez
- 
+ global $cfg, $sql;
  if ( $_POST['setchange'] == "igaz" ) // Ha változtattunk az adatokon
  {
-	file_put_contents("addons/sample/settings.cfg", "<?php\r\n\$peldaaddon_sajatszoveg = '" .$_POST['sajatszoveg']. "';\r\n?>"); // Fájl írása
+	$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."addonsettings_sample SET value='" .$_POST['sajatszoveg']. "' WHERE variable='peldaaddon_sajatszoveg'");
 	/* Értesítés, további kódok lefutásának megakadályozása */
 	print("<div class='messagebox'>Addon beállításai sikeresen módosítva!<br><a href='admin.php?site=addons'>Visszatérés az addonok listájához</a></div>");
 	print("</td><td class='right' valign='top'>");
@@ -18,8 +17,10 @@
 	die();
  }
  
+ $addonconfig_sampleaddon = mysql_fetch_row($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addonsettings_sample WHERE variable='peldaaddon_sajatszoveg'"));
+ $peldaaddon_sajatszoveg = $addonconfig_sampleaddon[1];
  print("Példaaddon beálíltásainak módosítása:<br><form method='POST' action='" .$_SERVER['PHP_SELF']. "'>
-	<p class='formText'>Saját megjelenítendő szöveg a példaaddonban:<br><textarea rows='10' cols='30'>" .$peldaaddon_sajatszoveg. "</textarea>
+	<p class='formText'>Saját megjelenítendő szöveg a példaaddonban:<br><textarea name='sajatszoveg' rows='10' cols='30'>" .$peldaaddon_sajatszoveg. "</textarea>
 	<input type='hidden' name='site' value='addons'>
 	<input type='hidden' name='action' value='settings'>
 	<input type='hidden' name='id' value=" .$addonid. ">
