@@ -10,7 +10,12 @@
  include('includes/common.php'); // Betöltjük a portálrendszer alapscriptjeit (common.php elvégzi)
  Inicialize('registration.php');
  SetTitle("Regisztráció");
- 
+ if ( $_SESSION['userLevel'] != 0 )
+ {
+	Hibauzenet("ERROR", "Nem regisztrálhatsz bejelentkezve");
+	DoFooter();
+	die();
+ }
  $regPos = $_POST['regPos']; // Regisztrációs lépés
  
  print("<span class='regHeader'>Regisztráció</span><br>"); // Fejléc
