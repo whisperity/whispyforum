@@ -9,7 +9,7 @@
  
  function Install() // Telepítési script
  {
-	global $cfg, $sql;
+	global $addons;
 	
 	/* Az addon telepítési pozícióját POST-ban kapjuk */
 	$position = $_POST['position'];
@@ -49,9 +49,8 @@
 			break;
 		case 1:
 			/* Addon telepítése (sql-lekérdezések) */
-			
-			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."addons(subdir, name, descr, author, authoremail) VALUES ('clock', 'Óra', 'Egy digitális órát jelenít meg', 'whisperity', 'whisperity@gmail.com')");
-			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name, type, side) VALUES ('clock/module.php', 'addonmodule', 2)");
+			$addons->RegisterAddon("clock", "Óra", "Egy digitális órát jelenít meg", "whisperity", "whisperity@gmail.com");
+			$addons->InstallModule("clock/module.php", 2);
 			
 			print("<br>Az addon telepítése sikeres volt. <a href='admin.php?site=addons'>Visszatérés az addonok listájához</a>"); // A felhasználó értesítése a sikeres telepítésről
 			
@@ -61,10 +60,10 @@
  
  function Uninstall() // Eltávolítási script
  {
-	global $cfg, $sql; // Szükséges változók betöltése
+	global $addons; // Szükséges változók betöltése
 	
-	$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."modules WHERE name='clock/module.php'"); // Modul eltávolítása
-	$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."addons WHERE subdir='clock'"); // Addon eltávolítása
+	$addons->UnregisterAddon("clock");
+	$addons->RemoveModule("clock/module.php");
 	
 	print("<br>Az addon eltávolítása sikeres volt. Kérlek, amennyiben nem szeretnéd, hogy az addon újra telepíthető legyen, távolítsd el az <span class='star'>addons/clock</span> mappát. <a href='admin.php?site=addons'>Visszatérés az addonok listájához</a>"); // A felhasználó értesítése a sikeres törlésről
  }

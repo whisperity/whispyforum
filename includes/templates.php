@@ -101,8 +101,75 @@ class addons // Addonkezelő osztály
 		while ( $sor = mysql_fetch_assoc($adat) )
 		{
 			@include_once("addons/" .$sor['subdir']. "/includes.php");
-			@include_once("addons/" .$sor['subdir']. "/settings.cfg");
 		}
+	}
+	
+	/* Addon telepítési adatbázis funkciók */
+	function RegisterAddon($subdir, $nev, $leiras, $szerzo, $szerzoemail) // Addon regisztrálása (addons táblába felvétel)
+	{
+		global $cfg, $sql;
+		$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."addons(subdir, name, descr, author, authoremail) VALUES ('" .$subdir. "', '" .$nev. "', '" .$leiras. "', '" .$szerzo. "', '" .$szerzoemail. "')");
+	}
+	
+	function InstallModule($href, $side) // Modul telepítése
+	{
+		global $cfg, $sql;
+		
+		$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name, type, side) VALUES ('" .$href. "', 'addonmodule', " .$side. ")");
+	}
+	
+	function CreateAddonTable($subdir) // Addon konfigurációs tábla létrehozása
+	{
+		global $cfg, $sql;
+		
+		$sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."addonsettings_" .$subdir. " (
+  `variable` VARCHAR(64) COLLATE utf8_unicode_ci NOT NULL,
+  `value` VARCHAR(1024) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
+	}
+	
+	function AddCFG($subdir, $variable, $value) // Addon konfigurációs tábla kezdőérték hozzáadása
+	{
+		global $cfg, $sql;
+		
+		$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."addonsettings_" .$subdir. "(variable, value) VALUES ('" .$variable. "', '" .$value. "')");
+	}
+	
+	/* Addon eltávolítási adatbázis funkciók */
+	function RemoveAddonTable($subdir) // Addon konfigurációs tábla törlése
+	{
+		global $cfg, $sql;
+		$sql->Lekerdezes("DROP TABLE " .$cfg['tbprf']."addonsettings_" .$subdir);
+	}
+	
+	function UnregisterAddon($subdir) // Addon bejegyzés törlése
+	{
+		global $cfg, $sql;
+		
+		$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."addons WHERE subdir='" .$subdir. "'");
+	}
+	
+	function RemoveModule($href) // Modul eltávolítása
+	{
+		global $cfg, $sql;
+		
+		$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."modules WHERE name='" .$href. "'");
+	}
+	
+	/* Addon működési adatbázis funkciók */
+	function GetCFG($subdir, $variable) // Addon konfigurációs érték bekérése
+	{
+		global $cfg, $sql;
+		
+		$konfigtomb = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."addonsettings_" .$subdir. " WHERE variable='" .$variable. "'"));
+		
+		return $konfigtomb[0];
+	}
+	function SetCFG($subdir, $variable, $value) // Addon konfigurációs érték módosítása
+	{
+		global $cfg, $sql;
+		
+		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."addonsettings_" .$subdir. " SET value='" .$value. "' WHERE variable='" .$variable. "'");
 	}
 }
 

@@ -311,13 +311,13 @@ function AddonHelp($tipus)
 	A bővítmények változatos funkciókat tartalmazhatnak, lehetnek megjelenő modulok, funkciógyűjtemények, segédscriptek, stb. Pár dolog azonban közös bennük: a fejlesztők az addonokat a portálrendszerhez írták, és a keretrendszer funkcióit használja, ezért legtöbbször a keretrendszeren kívül futtatva életképtelenek. Az addonok <b>MINDIG</b> csak a /addons mappán belüli, saját maguknak fenntartott mappából futnak, és a portálrendszer osztályaiba nem tölthetik bele magukat. Ezért, ha egy addon a /addons/<i>addon-almappa</i> mappán kívüli (pl. az includes) mappába kíván fájlt tenni, az addonra már gyanúval kell nézni!
 	<br><br>
 	Az addonok karbantartását az <a href='../admin.php?site=addons'>admin menü</a>ből érheted el. A lista tartalmazza minden telepített addon nevét, almappája nevét, szerzőjét (a szerző nevére kattintva e-mailt küldhetsz a szerzőnek), teljes tárterületigényét (a fájlok méretét), valamint leírását. Ezek mellett minden sorban helyet kap egy <b>Eltávolítás</b> gomb is, melyre kattintva betöltődik az addon telepítőkódjának eltávolító része, és az addon törlődik a rendszerből. Előfordulhat, hogy az eltávolítóscript további adatokat kér, vagy információkat jelenít meg.
-	<br>Ha az addon fejlesztői szükségesnek tartják, az addon tartalmazhat egy, a beállításait módosító fájlt is. Ha az addon rendelkezik speciális beállításokkal (melyeket egy fájlba ír), az Eltávolítás gomb mellett megtalálható egy <b>Beállítások</b> gomb is. Erre kattintva betöltődik a beállításokat módosító kód, mely segítségével az addon beállításai módosíthatóak.
+	<br>Ha az addon fejlesztői szükségesnek tartják, az addon tartalmazhat egy, a beállításait módosító fájlt is. Ha az addon rendelkezik speciális beállításokkal, az Eltávolítás gomb mellett megtalálható egy <b>Beállítások</b> gomb is. Erre kattintva betöltődik a beállításokat módosító kód, mely segítségével az addon beállításai módosíthatóak.
 	<br><br>
 	A lista alatt helyet kap egy <b>Új addon telepítése</b> gomb is, melyre kattintva új addont telepíthetünk. A gombra kattintva először megjelennek a főbb biztonsági intézkedésre felszólító figyelmeztetések, majd meg kell adni az addon almappájának nevét, vagy fel kell tölteni a kötegelt addonfájlt. Ezután betöltődik az addon telepítőscriptje, mely telepíti a kívánt addont. Előfordulhat, hogy a telepítőscript további adatokat kér el.");
 			break;
 		case "developer":
 			print("<h2>Addonok</h2>
-	Ha az addonokról szeretnél egy átfogó leírást kapni, olvasd el az <a href='help.php?cmd=Addons-admin'>adminisztrátoroknak/webmestereknek szóló</a> leírást is.<br><br>
+	Ha az addonokról szeretnél egy átfogó leírást kapni, olvasd el az <a href='help.php?cmd=Addons-admin'>adminisztrátoroknak/webmestereknek szóló</a> leírást is.<br>Az addonok a keretrendszerhez kapcsolódásának első rétege a modul/addon kezelés, olvasd el az <a href='help.php?cmd=AddonClass'>addon kezelő osztályról szóló</a> leírást is.<br><br>
 	Az addonokat mindig egy külön almappába kell létrehozni, mely mappa a /addons/<i>almappanév</i> elérési úton foglal helyet. Ez a mappa a következő fájlokat tartalmazhatja:<br>
 		<dl>
 		<dt><b>index.php</b></dt>
@@ -326,44 +326,17 @@ function AddonHelp($tipus)
 			</code></dd>
 		<br>
 		<dt><b>install.php</b></dt>
-			<dd>A portálrendszer telepítő/eltávolító kódja. A fájl két php <span style='color: blue'>function</span>t kell, hogy tartalmazzon, ezeken kívül semmilyen egyéb szöveget (megjegyzéseket kivéve). A telepítéskor az adatbázis <b>addons</b> táblájába kell írni az addon adatait.<br>Átalános struktúrája:<br><code>
+			<dd>A portálrendszer telepítő/eltávolító kódja. A fájl két php <span style='color: blue'>function</span>t kell, hogy tartalmazzon, ezeken kívül semmilyen egyéb szöveget (megjegyzéseket kivéve).<br>Átalános struktúrája:<br><code>
 			<span style='color: blue'>function</span> Install()<br>
 			{<br>
 			&nbsp;&nbsp;&nbsp;<span style='color: darkgreen'>/* A portálrendszer telepítőscriptje */</span><br>
-			&nbsp;&nbsp;&nbsp;<span style='color: darkblue'>global</span> <span style='color: darkblue'>\$cfg, \$sql</span>;<br>
-			&nbsp;&nbsp;&nbsp;<span style='color: darkblue'>\$sql</span><span style='color: purple'>-></span>Lekerdezes(<span style='color: grey'>'INSERT INTO '</span> .<span style='color: darkblue'>\$cfg</span>[<span style='color: grey'>'tbprf'</span>]. <span style='color: grey'>'addons(subdir, name, descr, author, authoremail) VALUES (...)'</span>);<br>
-			<br>
-			&nbsp;&nbsp;&nbsp;<span style='color: darkgreen'>/* Létrehozunk egy saját modult is */</span><br>
-			&nbsp;&nbsp;&nbsp;<span style='color: darkblue'>\$sql</span><span style='color: purple'>-></span>Lekerdezes(<span style='color: grey'>'INSERT INTO '</span> .<span style='color: darkblue'>\$cfg</span>[<span style='color: grey'>'tbprf'</span>]. <span style='color: grey'>'modules(name, type, side) VALUES (...)'</span>);<br>
 			}<br>
 			<br>
 			<span style='color: blue'>function</span> Uninstall()<br>
 			{<br>
 			&nbsp;&nbsp;&nbsp;<span style='color: darkgreen'>/* A portálrendszer eltávolítóscriptje */</span><br>
 			}</code><br>
-			A telepítőscriptben található értékek jelentései (<i>addon</i> tábla):<br>
-			<dl>
-				<dt><b>subdir</b></dt>
-					<dd>Az addon almappájának a neve (ha az addonnak lényegtelen milyen almappába települ, lehet dinamikus érték is)</dd>
-				<dt><b>name</b></dt>
-					<dd>Az addon rövid neve</dd>
-				<dt><b>descr</b></dt>
-					<dd>Leírás</dd>
-				<dt><b>author</b></dt>
-					<dd>Szerző neve</dd>
-				<dt><b>authoremail</b></dt>
-					<dd>Szerző e-mail címe</dd>
-			</dl><br>
-			A telepítőscriptben található értékek jelentései (<i>modules</i> tábla):<br>
-			<dl>
-				<dt><b>name</b></dt>
-					<dd>A modul hivatkozása az <b>/addons/</b> mappához relatívan, például: <i>sample/samplemodule.php</i></dd>
-				<dt><b>type</b></dt>
-					<dd>A modul típusa, jelen esetben: <b>addonmodule</b></dd>
-				<dt><b>side</b></dt>
-					<dd>A megjelenítéshez használt oldalsáv oldala: <b>0</b> - bal, <b>1</b> - jobb</dd>
-			</dl>
-			<br>Ha az telepítés több lépcsőből épül fel, az addonkezelési keretrendszer támogatásához a <i>HTTP FORM POST</i> segítségével el kell küldeni pár változót, hogy a telepítés ne csússzon át másik addonra. Ezen felül a programozó az script felépítését elhatározása szerint megírhatja. Az eltávolítási rész <b>NEM</b> épülhet fel különböző lépcsőkből.<br>Az átküldéshez szükséges változók egy űrlapban:<br><code>
+			<br>Ha az telepítés több lépcsőből épül fel, az addonkezelési keretrendszer támogatásához a <i>HTTP FORM POST</i> segítségével el kell küldeni pár változót, hogy a telepítés ne csússzon át másik addonra. Ezen felül a programozó az script felépítését elhatározása szerint megírhatja. Az eltávolítási rész többlépcsős felépítése nem támogatott.<br>Az átküldéshez szükséges változók egy űrlapban:<br><code>
 			&lt;form method='POST' action='admin.php'&gt;<br>
 			&nbsp;&nbsp;&nbsp;... további kódok ...<br><br>
 			&nbsp;&nbsp;&nbsp;&lt;input type='hidden' name='site' value='addons'&gt;<br>
@@ -374,7 +347,7 @@ function AddonHelp($tipus)
 			</code></dd>
 			<br>
 		<dt><b>includes.php</b></dt>
-			<dd>Ha az addon tartalmaz különböző betöltendő függvénytárakat (az oldalsávban megjelenő modulokat <b>NEM</b> kell ide beírni), ez a fájl a php <span style='color: blue'>include</span><span style='color: grey'>('<i>fájlneve</i>');</span> kódjával betölthető. A fájlra az addon almappájához relatívan kell hivatkozni.</dd>
+			<dd>Ha az addon tartalmaz különböző betöltendő függvénytárakat (az oldalsávban megjelenő modulokat <b>NEM</b> kell ide beírni), ez a fájl a php <span style='color: blue'>include</span><span style='color: grey'>('<i>fájlneve</i>');</span> kódjával betölthető. A fájlra az addon almappájához relatívan kell hivatkozni. Speciális esetben a betöltendő függvényeket tartalmazhatja ez a fájl is.</dd>
 			<br>
 		<dt><b>settings.php</b></dt>
 			<dd>Az addon beállításait állító fájl. A beállításokat a <i>HTTP FORM POST</i> használatával kell módosítani, és átküldéskor szükséges a következő változók átadása: <br><code>
@@ -392,9 +365,182 @@ function AddonHelp($tipus)
 			...</code><br><br>
 		<dt>egyéb fájlok</dt>
 			<dd>Ezen felül a mappa tartalmazza a további szükséges fájlokat</dd>
-	</dl><br>A fejlesztés előtt ajánlott átnézni a portálrendszerrel együtt szállított sample addon fájlait, mely példaként minden szükséges fájlt tartalmaz.<br>Az addon fájljait egy úgynevezett kötegelt addonfájlba (.baa fájl) is lehet konvertálni, és azzal szállítani. Ezen fájlok a webböngészőn keresztül a szerverre feltöltve önkicsomagolódnak, és elindítják saját telepítőjüket.<br>A BAA-fájlokat létrehozó kód <a href='/baacreator/'>itt</a> érhető el.");
+	</dl><br>A fejlesztés előtt ajánlott átnézni a portálrendszerrel együtt szállított sample addon fájlait, mely példaként minden szükséges fájlt tartalmaz.<br>Az addon fájljait egy úgynevezett kötegelt addonfájlba (.baa fájl) is lehet konvertálni, és azzal szállítani. Ezen fájlok a webböngészőn keresztül a szerverre feltöltve önkicsomagolódnak, és elindítják saját telepítőjüket.");
 			break;
 	}
+}
+function AddonClassHelp()
+{
+	global $addons;
+	print("<h2>Addonkezelő osztály</h2>");
+	print("<br>Az osztály segítségével kezelhetőek az addonok alapvető életfunkciói (telepítés, eltávolítás, karbantartás, adatbázisok elérése). Az osztályra mindig a <code><span style='color: blue'>global</span> <span style='color: darkblue'>\$addons</span>;</code> betöltésével hivatkozunk.<br><br>
+	<table border='1' cellspacing='1' cellpadding='1'>
+	<tr>
+		<td></td>
+		<th>Paraméterek</th>
+		<th>Eredmény</th>
+	</tr>
+	<tr>
+		<th>LoadAddons</th>
+		<td>
+			
+		</td>
+		<td>Betölti a keretrendszerbe a telepített addonok fájlait (nem szükséges használni, csak a teljesség igényével lett megemlítve)</td>
+	</tr>
+	<tr>
+		<th>RegisterAddon</th>
+		<td>
+			<table border='0' cellspacing='1' cellpadding='2.5'>
+			<tr>
+				<th>\$subdir</th>
+				<td>Az addon almappájának neve</td>
+			</tr>
+			<tr>
+				<th>\$nev</th>
+				<td>Az addon neve</td>
+			</tr>
+			<tr>
+				<th>\$leiras</th>
+				<td>Az addon leírása</td>
+			</tr>
+			<tr>
+				<th>\$szerzp</th>
+				<td>Az addon szerzőjének neve</td>
+			</tr>
+			<tr>
+				<th>\$szerzoemail</th>
+				<td>Az addon szerzőjének e-mail címe</td>
+			</tr>
+			</table>
+		</td>
+		<td>Megadott addon telepítése az adatbázisba</td>
+	</tr>
+	<tr>
+		<th>InstallModule</th>
+		<td>
+			<table border='0' cellspacing='1' cellpadding='2.5'>
+			<tr>
+				<th>\$href</th>
+				<td>Az addonmodul által betöltendő modul fájl elérési útja (\addons\ relatívan)</td>
+			</tr>
+			<tr>
+				<th>\$side</th>
+				<td>Az oszlophasáb, melyben a modul megjelenjen. <b>1</b> - bal, <b>2</b> - jobb</td>
+			</tr>
+			</table>
+		</td>
+		<td>Egy új modul hozzáadása a modullistához</td>
+	</tr>
+	<tr>
+		<th>CreateAddonTable</th>
+		<td>
+			<table border='0' cellspacing='1' cellpadding='2.5'>
+			<tr>
+				<th>\$subdir</th>
+				<td>Az addon almappájának neve</td>
+			</tr>
+			</table>
+		</td>
+		<td>Addon konfigurációs adattábla létrehozása</td>
+	</tr>
+	<tr>
+		<th>AddCFG</th>
+		<td>
+			<table border='0' cellspacing='1' cellpadding='2.5'>
+			<tr>
+				<th>\$subdir</th>
+				<td>Az addon almappájának neve</td>
+			</tr>
+			<tr>
+				<th>\$variable</th>
+				<td>Változó neve</td>
+			</tr>
+			<tr>
+				<th>\$value</th>
+				<td>Változó értéke (kezdőérték)</td>
+			</tr>
+			</table>
+		</td>
+		<td>Új konfigurációs érték felvétele az adatbázisba</td>
+	</tr>
+	<tr>
+		<th>RemoveAddonTable</th>
+		<td>
+			<table border='0' cellspacing='1' cellpadding='2.5'>
+			<tr>
+				<th>\$subdir</th>
+				<td>Az addon almappájának neve</td>
+			</tr>
+			</table>
+		</td>
+		<td>Addon konfigurációs adattábla eltávolítása</td>
+	</tr>
+	<tr>
+		<th>UnregisterAddon</th>
+		<td>
+			<table border='0' cellspacing='1' cellpadding='2.5'>
+			<tr>
+				<th>\$subdir</th>
+				<td>Az addon almappájának neve</td>
+			</tr>
+			</table>
+		</td>
+		<td>Addon telepítettségi információinak törlése (az addon fájlai a szerveren maradnak)</td>
+	</tr>
+	<tr>
+		<th>RemoveModule</th>
+		<td>
+			<table border='0' cellspacing='1' cellpadding='2.5'>
+			<tr>
+				<th>\$href</th>
+				<td>Az addonmodul által betöltendő modul fájl elérési útja (\addons\ relatívan)</td>
+			</tr>
+			</table>
+		</td>
+		<td>Addon-modul eltávolítása (szükséges, mivel betöltött, de nem telepített addonmodul kéréskor a webhely hibaüzenetet generál)</td>
+	</tr>
+	<tr>
+		<th>SetCFG</th>
+		<td>
+			<table border='0' cellspacing='1' cellpadding='2.5'>
+			<tr>
+				<th>\$subdir</th>
+				<td>Az addon almappájának neve</td>
+			</tr>
+			<tr>
+				<th>\$variable</th>
+				<td>Változó neve</td>
+			</tr>
+			<tr>
+				<th>\$value</th>
+				<td>Az új érték</td>
+			</tr>
+			</table>
+		</td>
+		<td>Frissíti az addon konfigurációs tábláját, a megadott változó értékét az új értékre cseréli.<br><b>Megjegyzés!</b> A függvény segítségével csak a korábban már létrehozott változók értékét lehet <b>Cserélni</b> (<code>\$addons->AddCFG()</code>)</td>
+	</tr>
+	<tr>
+		<td></td>
+		<th>Paraméterek</th>
+		<th>Visszatérési érték</th>
+	</tr>
+	<tr>
+		<th>GetCFG</th>
+		<td>
+			<table border='0' cellspacing='1' cellpadding='2.5'>
+			<tr>
+				<th>\$subdir</th>
+				<td>Az addon almappájának neve</td>
+			</tr>
+			<tr>
+				<th>\$variable</th>
+				<td>Változó neve</td>
+			</tr>
+			</table>
+		</td>
+		<td>A megadott addon konfigurációs táblájából visszatér a kiválasztott változó értékével</td>
+	</tr>
+	</table>");
 }
 
 switch ($_GET['cmd'])
@@ -423,6 +569,9 @@ switch ($_GET['cmd'])
 	case "Addons-developer":
 		AddonHelp('developer');
 		break;
+	case "AddonClass":
+		AddonClassHelp();
+		break;
 	case "adminTools":
 		/* Választási űrlap létrehozása */
 		
@@ -447,6 +596,7 @@ switch ($_GET['cmd'])
 		$forms->UrlapElem("option", "MySQL-kezelő osztály", "SQL");
 		//$forms->UrlapElem("option", "Felhasználó és munkamenetkezelés", "UserSession");
 		$forms->UrlapElem("option", "Addonok", "Addons-developer");
+		$forms->UrlapElem("option", "Addonkezelő osztály", "AddonClass");
 		$forms->UrlapElem("option", "", "DeveloperTools");
 		$forms->UrlapElem("option", "<< Vissza a főmenübe", $NULL);
 		$forms->UrlapElem("select-end", "", "");
