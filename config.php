@@ -31,8 +31,4 @@
 	'webmaster' => '', // Webmester neve
 	'webmaster_email' => '', // Webmester e-mail címe
  );
- 
- define('THEME_NAME', 'default'); // Téma neve
- define('ALLOW_REGISTRATION', 1); // Regisztráció engedélyezése (0 - nem, 1 - igen)
- define('LOG_DEPTH', 0); // Napló mélysége (0 - ki, 1 - hibák, 2 - felhasználók, 3 - lapmegtekintések, 4 - SQL kérések)
 ?>
