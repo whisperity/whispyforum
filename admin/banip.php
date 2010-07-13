@@ -85,7 +85,7 @@ if ( $_POST['action'] != $NULL )
 		if ( $_POST['ip'] == $NULL )
 		{
 			print("<form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
-			<p class='formText'>Kitltandó személy IP címe<a class='feature-extra'><span class='hover'><span class='h3'><center><span class='star'>*</span> Kötelezően kitöltendő mező <span class='star'>*</span></center></span>Ezt a mezőt kötelező kitölteni, kitöltése nélkül az űrlap érvénytelenül lesz beadva.</span><span class='star'>*</span></a><a class='feature-extra'><span class='hover'><span class='h3'>IP-cím</span>A kitiltandó IP-cím. Alapesetben a jelenlegi IP-címed tartalmazza, de saját magad nem tilthatod ki.</span><sup>?</sup></a>: <input type='text' name='ip' size='18' value='" .$_SERVER['REMOTE_ADDR']. "'><br>
+			<p class='formText'>Kitltandó személy IP címe<a class='feature-extra'><span class='hover'><span class='h3'><center><span class='star'>*</span> Kötelezően kitöltendő mező <span class='star'>*</span></center></span>Ezt a mezőt kötelező kitölteni, kitöltése nélkül az űrlap érvénytelenül lesz beadva.</span><span class='star'>*</span></a><a class='feature-extra'><span class='hover'><span class='h3'>IP-cím</span>A kitiltandó IP-cím. Alapesetben a jelenlegi IP-címed tartalmazza, de saját magad nem tilthatod ki.<br>Nem tiltható még ki továbbá a <b>127.0.0.1</b>, vagy a <b>localhost</b> cím, és a <b>mysql-adatbázis címe</b> (jelen esetben: <b>" .$cfg['dbhost']. "</b>)</span><sup>?</sup></a>: <input type='text' name='ip' size='18' value='" .$_SERVER['REMOTE_ADDR']. "'><br>
 			Komment<a class='feature-extra'><span class='hover'><span class='h3'>Komment</span>Maximum <b>512</b> karakter</span><sup>?</sup></a>: <textarea name='comment' rows='3' cols='40'></textarea>
 			<input type='hidden' name='site' value='banip'>
 			<input type='hidden' name='action' value='newban'>
@@ -98,9 +98,15 @@ if ( $_POST['action'] != $NULL )
 				die("<a href='admin.php?site=banip'>Vissza a kitiltott IP címek listájához</a></td><td class='right' valign='top'>");
 			}
 			
-			if ( $_POST['ip'] == "127.0.0.1" )
+			if ( ($_POST['ip'] == "127.0.0.1") || ($_POST['ip'] == "localhost" ) )
 			{
-				Hibauzenet("CRITICAL", "Nem tilthatod ki a localhostot", "Localhost kitiltása az adatbáziskapcsolatban fennakadást eredményezhet!");
+				Hibauzenet("CRITICAL", "Nem tilthatod ki a localhostot");
+				die("<a href='admin.php?site=banip'>Vissza a kitiltott IP címek listájához</a></td><td class='right' valign='top'>");
+			}
+			
+			if ( $_POST['ip'] == $cfg['dbhost']) 
+			{
+				Hibauzenet("CRITICAL", "Nem tilthatod ki a mysql-adatbázis hostját", "A mysql-adatbázis hostja (" .$cfg['dbhost']. ") nem tiltható ki, mivel az súlyos következményekkel is járhat");
 				die("<a href='admin.php?site=banip'>Vissza a kitiltott IP címek listájához</a></td><td class='right' valign='top'>");
 			}
 			
