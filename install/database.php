@@ -169,6 +169,12 @@
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Verzióadatok
  WOut('tabla', 'version');
  
+ $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."siteconfig (
+  `variable` VARCHAR(64) COLLATE utf8_unicode_ci NOT NULL,
+  `value` VARCHAR(1024) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Portál-beállítások
+ WOut('tabla', 'version');
+ 
  /* Kezdeti adatok */
  /* Modulok */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name,type,side, hOrder) VALUES
@@ -214,6 +220,13 @@
  /* Verzióadatok */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."version (RELEASE_TYPE, VERSION, RELEASE_DATE) VALUES ('" .RELEASE_TYPE. "', '" .VERSION. "', '" .RELEASE_DATE. "')", 'INSTALL'); // Verzióadatok
  WOut('sor', 'version', 'Verzióadatok: ' .RELEASE_TYPE. " " .VERSION. " (" .RELEASE_DATE. ")");
+ 
+  /* Portál beállítások */
+ $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."siteconfig(variable, value) VALUES
+	('allow_registration', '1'),
+	('log_depth', '0')", 'INSTALL'); // Főmenü elemei
+ WOut('sor', 'siteconfig', 'AllowRegistration: 1');
+ WOut('sor', 'siteconfig', 'LogDepth: 0');
  
  file_put_contents('logs/install.log', "\r\nTáblák létrehozása befejezve: " .Datum("normal", "nagybetu", "dL", "H", "i", "s"). " ( " .time(). " )", FILE_APPEND); // Napló zárása
  $sql->Disconnect();

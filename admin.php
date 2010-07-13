@@ -4,7 +4,7 @@
 */
 
 /* admin.php
-   adminisztrációs vezérlőpanel
+   adminisztrátori vezérlőpult
 */
  
  /* Kiválasztjuk a beérkező paraméterekből a beépítendő modult */
@@ -66,6 +66,7 @@
  print("<div class='menubox'>
 		<span class='menutitle'><a class='menuitem' href='admin.php'>Adminisztrátori vezérlőpult</a></span><br><br>");
 	
+	MenuItem("configs", "Beállítások");
 	MenuItem("menueditor", "Menüszerkesztő");
 	MenuItem("addforum", "Fórum hozzáadása");
 	MenuItem("log", "Webhelynapló megtekintése");
@@ -110,6 +111,10 @@
 	case 'checks':
 		$admin = TRUE;
 		include("admin/checks.php");
+		break;
+	case 'configs':
+		$admin = TRUE;
+		include("admin/configs.php");
 		break;
 	default:
 		/* Telepítési információk bekérése */

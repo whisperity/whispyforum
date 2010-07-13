@@ -77,6 +77,16 @@ function Inicialize ( $pagename )
  $sql->Connect(); // Csatlakozás az adatbázisszerverhez
  CheckIfIPBanned(); // Megnézzük, hogy a felhasználó IP-címe bannolva van-e
  $user->GetUserData(); // Felhasználó adatainak frissítése
+ 
+  /* Portálmotor-beállítások bekérése */
+ $siteconfig_allowReg = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."siteconfig WHERE variable='allow_registration'")); // Regisztráció engedélyezése
+ $siteconfig_logDepth = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."siteconfig WHERE variable='log_depth'")); // Naplómélység
+ /* Bekért adatok mentése a portálrendszer számára 
+	Itt maradunk a hagyományos DEFINE metódusnál, hogy ne kelljen az egész rendszerben a jelen változókat ellenörző
+	sorokat átkódolni. */
+ define('ALLOW_REGISTRATION', $siteconfig_allowReg[0]);
+ define('LOG_DEPTH', $siteconfig_logDepth[0]);
+ 
  WriteLog("PAGE_VIEW", $pagename. ';' .$_SERVER['REMOTE_ADDR']. ';' .$_SERVER['HTTP_USER_AGENT']. ';' .$_SESSION['username']. ';' .$_SESSION['userLevelTXT']); // Oldalmegtekintési napló beírása (ha le van tiltva, a funkcióhívás után megakad, és nem ír)
  
  /* Verzióadatok elleörzése */
