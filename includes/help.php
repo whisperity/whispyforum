@@ -6,11 +6,12 @@
 /* includes/help.php
    output leírásokat tartalmazó script
 */ 
+ session_start();
+ @include("functions.php"); // Funkciótár betöltése
+ @include('forms.php'); // Modul betöltése
+ @include('../config.php'); // Konfigurációs fájl
  
- @include("functions.php");
- @include('forms.php'); // Modul betöltéseű
- @include('../config.php'); // Konfigurációs fájl (THEME_NAME-hez szükséges)
- print("<link rel='stylesheet' type='text/css' href='../themes/" .THEME_NAME. "/style.css'>"); // Téma betöltése
+ print("<link rel='stylesheet' type='text/css' href='../themes/" .$_SESSION['themeName']. "/style.css'>"); // Téma betöltése
  global $forms; // Osztály betöltése
  
 function FunctionsHelp()
@@ -317,12 +318,12 @@ function AddonHelp($tipus)
 			break;
 		case "developer":
 			print("<h2>Addonok</h2>
-	Ha az addonokról szeretnél egy átfogó leírást kapni, olvasd el az <a href='help.php?cmd=Addons-admin'>adminisztrátoroknak/webmestereknek szóló</a> leírást is.<br>Az addonok a keretrendszerhez kapcsolódásának első rétege a modul/addon kezelés, olvasd el az <a href='help.php?cmd=AddonClass'>addon kezelő osztályról szóló</a> leírást is.<br><br>
+	Ha az addonokról szeretnél egy átfogó leírást kapni, olvasd el az <a href='help.php?cmd=Addons-admin'>adminisztrátoroknak/webmestereknek szóló</a> leírást is.<br>Az addonok a keretrendszerhez kapcsolódásának első rétege a modul/addon kezelés. Olvasd el az <a href='help.php?cmd=AddonClass'>addon kezelő osztályról szóló</a> leírást is.<br><br>
 	Az addonokat mindig egy külön almappába kell létrehozni, mely mappa a /addons/<i>almappanév</i> elérési úton foglal helyet. Ez a mappa a következő fájlokat tartalmazhatja:<br>
 		<dl>
 		<dt><b>index.php</b></dt>
 			<dd>Nem szükséges fájl, ám ajánlatos az addon fájlait a direkt módon történő elérés (addon mappa megnyitása az elérési útnak kézi begépelésével a böngészőbe) ellen levédeni, például egy átirányítással. A következő szkript az admin menü addon kezelőjébe irányítja át a kíváncsi felhasználót:<br><code>
-			header('Location: ../admin.php?site=addons');<br>
+			header('Location: ../../admin.php?site=addons');<br>
 			</code></dd>
 		<br>
 		<dt><b>install.php</b></dt>
@@ -517,7 +518,7 @@ function AddonClassHelp()
 			</tr>
 			</table>
 		</td>
-		<td>Frissíti az addon konfigurációs tábláját, a megadott változó értékét az új értékre cseréli.<br><b>Megjegyzés!</b> A függvény segítségével csak a korábban már létrehozott változók értékét lehet <b>Cserélni</b> (<code>\$addons->AddCFG()</code>)</td>
+		<td>Frissíti az addon konfigurációs tábláját, a megadott változó értékét az új értékre cseréli.<br><b>Megjegyzés!</b> A függvény segítségével csak a korábban már létrehozott változók értékét lehet <b>cserélni</b>. A létrehozásukhoz a telepítéskor kell használni az <code>\$addons->AddCFG()</code> függvényt.</td>
 	</tr>
 	<tr>
 		<td></td>

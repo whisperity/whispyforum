@@ -7,5 +7,5 @@
    az /addons/sample (példaaddon) mappa tartalma ne jelenjen meg más felhasználóknak
    ezért átirányítjuk a usert a ./admin.php fájlra (az addons modul betöltésével)
 */
- header('Location: ../admin.php?site=addons'); // Átirányítás
+ header('Location: ../../admin.php?site=addons'); // Átirányítás
 ?>
