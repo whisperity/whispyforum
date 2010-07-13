@@ -62,7 +62,7 @@ class templates // Osztálydeklaráció
 			print(">" .$sor['text']. "</a>");
 			
 			if ( $http[0] == "http" )
-				print("<img src='/themes/" .THEME_NAME. "/external_href.jpg' alt='Külső hivatkozás' border='0'>");
+				print("<img src='/themes/" .$_SESSION['themeName']. "/external_href.jpg' alt='Külső hivatkozás' border='0'>");
 			
 			print("<br>");
 		}

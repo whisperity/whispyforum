@@ -135,6 +135,13 @@ class user // Definiáljuk az osztályt (felhasználók)
 		$_SESSION['postCount'] = $adat['postCount']; // Tároljuk a felhasználó hozzászólásszámát
 		$_SESSION['regdate'] = $adat['regdate']; // Regisztrálás időpontja
 		$_SESSION['userID'] = $adat['id']; // Felhasználó ID
+		
+		/* Téma értékének tárolása. Ha nincs téma az adatbázisban a felhasználóhoz rendelve
+			a DEFAULT témát adjuk meg */
+		$_SESSION['themeName'] = $adat['theme'];
+		if ($adat['theme'] == $NULL)
+			$_SESSION['themeName'] = "default";
+		
 	}
 	
 	function ForcedLogout() // Kényszerített kiléptetés
@@ -197,6 +204,7 @@ class session // Munkamenet (session) kezelő osztály
 		$_SESSION['postCount'] = 0;
 		$_SESSION['regDate'] = 0;
 		$_SESSION['userID'] = 0;
+		$_SESSION['themeName'] = "";
 		
 		session_destroy();
 	}

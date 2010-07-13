@@ -99,7 +99,7 @@
 			
 			if ( ($_SESSION['userLevel'] == 2) || ($_SESSION['userLevel'] == 3) ||  ($_SESSION['userID'] == $sor['uId']) )
 			{ // Csak moderátor, admin, valamint a hozzászólás beküldője tudja szerkeszteni, törölni a hozzászólást
-				print("\t<a href='news.php?cid=" .$sor['id']. "&action=cedit'><img src='/themes/" .THEME_NAME. "/edit_post_icon.gif' alt='Hozzászólás szerkesztése' border='0'></a>\t<a href='news.php?cid=" .$sor['id']. "&action=cdelete'><img src='/themes/" .THEME_NAME. "/icon_delete_post.jpg' alt='Hozzászólás törlése' border='0'></a>");
+				print("\t<a href='news.php?cid=" .$sor['id']. "&action=cedit'><img src='/themes/" .$_SESSION['themeName']. "/edit_post_icon.gif' alt='Hozzászólás szerkesztése' border='0'></a>\t<a href='news.php?cid=" .$sor['id']. "&action=cdelete'><img src='/themes/" .$_SESSION['themeName']. "/icon_delete_post.jpg' alt='Hozzászólás törlése' border='0'></a>");
 			}
 			
 			print("<div class='content'>" .$comBody. "</div></div><div class='postright'>");
@@ -139,7 +139,7 @@
 			<div class='postbox'><p class='formText'>Hozzászólás:<br>
 			<textarea rows='15' name='post' cols='70'></textarea></div>
 			<div class='postright'>"); // Bal oldali rész
-			print("<a href='/themes/" .THEME_NAME. "/emoticons.php' onClick=\"window.open('/themes/" .THEME_NAME. "/emoticons.php', 'popupwindow', 'width=192,heigh=600,scrollbars=yes'); return false;\">Hangulatjelek</a>
+			print("<a href='/themes/" .$_SESSION['themeName']. "/emoticons.php' onClick=\"window.open('/themes/" .$_SESSION['themeName']. "/emoticons.php', 'popupwindow', 'width=192,heigh=600,scrollbars=yes'); return false;\">Hangulatjelek</a>
 			<a href='/includes/help.php?cmd=BB' onClick=\"window.open('includes/help.php?cmd=BB', 'popupwindow', 'width=960,height=750,scrollbars=yes'); return false;\">BB-kódok</a>"); // Emoticon, BB-kód ablak
 			print("</div>
 			<input type='hidden' name='action' value='postcomment'>
@@ -225,7 +225,7 @@
 			<div class='postbox'><p class='formText'>Hozzászólás:<br>
 			<textarea rows='20' name='post' cols='70'>" .$adat['text']. "</textarea></div>
 			<div class='postright'>"); // Bal oldali rész
-			print("<a href='/themes/" .THEME_NAME. "/emoticons.php' onClick=\"window.open('/themes/" .THEME_NAME. "/emoticons.php', 'popupwindow', 'width=192,heigh=600,scrollbars=yes'); return false;\">Hangulatjelek</a>
+			print("<a href='/themes/" .$_SESSION['themeName']. "/emoticons.php' onClick=\"window.open('/themes/" .$_SESSION['themeName']. "/emoticons.php', 'popupwindow', 'width=192,heigh=600,scrollbars=yes'); return false;\">Hangulatjelek</a>
 			<a href='/includes/help.php?cmd=BB' onClick=\"window.open('includes/help.php?cmd=BB', 'popupwindow', 'width=960,height=750,scrollbars=yes'); return false;\">BB-kódok</a>"); // Emoticon, BB-kód ablak
 			print("</div>
 			<input type='hidden' name='action' value='cedit'>
@@ -277,7 +277,7 @@
 			<div class='postbox'><p class='formText'>Hír szövege:<br>
 			<textarea rows='20' name='post' cols='70'>" .$_POST['post']. "</textarea></div>
 			<div class='postright'>"); // Bal oldali rész
-			print("<a href='/themes/" .THEME_NAME. "/emoticons.php' onClick=\"window.open('/themes/" .THEME_NAME. "/emoticons.php', 'popupwindow', 'width=192,heigh=600,scrollbars=yes'); return false;\">Hangulatjelek</a>
+			print("<a href='/themes/" .$_SESSION['themeName']. "/emoticons.php' onClick=\"window.open('/themes/" .$_SESSION['themeName']. "/emoticons.php', 'popupwindow', 'width=192,heigh=600,scrollbars=yes'); return false;\">Hangulatjelek</a>
 			<a href='/includes/help.php?cmd=BB' onClick=\"window.open('includes/help.php?cmd=BB', 'popupwindow', 'width=960,height=750,scrollbars=yes'); return false;\">BB-kódok</a>"); // Emoticon, BB-kód ablak
 			print("</div><br style='clear: both'>
 			<input type='hidden' name='action' value='postentry'>

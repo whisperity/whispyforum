@@ -88,18 +88,6 @@
 			<p class='formText'>Webmester neve<a class='feature-extra'><span class='hover'><span class='h3'><center><span class='star'>*</span> Kötelezően kitöltendő mező <span class='star'>*</span></center></span>Ezt a mezőt kötelező kitölteni, kitöltése nélkül az űrlap érvénytelenül lesz beadva.</span><span class='star'>*</span></a>: <input type='text' name='webmaster'><br>
 			Webmester e-mail címe<a class='feature-extra'><span class='hover'><span class='h3'><center><span class='star'>*</span> Kötelezően kitöltendő mező <span class='star'>*</span></center></span>Ezt a mezőt kötelező kitölteni, kitöltése nélkül az űrlap érvénytelenül lesz beadva.</span><span class='star'>*</span></a>: <input type='text' name='webmaster_email' value='webmaster@" .$_SERVER['SERVER_ADDR']. "'></p>
 			
-			<p class='formText'>Kiválasztott téma: <select size='1' name='THEME_NAME'>
-				<option>default</option>
-				</select><br>
-			Regisztráció engedélyezése: <input type='radio' value='0' name='ALLOW_REGISTRATION'>Nem <input type='radio' name='ALLOW_REGISTRATION' value='1' checked>Igen<br>
-			Napló mélysége<a class='feature-extra'><span class='hover'><span class='h3'>Naplómélység</span>A listában lefelé görgetve mélyebbre jut, minden szint tartalmazza a felette lévő szintek összes elemét.</span><sup>?</sup></a>: <select size='1' name='LOG_DEPTH'>
-				<option value='0'>semmi (napló kikapcsolása)</option>
-				<option value='1'>alacsony (hibaüzenetek)</option>
-				<option value='2'>közepes (felhasználók)</option>
-				<option value='3'>mély (lapmegtekintések)</option>
-				<option value='4'>mélyebb (SQL-kérések)</option>
-				</select><br>
-			
 			<input type='submit' value='Tovább >> (Konfigurációs fájl létrehozása)'>
 			<input type='hidden' name='pos' value='3'>
 		</form>");
@@ -152,10 +140,6 @@ global \$cfg;
 	'webmaster' => '" .$_POST['webmaster']. "',
 	'webmaster_email' => '" .$_POST['webmaster_email']. "',
  );
- 
- define('THEME_NAME', '" .$_POST['THEME_NAME']. "');
- define('ALLOW_REGISTRATION', " .$_POST['ALLOW_REGISTRATION']. ");
- define('LOG_DEPTH', " .$_POST['LOG_DEPTH']. ");
 ?>";
 			file_put_contents('config.php', $konfig);
 			Naplo("config.php létrehozva", TRUE);

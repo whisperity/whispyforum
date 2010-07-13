@@ -193,7 +193,7 @@ function Datum( $ev, $honap, $nap, $ora, $perc, $masodperc, $epoch = '' ) // A m
 	unset($fajl);
 	unset($sor);
 	
-	print("<link rel='stylesheet' type='text/css' href='themes/" .THEME_NAME. "/style.css'>"); // Stíluslap
+	print("<link rel='stylesheet' type='text/css' href='themes/" .$_SESSION['themeName']. "/style.css'>"); // Stíluslap
 	
 	if ( $Hmsg['title'] == '' )
 	{
@@ -216,7 +216,7 @@ function Datum( $ev, $honap, $nap, $ora, $perc, $masodperc, $epoch = '' ) // A m
 		}
 	
 		// Elkezdjük kinyomatni a HTML outputot
-		print("<div class='hibabox'><div class='hibakep'><img src='themes/" .THEME_NAME. "/" .$kepnev. "'></div><div class='hibacim'>" .$Hmsg['title']. "</div><div class='hibaszoveg'>" .$Hmsg['desc']. "</div></div>");
+		print("<div class='hibabox'><div class='hibakep'><img src='themes/" .$_SESSION['themeName']. "/" .$kepnev. "'></div><div class='hibacim'>" .$Hmsg['title']. "</div><div class='hibaszoveg'>" .$Hmsg['desc']. "</div></div>");
 		
 		// Beleírjuk az aktuális értéket a naplóba
 		WriteLog($Hmsg['tipus'], $Hmsg['title']. ';' .$Hmsg['desc']. ';' .$Hmsg['fajl']. ';' .$Hmsg['line']);
@@ -247,7 +247,7 @@ function Datum( $ev, $honap, $nap, $ora, $perc, $masodperc, $epoch = '' ) // A m
 	
 	/* Kisbetűk */
 	$emote = array(":)", ":(", ":h", ":p", ";)", ":o", ":d", ":confused:", ":neutral:", ":sleep:", ":'(", ":wonder:", ":jawohl:", ":offtopic:", ":spam:", ":wned:", ":banhammer:"); // Emotikon kódok
-	$hrefs = array("[img]/themes/" .THEME_NAME. "/emote/smile.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/sad.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/cool.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/tongue.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/wink.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/ohmy.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/grin.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/confused.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/neutral.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/closedeyes.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/cry.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/unsure.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/jawohl.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/offtopic.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/spam.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/owned.gif[/img]", "[img]/themes/" .THEME_NAME. "/emote/banhammer.gif[/img]"); // Direktlinkek
+	$hrefs = array("[img]/themes/" .$_SESSION['themeName']. "/emote/smile.gif[/img]", "[img]/themes/" .$_SESSION['themeName']. "/emote/sad.gif[/img]", "[img]/themes/" .$_SESSION['themeName']. "/emote/cool.gif[/img]", "[img]/themes/" .$_SESSION['themeName']. "/emote/tongue.gif[/img]", "[img]/themes/" .$_SESSION['themeName']. "/emote/wink.gif[/img]", "[img]/themes/" .$_SESSION['themeName']. "/emote/ohmy.gif[/img]", "[img]/themes/" .$_SESSION['themeName']. "/emote/grin.gif[/img]", "[img]/themes/" .$_SESSION['themeName']. "/emote/confused.gif[/img]", "[img]/themes/" .$_SESSION['themeName']. "/emote/neutral.gif[/img]", "[img]/themes/" .$_SESSION['themeName']. "/emote/closedeyes.gif[/img]", "[img]/themes/" .$_SESSION['themeName']. "/emote/cry.gif[/img]", "[img]/themes/" .$_SESSION['themeName']. "/emote/unsure.gif[/img]", "[img]/themes/" .$_SESSION['themeName']. "/emote/jawohl.gif[/img]", "[img]/themes/" .$_SESSION['themeName']. "/emote/offtopic.gif[/img]", "[img]/themes/" .$_SESSION['themeName']. "/emote/spam.gif[/img]", "[img]/themes/" .$_SESSION['themeName']. "/emote/owned.gif[/img]", "[img]/themes/" .$_SESSION['themeName']. "/emote/banhammer.gif[/img]"); // Direktlinkek
 	
 	$kisbetu = str_replace($emote, $hrefs, $emotText);
 	

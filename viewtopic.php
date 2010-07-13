@@ -35,7 +35,7 @@
  SetTitle($sor2['name']);
  
  $sor3 = mysql_fetch_array($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."forum WHERE id='" .$forumId. "'"), MYSQL_ASSOC);
- print("<p class='header'><a href='viewtopics.php?id=" .$forumId. "'><< Vissza a fórumhoz (" .$sor3['name']. ")</a><img src='themes/" .THEME_NAME. "/x.bmp'>"); // Visszatérési link kiírása
+ print("<p class='header'><a href='viewtopics.php?id=" .$forumId. "'><< Vissza a fórumhoz (" .$sor3['name']. ")</a><img src='themes/" .$_SESSION['themeName']. "/x.bmp'>"); // Visszatérési link kiírása
  
  /* Hozzászólási link / lezártsági kép */
  if ( $_SESSION['loggedin'] == 1)
@@ -44,7 +44,7 @@
 	{
 		print("<a href='newpost.php?id=" .$getid. "'>Új hozzászólás</a>"); // Hozzászólási link
 	} else {
-		print("<img src='/themes/" .THEME_NAME. "/forum_read_locked.png' alt='A téma lezárva, nem küldhető újabb hozzászólás'>");
+		print("<img src='/themes/" .$_SESSION['themeName']. "/forum_read_locked.png' alt='A téma lezárva, nem küldhető újabb hozzászólás'>");
 	}
  }
  
@@ -87,7 +87,7 @@
 	{ // Csak moderátor, admin, valamint a hozzászólás beküldője tudja szerkeszteni, törölni a hozzászólást
 		if ($sor4['locked'] == 0)
 		{ // Csak nyitott téma esetén szerkeszthetőek, törölhetőek a hozzászólások
-			print("\t<a href='editpost.php?pId=" .$sor['id']. "'><img src='/themes/" .THEME_NAME. "/edit_post_icon.gif' alt='Hozzászólás szerkesztése' border='0'></a>\t<a href='editpost.php?pId=" .$sor['id']. "&cmd=deletepost'><img src='/themes/" .THEME_NAME. "/icon_delete_post.jpg' alt='Hozzászólás törlése' border='0'></a>");
+			print("\t<a href='editpost.php?pId=" .$sor['id']. "'><img src='/themes/" .$_SESSION['themeName']. "/edit_post_icon.gif' alt='Hozzászólás szerkesztése' border='0'></a>\t<a href='editpost.php?pId=" .$sor['id']. "&cmd=deletepost'><img src='/themes/" .$_SESSION['themeName']. "/icon_delete_post.jpg' alt='Hozzászólás törlése' border='0'></a>");
 		}
 	}
 	

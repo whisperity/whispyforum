@@ -65,7 +65,7 @@ function Inicialize ( $pagename )
  require('includes/templates.php'); // Modulkezelő
  
  // Témafájl betöltése
- print("<link rel='stylesheet' type='text/css' href='themes/" .THEME_NAME. "/style.css'>
+ print("<link rel='stylesheet' type='text/css' href='themes/" .$_SESSION['themeName']. "/style.css'>
 ");
  /* */
  
@@ -77,7 +77,7 @@ function Inicialize ( $pagename )
  $sql->Connect(); // Csatlakozás az adatbázisszerverhez
  CheckIfIPBanned(); // Megnézzük, hogy a felhasználó IP-címe bannolva van-e
  $user->GetUserData(); // Felhasználó adatainak frissítése
- WriteLog("PAGE_VIEW", $pagename. ';' .$_SERVER['REMOTE_ADDR']. ';' .$_SERVER['HTTP_USER_AGENT']. ';' .$_SESSION['username']. ';' .$_SESSION['userLevelTXT']);
+ WriteLog("PAGE_VIEW", $pagename. ';' .$_SERVER['REMOTE_ADDR']. ';' .$_SERVER['HTTP_USER_AGENT']. ';' .$_SESSION['username']. ';' .$_SESSION['userLevelTXT']); // Oldalmegtekintési napló beírása (ha le van tiltva, a funkcióhívás után megakad, és nem ír)
  
  /* Verzióadatok elleörzése */
  $adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."version"), MYSQL_ASSOC);

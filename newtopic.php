@@ -60,7 +60,7 @@
 			Témakezdő hozzászólás címe: <input type='text' name='title' size='70' value='" .$_POST['title']. "'></p>
 			<p class='formText'>Témakezdő kozzászólás:<br>
 			<textarea rows='20' name='post' cols='70'>" .$_POST['post']. "</textarea></p>"); // Bal oldali rész
-			print("<a href='/themes/" .THEME_NAME. "/emoticons.php' onClick=\"window.open('/themes/" .THEME_NAME. "/emoticons.php', 'popupwindow', 'width=192,heigh=600,scrollbars=yes'); return false;\">Hangulatjelek</a>
+			print("<a href='/themes/" .$_SESSION['themeName']. "/emoticons.php' onClick=\"window.open('/themes/" .$_SESSION['themeName']. "/emoticons.php', 'popupwindow', 'width=192,heigh=600,scrollbars=yes'); return false;\">Hangulatjelek</a>
 			<a href='/includes/help.php?cmd=BB' onClick=\"window.open('includes/help.php?cmd=BB', 'popupwindow', 'width=960,height=750,scrollbars=yes'); return false;\">BB-kódok</a>"); // Emoticon, BB-kód ablak
 			print("<input type='hidden' name='id' value='" .$fId. "'>
 			<fieldset class='submit-buttons'>
