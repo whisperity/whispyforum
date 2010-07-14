@@ -13,7 +13,7 @@
  
  print("<center><h2 class='header'>Felhasználói vezérlőpult</h2></center>");
  $felhasznalo = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."user WHERE id='" .$_SESSION['userID']. "'"));
- print("<div class='menubox'><a href='ucp.php'>Kezdőlap</a> • <a href='ucp.php?set=theme' class='menuItem'>Téma módosítása</a> • <a href='ucp.php?set=otherdata' class='menuItem'>Egyéb adatok szerkesztése</a></div><br>");
+ print("<div class='menubox'><a href='ucp.php'>Kezdőlap</a> • <a href='ucp.php?set=theme' class='menuItem'>Téma módosítása</a> • <a href='ucp.php?set=avatar' class='menuItem'>Megjelenítendő kép feltöltése</a> • <a href='ucp.php?set=otherdata' class='menuItem'>Egyéb adatok szerkesztése</a></div><br>");
  
  if ( $_POST['set'] != $NULL )
  {
@@ -109,7 +109,7 @@
 		print("</tr></table>");
 		//print("<a href='ucp.php?set=theme&seta=settheme'></a>");
 		break;
-	case "otherdata":
+	case "otherdata": // Egyéb adatok szerkesztése
 		if ( $_POST['seta'] == "setdatas" )
 		{
 			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."user SET bemutatkozas='" .mysql_real_escape_string($_POST['bemutatkozas']). "', thely='" .mysql_real_escape_string($_POST['thely']). "' WHERE id='" .$_SESSION['userID']. "'");
@@ -125,6 +125,47 @@
 			<input type='hidden' name='seta' value='setdatas'>
 			<input type='submit' value='Adatok szerkesztése'></form>");
 			
+		break;
+	case "avatar": // Megjelenítendő kép szerkesztése
+		if ( $_POST['feltolt'] == "yes" ) // Ha elküldtük a feltöltése parancsot
+		{
+			if ( $_FILES['picfile']['size'] > 2097152 )
+			{
+				Hibauzenet("ERROR", "A feltöltött fájl túl nagy méretű!", "A feltöltött fájl mérete " .DecodeSize($_FILES['picfile']['size']). ", azonban a maximális megengedett méret csak " .DecodeSize(2097152). "! Kérlek töltsd fel egy kisebb méretű fájlt!");
+			} else {
+				if ( in_array($_FILES['picfile']['type'], array("image/gif", "image/jpeg", "image/png")) )
+				{
+					if(move_uploaded_file($_FILES['picfile']['tmp_name'], "uploads/" .$_SESSION['username']))
+					{
+						// Sikeres feltöltés esetén
+						print("<div class='messagebox'>Az avatarod frissítése sikeresen megtörtént!</div>");
+					} else {
+						// Hiba volt a feltöltés közben
+						Hibauzenet("ERROR", "A fájlt nem sikerült feltölteni!");
+					}
+				} else {
+					Hibauzenet("WARNING", "A feltöltött fájlnak JPG, GIF vagy PNG típusúnak kell lennie!", "A te általad feltöltött fájl (" .$_FILES['picfile']['name']. ") nem érvényes képfájl!");
+				}
+			}
+		}
+		
+		print("<div class='userbox'>Aktuális megjelenítendő képed:&nbsp;");
+		if ( file_exists("uploads/" .$_SESSION['username']) )
+		{
+			print("<img src='uploads/" .$_SESSION['username']. "' width='128' height='128' alt='" .$_SESSION['username']. " megjelenítendő képe'>");
+		} else {
+			print("<img src='themes/" .$_SESSION['themeName']. "/anon.png' width='128' height='128' alt='" .$_SESSION['username']. " megjelenítendő képe'>");
+		}
+		
+		print("<br>
+		<form enctype='multipart/form-data' action='" .$_SERVER['PHP_SELF']. "' method='POST'>
+		<p class='formText'>Az aktuális avatarod megváltoztatásához tallóz be egy JPG, PNG vagy GIF fájlt a merevlemezedről. A kép ajánlott mérete <b>128x128 pixel</b>, fájlmérete maximálisan: " .DecodeSize(2097152). "
+		<br><input name='picfile' type='file' size='50' accept='application/octet-stream'><br>
+	<input type='submit' value='Feltöltés'>
+	<input type='hidden' name='set' value='avatar'>
+	<input type='hidden' name='feltolt' value='yes'></p>
+	</form>");
+		
 		break;
 	default:
 		
