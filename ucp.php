@@ -13,7 +13,7 @@
  
  print("<center><h2 class='header'>Felhasználói vezérlőpult</h2></center>");
  $felhasznalo = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."user WHERE id='" .$_SESSION['userID']. "'"));
- print("<div class='menubox'><a href='ucp.php?set=theme' class='menuItem'>Téma módosítása</a>&nbsp;<a href='ucp.php?set=bemut_thely' class='menuItem'>Egyéb adatok szerkesztése</a></div><br>");
+ print("<div class='menubox'><a href='ucp.php'>Kezdőlap</a> • <a href='ucp.php?set=theme' class='menuItem'>Téma módosítása</a> • <a href='ucp.php?set=otherdata' class='menuItem'>Egyéb adatok szerkesztése</a></div><br>");
  
  if ( $_POST['set'] != $NULL )
  {
@@ -51,7 +51,7 @@
 		if ( ($_GET['seta'] == "settheme") && ($_GET['themename'] != $NULL) )
 		{
 			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."user SET theme='" .mysql_real_escape_string($_GET['themename']). "' WHERE id='" .$_SESSION['userID']. "'");
-			print("<div class='messagebox'>A témát sikeresen módosítottad!</a>");
+			print("<div class='messagebox'>A témát sikeresen módosítottad!</div>");
 			DoFooter();
 			die();
 		}
@@ -108,6 +108,23 @@
 		}
 		print("</tr></table>");
 		//print("<a href='ucp.php?set=theme&seta=settheme'></a>");
+		break;
+	case "otherdata":
+		if ( $_POST['seta'] == "setdatas" )
+		{
+			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."user SET bemutatkozas='" .mysql_real_escape_string($_POST['bemutatkozas']). "', thely='" .mysql_real_escape_string($_POST['thely']). "' WHERE id='" .$_SESSION['userID']. "'");
+			print("<div class='messagebox'>Adatok frissítve!</div>");
+			DoFooter();
+			die();
+		}
+		
+		print("<form method='POST' action='" .$_SERVER['PHP_SELF']. "'>
+			<p class='formText'>Bemutatkozás: <textarea name='bemutatkozas' rows='8' cols='25'>" .$felhasznalo['bemutatkozas'] ."</textarea><br>
+			Tartózkodási hely: <input type='text' name='thely' value='" .$felhasznalo['thely']. "'><br>
+			<input type='hidden' name='set' value='otherdata'>
+			<input type='hidden' name='seta' value='setdatas'>
+			<input type='submit' value='Adatok szerkesztése'></form>");
+			
 		break;
 	default:
 		
