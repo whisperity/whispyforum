@@ -51,6 +51,8 @@
   `postCount` int(10) NOT NULL DEFAULT '0',
   `lastlogintime` VARCHAR(16) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `theme` varchar(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'default',
+  `bemutatkozas` text COLLATE utf8_unicode_ci NOT NULL,
+  `thely` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
  ", 'INSTALL'); // Felhasználók
