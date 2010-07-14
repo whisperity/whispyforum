@@ -54,7 +54,7 @@ function Addonmeret($addonsubdir)
 if ( ($_GET['action'] == "delete") && ($_GET['id'] != $NULL) )
 {
 	/* Addon törlése */
-	$addonsor = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons WHERE id='" .$_GET['id']. "'")); // Addon adatai
+	$addonsor = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons WHERE id='" .mysql_real_escape_string($_GET['id']). "'")); // Addon adatai
 	if ( file_exists("addons/" .$addonsor['subdir']. "/install.php") ) // Ha megtalálható a szerveren az addon telepítőkódja
 	{
 		include("addons/" .$addonsor['subdir']. "/install.php"); // Betöltjük
@@ -171,7 +171,7 @@ if ( ($_POST['action'] == "install_script") && ( $_POST['addonsubdir'] != $NULL)
 	print("<h3 class='header'><p class='header'>Addon telepítése: <span class='star'>/addons/" .$_POST['addonsubdir']. "</span></p></h3>");
 	
 	/* Megnézzük, hogy ez az addon telepítve van-e */
-	$addonsor = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons WHERE subdir='" .$_POST['addonsubdir']. "'"));
+	$addonsor = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons WHERE subdir='" .mysql_real_escape_string($_POST['addonsubdir']). "'"));
 	if ( $addonsor['subdir'] != $NULL )
 	{
 		Hibauzenet("ERROR", "Ez az addon már telepítésre került");

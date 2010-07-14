@@ -29,7 +29,7 @@
 	}
  }
  // Felhasználói rang, felhasználó ellenörzése
- $adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."posts WHERE id='" .$getid. "'")); // Post adatainak bekérése
+ $adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."posts WHERE id='" .mysql_real_escape_string($getid). "'")); // Post adatainak bekérése
  $adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT id, username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$adat['uId']. "'"), MYSQL_ASSOC);
  if ( ($_SESSION['userLevel'] == 0) || ( $_SESSION['userLevel'] == 1) )
  {
@@ -69,7 +69,7 @@
 		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."forum SET posts='" .($sor4['posts']-1). "' WHERE id='" .$sor3['fId']. "'");
 		
 		// Hozzászólás eltávolítása az adatbázisból
-		$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."posts WHERE id='" .$getid. "'");
+		$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."posts WHERE id='" .mysql_real_escape_string($getid). "'");
 		// Hozzászólás törlése
 		print("<div class='messagebox'>Hozzászólás sikeresen törölve!<br><a href='viewtopic.php?id=" .$adat['tId']. "#pid" .$getid. "'>Vissza a témához</a>");
 		
@@ -79,7 +79,7 @@
 	if ( $_POST['submit'] == "Hozzászólás szerkesztése")
 	{
 		SetTitle("Hozzászólás szerkesztése");
-		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "posts SET pTitle='" .$_POST['title']. "', pText='" .$_POST['post']. "', edited=1, euId=" .$_SESSION['userID']. ", eDate=" .time(). " WHERE id='" .$getid. "'"); // Hozzászólás frissítése, szerkesztési adatok hozzáírása
+		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "posts SET pTitle='" .mysql_real_escape_string($_POST['title']). "', pText='" .mysql_real_escape_string($_POST['post']). "', edited=1, euId=" .$_SESSION['userID']. ", eDate=" .time(). " WHERE id='" .mysql_real_escape_string($getid). "'"); // Hozzászólás frissítése, szerkesztési adatok hozzáírása
 		// Szerkesztés
 		print("<div class='messagebox'>Hozzászólás sikeresen szerkesztve!<br><a href='viewtopic.php?id=" .$sor2['id']. "#pid" .$getid. "'>Vissza a hozzászóláshoz</a>");
 		

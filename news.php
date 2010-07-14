@@ -66,7 +66,7 @@
 			Hibauzenet("CRITICAL", "A hír azonosítóját kötelező megadni");
 		
 		// Bekérjük az aktuális hír adatait (ezt rögtön tömbbé is tömörítjük)
-		$hir = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."news WHERE id='" .$_GET['id']. "'"));
+		$hir = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."news WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
 		SetTitle($hir['title']);
 		
 		// Ha nem létezik ilyen hír, szintén hibaüzenetet generálunk
@@ -86,7 +86,7 @@
 		
 		/* Kommentek */
 		print("<h2 class='header'><p class='header'>Hozzászólások</p></h2>");
-		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."news_comments WHERE nId='" .$_GET['id']. "'");
+		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."news_comments WHERE nId='" .mysql_real_escape_string($_GET['id']). "'");
 		while ( $sor = mysql_fetch_assoc($adat) )
 		{
 			/* Komment formázása */
@@ -159,7 +159,7 @@
 		} else {
 			SetTitle("Hozzászólás beküldve");
 			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."news_comments(nId, uId, text, postDate) VALUES
-				(" .$_POST['id']. ", " .$_SESSION['userID']. ", '" .$_POST['post']. "', " .time(). ")");
+				(" .$_POST['id']. ", " .$_SESSION['userID']. ", '" .mysql_real_escape_string($_POST['post']). "', " .time(). ")");
 			print("<div class='messagebox'>Hozzászólás sikeresen beküldve<br><a href='news.php?id=" .$_POST['id']. "&action=view'><< Vissza a hírhez</a></div>");
 		}
 		
@@ -172,7 +172,7 @@
 		
 		$getid = $_GET['cid']; // Hozzászólás azonosítója
 		
-		$adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."news_comments WHERE id='" .$getid. "'")); // Hozzászólás adatainak bekérése
+		$adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."news_comments WHERE id='" .mysql_real_escape_string($getid). "'")); // Hozzászólás adatainak bekérése
 		$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT id, username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$adat['uId']. "'"), MYSQL_ASSOC);
 		if ( ($_SESSION['userLevel'] == 0) || ( $_SESSION['userLevel'] == 1) )
 		{

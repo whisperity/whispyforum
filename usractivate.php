@@ -23,7 +23,7 @@
 	</form>");
  } else {
 	// Aktiválás
-	$adat = mysql_fetch_array($sql->Lekerdezes("SELECT activateToken, activated, userLevel FROM " .$cfg['tbprf']. "user WHERE username='" .$_GET['username']. "'"));
+	$adat = mysql_fetch_array($sql->Lekerdezes("SELECT activateToken, activated, userLevel FROM " .$cfg['tbprf']. "user WHERE username='" .mysql_real_escape_string($_GET['username']). "'"));
 	
 	if ($_GET['token'] != $adat['activateToken']) // Aktiválókulcs ellenörzése
 	{
@@ -39,7 +39,7 @@
 		if ( $adat['activated'] == 0 )
 		{
 			// Aktiválunk
-			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET activated='1', userLevel='1', activatedate=" .strtotime("now"). " WHERE username='" .$_GET['username']. "'");
+			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET activated='1', userLevel='1', activatedate=" .strtotime("now"). " WHERE username='" .mysql_real_escape_string($_GET['username']). "'");
 			print("<div class='infobox'>A felhasználód (" .$_GET['username']. ") mostantól aktiválva van.");
 			WriteLog("USR_ACTIVATE", $_GET['username']. ";" .$_GET['token']);
 		} else {

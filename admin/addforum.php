@@ -39,7 +39,7 @@ if ($_POST['cmd'] == "add") // Ha a bejövő parancs "ADD" (fórum hozzáadása)
 		{
 			// Ha sikeres volt a hozzáadás (ha létezik ilyen fórum, a hozzáadás sikertelennek minősül)
 			
-			$lekerd = $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."forum(name, description, lastpostdate) VALUES ('" .$_POST['name']. "', '" .$_POST['description']. "', '0')"); // Fórum hozzáadása az adatbázishoz
+			$lekerd = $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."forum(name, description, lastpostdate) VALUES ('" .mysql_real_escape_string($_POST['name']). "', '" .mysql_real_escape_string($_POST['description']). "', '0')"); // Fórum hozzáadása az adatbázishoz
 			
 			/* Lehetőség azonnal új post létrehozására */
 			$szam = mysql_num_rows($sorlekerdezes); // Sorok száma (az új sor miatt +1-gyel használjuk)

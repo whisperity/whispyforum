@@ -108,21 +108,21 @@ class addons // Addonkezelő osztály
 	function RegisterAddon($subdir, $nev, $leiras, $szerzo, $szerzoemail) // Addon regisztrálása (addons táblába felvétel)
 	{
 		global $cfg, $sql;
-		$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."addons(subdir, name, descr, author, authoremail) VALUES ('" .$subdir. "', '" .$nev. "', '" .$leiras. "', '" .$szerzo. "', '" .$szerzoemail. "')");
+		$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."addons(subdir, name, descr, author, authoremail) VALUES ('" .mysql_real_escape_string($subdir). "', '" .mysql_real_escape_string($nev). "', '" .mysql_real_escape_string($leiras). "', '" .mysql_real_escape_string($szerzo). "', '" .mysql_real_escape_string($szerzoemail). "')");
 	}
 	
 	function InstallModule($href, $side) // Modul telepítése
 	{
 		global $cfg, $sql;
 		
-		$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name, type, side) VALUES ('" .$href. "', 'addonmodule', " .$side. ")");
+		$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name, type, side) VALUES ('" .mysql_real_escape_string($href). "', 'addonmodule', " .mysql_real_escape_string($side). ")");
 	}
 	
 	function CreateAddonTable($subdir) // Addon konfigurációs tábla létrehozása
 	{
 		global $cfg, $sql;
 		
-		$sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."addonsettings_" .$subdir. " (
+		$sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."addonsettings_" .mysql_real_escape_string($subdir). " (
   `variable` VARCHAR(64) COLLATE utf8_unicode_ci NOT NULL,
   `value` VARCHAR(1024) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
@@ -132,28 +132,28 @@ class addons // Addonkezelő osztály
 	{
 		global $cfg, $sql;
 		
-		$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."addonsettings_" .$subdir. "(variable, value) VALUES ('" .$variable. "', '" .$value. "')");
+		$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."addonsettings_" .mysql_real_escape_string($subdir). "(variable, value) VALUES ('" .mysql_real_escape_string($variable). "', '" .mysql_real_escape_string($value). "')");
 	}
 	
 	/* Addon eltávolítási adatbázis funkciók */
 	function RemoveAddonTable($subdir) // Addon konfigurációs tábla törlése
 	{
 		global $cfg, $sql;
-		$sql->Lekerdezes("DROP TABLE " .$cfg['tbprf']."addonsettings_" .$subdir);
+		$sql->Lekerdezes("DROP TABLE " .$cfg['tbprf']."addonsettings_" .mysql_real_escape_string($subdir));
 	}
 	
 	function UnregisterAddon($subdir) // Addon bejegyzés törlése
 	{
 		global $cfg, $sql;
 		
-		$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."addons WHERE subdir='" .$subdir. "'");
+		$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."addons WHERE subdir='" .mysql_real_escape_string($subdir). "'");
 	}
 	
 	function RemoveModule($href) // Modul eltávolítása
 	{
 		global $cfg, $sql;
 		
-		$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."modules WHERE name='" .$href. "'");
+		$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."modules WHERE name='" .mysql_real_escape_string($href). "'");
 	}
 	
 	/* Addon működési adatbázis funkciók */
@@ -161,7 +161,7 @@ class addons // Addonkezelő osztály
 	{
 		global $cfg, $sql;
 		
-		$konfigtomb = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."addonsettings_" .$subdir. " WHERE variable='" .$variable. "'"));
+		$konfigtomb = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."addonsettings_" .mysql_real_escape_string($subdir). " WHERE variable='" .mysql_real_escape_string($variable). "'"));
 		
 		return $konfigtomb[0];
 	}
@@ -169,7 +169,7 @@ class addons // Addonkezelő osztály
 	{
 		global $cfg, $sql;
 		
-		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."addonsettings_" .$subdir. " SET value='" .$value. "' WHERE variable='" .$variable. "'");
+		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."addonsettings_" .mysql_real_escape_string($subdir). " SET value='" .mysql_real_escape_string($value). "' WHERE variable='" .mysql_real_escape_string($variable). "'");
 	}
 }
 

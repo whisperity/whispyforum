@@ -27,10 +27,10 @@
  }
   
  global $cfg, $sql;
- $adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."posts WHERE tId='" .$getid. "'"); // Témák betöltése az adott fórumból
+ $adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."posts WHERE tId='" .mysql_real_escape_string($getid). "'"); // Témák betöltése az adott fórumból
  
  /* Fórum id megállapítása */
- $sor2 = mysql_fetch_array($sql->Lekerdezes("SELECT name, fId, locked FROM " .$cfg['tbprf']."topics WHERE id='" .$getid. "'"), MYSQL_ASSOC);
+ $sor2 = mysql_fetch_array($sql->Lekerdezes("SELECT name, fId, locked FROM " .$cfg['tbprf']."topics WHERE id='" .mysql_real_escape_string($getid). "'"), MYSQL_ASSOC);
  $forumId = $sor2['fId'];
  SetTitle($sor2['name']);
  
@@ -50,8 +50,8 @@
  
  print("</p>");
  /* +1 megtekintés hozzáadása */
- $sor4 = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE id='" .$getid. "'"), MYSQL_ASSOC);
- $sql->Lekerdezes("UPDATE " .$cfg['tbprf']."topics SET opens='" .($sor4['opens']+1). "' WHERE id='" .$getid. "'");
+ $sor4 = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE id='" .mysql_real_escape_string($getid). "'"), MYSQL_ASSOC);
+ $sql->Lekerdezes("UPDATE " .$cfg['tbprf']."topics SET opens='" .($sor4['opens']+1). "' WHERE id='" .mysql_real_escape_string($getid). "'");
  
  print("<h3 class='header'><p class='header'>" .$sor4['name']. "</p></h3>"); // Fejléc
  

@@ -17,8 +17,8 @@ if ( $admin == 1)
 if ( $_POST['cmd'] == "setup" )
 {
 	global $cfg, $sql;
-	$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."siteconfig SET value='" .$_POST['allow_registration']. "' WHERE variable='allow_registration'");
-	$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."siteconfig SET value='" .$_POST['log_depth']. "' WHERE variable='log_depth'");
+	$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."siteconfig SET value='" .mysql_real_escape_string($_POST['allow_registration']). "' WHERE variable='allow_registration'");
+	$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."siteconfig SET value='" .mysql_real_escape_string($_POST['log_depth']). "' WHERE variable='log_depth'");
 	
 	die("<div class='messagebox'>A beállítások módosítása megtörtént!<br><a href='admin.php?site=configs'>Vissza</a></td><td class='right' valign='top'>");
 }

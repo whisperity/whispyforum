@@ -106,7 +106,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		break;
 	
 	case "viewitems": // Menüelemek megtekintése
-		$menuNev = mysql_fetch_assoc($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."modules WHERE id='" .$_GET['id']. "'"));
+		$menuNev = mysql_fetch_assoc($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."modules WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
 		print("A(z) <b>" .$menuNev['name']. "</b> menü elemeinek szerkesztése.<br><br><div class='userbox'><table border='0' cellspacing='1' cellpadding='1'>
 			<tr>
 				<th>id</th>
@@ -115,7 +115,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 				<th>Hivatkozás</th>				
 			</tr>");
 		
-		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."menuitems WHERE menuId='" .$_GET['id']. "' ORDER BY hOrder");
+		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."menuitems WHERE menuId='" .mysql_real_escape_string($_GET['id']). "' ORDER BY hOrder");
 		while ( $sor = mysql_fetch_assoc($adat) )
 		{
 			$menuNev = mysql_fetch_assoc($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."modules WHERE id='" .$sor['menuId']. "'"));
@@ -151,7 +151,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		{
 			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
 		} else {
-			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."modules WHERE id='" .$_GET['id']. "'");
+			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."modules WHERE id='" .mysql_real_escape_string($_GET['id']). "'");
 			die("<div class='messagebox'>A modul sikeresen törölve!<br><a href='admin.php?site=menueditor'>Vissza a menüszerkesztőhöz</a></td><td class='right' valign='top'>");
 		}
 		break;
@@ -160,7 +160,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		{
 			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
 		} else {
-			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."menuitems WHERE id='" .$_GET['id']. "'");
+			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."menuitems WHERE id='" .mysql_real_escape_string($_GET['id']). "'");
 			die("<div class='messagebox'>A menüelem sikeresen törölve!<br><a href='admin.php?site=menueditor'>Vissza a menüszerkesztőhöz</a></td><td class='right' valign='top'>");
 		}
 		break;
@@ -173,11 +173,11 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 			{
 				// A menü szerkesztésének mentése
 				
-				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."menuitems SET text='" .$_POST['text']. "', href='" .$_POST['href']. "', hOrder='" .$_POST['hOrder']. "' WHERE id='" .$_POST['id']. "'");
+				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."menuitems SET text='" .mysql_real_escape_string($_POST['text']). "', href='" .mysql_real_escape_string($_POST['href']). "', hOrder='" .mysql_real_escape_string($_POST['hOrder']). "' WHERE id='" .mysql_real_escape_string($_POST['id']). "'");
 				die("<div class='messagebox'>A menüelem sikeresen szerkesztve!<br><a href='admin.php?site=menueditor'>Vissza a menüszerkesztőhöz</a></td><td class='right' valign='top'>");
 			}
-			$sor = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."menuitems WHERE id='" .$_GET['id']. "'"));
-			$sor3 = mysql_fetch_assoc($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."modules WHERE id='" .$sor['menuId']. "'"));
+			$sor = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."menuitems WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
+			$sor3 = mysql_fetch_assoc($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."modules WHERE id='" .mysql_real_escape_string($sor['menuId']). "'"));
 			print("<form method='POST' action='" .$_SEVER['PHP_SELF']. "'>
 		<span class='formHeader'>Menüelem szerkesztése (" .$sor3['name']. ")</span><br>
 		<p class='formText'>Címsor: <input type='text' name='text' value='" .$sor['text']. "' size='96'><br>
@@ -186,7 +186,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		Függőleges elhelyezkedés: <input type='text' name='hOrder' value='" .$sor['hOrder']. "' size='3'>\t\t");
 		
 		/* Egy listába tesszük a szerkesztett modullal megegyező oldalon lévő modulokat (hOrder példa) */
-		$oldalmenuk = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."menuitems WHERE menuId='" .$sor['menuId']. "' ORDER BY hOrder");
+		$oldalmenuk = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."menuitems WHERE menuId='" .mysql_real_escape_string($sor['menuId']). "' ORDER BY hOrder");
 		$oldalmenuk_szam = mysql_num_rows($oldalmenuk);
 		
 		print("<br><select size='" .($oldalmenuk_szam+2). "' disabled>");
@@ -211,10 +211,11 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 			{
 				// A menü szerkesztésének mentése
 				
-				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."modules SET name='" .$_POST['name']. "', type='" .$_POST['type']. "', side='" .$_POST['side']. "', hOrder='" .$_POST['hOrder']. "' WHERE id='" .$_POST['id']. "'");
+				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."modules SET name='" .mysql_real_escape_string($_POST['name']). "', type='" .mysql_real_escape_string($_POST['type']). "', side='" .mysql_real_escape_string($_POST['side']). "', hOrder='" .mysql_real_escape_string($_POST['hOrder']). "' WHERE id='" .mysql_real_escape_string($_POST['id']). "'");
+				
 				die("<div class='messagebox'>A modul sikeresen szerkesztve!<br><a href='admin.php?site=menueditor'>Vissza a menüszerkesztőhöz</a></div></td><td class='right' valign='top'>");
 			}
-			$sor = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."modules WHERE id='" .$_GET['id']. "'"));
+			$sor = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."modules WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
 			
 			print("<form method='POST' action='" .$_SEVER['PHP_SELF']. "'>
 		<span class='formHeader'>Modul szerkesztése: " .$sor['name']. "</span><br>
@@ -237,7 +238,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		Függőleges elhelyezkedés: <input type='text' name='hOrder' value='" .$sor['hOrder']. "' size='3'>\t\t");
 		
 		/* Egy listába tesszük a szerkesztett modullal megegyező oldalon lévő modulokat (hOrder példa) */
-		$oldalmenuk = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."modules WHERE side='" .$sor['side']. "' ORDER BY hOrder");
+		$oldalmenuk = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."modules WHERE side='" .mysql_real_escape_string($sor['side']). "' ORDER BY hOrder");
 		$oldalmenuk_szam = mysql_num_rows($oldalmenuk);
 		
 		print("<br><select size='" .($oldalmenuk_szam+2). "' disabled>");
@@ -286,7 +287,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 	case "addnewmodule": // Új modul hozzáadása (hozzáadóscript)
 		if ( ($_POST['name'] != $NULL) && ($_POST['side'] != $NULL) && ($_POST['type'] != $NULL) )
 		{
-			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name, type, side) VALUES ('" .$_POST['name']. "', '" .$_POST['type']. "', '" .$_POST['side']. "')"); // Hozzáadás
+			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name, type, side) VALUES ('" .mysql_real_escape_string($_POST['name']). "', '" .mysql_real_escape_string($_POST['type']). "', '" .mysql_real_escape_string($_POST['side']). "')"); // Hozzáadás
 			print("<div class='messagebox'>A modul hozzáadása sikeres volt!<br><a href='admin.php?site=menueditor'>Visszatérés a listához</a></div>");
 		} else {
 			header('Location: admin.php?site=menueditor&action=newmodule'); // Visszatérés, ha egy kötelező adat hiányzott
@@ -297,7 +298,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		if ( $_GET['id'] != $NULL )
 		{
 			// Ha van bejövő ID érték (kötelező)
-			$menu = mysql_fetch_assoc($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."modules WHERE id='" .$_GET['id']. "'"));
+			$menu = mysql_fetch_assoc($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."modules WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
 			print("<form method='POST' action='" .$_SEVER['PHP_SELF']. "'>
 		<span class='formHeader'>Új menüelem hozzáadása a menühöz: " .$menu['name']. "</span><br>
 		<p class='formText'>Címsor: <input type='text' name='text' value='" .$sor['text']. "' size='96'><br>
@@ -306,7 +307,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		Függőleges elhelyezkedés: <input type='text' name='hOrder' value='" .$sor['hOrder']. "' size='3'>\t\t");
 		
 		/* Egy listába tesszük a szerkesztett modullal megegyező oldalon lévő modulokat (hOrder példa) */
-		$oldalmenuk = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."menuitems WHERE menuId='" .$_GET['id']. "' ORDER BY hOrder");
+		$oldalmenuk = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."menuitems WHERE menuId='" .mysql_real_escape_string($_GET['id']). "' ORDER BY hOrder");
 		$oldalmenuk_szam = mysql_num_rows($oldalmenuk);
 		
 		print("<br><select size='" .($oldalmenuk_szam+2). "' disabled>");
@@ -327,7 +328,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		if ( ($_POST['id'] != $NULL) && ( $_POST['text'] != $NULL) && ( $_POST['href'] != $NULL) && ($_POST['hOrder'] != $NULL) )
 		{
 			// Hozzáadás, ha a szükséges értékek megvannak
-			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."menuitems(menuId, text, href, hOrder) VALUES (" .$_POST['id']. ", '" .$_POST['text']. "', '" .$_POST['href']. "', " .$_POST['hOrder']. ")");
+			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."menuitems(menuId, text, href, hOrder) VALUES (" .mysql_real_escape_string($_POST['id']). ", '" .mysql_real_escape_string($_POST['text']). "', '" .mysql_real_escape_string($_POST['href']). "', " .mysql_real_escape_string($_POST['hOrder']). ")");
 			print("<div class='messagebox'>A menüelem hozzáadása sikeres volt!<br><a href='admin.php?site=menueditor&action=viewitems&id=" .$_POST['id']. "'>Visszatérés a listához</a></div>");
 		} else {
 			header('Location: admin.php?site=menueditor&action=newmenuentry&id=' .$_POST['id']); // Visszatérés, ha egy kötelező adat hiányzott

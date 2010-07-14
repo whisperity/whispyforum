@@ -24,23 +24,23 @@
 	if ($_SESSION['loggedin'] != 1) { // Ha a felhasználó nincs bejelentkezve, nem szólhat hozzá
 		Hibauzenet("ERROR", "Amíg nem jelentkezel be, nem készíthetsz új témát");
 	} else {		
-		$sor2 = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."forum WHERE id='" .$fId. "'"), MYSQL_ASSOC); // Fórum adatai
+		$sor2 = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."forum WHERE id='" .mysql_real_escape_string($fId). "'"), MYSQL_ASSOC); // Fórum adatai
 		
 		if ( $_POST['submit'] != $NULL )
 		{
 			// Új téma hozzáadáas
-			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."forum SET topics='" .($sor2['topics']+1). "', posts='" .($sor2['posts']+1)."' WHERE id='" .$fId. "'"); // Fórum témaszám és postszám növelése
+			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."forum SET topics='" .($sor2['topics']+1). "', posts='" .($sor2['posts']+1)."' WHERE id='" .mysql_real_escape_string($fId). "'"); // Fórum témaszám és postszám növelése
 			
 			$topicSzam = mysql_num_rows($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics"));
 			$postSzam = mysql_num_rows($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."posts"));
 			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']. "topics(fId, name,	type, startdate, startuser, lastpostdate, lastuser, replies, opens, lpId, locked)
-			VALUES('" .$fId. "', '" .$_POST['Ttitle']. "', '1', '" .time(). "', '" .$_SESSION['userID']. "', '" .time(). "', '" .$_SESSION['userID']. "', '1', '0', '" .($postSzam+1). "', '0')"); // Téma hozzáadása
+			VALUES('" .mysql_real_escape_string($fId). "', '" .mysql_real_escape_string($_POST['Ttitle']). "', '1', '" .time(). "', '" .$_SESSION['userID']. "', '" .time(). "', '" .$_SESSION['userID']. "', '1', '0', '" .($postSzam+1). "', '0')"); // Téma hozzáadása
 			$ujtopicid = mysql_insert_id();
 			
-			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."posts(tId, uId, pTitle, pText, pDate) VALUES ( " .$ujtopicid. ", '" .$_SESSION["userID"]. "', '" .$_POST["title"]. "', '" .$_POST['post']. "', '" .time(). "')"); // Post hozzáadása
+			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."posts(tId, uId, pTitle, pText, pDate) VALUES ( " .$ujtopicid. ", '" .$_SESSION["userID"]. "', '" .mysql_real_escape_string($_POST["title"]). "', '" .mysql_real_escape_string($_POST['post']). "', '" .time(). "')"); // Post hozzáadása
 			$ujpostid = mysql_insert_id();
 			
-			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "forum SET lpTopic='" .$ujtopicid. "', lpId='" .$ujpostid. "', lastuser='" .$_SESSION['userID']. "', lastpostdate='" .time(). "' WHERE id='" .$fId. "'"); // Fórum utolsó post és téma adatok beállítása
+			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "forum SET lpTopic='" .$ujtopicid. "', lpId='" .$ujpostid. "', lastuser='" .$_SESSION['userID']. "', lastpostdate='" .time(). "' WHERE id='" .mysql_real_escape_string($fId). "'"); // Fórum utolsó post és téma adatok beállítása
 			
 			/* Felhasználó hozzászólásszámának növelése */
 			$sor4 = mysql_fetch_array($sql->Lekerdezes("SELECT postCount FROM " .$cfg['tbprf']."user WHERE id='" .$_SESSION['userID']. "'"), MYSQL_ASSOC); // Felhasználó hozzászólásszáma

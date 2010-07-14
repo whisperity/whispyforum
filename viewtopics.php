@@ -29,7 +29,7 @@
  global $cfg, $sql;
  
  /* Fórum címe, weblapfejléc */
- $forumCime = mysql_fetch_array($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."forum WHERE id='" .$_GET['id']. "'"), MYSQL_ASSOC);
+ $forumCime = mysql_fetch_array($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."forum WHERE id='" .mysql_real_escape_string($_GET['id']). "'"), MYSQL_ASSOC);
  SetTitle($forumCime["name"]);
  
  /* Közlemények */

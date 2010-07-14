@@ -24,7 +24,7 @@
 	die();
  }
  
- $felhasznalo = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."user WHERE id='" .$_GET['id']. "'")); // Adatok bekérése a megadott felhasználóról
+ $felhasznalo = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."user WHERE id='" .mysql_real_escape_string($_GET['id']). "'")); // Adatok bekérése a megadott felhasználóról
  
  if ( $felhasznalo == FALSE )
  {

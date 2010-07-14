@@ -45,7 +45,7 @@
 		SetTitle("Téma törlése");
 		// Téma törlése
 		
-		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."posts WHERE tId='" .$getid. "'"); // A téma tartalmának betöltése (postok)
+		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."posts WHERE tId='" .mysql_real_escape_string($getid). "'"); // A téma tartalmának betöltése (postok)
 		$hozzaszolas_torolve = 0; // 0 hozzászólás törölve
 		while($sor = mysql_fetch_array($adat, MYSQL_ASSOC))
 		{
@@ -60,8 +60,8 @@
 		$sor4 = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."forum WHERE id='" .$sor3['fId']. "'")); // Fórum adatai
 		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."forum SET topics='" .($sor4['topics']-1). "', posts='" .($sor4['posts'] - $hozzaszolas_torolve). "' WHERE id='" .$sor3['fId']. "'"); // -1 topic, - a törölt hozzászólások száma a fórumból levonva
 		
-		$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."topics WHERE id='" .$getid. "'"); // Téma törlése
-		$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."posts WHERE tId='" .$getid. "'"); // Hozzászólások törlése
+		$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."topics WHERE id='" .mysql_real_escape_string($getid). "'"); // Téma törlése
+		$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."posts WHERE tId='" .mysql_real_escape_string($getid). "'"); // Hozzászólások törlése
 		
 		print("<div class='messagebox'>A téma sikeresen törölve!<br><a href='viewtopics.php?id=" .$sor3['fId']. "'>Vissza a fórumhoz</a>");
 		
@@ -80,13 +80,13 @@
 			$locked = 1;
 		}
 		
-		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."topics SET locked='" .$locked. "', type='" .$_GET['type']. "' WHERE id='" .$getid. "'");
-		$sor5 = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE id='" .$getid. "'")); // Téma adatai
+		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."topics SET locked='" .$locked. "', type='" .$_GET['type']. "' WHERE id='" .mysql_real_escape_string($getid). "'");
+		$sor5 = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE id='" .mysql_real_escape_string($getid). "'")); // Téma adatai
 		print("<div class='messagebox'>A téma sikeresen szerkesztve!<br><a href='viewtopics.php?id=" .$sor5['fId']. "'>Vissza a fórumhoz</a>");
 		DoFooter();
 		die(); // A többi kód ne fusson le
 	}
-	$sor = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE id='" .$getid. "'")); // Téma adatai
+	$sor = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE id='" .mysql_real_escape_string($getid). "'")); // Téma adatai
 	SetTitle("Téma szerkesztése");
 	print("<form method='GET' action='" .$_SEVER['PHP_SELF']. "'>
 		<span class='formHeader'>Téma szerkesztése: " .$sor['name']. "</span><br>

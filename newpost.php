@@ -21,7 +21,7 @@
 	if ( $_POST['id'] != $NULL)
 		$tId = $_POST['id'];
 	
-	$sor2 = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE id='" .$tId. "'"), MYSQL_ASSOC); // Tábla adatai
+	$sor2 = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE id='" .mysql_real_escape_string($tId). "'"), MYSQL_ASSOC); // Tábla adatai
 	if ( $sor2 == FALSE )
 	{
 		Hibauzenet("ERROR", "A megadott azonosítójú téma nem létezik");
@@ -35,10 +35,10 @@
 				// Fórum hozzászólásszámok bekérése
 				$sor3 = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."forum WHERE id='" .$sor2['fId']. "'"), MYSQL_ASSOC); // Fórum sor
 				// Hozzászólás beküldése
-				$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."posts(tId, uId, pTitle, pText, pDate) VALUES ( " .$_POST["id"]. ", '" .$_SESSION["userID"]. "', '" .$_POST["title"]. "', '" .$_POST['post']. "', '" .time(). "')"); // Beküldés az adatbázisba
+				$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."posts(tId, uId, pTitle, pText, pDate) VALUES ( " .mysql_real_escape_string($_POST["id"]). ", '" .$_SESSION["userID"]. "', '" .mysql_real_escape_string($_POST["title"]). "', '" .mysql_real_escape_string($_POST['post']). "', '" .time(). "')"); // Beküldés az adatbázisba
 				$ujpostid = mysql_insert_id();
 				
-				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."topics SET replies='" .($sor2['replies']+1). "', lpId='" .$ujpostid. "', lastuser='" .$_SESSION['userID']. "' WHERE id='" .$_POST['id']. "'"); // Hozzászólásszám növelése a témán, utolsó post beállítása
+				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."topics SET replies='" .($sor2['replies']+1). "', lpId='" .$ujpostid. "', lastuser='" .$_SESSION['userID']. "' WHERE id='" .mysql_real_escape_string($_POST['id']). "'"); // Hozzászólásszám növelése a témán, utolsó post beállítása
 				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "forum SET posts='" .($sor3['posts']+1). "', lpTopic='" .$tId. "', lastuser='" .$_SESSION['userID']. "', lpId='" .$ujpostid. "', lastpostdate='" .time(). "' WHERE id='" .$sor2['fId']. "'"); // Hozzászólásszám növelése a fórumon, utolsó téma-post beállítása
 				
 				/* Felhasználó hozzászólásszámának növelése */

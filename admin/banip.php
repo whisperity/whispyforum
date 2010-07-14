@@ -77,7 +77,7 @@ if ( $_POST['action'] != $NULL )
 		break;
 		
 	case "delban": // Ban törlése
-		$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."bannedips WHERE id='" .$_POST['id']. "'");
+		$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."bannedips WHERE id='" .mysql_real_escape_string($_POST['id']). "'");
 		die("<div class='messagebox'>A kitiltás sikeresen törölve!<br><a href='admin.php?site=banip'>Vissza a kitiltott IP címek listájához</a></div></td><td class='right' valign='top'>");
 		break;
 	
@@ -110,7 +110,7 @@ if ( $_POST['action'] != $NULL )
 				die("<a href='admin.php?site=banip'>Vissza a kitiltott IP címek listájához</a></td><td class='right' valign='top'>");
 			}
 			
-			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."bannedips(ip, bandate, uId, comment) VALUES ('" .$_POST['ip']. "', " .time(). ", " .$_SESSION['userID']. ", '" .$_POST['comment']. "')");
+			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."bannedips(ip, bandate, uId, comment) VALUES ('" .mysql_real_escape_string($_POST['ip']). "', " .time(). ", " .$_SESSION['userID']. ", '" .mysql_real_escape_string($_POST['comment']). "')");
 			die("<div class='messagebox'>Az IP cím (" .$_POST['ip']. ") kitiltása sikeres!<br><a href='admin.php?site=banip'>Vissza a kitiltott IP címek listájához</a></div></td><td class='right' valign='top'>");
 		}
 		

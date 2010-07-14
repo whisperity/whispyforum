@@ -145,7 +145,7 @@
 			$regisztralt = 1; // Induljunk ki abból, hogy a regisztráció sikerülni fog...
 		
 			// Megnézzük, van-e már ilyen nevű user
-			$adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .$_POST['username']. "'"));
+			$adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .mysql_real_escape_string($_POST['username']). "'"));
 			if ( $adat[0] != "" )
 			{
 				Hibauzenet("ERROR", "Már létezik ilyen nevű felhasználó: " .$_POST['username']); // Hibaüzeneti ablak generálása
@@ -162,7 +162,7 @@
 			}
 		
 			// Megnézzük, regisztrálták-e már ezt az e-mail címet
-			$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE email='" .$_POST['email']. "'"));
+			$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE email='" .mysql_real_escape_string($_POST['email']). "'"));
 			if ( $adat2[0] != "" )
 			{
 				Hibauzenet("ERROR", "Már regisztrálták ezt az e-mail címet: " .$_POST['email']); // Hibaüzeneti ablak generálása
@@ -183,7 +183,7 @@
 			{
 				$acToken = md5($_POST['username'] . "|" . md5($_POST['password']) . "|" . Datum("normal","nagybetu","dL","H","i","s")); // Aktiválási kulcs generálása
 				$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']. "user 
-	(username, pwd, email, realName, activated, activateToken, regip, regsessid, regdate) VALUES ('" .$_POST['username']. "', '" .md5($_POST['password']). "', '" .$_POST['email']. "', '" .$_POST['realname']. "', '0', '" .$acToken. "', '" .$_SERVER['REMOTE_ADDR']. "', '" .session_id(). "', " .time(). ")"); // Adatok elmentése
+	(username, pwd, email, realName, activated, activateToken, regip, regsessid, regdate) VALUES ('" .($_POST['username']). "', '" .md5(mysql_real_escape_string($_POST['password'])). "', '" .mysql_real_escape_string($_POST['email']). "', '" .mysql_real_escape_string($_POST['realname']). "', '0', '" .$acToken. "', '" .$_SERVER['REMOTE_ADDR']. "', '" .session_id(). "', " .time(). ")"); // Adatok elmentése
 		
 				print("A regisztráció megtörtént!<br>A további részleteket tartalmazó e-mailt elküldtük a következő e-mail címre: <b>" .$_POST['email']. "</b>.<br>Kövesd a levélben található utasításokat!"); // Értesítés
 				

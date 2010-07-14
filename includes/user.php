@@ -42,7 +42,7 @@ class user // Definiáljuk az osztályt (felhasználók)
 		global $cfg, $sql, $session;
 		$sql->Connect();
 		
-		$adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .$un. "'"));
+		$adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .mysql_real_escape_string($un). "'"));
 		
 		if ( (md5($pw) == $adat['pwd']) && ($adat['activated'] == 1 ) )
 		{
@@ -58,7 +58,7 @@ class user // Definiáljuk az osztályt (felhasználók)
 		global $cfg, $sql, $session;
 		$sql->Connect();
 		
-		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET loggedin='0', cursessid='', curip='0.0.0.0' WHERE username='" .$_SESSION['username']. "' AND pwd='" .md5($_SESSION['pass']). "'");
+		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET loggedin='0', cursessid='', curip='0.0.0.0' WHERE username='" .mysql_real_escape_string($_SESSION['username']). "' AND pwd='" .md5(mysql_real_escape_string($_SESSION['pass'])). "'");
 		
 		// Session kiűrítése
 		$session->Purge();
@@ -112,7 +112,7 @@ class user // Definiáljuk az osztályt (felhasználók)
 	function GetUserData() // Felhasználó adatok cachelése sessionbe
 	{
 		global $cfg, $sql;
-		$adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .$_SESSION['username']. "' AND pwd='" .md5($_SESSION['pass']). "'")); // Bekérjük az adatokat
+		$adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .mysql_real_escape_string($_SESSION['username']). "' AND pwd='" .md5(mysql_real_escape_string($_SESSION['pass'])). "'")); // Bekérjük az adatokat
 		
 		$_SESSION['userLevel'] = $adat['userLevel']; // Tároljuk a felhasználó szintjét
 		
@@ -172,7 +172,7 @@ class session // Munkamenet (session) kezelő osztály
 		global $cfg, $sql;
 		
 		session_start(); // Indítás
-		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET lastip='" .$_SERVER['REMOTE_ADDR']. "', lastsessid='" .session_id()."', loggedin='1', cursessid='" .session_id(). "', curip='" .$_SERVER['REMOTE_ADDR']. "', lastlogintime='" .time(). "' WHERE username='" .$username. "' AND pwd='" .md5($pass). "'");
+		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET lastip='" .$_SERVER['REMOTE_ADDR']. "', lastsessid='" .session_id()."', loggedin='1', cursessid='" .session_id(). "', curip='" .$_SERVER['REMOTE_ADDR']. "', lastlogintime='" .time(). "' WHERE username='" .mysql_real_escape_string($username). "' AND pwd='" .md5(mysql_real_escape_string($pass)). "'");
 		$_SESSION['username'] = $username;
 		$_SESSION['pass'] = $pass;
 		
@@ -182,7 +182,7 @@ class session // Munkamenet (session) kezelő osztály
 	{
 		global $cfg, $user, $sql;
 		
-		$adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .$_SESSION['username']. "' AND pwd='" .md5($_SESSION['pass']). "'")); // Bekérjük a session adatokat és IP-t
+		$adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .mysql_real_escape_string($_SESSION['username']). "' AND pwd='" .md5(mysql_real_escape_string($_SESSION['pass'])). "'")); // Bekérjük a session adatokat és IP-t
 		
 		if ( ($sid == $adat['cursessid']) && ($ip == $adat['curip']) ) // Egyezés ellenörzése (ip cím és session ID)
 		{
