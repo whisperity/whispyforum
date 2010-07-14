@@ -86,7 +86,14 @@ class user // Definiáljuk az osztályt (felhasználók)
 			print ($_SESSION['realName'] ." (". $_SESSION['username'] .")");
 		}
 		
-		print("!</span><br>");
+		print("!</span><br>&nbsp;");
+		if ( file_exists("uploads/" .$_SESSION['username']) )
+		{
+			print("<img src='uploads/" .$_SESSION['username']. "' width='128' height='128' alt='" .$_SESSION['username']. " megjelenítendő képe'>");
+		} else {
+			print("<img src='themes/" .$_SESSION['themeName']. "/anon.png' width='128' height='128' alt='" .$_SESSION['username']. " megjelenítendő képe'>");
+		}
+		
 		print("<p class='formText'>Felhasználói szinted: " .$_SESSION['userLevelTXT']. "<br><a href='profile.php?id=" .$_SESSION['userID']. "'>Profilod megtekintése</a><br><a href='ucp.php'>Felhasználói vezérlőpult</a>");
 		if ( $_SESSION['userLevel'] == 3) // Ha a felhasználó admin linket írunk az admin vezérlőpultra
 			print("<br><a href='admin.php'>Adminisztrátori vezérlőpult</a>");

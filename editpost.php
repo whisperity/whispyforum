@@ -98,7 +98,16 @@
 	print("<div class='postbody'><h3 class='postheader'><p class='header'><a name='pid" .$adat['id']. "'></a>" .$adat['pTitle']. "");
 	print("</p></h3>"); // Hozzászólás fejléc
 	print("<div class='content'>" .$postBody. "</div></div>"); // Hozzászólás
-	print("<div class='postright'>Hozzászólás időpontja: <b>" .Datum("normal","kisbetu","dL","H","i","s",$adat['pDate']). "</b><p><b><a href='profile.php?id=" .$adat2['id']. "'>" .$adat2['username']. "</a></b><br>Rang: " .$usrRang. "<br>Hozzászólások: " .$adat2['postCount']. "<br>"); // Hozzászólás adatai (hozzászóló, stb.)
+	print("<div class='postright'>Hozzászólás időpontja: <b>" .Datum("normal","kisbetu","dL","H","i","s",$adat['pDate']). "</b>");
+	
+	if ( file_exists("uploads/" .$adat2['username']) )
+	{
+		print("<img src='uploads/" .$adat2['username']. "' width='128' height='128' alt='" .$adat2['username']. " megjelenítendő képe'>");
+	} else {
+		print("<img src='themes/" .$_SESSION['themeName']. "/anon.png' width='128' height='128' alt='" .$adat2['username']. " megjelenítendő képe'>");
+	}
+	
+	print("<p><b><a href='profile.php?id=" .$adat2['id']. "'>" .$adat2['username']. "</a></b><br>Rang: " .$usrRang. "<br>Hozzászólások: " .$adat2['postCount']. "<br>"); // Hozzászólás adatai (hozzászóló, stb.)
 	print("Csatlakozott: " .Datum("normal","m","d","H","i","", $adat2['regdate']). ""); // Hozzászóló adatai
 	print("</div></div>"); // Hozzászólás vége
 	
