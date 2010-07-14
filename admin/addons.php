@@ -46,7 +46,6 @@ function Addonmeret($addonsubdir)
 	$meret += @filesize("addons/" .$addonsubdir. "/includes.php");
 	$meret += @filesize("addons/" .$addonsubdir. "/install.php");
 	$meret += @filesize("addons/" .$addonsubdir. "/settings.php");
-	$meret += @filesize("addons/" .$addonsubdir. "/settings.cfg");
 	
 	return $meret;
 }
@@ -97,18 +96,18 @@ if ( ($_POST['action'] == "install-batch") ) // Feltöltött BAA fájl kicsomago
 {
 	print("Kérlek várj, amíg az általad feltöltött fájl végrehajtása befejeződik. Ha a weboldal teljesen betöltődött (ez jelzi a sikeres kicsomagolást), alul találsz egy <b>Telepítés megkezdése</b> gombot. Rákattintva a telepítés elkezdődik.<br>"); // Bevezetőszöveg
 	
-	if(move_uploaded_file($_FILES['baafile']['tmp_name'], "addons/install.baa")) // Feltöltött fájl mozgatása
+	if(move_uploaded_file($_FILES['baafile']['tmp_name'], "addons/" .time(). ".baa")) // Feltöltött fájl mozgatása
 	{
-		print("<div class='messagebox'>Fájl (<b>" .$_FILES['baafile']['name']. "</b>) sikeresen feltöltve.<br>Fájl áthelyezése: /addons/install.baa <span style='color: darkgreen'><b>sikeres</b></span><br>Fájlméret: " .DecodeSize(filesize("addons/install.baa")). "<br><br>Kicsomagolás megkezdése...<br>"); // Bevezető szöveg
+		print("<div class='messagebox'>Fájl (<b>" .$_FILES['baafile']['name']. "</b>) sikeresen feltöltve.<br>Fájl áthelyezése: /addons/" .time(). ".baa <span style='color: darkgreen'><b>sikeres</b></span><br>Fájlméret: " .DecodeSize(filesize("addons/" .time(). ".baa")). "<br><br>Kicsomagolás megkezdése...<br>"); // Bevezető szöveg
 		
-	$baafile = file_get_contents("addons/install.baa"); // Fájl betöltése stringbe
+	$baafile = file_get_contents("addons/" .time(). ".baa"); // Fájl betöltése stringbe
 	$elemek = explode('@@@@@@@@@@@@@@@@@@', $baafile);
 	
 	if ($elemek[1] != "BATCHED ADDON ARCHIVE//////////////////\r\n") // Ha a fejléc nem stimmel
 	{ // Hibaüzenet megjelenítése és telepítés leállítása
 		Hibauzenet("ERROR", "Érvénytelen fájl", "A feltöltött fájl egy érvénytelen kötegelt addonfájl (.baa)<br>A fejléc-információk hamisak, vagy sérültek.");
-		unlink("addons/install.baa"); // Ideiglenes fájl törlése
-		print("<br>/addons/install.baa ideiglenes fájl törölve<br><span style='color: red; font-weight: bold'>telepítés sikertelen: érvénytelen fájl</span><br><a href='admin.php?site=addons'>Visszatérés az addon-listához</a></div>"); // Értesítés, kicsomagolás befejezése
+		//unlink("addons/" .time(). ".baa"); // Ideiglenes fájl törlése
+		print("<br>/addons/" .time(). ".baa ideiglenes fájl törölve<br><span style='color: red; font-weight: bold'>telepítés sikertelen: érvénytelen fájl</span><br><a href='admin.php?site=addons'>Visszatérés az addon-listához</a></div>"); // Értesítés, kicsomagolás befejezése
 		
 		/* A további kódok ne fussanak le */
 		print("</td><td class='right' valign='top'>");
@@ -121,8 +120,8 @@ if ( ($_POST['action'] == "install-batch") ) // Feltöltött BAA fájl kicsomago
 	{
 		// Ha már létezik egy ilyen mappa, hibaüzenet megjelenítése és telepítés leállítása
 		Hibauzenet("ERROR", "Már létező mappa", "Az addon telepítéshez szükséges mappája már létrehozásra került");
-		unlink("addons/install.baa"); // Ideiglenes fájl törlése
-		print("<br>/addons/install.baa ideiglenes fájl törölve<br><span style='color: red; font-weight: bold'>telepítés sikertelen: már létező célmappa</span><br><a href='admin.php?site=addons'>Visszatérés az addon-listához</a></div>"); // Értesítés, kicsomagolás befejezése
+		unlink("addons/" .time(). ".baa"); // Ideiglenes fájl törlése
+		print("<br>/addons/" .time(). ".baa ideiglenes fájl törölve<br><span style='color: red; font-weight: bold'>telepítés sikertelen: már létező célmappa</span><br><a href='admin.php?site=addons'>Visszatérés az addon-listához</a></div>"); // Értesítés, kicsomagolás befejezése
 		/* A további kódok ne fussanak le */ /*
 		print("</td><td class='right' valign='top'>");
 		Lablec();
@@ -149,7 +148,7 @@ if ( ($_POST['action'] == "install-batch") ) // Feltöltött BAA fájl kicsomago
 	}
 	print("Kicsomagolás befejezve<br>");
 	
-	unlink("addons/install.baa"); // Ideiglenes fájl törlése
+	//unlink("addons/" .time(). ".baa"); // Ideiglenes fájl törlése
 	print("<br>/addons/install.baa ideiglenes fájl törölve<br>" .DecodeSize($meret). " tárterületnyi fájl került létrehozásra</div><br>
 	<form method='POST' action='" .$_SERVER['PHP_SELF']. "'>
 	<input type='hidden' name='addonsubdir' value='" .$mappa[0]. "'>

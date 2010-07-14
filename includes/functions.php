@@ -216,7 +216,16 @@ function Datum( $ev, $honap, $nap, $ora, $perc, $masodperc, $epoch = '' ) // A m
 		}
 	
 		// Elkezdjük kinyomatni a HTML outputot
-		print("<div class='hibabox'><div class='hibakep'><img src='themes/" .$_SESSION['themeName']. "/" .$kepnev. "'></div><div class='hibacim'>" .$Hmsg['title']. "</div><div class='hibaszoveg'>" .$Hmsg['desc']. "</div></div>");
+		print("<div class='hibabox'><div class='hibakep'>");
+		
+		if ( $_SESSION['theme'] == $NULL )
+		{
+			print("<img src='themes/default/" .$kepnev. "'>");
+		} else {
+			print("<img src='themes/" .$_SESSION['themeName']. "/" .$kepnev. "'>");
+		}
+		
+		print("</div><div class='hibacim'>" .$Hmsg['title']. "</div><div class='hibaszoveg'>" .$Hmsg['desc']. "</div></div>");
 		
 		// Beleírjuk az aktuális értéket a naplóba
 		WriteLog($Hmsg['tipus'], $Hmsg['title']. ';' .$Hmsg['desc']. ';' .$Hmsg['fajl']. ';' .$Hmsg['line']);

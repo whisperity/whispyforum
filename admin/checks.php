@@ -138,7 +138,7 @@ function Eredmeny($status, $title, $message)
 		1 esetén FAILED */
 	if ( (ini_get("display_errors") == 0) || (ini_get("display_errors") == "Off") )
 	{
-		Eredmeny(OK, "Hibák megjelenítése kikapcsolva", "A hibák megjelenítése ki van kapcsolva. A hibákról a keretrendszer hibakezelője értesíti a felhasználókat");
+		Eredmeny(OK, "Hibák megjelenítése kikapcsolva", "A hibák megjelenítése ki van kapcsolva. A hibákról a keretrendszer hibakezelője értesíti a felhasználókat.");
 	} else {
 		Eredmeny(FAILED, "Hibák megjelenítése bekapcsolva", "A hibák megjelenítése nem szükséges, mivel a keretrendszer tartalmaz egy beépített hibaüzenet-megjelenítőt. Emelett a PHP hibaüzenetei tartalmazhatnak utalásokat az adatbázis struktúrájára, tartalmára, a webszerver elérési útjára, és egyéb érzékeny információkra! (<code>ini_set(<span style='color: grey'>'display_errors'</span>, <span style='color: grey'>'Off'</span>);)");
 	}

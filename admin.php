@@ -66,13 +66,22 @@
  print("<div class='menubox'>
 		<span class='menutitle'><a class='menuitem' href='admin.php'>Adminisztrátori vezérlőpult</a></span><br><br>");
 	
-	MenuItem("configs", "Beállítások");
-	MenuItem("menueditor", "Menüszerkesztő");
+	MenuItem("", "Felhasználók", 'TITLE');
+		MenuItem("banip", "IP-cím alapú kitiltások kezelése");
+		MenuItem("banuser", "Felhasználók kitiltása");
+	
+	MenuItem("", "Weboldal beállításai", 'TITLE');
+		MenuItem("configs", "Beállítások");
+		MenuItem("menueditor", "Menüszerkesztő");
+		MenuItem("addons", "Addonok kezelése");
+	
+	MenuItem("", "Naplózás", 'TITLE');
+		MenuItem("log", "Webhelynapló megtekintése");
+		MenuItem("installlog", "Telepítési napló megtekintése");
+	
+	MenuItem("", "", 'TITLE');
+	
 	MenuItem("addforum", "Fórum hozzáadása");
-	MenuItem("log", "Webhelynapló megtekintése");
-	MenuItem("installlog", "Telepítési napló megtekintése");
-	MenuItem("banip", "IP-cím alapú kitiltások kezelése");
-	MenuItem("addons", "Addonok kezelése");
 	MenuItem("checks", "Ellenörzés");
 	
 	print("
@@ -115,6 +124,11 @@
 	case 'configs':
 		$admin = TRUE;
 		include("admin/configs.php");
+		break;
+	case 'banuser':
+		print("<center><h2 class='header'>Felhasználók kitiltása</h2></center>
+		<br>A felhasználók kitiltásához használd a kitiltani kívánt felhasználó profilján található segédeszközt. <a href='profile.php?id=" .$_SESSION['userID']. "'>Saját profilod megtekintése</a>");
+		print("</td><td class='right' valign='top'>");
 		break;
 	default:
 		/* Telepítési információk bekérése */

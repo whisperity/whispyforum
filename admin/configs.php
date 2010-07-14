@@ -46,7 +46,7 @@ print("
 		print("> Mély (lapmegtekintések)<br><input type='radio' name='log_depth' value='4'");
 			if ( LOG_DEPTH == 4 )
 				print(" checked ");
-		print("> Mélyebb (SQL-kérések)</fieldset>");
+		print("> Mélyebb (SQL-kérések)");
 		
 print("</p><input type='hidden' name='cmd' value='setup'>
 <input type='hidden' name='site' value='configs'>
