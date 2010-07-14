@@ -130,6 +130,9 @@
 		
 		switch ($felhasznalo['userLevel']) // Beállítjuk a szöveges userLevel értéket (userLevelTXT)
 		{
+			case -1:
+				$usrRang = 'Kititva';
+				break;
 			case 0:
 				$usrRang = 'Nincs aktiválva';
 				break;

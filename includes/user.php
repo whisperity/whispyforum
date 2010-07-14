@@ -46,8 +46,13 @@ class user // Definiáljuk az osztályt (felhasználók)
 		
 		if ( (md5($pw) == $adat['pwd']) && ($adat['activated'] == 1 ) )
 		{
-			$session->StartSession($un, $pw); // Munkamenet indítása
-			$this->GetUserData();
+			if ( $adat['userLevel'] != -1 )
+			{
+				$session->StartSession($un, $pw); // Munkamenet indítása
+				$this->GetUserData();
+			} else {
+				Hibauzenet("ERROR", "Nem sikerült a bejelentkezés", "A felhasználód ki van tiltva az oldalról, így nem léphetsz be!");
+			}
 		} else {
 			Hibauzenet("WARNING", "Nem sikerült a bejelentkezés", "A felhasználónév nem megfelelő, vagy még nem aktiváltad a felhasználód.<br><a href='usractivate.php?username=" .$un. "'>Aktiválási űrlap megnyitása</a>");
 		}
@@ -118,6 +123,9 @@ class user // Definiáljuk az osztályt (felhasználók)
 		
 		switch ($adat['userLevel']) // Beállítjuk a szöveges userLevel értéket (userLevelTXT)
 		{
+			case -1:
+				$_SESSION['userLevelTXT'] = 'Kitiltva';
+				break;
 			case 0:
 				$_SESSION['userLevelTXT'] = 'Nincs aktiválva';
 				break;

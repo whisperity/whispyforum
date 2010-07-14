@@ -89,6 +89,9 @@ Hozzászólások száma: " .$felhasznalo['postCount']. "");
 	
 	switch ($felhasznalo['userLevel']) // Beállítjuk a szöveges userLevel értéket (userLevelTXT)
 	{
+		case -1:
+			$usrRang = 'Kitiltva';
+			break;
 		case 0:
 			$usrRang = 'Nincs aktiválva';
 			break;
@@ -103,6 +106,58 @@ Hozzászólások száma: " .$felhasznalo['postCount']. "");
 			break;
 	}
 	print("Rang: " .$usrRang. "<br>");
+	
+	if ( ($_SESSION['userLevel'] == 3) && ($_GET['id'] != $_SESSION['userID']) )
+	{
+		if ( ($_GET['set'] == "userlevel") && ( $_GET['userrank'] != $NULL) )
+		{
+			
+			// Módosítás végrehajtása
+			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."user SET userLevel='" .mysql_real_escape_string($_GET['userrank']). "' WHERE id='" .mysql_real_escape_string($_GET['id']). "'");
+			
+			switch ($_GET['userrank']) // Beállítjuk a szöveges userLevel értéket (userLevelTXT)
+			{
+				case -1:
+					$uNewRang = 'Kitiltva';
+					break;
+				case 0:
+					$uNewRang = 'Nincs aktiválva';
+					break;
+				case 1:
+					$uNewRang = 'Felhasználó';
+					break;
+				case 2:
+					$uNewRang = 'Moderátor';
+					break;
+				case 3:
+					$uNewRang = 'Adminisztrátor';
+					break;
+			}
+			
+			print("<p class='formText'>Felhasználó rangja <b>" .$usrRang. "</b> módosítva: <b>" .$uNewRang. "</b>!</p>");
+		} else {
+		// Felhasználó rangjának állítása a profilban történik
+		// ha az állítást végző felhasználó admin, és nem a saját adatlapja
+		print("<form method='GET' action='" .$_SERVER['PHP_SELF']. "'>
+			<fieldset class='submit-buttons'><p class='formText'><input type='radio' name='userrank' value='-1'");
+			if ( $felhasznalo['userLevel'] == -1 )
+				print(" checked ");
+			print("> Kitiltva <input type='radio' name='userrank' value='1'");
+			if ( $felhasznalo['userLevel'] == 1 )
+				print(" checked ");
+			print("> Felhasználó <input type='radio' name='userrank' value='2'");
+			if ( $felhasznalo['userLevel'] == 2 )
+				print(" checked ");
+			print("> Moderátor <input type='radio' name='userrank' value='3'");
+			if ( $felhasznalo['userLevel'] == 3 )
+				print(" checked ");
+			print("> Adminisztrátor</p>
+			<input type='hidden' name='set' value='userlevel'>
+			<input type='hidden' name='id' value='" .$_GET['id']. "'>
+			<input type='submit' value='Rang módosítása'></fieldset>
+		</form>");
+		}
+	}
 	
 	if ( $felhasznalo['bemutatkozas'] != $NULL ) // Ha a felhasználónak van bemutatkozása, kiírjuk
 	{
