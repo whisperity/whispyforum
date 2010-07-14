@@ -67,6 +67,9 @@ function Inicialize ( $pagename )
  // Témafájl betöltése
  print("<link rel='stylesheet' type='text/css' href='themes/" .$_SESSION['themeName']. "/style.css'>
 ");
+ if ( $_SESSION['themeName'] == $NULL )
+	print("<link rel='stylesheet' type='text/css' href='themes/default/style.css'>
+");
  /* */
  
  /* Telepítettség ellenörzése */
