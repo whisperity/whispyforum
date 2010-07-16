@@ -129,6 +129,7 @@
   `text` TEXT COLLATE utf8_unicode_ci NOT NULL,
   `postDate` VARCHAR(32) COLLATE utf8_unicode_ci NOT NULL,
   `uId` INT(10) NOT NULL,
+  `commentable` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Hírek
  WOut('tabla', 'news');

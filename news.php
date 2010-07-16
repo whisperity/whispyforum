@@ -54,7 +54,11 @@
 			$hirBody = EmoticonParse($hirBody); // Hangulatjelek hozzáadása BB-kódként
 			$hirBody = HTMLDestroy($hirBody); // HTML kódok nélkül 
 			$hirBody = BBDecode($hirBody); // BB kódok átalakítása HTML-kóddá (hangulatjeleket képpé)
-			print($hirBody . "<br><br><a href='news.php?id=" .$sor['id']. "&action=view'>Tovább >> (bővebben, kommentelés)</a></div>");
+			print($hirBody . "<br><br><a href='news.php?id=" .$sor['id']. "&action=view'>Tovább >> (bővebben");
+			if ( $sor['commentable'] == 1) // Ha a hír kommentelhető, a bővebben linkhez odaillesztjük a kommentelés szót
+				print(", kommentelés");
+				
+			print(")</a></div>");
 		}
 		
 		break;
@@ -85,6 +89,9 @@
 		print("<div class='newsitem'><h2 class='header'><p class='header'>" .$hir['title']. " (" .Datum("normal","kisbetu","dL","H","i","s", $hir['postDate']). ", <a href='profile.php?id=" .$felhasznaloadat['id']. "'>" .$felhasznaloadat['username']. "</a>)</p></h2><br>" .$hirBody. "</div><br>"); // Hír szövege
 		
 		/* Kommentek */
+		if ( $hir['commentable'] == 1)
+		{
+		// Csak akkor jelenítjük meg a kommenteket (és adunk lehetőséget a kommentelésre), ha a hír kommentelhető
 		print("<h2 class='header'><p class='header'>Hozzászólások</p></h2>");
 		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."news_comments WHERE nId='" .mysql_real_escape_string($_GET['id']). "'");
 		while ( $sor = mysql_fetch_assoc($adat) )
@@ -161,7 +168,7 @@
 			</fieldset>
 			</form><br>"); // Hozzászólás beküldési űrlap
 		}
-		
+		}
 		break;
 	
 	case "postcomment": // Hozzászólás beküldése
@@ -185,7 +192,9 @@
 		$getid = $_GET['cid']; // Hozzászólás azonosítója
 		
 		$adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."news_comments WHERE id='" .mysql_real_escape_string($getid). "'")); // Hozzászólás adatainak bekérése
-		$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT id, username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$adat['uId']. "'"), MYSQL_ASSOC);
+		$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT id, username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$adat['uId']. "'"), MYSQL_ASSOC); // Felhasználó adatainak bekérése
+		$hiradat = mysql_fetch_assoc($sql->Lekerdezes("SELECT commentable FROM " .$cfg['tbprf']."news WHERE id='" .$adat['nId']. "'")); // A hozzászóláshoz kapcsolódó hír kommentelhetőségének bekérése
+		
 		if ( ($_SESSION['userLevel'] == 0) || ( $_SESSION['userLevel'] == 1) )
 		{
 			$jog = 0; // Ha a felhasználó userszintje 0 (vendég) vagy 1 (felhasználó), nincs joga szerkeszteni
@@ -196,11 +205,15 @@
 				$jog = 1; // Szerkesztési jogát visszadajuk
 			}
 		} // egyéb esetben a felhasználó mod/admin, van joga szerkeszteni
- 
+		
+		// Ha a hír nem kommentelhető, a többi eseménytől függetlenül nem szerkeszthetjük a hozzászólást
+		if ( $hiradat['commentable'] == 0 )
+			$jog = 0;
+		
 		if ( $jog == 0 )
 		{
 			SetTitle("Nincs privilégium");
-			Hibauzenet("ERROR", "Nincs jogod a hozzászólás szerkesztéséhez, vagy a téma le van zárva");
+			Hibauzenet("ERROR", "Nincs jogod a hozzászólás szerkesztéséhez, vagy a hír nem kommentelhető");
 		} else {
 		
 		if ( $_POST['submit'] == "Hozzászólás szerkesztése")
@@ -266,16 +279,20 @@
 		$getid = $_GET['cid']; // Hozzászólás azonosítója
 		
 		$adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."news_comments WHERE id='" .$getid. "'")); // Hozzászólás adatainak bekérése
- 
+		$hiradat = mysql_fetch_assoc($sql->Lekerdezes("SELECT commentable FROM " .$cfg['tbprf']."news WHERE id='" .$adat['nId']. "'")); // A hozzászóláshoz kapcsolódó hír kommentelhetőségének bekérése
 		if ( ($_SESSION['userLevel'] == 0) || ( $_SESSION['userLevel'] == 1) )
 		{
 			$jog = 0; // Ha a felhasználó userszintje 0 (vendég) vagy 1 (felhasználó), nincs joga szerkeszteni
 		} // egyéb esetben a felhasználó mod/admin, van joga szerkeszteni
- 
+		
+		// Ha a hír nem kommentelhető, a többi eseménytől függetlenül nem szerkeszthetjük a hozzászólást
+		if ( $hiradat['commentable'] == 0 )
+			$jog = 0;
+		
 		if ( $jog == 0 )
 		{
 			SetTitle("Nincs privilégium");
-			Hibauzenet("ERROR", "Nincs jogod a hozzászólás szerkesztéséhez, vagy a téma le van zárva");
+			Hibauzenet("ERROR", "Nincs jogod a hozzászólás szerkesztéséhez, vagy a hír nem kommentelhető");
 		} else {
 			SetTitle("Hozzászólás törölve");
 			$adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."news_comments WHERE id='" .$getid. "'")); // Hozzászólás adatainak bekérése
@@ -301,6 +318,7 @@
 			print("<a href='/themes/" .$_SESSION['themeName']. "/emoticons.php' onClick=\"window.open('/themes/" .$_SESSION['themeName']. "/emoticons.php', 'popupwindow', 'width=192,heigh=600,scrollbars=yes'); return false;\">Hangulatjelek</a>
 			<a href='/includes/help.php?cmd=BB' onClick=\"window.open('includes/help.php?cmd=BB', 'popupwindow', 'width=960,height=750,scrollbars=yes'); return false;\">BB-kódok</a>"); // Emoticon, BB-kód ablak
 			print("</div><br style='clear: both'>
+			<p class='formText'><input type='checkbox' name='commentable' value='1'>A hír kommentálható</p>
 			<input type='hidden' name='action' value='postentry'>
 			<fieldset class='submit-buttons'>
 				<input type='submit' value='Hír beküldése'>
@@ -312,7 +330,18 @@
 		SetTitle("Hír beküldve");
 		if ( ($_POST['title'] != "") && ($_POST['post'] != "") )
 		{
-			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."news(title, text, postDate, uId) VALUES ('" .$_POST['title']. "', '" .$_POST['post']. "', " .time(). ", " .$_SESSION['userID']. ")");
+			
+			switch ($_POST['commentable']) // A kommentálhatóság CHECKBOX-ból jön, ezért ha nincs bejelölve, NULL értéket kapunk
+			{
+				case $NULL:
+					$commentable = 0;
+					break;
+				case 1:
+					$commentable = 1;
+					break;
+			}
+				
+			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."news(title, text, postDate, uId, commentable) VALUES ('" .$_POST['title']. "', '" .$_POST['post']. "', " .time(). ", " .$_SESSION['userID']. ", " .$commentable. ")");
 			print("<div class='messagebox'>Hír (" .$_POST['title']. ") sikeresen beküldve<br><a href='news.php'><< Vissza a hírekhez</a></div>");
 		}
 		
