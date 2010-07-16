@@ -54,7 +54,7 @@ class user // Definiáljuk az osztályt (felhasználók)
 				Hibauzenet("ERROR", "Nem sikerült a bejelentkezés", "A felhasználód ki van tiltva az oldalról, így nem léphetsz be!");
 			}
 		} else {
-			Hibauzenet("WARNING", "Nem sikerült a bejelentkezés", "A felhasználónév nem megfelelő, vagy még nem aktiváltad a felhasználód.<br><a href='usractivate.php?username=" .$un. "'>Aktiválási űrlap megnyitása</a>");
+			Hibauzenet("WARNING", "Nem sikerült a bejelentkezés", "A felhasználónév nem megfelelő, vagy még nem aktiváltad a felhasználód.<br><a href='useractivate.php?username=" .$un. "'>Aktiválási űrlap megnyitása</a>");
 		}
 	}
 	

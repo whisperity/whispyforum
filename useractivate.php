@@ -3,12 +3,12 @@
    http://code.google.com/p/whispyforum/
 */
 
-/* usractivate.php
+/* useractivate.php
    felhasználói regisztráció aktiválása
 */
  
  include('includes/common.php');
- Inicialize('usractivate.php');
+ Inicialize('useractivate.php');
  SetTitle("Felhasználó aktiválása");
  
  global $cfg, $sql, $user;
