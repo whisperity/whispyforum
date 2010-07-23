@@ -51,7 +51,7 @@
 		if ( ($_GET['seta'] == "settheme") && ($_GET['themename'] != $NULL) )
 		{
 			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."user SET theme='" .mysql_real_escape_string($_GET['themename']). "' WHERE id='" .$_SESSION['userID']. "'");
-			print("<div class='messagebox'>A témát sikeresen módosítottad!</div>");
+			print("<div class='messagebox'>A témát sikeresen módosítottad!<br><a href='index.php'>Kezdőlap</a></div>");
 			DoFooter();
 			die();
 		}
@@ -69,7 +69,7 @@
 		/* Elérhető témák listázása egy eddig ki nem próbált algoritmussal */
 		$dir = "./themes/"; // Téma gyökérmappa
 		$exempt = array('.', '..', '.svn', '_svn'); // Megadunk egy le nem kérdezendő kivétellistát
-		print("<table border='1'><tr>");
+		print("<table><tr>");
 		if (is_dir($dir)) 
 		{
 			if ($dh = opendir($dir))
@@ -107,7 +107,7 @@
 			}
 		}
 		print("</tr></table>");
-		//print("<a href='ucp.php?set=theme&seta=settheme'></a>");
+		
 		break;
 	case "otherdata": // Egyéb adatok szerkesztése
 		if ( $_POST['seta'] == "setdatas" )
