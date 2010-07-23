@@ -79,10 +79,12 @@
 		MenuItem("log", "Webhelynapló megtekintése");
 		MenuItem("installlog", "Telepítési napló megtekintése");
 	
-	MenuItem("", "", 'TITLE');
+	MenuItem("", "Tartalmak kezelése", 'TITLE');
+		MenuItem("addforum", "Fórum hozzáadása");
+		MenuItem("plain", "Statikus tartalmak");
 	
-	MenuItem("addforum", "Fórum hozzáadása");
-	MenuItem("checks", "Ellenörzés");
+	MenuItem("", "", 'TITLE');
+		MenuItem("checks", "Ellenörzés");
 	
 	print("
 	<br><a class='menuItem' href='includes/help.php' onClick=\"window.open('includes/help.php?cmd=adminTools', 'popupwindow', 'width=800,height=600,resize=no,scrollbars=yes'); return false;\">Súgó megjelenítése</a><br>
@@ -129,6 +131,10 @@
 		print("<center><h2 class='header'>Felhasználók kitiltása</h2></center>
 		<br>A felhasználók kitiltásához használd a kitiltani kívánt felhasználó profilján található segédeszközt. <a href='profile.php?id=" .$_SESSION['userID']. "'>Saját profilod megtekintése</a>");
 		print("</td><td class='right' valign='top'>");
+		break;
+	case 'plain':
+		$admin = TRUE;
+		include("admin/plain.php");
 		break;
 	default:
 		/* Telepítési információk bekérése */

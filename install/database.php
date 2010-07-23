@@ -178,6 +178,13 @@
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Portál-beállítások
  WOut('tabla', 'version');
  
+ $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."plain (
+`id` INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+`title` VARCHAR(512) COLLATE utf8_unicode_ci NOT NULL,
+`content` TEXT COLLATE utf8_unicode_ci NOT NULL
+) ENGINE = MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Statikus tartalom
+ WOut('tabla', 'plain');
+ 
  /* Kezdeti adatok */
  /* Modulok */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name,type,side, hOrder) VALUES
@@ -189,11 +196,13 @@
 	('1','Kezdőlap','index.php', 1),
 	('1','Hírek','news.php', 2),
 	('1','Fórum','viewforum.php', 3),
-	('1','Google keresés','http://google.hu', 4)", 'INSTALL'); // Főmenü elemei
+	('1','Google keresés','http://google.hu', 4),
+	('1','Statikus tartalom','plain.php?id=1', 5)", 'INSTALL'); // Főmenü elemei
  WOut('sor', 'menuitems', 'Főmenü/Kezdőlap');
  WOut('sor', 'menuitems', 'Főmenü/Fórum');
  WOut('sor', 'menuitems', 'Főmenü/Hírek');
  WOut('sor', 'menuitems', 'Főmenü/Google keresés (google.hu)');
+ WOut('sor', 'menuitems', 'Statikus tartalom');
  
  /* Fórumok */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."forum(name, description, topics, posts, lastpostdate, lastuser, lpTopic, lpId) VALUES
@@ -227,9 +236,13 @@
   /* Portál beállítások */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."siteconfig(variable, value) VALUES
 	('allow_registration', '1'),
-	('log_depth', '0')", 'INSTALL'); // Főmenü elemei
+	('log_depth', '0')", 'INSTALL'); //Naplózás kikapcsol, regisztráció be
  WOut('sor', 'siteconfig', 'AllowRegistration: 1');
  WOut('sor', 'siteconfig', 'LogDepth: 0');
+ 
+ /* Statikus tartalom */
+ $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."plain(title, content) VALUES
+	('Statikus tartalom', 'Üdvözöllek!\nEz egy statikus tartalom.\n\nA tartalmat az [url]admin.php[/url]admin menü[/a]ből tudod módosítani.')", 'INSTALL'); // Statikus tartalom példa
  
  file_put_contents('logs/install.log', "\r\nTáblák létrehozása befejezve: " .Datum("normal", "nagybetu", "dL", "H", "i", "s"). " ( " .time(). " )", FILE_APPEND); // Napló zárása
  $sql->Disconnect();
