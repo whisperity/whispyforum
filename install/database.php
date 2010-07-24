@@ -242,7 +242,7 @@
  
  /* Statikus tartalom */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."plain(title, content) VALUES
-	('Statikus tartalom', 'Üdvözöllek!\nEz egy statikus tartalom.\n\nA tartalmat az [url]admin.php[/url]admin menü[/a]ből tudod módosítani.')", 'INSTALL'); // Statikus tartalom példa
+	('Statikus tartalom', 'Üdvözöllek!\nEz egy statikus tartalom.\n\nA tartalmat az [url]admin.php?site=plain[/url]admin menü[/a]ből tudod módosítani.')", 'INSTALL'); // Statikus tartalom példa
  
  file_put_contents('logs/install.log', "\r\nTáblák létrehozása befejezve: " .Datum("normal", "nagybetu", "dL", "H", "i", "s"). " ( " .time(). " )", FILE_APPEND); // Napló zárása
  $sql->Disconnect();

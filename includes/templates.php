@@ -52,16 +52,27 @@ class templates // Osztálydeklaráció
 		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."menuItems WHERE menuId='" .$id. "' ORDER BY hOrder");
 		
 		while ($sor = mysql_fetch_array($adat, MYSQL_ASSOC)) {
-			$http = explode('://', $sor['href']);
+			$http = explode('://', $sor['href']); // Kivágjuk az esetleges HTTP előtagot
 			
-			print("<a class='menuitem' href='" .$sor['href']. "'");
+			print("<a class='menuitem' href='" .$sor['href']. "'"); // Bevezetés (stílus, a href)
 			
-			if ( $http[0] == "http" )
+			if ( $http[0] == "http" ) // Ha ott a HTTP előtag, új ablakban nyílik meg a link
 				print(" target='_blank'");
 			
-			print(">" .$sor['text']. "</a>");
 			
-			if ( $http[0] == "http" )
+			if ( $sor['text'] == "[plain]")
+			{
+				// Ha a szöveg helyén [plain] áll, akkor 
+				// lecseréljük a szöveget a statikus tartalom aktuális címére
+				$href = explode("plain.php?id=", $sor['href']); // ID kivágása ($href[1] az id)
+				$staticcim = mysql_fetch_assoc($sql->Lekerdezes("SELECT title FROM " .$cfg['tbprf']."plain WHERE id='" .$href[1]. "'")); // Címsor bekérése
+				print(">" .$staticcim['title']. "</a>"); // Kiírás
+			} else {
+				// Egyébként a szöveg az adatbázisban tárolt szöveg
+				print(">" .$sor['text']. "</a>");
+			}
+			
+			if ( $http[0] == "http" ) // Ha ott a HTTP előtag, kiteszünk egy képet róla
 				print("<img src='/themes/" .$_SESSION['themeName']. "/external_href.jpg' alt='Külső hivatkozás' border='0'>");
 			
 			print("<br>");
