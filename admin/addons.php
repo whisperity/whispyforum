@@ -35,13 +35,13 @@ function Addonmeret($addonsubdir)
 {
 	/* Méret kiszámítása */
 	$meret = 0;
-	$addonfajllista = file_get_contents("addons/" .$addonsubdir. "/files.lst");
+	$addonfajllista = @file_get_contents("addons/" .$addonsubdir. "/files.lst");
 	$fajllistasorok = explode("\r\n", $addonfajllista);
 	foreach ($fajllistasorok as &$fsor)
 	{
-		$meret += filesize("addons/" .$addonsubdir. "/" .$fsor);
+		$meret += @filesize("addons/" .$addonsubdir. "/" .$fsor);
 	}
-	$meret += filesize("addons/" .$addonsubdir. "/files.lst");
+	$meret += @filesize("addons/" .$addonsubdir. "/files.lst");
 	$meret += @filesize("addons/" .$addonsubdir. "/index.php");
 	$meret += @filesize("addons/" .$addonsubdir. "/includes.php");
 	$meret += @filesize("addons/" .$addonsubdir. "/install.php");

@@ -186,7 +186,7 @@ function UpdateHelp()
 function BBCodeHelp()
 {
 	print("<h2>BB-kódok</h2>\n
-		A BB-kódok az internetes fórumok újításai, melyben a szövegszerkesztési elemeket a HTML-kód helyett BB-kódokban írjuk. Ez a legtöbb esetben biztonsági intézkedésként került bele a rendszerekbe, hogy a HTML-kódok értelmezését letiltsuk.
+		A BB-kódok az internetes fórumok újításai, melyben a szövegszerkesztési elemeket a HTML-kód helyett BB-kódokban írjuk. Ez a legtöbb esetben biztonsági intézkedésként került bele a rendszerekbe, hogy a HTML-kódok értelmezését letiltsuk, ezzel csökkentve a biztonsági kockázatot, de engedélyezzük a HTML nyelv által biztosított formázást.<br>\nA legtöbb BB-kód megegyezik a hasonló formázást biztosító HTML-kóddal. Az aktuálisan megjelenő lista tartalamazza az összes, a keretrendszerben elérhető BB-kódot. A BB-kódok a legtöbb közösséget érintő helyen (fórum, hírek) elérhetőek. A lent megjelenő BB-kódok a megtekintéskor automatikusan formázódtak a statikus szövegből, tehát mindenhol így jelennek meg.
 	<br><br>
 	<table>
 	<tr>
@@ -230,6 +230,12 @@ function BBCodeHelp()
 		<td><code>[quote][quoter]idézet eredete[/quoter]idézet szövege[/quote]</code></td>
 		<td><code>[quote][quoter]Winston Churchill[/quoter]A siker nem végleges, a kudarc nem végzetes. A bátorság, hogy folytasd, ez az, ami számít! - Winston Churchill[/quote]</code></td>
 		<td>" .BBDecode("[quote][quoter]Winston Churchill[/quoter]A siker nem végleges, a kudarc nem végzetes. A bátorság, hogy folytasd, ez az, ami számít! - Winston Churchill[/quote]"). "</td>
+	</tr>
+	<tr>
+		<td>Címsor</td>
+		<td><code>[h]szöveg[/h]</code></td>
+		<td><code>[h]ez egy címsor[/h]</code></td>
+		<td>" .BBDecode("[h]ez egy címsor[/h]"). "</td>
 	</tr>
 	</table>
 Bizonyos BB-kódok mixelhetőek, azonban a weboldalon a BB-kódokat a jelenleg megadott formában kell használni!
