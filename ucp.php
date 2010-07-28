@@ -11,6 +11,13 @@
  Inicialize('ucp.php');
  SetTitle("Felhasználói vezérlőpult");
  
+ if ( $_SESSION['userID'] == $NULL )
+ {
+	Hibauzenet("ERROR", "A felhasználói vezérlőpult megtekintéséhez be kell jelentkezned!");
+	DoFooter();
+	die();
+ }
+ 
  print("<center><h2 class='header'>Felhasználói vezérlőpult</h2></center>");
  $felhasznalo = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."user WHERE id='" .$_SESSION['userID']. "'"));
  print("<div class='menubox'><a href='ucp.php'>Kezdőlap</a> • <a href='ucp.php?set=theme' class='menuItem'>Téma módosítása</a> • <a href='ucp.php?set=avatar' class='menuItem'>Megjelenítendő kép feltöltése</a> • <a href='ucp.php?set=otherdata' class='menuItem'>Egyéb adatok szerkesztése</a></div><br>");
@@ -30,7 +37,6 @@
 		$gpset = $NULL;
 	}
  }
- //print(str_replace("\n", "\n<br>", var_export($felhasznalo, TRUE)));
  global $tdszam;
  $tdszam = 0;
  
