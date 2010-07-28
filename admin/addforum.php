@@ -22,7 +22,6 @@ if ($_POST['cmd'] == "add") // Ha a bejövő parancs "ADD" (fórum hozzáadása)
 		print("<span class='star'>Nem töltöttél ki néhány szükséges mezőt!</span><br>");
 	} else {
 		// Fórum hozzáadása
-		//var_dump($_POST);
 		
 		$sikeres = TRUE; // Alapból sikerrel indulunk
 		
@@ -66,7 +65,7 @@ if ( $_POST['description'] == $NULL )
 }
 
 
-print("A modul segítségével hozzáadhatsz egy új fórumot. A <span class='star'>*</span>-nal jelölt mezők kitöltése kötelező!
+print("A modul segítségével hozzáadhatsz egy új fórumot. A <span class='star'>*</span>-gal jelölt mezők kitöltése kötelező!
 <form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
 <p class='formText'>Fórum neve<a class='feature-extra'><span class='hover'><span class='h3'><center><span class='star'>*</span> Kötelezően kitöltendő mező <span class='star'>*</span></center></span>Ezt a mezőt kötelező kitölteni, kitöltése nélkül az űrlap érvénytelenül lesz beadva.</span><span class='star'>*</span></a>: <input type='text' name='name' value='" .$_POST['name']. "'><br>
 Leírás: <textarea cols='40' rows='15' name='description'>" .$_POST['description']. "</textarea></p>
