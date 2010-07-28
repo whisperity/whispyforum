@@ -100,7 +100,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		} else {
 			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."plain WHERE id='" .mysql_real_escape_string($_GET['id']). "'");
 			print("<div class='messagebox'>A statikus tartalom sikeresen törölve!<br><a href='admin.php?site=plain'>Vissza a listához</a></td><td class='right' valign='top'>");
-			DoFooter();
+			Lablec();
 			die();
 		}
 		break;
@@ -119,7 +119,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		if ( ($_POST['title'] == $NULL) || ($_POST['content'] == $NULL) )
 		{
 			Hibauzenet("ERROR", "Kötelező mezők hiányoznak!", "Nem töltöttél ki minden mezőt!");
-			DoFooter();
+			Lablec();
 			die();
 		} else {
 			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."plain(title, content) VALUES('" .mysql_real_escape_string($_POST['title']). "', '" .mysql_real_escape_string($_POST['content']). "')");

@@ -34,7 +34,11 @@
 	case $NULL:
 	default:
  if ( $_GET['id'] == $NULL )
-	die(Hibauzenet("ERROR","A megadott azonosítójú fórum nem létezik"));
+ {
+	Hibauzenet("ERROR","A megadott azonosítójú fórum nem létezik");
+	DoFooter();
+	die();
+ }
  
  print("<p class='header'><a href='viewforum.php'><< Vissza a fórumokhoz</a>");  // Visszatérési link kiírása
  if ( $_SESSION['loggedin'] == 1 )

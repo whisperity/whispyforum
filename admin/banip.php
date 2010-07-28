@@ -78,7 +78,9 @@ if ( $_POST['action'] != $NULL )
 		
 	case "delban": // Ban törlése
 		$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."bannedips WHERE id='" .mysql_real_escape_string($_POST['id']). "'");
-		die("<div class='messagebox'>A kitiltás sikeresen törölve!<br><a href='admin.php?site=banip'>Vissza a kitiltott IP címek listájához</a></div></td><td class='right' valign='top'>");
+		print("<div class='messagebox'>A kitiltás sikeresen törölve!<br><a href='admin.php?site=banip'>Vissza a kitiltott IP címek listájához</a></div></td><td class='right' valign='top'>");
+		Lablec();
+		die();
 		break;
 	
 	case "newban": // Új kitiltás felvétele
@@ -95,23 +97,31 @@ if ( $_POST['action'] != $NULL )
 			if ( $_POST['ip'] == $_SERVER['REMOTE_ADDR'] )
 			{
 				Hibauzenet("CRITICAL", "Nem tilthatod ki saját magad!", "A <b>" .$_POST['ip']. "</b> IP-címet szeretted volna kitiltani, ám ez megegyezik az aktuális IP-címeddel.");
-				die("<a href='admin.php?site=banip'>Vissza a kitiltott IP címek listájához</a></td><td class='right' valign='top'>");
+				print("<a href='admin.php?site=banip'>Vissza a kitiltott IP címek listájához</a></td><td class='right' valign='top'>");
+				Lablec();
+				die();
 			}
 			
 			if ( ($_POST['ip'] == "127.0.0.1") || ($_POST['ip'] == "localhost" ) )
 			{
 				Hibauzenet("CRITICAL", "Nem tilthatod ki a localhostot");
-				die("<a href='admin.php?site=banip'>Vissza a kitiltott IP címek listájához</a></td><td class='right' valign='top'>");
+				print("<a href='admin.php?site=banip'>Vissza a kitiltott IP címek listájához</a></td><td class='right' valign='top'>");
+				Lablec();
+				die();
 			}
 			
 			if ( $_POST['ip'] == $cfg['dbhost']) 
 			{
 				Hibauzenet("CRITICAL", "Nem tilthatod ki a mysql-adatbázis hostját", "A mysql-adatbázis hostja (" .$cfg['dbhost']. ") nem tiltható ki, mivel az súlyos következményekkel is járhat");
-				die("<a href='admin.php?site=banip'>Vissza a kitiltott IP címek listájához</a></td><td class='right' valign='top'>");
+				print("<a href='admin.php?site=banip'>Vissza a kitiltott IP címek listájához</a></td><td class='right' valign='top'>");
+				Lablec();
+				die();
 			}
 			
 			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."bannedips(ip, bandate, uId, comment) VALUES ('" .mysql_real_escape_string($_POST['ip']). "', " .time(). ", " .$_SESSION['userID']. ", '" .mysql_real_escape_string($_POST['comment']). "')");
-			die("<div class='messagebox'>Az IP cím (" .$_POST['ip']. ") kitiltása sikeres!<br><a href='admin.php?site=banip'>Vissza a kitiltott IP címek listájához</a></div></td><td class='right' valign='top'>");
+			print("<div class='messagebox'>Az IP cím (" .$_POST['ip']. ") kitiltása sikeres!<br><a href='admin.php?site=banip'>Vissza a kitiltott IP címek listájához</a></div></td><td class='right' valign='top'>");
+			Lablec();
+			die();
 		}
 		
 		break;

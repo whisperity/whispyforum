@@ -9,8 +9,10 @@
 
 function Fejlec()
 {
+	global $wf_debug;
 	// Fejléc létrehozása
 	print("<div class='headerbox'>"); // Blokknyitás
+	$wf_debug->RegisterDLEvent("Fejléc létrehozása");
 	
 	// KÓD IDE //
 	print("</div>"); // Blokkzárás
@@ -21,13 +23,14 @@ function Fejlec()
 
 function Lablec()
 {
-	global $cfg, $sql;
+	global $cfg, $sql, $wf_debug;
 	
 	/* A footer elcsúszást védelem vége */
 	print("</td></tr></table>");
 	
 	// Lábléc létrehozása
 	print("<div class='footerbox'>"); // Blokknyitás
+	$wf_debug->RegisterDLEvent("Lábléc létrehozva");
 	/* Generálás vége, generálási idő kiszámítása */
 	global $start_time;
 	
@@ -41,6 +44,8 @@ function Lablec()
 	print("</div>"); // Blokkzárás
 	
 	$sql->Disconnect(); // Adatbáziskapcsolat lezárása
+	$wf_debug->RegisterDLEvent("Oldal generálása befejezve");
+	$wf_debug->GenerateFooterInf(); // Debug információk megjelnítése
 }
 
 function Inicialize ( $pagename )
@@ -52,17 +57,22 @@ function Inicialize ( $pagename )
  $start_time = $mtime[1] + $mtime[0];
  
  session_start(); // Elindítjuk a munkafolyamatot
-
+ 
  /* SZÜKSÉGES FÁJLOK BETÖLTÉSE */
  require('config.php'); // Konfigurációs állomány betöltése
- require('includes/versions.php'); // Verzióinformációk
+ require('debug.php'); // Hibakeresési funkciót engedélyező/tiltó állomány betöltése
  
  // Funkciótárak és osztályok betöltése
+ require('includes/debug.php'); // Hibakereső
  require('includes/functions.php'); // Funkciótár
  require('includes/mysql.php'); // MySQL kezelési osztály ($sql)
  require('includes/user.php'); // Felhasználó és munkamenetfolyamat (session) kezelési osztály
  require('includes/sendmail.php'); // Levélküldési osztály
  require('includes/templates.php'); // Modulkezelő
+ 
+ // Leírófájlok
+ require('includes/versions.php'); // Verzióinformációk
+ $wf_debug->RegisterDLEvent("Szükséges fájlok betöltve");
  
  // Témafájl betöltése
  print("<link rel='stylesheet' type='text/css' href='themes/" .$_SESSION['themeName']. "/style.css'>
@@ -89,8 +99,7 @@ function Inicialize ( $pagename )
 	sorokat átkódolni. */
  define('ALLOW_REGISTRATION', $siteconfig_allowReg[0]);
  define('LOG_DEPTH', $siteconfig_logDepth[0]);
- 
- WriteLog("PAGE_VIEW", $pagename. ';' .$_SERVER['REMOTE_ADDR']. ';' .$_SERVER['HTTP_USER_AGENT']. ';' .$_SESSION['username']. ';' .$_SESSION['userLevelTXT']); // Oldalmegtekintési napló beírása (ha le van tiltva, a funkcióhívás után megakad, és nem ír)
+ $wf_debug->RegisterDLEvent("Rendszerváltozók bekérve az adatbázisból");
  
  /* Verzióadatok elleörzése */
  $adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."version"), MYSQL_ASSOC);
@@ -127,24 +136,26 @@ function DoFooter() // Középső rész elküldése után
 
 function SetTitle( $fejlec ) // HTML fejléc létrehozása
 {
-global $cfg; // Konfigurációs tömb
+global $cfg, $wf_debug; // Konfigurációs tömb
 
  if ($fejlec == '')
  {
 	// Ha nincs fejléc paraméter megadva a hívókódban
 	print("<title>" .$cfg['pname']. "</title>"); // Csak a weblap neve a fejléc
+	$wf_debug->RegisterDLEvent("Fejléc beállítva: " .$cfg['pname']);
  } else {
 	// Ellenkező esetben, ha van
 	print("<title>" .$fejlec. " - " .$cfg['pname']. "</title>"); // Weblap neve - weblap címe
+	$wf_debug->RegisterDLEvent("Fejléc beállítva:" .$fejlec. " - " .$cfg['pname']);
  }
 }
 
 function CheckIfIPBanned() // IP-cím ban ellenörzése
 {
-	global $sql, $cfg;
+	global $sql, $cfg, $wf_debug;
 	
 	$ipbanok = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."bannedips WHERE ip='" .$_SERVER['REMOTE_ADDR']. "'"));
-	
+	$wf_debug->RegisterDLEvent("IP-cím " .$_SERVER['REMOTE_ADDR']. " bannoltságának ellenörzése");
 	if ( $ipbanok['ip'] == $_SERVER['REMOTE_ADDR'] )
 	{
 		// Ha van IP tiltás az aktuális címen, akkor nem engedélyezzük a felhasználónak a hozzáférést

@@ -294,7 +294,6 @@ foreach ($sorok as &$ertek) { // Soronkénti értelmezés
 
 print("</table>
 </td><td class='right' valign='top'>"); // Táblázat, td-k zárása
-// A <td class='right'> oszlop </td>-jét az admin.php-ból meghívott Lablec(); zárja
 }
 
 } else {

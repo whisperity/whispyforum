@@ -11,6 +11,7 @@ class user // Definiáljuk az osztályt (felhasználók)
 {
 	function DoLoginForm() // Bejelentkezési űrlap létrehozása
 	{
+		global $wf_debug;
 		if ( $_POST['id'] != $NULL )
 		{
 			// Ha POST-tal érkeznek az adatok, a POST site lesz az érték
@@ -35,11 +36,13 @@ class user // Definiáljuk az osztályt (felhasználók)
  <input type='hidden' name='cmd' value='loginusr'>
  <input type='hidden' name='id' value='" .$getid. "'><br>
  <a href='registration.php'>Regisztráció</a></form><br>");
+		
+		$wf_debug->RegisterDLEvent("Bejelentkezési űrlap létrehozva");
 	}
 	
 	function Login ( $un, $pw ) // Bejelentkeztetés
 	{
-		global $cfg, $sql, $session;
+		global $cfg, $sql, $session, $wf_debug;
 		$sql->Connect();
 		
 		$adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .mysql_real_escape_string($un). "'"));
@@ -48,6 +51,7 @@ class user // Definiáljuk az osztályt (felhasználók)
 		{
 			if ( $adat['userLevel'] != -1 )
 			{
+				$wf_debug->RegisterDLEvent("Felhasználó bejelentkezése...");
 				$session->StartSession($un, $pw); // Munkamenet indítása
 				$this->GetUserData();
 			} else {
@@ -55,25 +59,27 @@ class user // Definiáljuk az osztályt (felhasználók)
 			}
 		} else {
 			Hibauzenet("WARNING", "Nem sikerült a bejelentkezés", "A felhasználónév nem megfelelő, vagy még nem aktiváltad a felhasználód.<br><a href='useractivate.php?username=" .$un. "'>Aktiválási űrlap megnyitása</a>");
+			$wf_debug->RegisterDLEvent("A bejelentkezés nem sikerült");
 		}
 	}
 	
 	function Logout() // Kijelentkezés
 	{
-		global $cfg, $sql, $session;
+		global $cfg, $sql, $session, $wf_debug;
 		$sql->Connect();
 		
 		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET loggedin='0', cursessid='', curip='0.0.0.0' WHERE username='" .mysql_real_escape_string($_SESSION['username']). "' AND pwd='" .md5(mysql_real_escape_string($_SESSION['pass'])). "'");
+		$wf_debug->RegisterDLEvent("Felhasználó kijelentkezése");
+		
 		
 		// Session kiűrítése
 		$session->Purge();
-		
-		header("Localtion: " .$_SERVER['PHP_SELF']. "");
-		session_write_close();
 	}
 	
 	function DoControlForm() // Felhasználói panel
 	{
+		global $wf_debug;
+		
 		print("<div class='userbox'><span class='formHeader'>Üdvözlünk, ");
 		
 		$this->GetUserData();
@@ -119,11 +125,12 @@ class user // Definiáljuk az osztályt (felhasználók)
 		<input type='hidden' name='id' value='" .$getid. "'>
 		<input type='submit' value='Kijelentkezés'></form>");
 		print("</div>");
+		$wf_debug->RegisterDLEvent("Felhasználói panel létrehozva");
 	}
 	
 	function GetUserData() // Felhasználó adatok cachelése sessionbe
 	{
-		global $cfg, $sql;
+		global $cfg, $sql, $wf_debug;
 		$adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .mysql_real_escape_string($_SESSION['username']). "' AND pwd='" .md5(mysql_real_escape_string($_SESSION['pass'])). "'")); // Bekérjük az adatokat
 		
 		$_SESSION['userLevel'] = $adat['userLevel']; // Tároljuk a felhasználó szintjét
@@ -157,10 +164,14 @@ class user // Definiáljuk az osztályt (felhasználók)
 		if ($adat['theme'] == $NULL)
 			$_SESSION['themeName'] = "default";
 		
+		$wf_debug->RegisterDLEvent("Felhasználó adatai betöltve és tárolva");
 	}
 	
 	function ForcedLogout() // Kényszerített kiléptetés
 	{
+		global $wf_debug;
+		$wf_debug->RegisterDLEvent("Kényszerített kijelentkeztetés...");
+		
 		Hibauzenet("WARNING", "Ki lettél jelentkeztetve"); // Hibaüzenet megjelenítése
 		$this->Logout; // Kiléptetjük a usert
 		$this->DoLoginForm(); // Beléptető ablak
@@ -168,7 +179,9 @@ class user // Definiáljuk az osztályt (felhasználók)
 	
 	function CheckIfLoggedIn( $username ) // A felhasználó bejelentkezettségének ellenörzése
 	{
-		global $cfg, $sql, $session;
+		global $cfg, $sql, $session, $wf_debug;
+		
+		$wf_debug->RegisterDLEvent("Felhasználó bejelentkezettségénel ellenörzése");
 		
 		if ($username != '')
 		{
@@ -184,18 +197,21 @@ class session // Munkamenet (session) kezelő osztály
 {
 	function StartSession( $username, $pass ) // Munkamenet elindítása, bejelentkeztetés
 	{
-		global $cfg, $sql;
+		global $cfg, $sql, $wf_debug;
 		
 		session_start(); // Indítás
 		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET lastip='" .$_SERVER['REMOTE_ADDR']. "', lastsessid='" .session_id()."', loggedin='1', cursessid='" .session_id(). "', curip='" .$_SERVER['REMOTE_ADDR']. "', lastlogintime='" .time(). "' WHERE username='" .mysql_real_escape_string($username). "' AND pwd='" .md5(mysql_real_escape_string($pass)). "'");
 		$_SESSION['username'] = $username;
 		$_SESSION['pass'] = $pass;
 		
+		$wf_debug->RegisterDLEvent("Munkamenet elindítva");
 	}
 	
 	function CheckSession($sid, $ip) // Belépettség megjelenítése
 	{
-		global $cfg, $user, $sql;
+		global $cfg, $user, $sql, $wf_debug;
+		
+		$wf_debug->RegisterDLEvent("Session ellenörzése");
 		
 		$adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .mysql_real_escape_string($_SESSION['username']). "' AND pwd='" .md5(mysql_real_escape_string($_SESSION['pass'])). "'")); // Bekérjük a session adatokat és IP-t
 		
@@ -210,6 +226,8 @@ class session // Munkamenet (session) kezelő osztály
 	
 	function Purge() // Session kiürítése
 	{
+		global $wf_debug;
+		
 		$_SESSION['username'] = "";
 		$_SESSION['pass'] = "";
 		$_SESSION['userLevel'] = "";
@@ -221,7 +239,10 @@ class session // Munkamenet (session) kezelő osztály
 		$_SESSION['userID'] = 0;
 		$_SESSION['themeName'] = "";
 		
+		$wf_debug->RegisterDLEvent("Session kiürítve");
+		
 		session_destroy();
+		$wf_debug->RegisterDLEvent("Session törölve");
 	}
 }
 	

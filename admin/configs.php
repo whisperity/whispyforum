@@ -20,7 +20,9 @@ if ( $_POST['cmd'] == "setup" )
 	$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."siteconfig SET value='" .mysql_real_escape_string($_POST['allow_registration']). "' WHERE variable='allow_registration'");
 	$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."siteconfig SET value='" .mysql_real_escape_string($_POST['log_depth']). "' WHERE variable='log_depth'");
 	
-	die("<div class='messagebox'>A beállítások módosítása megtörtént!<br><a href='admin.php?site=configs'>Vissza</a></td><td class='right' valign='top'>");
+	print("<div class='messagebox'>A beállítások módosítása megtörtént!<br><a href='admin.php?site=configs'>Vissza</a></td><td class='right' valign='top'>");
+	Lablec();
+	die();
 }
 print("
 <form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
@@ -48,7 +50,18 @@ print("
 				print(" checked ");
 		print("> Mélyebb (SQL-kérések)");
 		
-print("</p><input type='hidden' name='cmd' value='setup'>
+print("<br>
+	Hibakeresési információk megjelenítése: ");
+		
+		if ( SHOWDEBUG == 0 )
+		{
+			print("Nem");
+		} else if ( SHOWDEBUG == 1 ) {
+			print("Igen");
+		}
+		
+	print(" <a class='feature-extra'><span class='hover'><span class='h3'>Hibakeresés informcáiók</span>A hibakeresési információk ki- vagy bekapcsolásához lásd a <b>/debug.php</b> fájlt a szerveren. A módosításhoz szükséges lépések oda vannak leírva.</span><sup>?</sup></a>
+	</p><input type='hidden' name='cmd' value='setup'>
 <input type='hidden' name='site' value='configs'>
 <input type='submit' value='Beállítások módosítása'>
 </form>"); // Információ, űrlap

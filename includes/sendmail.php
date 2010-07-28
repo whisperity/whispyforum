@@ -18,7 +18,7 @@ class sendmail // Definiáljuk az osztályt
 {
 	function SendRegistrationMail( $name, $password, $email, $token, $realname = '' ) // Regisztrációs értesítési levél elküldése
 	{   
-		global $cfg;
+		global $cfg, $wf_debug;
 		if ( $cfg['sendmail_html'] == 1)
 		{
 			// HTTP üzenet küldése
@@ -56,6 +56,7 @@ class sendmail // Definiáljuk az osztályt
 		}
 		
 		mail($email, "Regisztrációs értesítés", $message, $headers);
+		$wf_debug->RegisterDLEvent("Regisztrációs értesítő e-mail elküldve");
 	}
 }
 

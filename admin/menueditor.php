@@ -152,7 +152,9 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
 		} else {
 			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."modules WHERE id='" .mysql_real_escape_string($_GET['id']). "'");
-			die("<div class='messagebox'>A modul sikeresen törölve!<br><a href='admin.php?site=menueditor'>Vissza a menüszerkesztőhöz</a></td><td class='right' valign='top'>");
+			print("<div class='messagebox'>A modul sikeresen törölve!<br><a href='admin.php?site=menueditor'>Vissza a menüszerkesztőhöz</a></td><td class='right' valign='top'>");
+			Lablec();
+			die();
 		}
 		break;
 	case "itemdelete": // Menüelem törlése
@@ -161,7 +163,9 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
 		} else {
 			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."menuitems WHERE id='" .mysql_real_escape_string($_GET['id']). "'");
-			die("<div class='messagebox'>A menüelem sikeresen törölve!<br><a href='admin.php?site=menueditor'>Vissza a menüszerkesztőhöz</a></td><td class='right' valign='top'>");
+			print("<div class='messagebox'>A menüelem sikeresen törölve!<br><a href='admin.php?site=menueditor'>Vissza a menüszerkesztőhöz</a></td><td class='right' valign='top'>");
+			Lablec();
+			die();
 		}
 		break;
 	case "itemedit": // Menüelem szerkesztése
@@ -174,7 +178,9 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 				// A menü szerkesztésének mentése
 				
 				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."menuitems SET text='" .mysql_real_escape_string($_POST['text']). "', href='" .mysql_real_escape_string($_POST['href']). "', hOrder='" .mysql_real_escape_string($_POST['hOrder']). "' WHERE id='" .mysql_real_escape_string($_POST['id']). "'");
-				die("<div class='messagebox'>A menüelem sikeresen szerkesztve!<br><a href='admin.php?site=menueditor'>Vissza a menüszerkesztőhöz</a></td><td class='right' valign='top'>");
+				print("<div class='messagebox'>A menüelem sikeresen szerkesztve!<br><a href='admin.php?site=menueditor'>Vissza a menüszerkesztőhöz</a></td><td class='right' valign='top'>");
+				Lablec();
+				die();
 			}
 			$sor = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."menuitems WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
 			$sor3 = mysql_fetch_assoc($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."modules WHERE id='" .mysql_real_escape_string($sor['menuId']). "'"));
@@ -213,7 +219,9 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 				
 				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."modules SET name='" .mysql_real_escape_string($_POST['name']). "', type='" .mysql_real_escape_string($_POST['type']). "', side='" .mysql_real_escape_string($_POST['side']). "', hOrder='" .mysql_real_escape_string($_POST['hOrder']). "' WHERE id='" .mysql_real_escape_string($_POST['id']). "'");
 				
-				die("<div class='messagebox'>A modul sikeresen szerkesztve!<br><a href='admin.php?site=menueditor'>Vissza a menüszerkesztőhöz</a></div></td><td class='right' valign='top'>");
+				print("<div class='messagebox'>A modul sikeresen szerkesztve!<br><a href='admin.php?site=menueditor'>Vissza a menüszerkesztőhöz</a></div></td><td class='right' valign='top'>");
+				Lablec();
+				die();
 			}
 			$sor = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."modules WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
 			

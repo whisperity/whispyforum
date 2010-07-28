@@ -140,7 +140,17 @@ function Eredmeny($status, $title, $message)
 	{
 		Eredmeny(OK, "Hibák megjelenítése kikapcsolva", "A hibák megjelenítése ki van kapcsolva. A hibákról a keretrendszer hibakezelője értesíti a felhasználókat.");
 	} else {
-		Eredmeny(FAILED, "Hibák megjelenítése bekapcsolva", "A hibák megjelenítése nem szükséges, mivel a keretrendszer tartalmaz egy beépített hibaüzenet-megjelenítőt. Emelett a PHP hibaüzenetei tartalmazhatnak utalásokat az adatbázis struktúrájára, tartalmára, a webszerver elérési útjára, és egyéb érzékeny információkra! (<code>ini_set(<span style='color: grey'>'display_errors'</span>, <span style='color: grey'>'Off'</span>);)");
+		Eredmeny(FAILED, "Hibák megjelenítése bekapcsolva", "A hibák megjelenítése a PHP-értelmezőnek nem szükséges, mivel a keretrendszer tartalmaz egy beépített hibaüzenet-megjelenítőt. Emelett a PHP hibaüzenetei tartalmazhatnak utalásokat az adatbázis struktúrájára, tartalmára, a webszerver elérési útjára, és egyéb érzékeny információkra! (<code>ini_set(<span style='color: grey'>'display_errors'</span>, <span style='color: grey'>'Off'</span>);)");
+	}
+	
+	/* Hibák megjelenítése ($wf_debug osztály)
+		0 esetén OK
+		1 esetén FAILED */
+	if ( SHOWDEBUG == 0 )
+	{
+		Eredmeny(OK, "Hibakeresési információk kikapcsolva", "");
+	} else {
+		Eredmeny(FAILED, "Hibakeresési információk bekapcsolva", "A hibakeresési információk megjelenítése be van kapcsolva. A megjelenítés kikapcsolása éles rendszerben <b>KIMONDOTTAN AJÁNLOTT</b>, mivel a megjelenítő által a képernyőre írt adat tartalmaz minden rejtett SQL-kérést, generálási naplót, munkamenetinformációt és a konfigurációs tábla adatait (ahonnan kiolvasható például a mysql-hozzáférési nevet és jelszót!");
 	}
 	
 	print("Az ellenörzés véget ért " .Datum("normal","kisbetu","dL","H","i","s"). "-kor. A végeredmény: <b>" .$ellenorzes['szama']. "</b> ellenörzésből <b>" .$ellenorzes['FAILED']. "</b> kritikus biztonsági rés került felfedezésre, <b>" .$ellenorzes['WARNING']. "</b> kisebb hiányosságra (figyelmeztetések) derült fény, és <b>" .$ellenorzes['OK']. "</b> ponton kiválóan teljesített a weboldal.");

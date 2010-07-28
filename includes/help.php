@@ -301,11 +301,6 @@ function SQLHelp()
 	<br>Visszatérő érték: a lekérdezés eredménye a <tt>mysql_query(\$lekerd);</tt> használatával");
 }
 
-/* function UserSessionHelp()
-{
-	print("<h2>Felhasználó (\$user) és munkamenetkezelés (<abbr title='Nem összetévesztendő az \$_SESSION szuperglobállal'>\$session</abbr>)</h2>
-	Az osztály segítségével kezelhetünk felhasználói adatokat és munkameneteket.<br>Az osztály függvényei:<br><br><b>func ()</b><br>funcdesc<br><pre>Megjegyzés:<br>funcnote</pre><hr>");
-} */
 function AddonHelp($tipus)
 {
 	switch ($tipus)
@@ -567,9 +562,6 @@ switch ($_GET['cmd'])
 	case "SQL":
 		SQLHelp();
 		break;
-	//case "UserSession":
-		//UserSessionHelp();
-		//break;
 	case "Addons-admin":
 		AddonHelp('admin');
 		break;
@@ -601,7 +593,6 @@ switch ($_GET['cmd'])
 		$forms->UrlapElem("option", "Funkciók", "Functions");
 		$forms->UrlapElem("option", "Űrlapgenerálási osztály", "Urlap");
 		$forms->UrlapElem("option", "MySQL-kezelő osztály", "SQL");
-		//$forms->UrlapElem("option", "Felhasználó és munkamenetkezelés", "UserSession");
 		$forms->UrlapElem("option", "Addonok", "Addons-developer");
 		$forms->UrlapElem("option", "Addonkezelő osztály", "AddonClass");
 		$forms->UrlapElem("option", "", "DeveloperTools");

@@ -19,7 +19,11 @@
 		$fId = $_POST['id'];
 	
 	if ( $fId == $NULL )
-		die(Hibauzenet("ERROR", "A megadott azonosítójú fórum nem létezik") );
+	{
+		Hibauzenet("ERROR", "A megadott azonosítójú fórum nem létezik");
+		DoFooter();
+		die();
+	}
 	
 	if ($_SESSION['loggedin'] != 1) { // Ha a felhasználó nincs bejelentkezve, nem szólhat hozzá
 		Hibauzenet("ERROR", "Amíg nem jelentkezel be, nem készíthetsz új témát");
