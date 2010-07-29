@@ -93,26 +93,6 @@ function Eredmeny($status, $title, $message)
 		Eredmeny(OK, "Adatbázis neve: <code>" .$cfg['dbname']. "</code>", "A portál saját adatbázist használ");
 	}
 	
-	/* naplómélység ellenörzése */
-	switch ( LOG_DEPTH )
-	{
-		case 0:
-			Eredmeny(OK, "Naplózás kikapcsolva", "A weboldalt naplózni csak bizonyos esetekben szükséges, és sokszor felesleges terhelést hoz létre a szerveren");
-			break;
-		case 1:
-			Eredmeny(WARNING, "Naplózás: hibaüzenetek naplózása", "A hibaüzenetek néha (például adatbázishibák esetén) tartalmazhatnak érzékeny információt!");
-			break;
-		case 2:
-			Eredmeny(OK, "Naplózás: felhasználók", "A felhasználók naplózása nem jár különösebb veszéllyel, mivel a jelszavakat nem naplózza.");
-			break;
-		case 3:
-			Eredmeny(WARNING, "Naplózás: lapmegtekintések", "A lapmegtekintésekkor naplózásra kerülnek a HTTP GET és POST változók adatai, melyek tartalmazhatnak érzékeny információt.");
-			break;
-		case 4:
-			Eredmeny(FAILED, "Naplózás: SQL-kérések", "Az SQL kérések naplózása amellett, hogy normál használat esetén felesleges terhelést hoz létre a szerveren, hemzsegnek az érzékeny információktól. Az SQL-naplózást csak hibakeresésekkor ajánlatos bekapcsolni, ellenkező esetben NEM. (Megjegyzés: egy oldalletöltés körülbelül 1 kilobájttal növeli a naplófájl méretét)");
-			break;
-	}
-	
 	/* táblaprefixum ellenörzése
 		ha van, OK
 		ha nincs, WARNING */
