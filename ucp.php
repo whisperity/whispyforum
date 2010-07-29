@@ -141,7 +141,7 @@
 			} else {
 				if ( in_array($_FILES['picfile']['type'], array("image/gif", "image/jpeg", "image/png")) )
 				{
-					if(move_uploaded_file($_FILES['picfile']['tmp_name'], "uploads/" .$_SESSION['username']))
+					if(move_uploaded_file($_FILES['picfile']['tmp_name'], "uploads/" .md5($_SESSION['username']). ".pict"))
 					{
 						// Sikeres feltöltés esetén
 						print("<div class='messagebox'>Az avatarod frissítése sikeresen megtörtént!</div>");
@@ -156,9 +156,9 @@
 		}
 		
 		print("<div class='userbox'>Aktuális megjelenítendő képed:&nbsp;");
-		if ( file_exists("uploads/" .$_SESSION['username']) )
+		if ( file_exists("uploads/" .md5($_SESSION['username']). ".pict") )
 		{
-			print("<img src='uploads/" .$_SESSION['username']. "' width='128' height='128' alt='" .$_SESSION['username']. " megjelenítendő képe'>");
+			print("<img src='uploads/" .md5($_SESSION['username']). ".pict' width='128' height='128' alt='" .$_SESSION['username']. " megjelenítendő képe'>");
 		} else {
 			print("<img src='themes/" .$_SESSION['themeName']. "/anon.png' width='128' height='128' alt='" .$_SESSION['username']. " megjelenítendő képe'>");
 		}

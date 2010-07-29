@@ -135,9 +135,9 @@
 			
 			print("Hozzászólás időpontja: <b>" .Datum("normal","kisbetu","dL","H","i","s",$sor['pDate']). "</b><br>&nbsp;");
 			
-			if ( file_exists("uploads/" .$adat2['username']) )
+			if ( file_exists("uploads/" .md5($adat2['username']). ".pict") )
 			{
-				print("<img src='uploads/" .$adat2['username']. "' width='128' height='128' alt='" .$adat2['username']. " megjelenítendő képe'>");
+				print("<img src='uploads/" .md5($adat2['username']). ".pict' width='128' height='128' alt='" .$adat2['username']. " megjelenítendő képe'>");
 			} else {
 				print("<img src='themes/" .$_SESSION['themeName']. "/anon.png' width='128' height='128' alt='" .$adat2['username']. " megjelenítendő képe'>");
 			}
@@ -242,9 +242,9 @@
 		print("<div class='content'>" .$postBody. "</div></div>"); // Hozzászólás
 		print("<div class='postright'>Hozzászólás időpontja: <b>" .Datum("normal","kisbetu","dL","H","i","s",$adat['pDate']). "</b><br>&nbsp;");
 		
-		if ( file_exists("uploads/" .$adat2['username']) )
+		if ( file_exists("uploads/" .md5($adat2['username']). ".pict") )
 		{
-			print("<img src='uploads/" .$adat2['username']. "' width='128' height='128' alt='" .$adat2['username']. " megjelenítendő képe'>");
+			print("<img src='uploads/" .md5($adat2['username']). ".pict' width='128' height='128' alt='" .$adat2['username']. " megjelenítendő képe'>");
 		} else {
 			print("<img src='themes/" .$_SESSION['themeName']. "/anon.png' width='128' height='128' alt='" .$adat2['username']. " megjelenítendő képe'>");
 		}

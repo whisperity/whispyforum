@@ -84,9 +84,9 @@ print("<br>
  print($usrtema. "/index.php'>" .$usrtema. "</a><br>
 Hozzászólások száma: " .$felhasznalo['postCount']. "<br>&nbsp;");
  
- if ( file_exists("uploads/" .$felhasznalo['username']) )
+ if ( file_exists("uploads/" .md5($felhasznalo['username']) .".pict") )
  {
-	print("<img src='uploads/" .$felhasznalo['username']. "' width='128' height='128' alt='" .$felhasznalo['username']. " megjelenítendő képe'>");
+	print("<img src='uploads/" .md5($felhasznalo['username']). ".pict' width='128' height='128' alt='" .$felhasznalo['username']. " megjelenítendő képe'>");
  } else {
 	print("<img src='themes/" .$_SESSION['themeName']. "/anon.png' width='128' height='128' alt='" .$felhasznalo['username']. " megjelenítendő képe'>");
  }
