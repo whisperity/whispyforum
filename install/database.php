@@ -236,9 +236,11 @@
   /* Portál beállítások */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."siteconfig(variable, value) VALUES
 	('allow_registration', '1'),
-	('log_depth', '0')", 'INSTALL'); //Naplózás kikapcsol, regisztráció be
+	('log_depth', '0'),
+	('facebook_like', '0')", 'INSTALL'); //Naplózás kikapcsol, regisztráció be
  WOut('sor', 'siteconfig', 'AllowRegistration: 1');
  WOut('sor', 'siteconfig', 'LogDepth: 0');
+ WOut('sor', 'siteconfig', 'Facebook_like: 0');
  
  /* Statikus tartalom */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."plain(title, content) VALUES

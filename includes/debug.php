@@ -123,6 +123,7 @@
 			TombExportacioTablaba($_POST, '$_POST', 'HTTP POST');
 			TombExportacioTablaba($_SESSION, '$_SESSION', 'Munkamenet');
 			TombExportacioTablaba($_FILES, '$_FILES', 'Fájlok');
+			TombExportacioTablaba($_SERVER, '$_SERVER', 'Szerver');
 			// WhispyFórum portál tömbök
 			TombExportacioTablaba($cfg, '$cfg', 'Konfigurációs információk');
 			
@@ -160,6 +161,18 @@
 			<tr>
 				<td>SHOWDEBUG</td>
 				<td>" .SHOWDEBUG. "</td>
+			</tr>
+			<tr>
+				<td>FACEBOOK_LIKE</td>
+				<td>" .FACEBOOK_LIKE. "</td>
+			</tr>
+			<tr>
+				<td>GOOGLE_ANALYTICS</td>
+				<td>" .GOOGLE_ANALYTICS. "</td>
+			</tr>
+			<tr>
+				<td>GOOGLE_ANALYTICS_ID</td>
+				<td>" .GOOGLE_ANALYTICS_ID. "</td>
 			</tr>"); // A WF által használt define-ok kiírása
 		
 		echo '</table>'; // Táblázat zárás

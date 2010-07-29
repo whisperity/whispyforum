@@ -21,6 +21,32 @@ function Fejlec()
 	print("<table class='centerdiv'><tr>");
 }
 
+function FacebookLikeButton() // Facebook LIKE gomb megjelenítése
+{
+	global $cfg, $wf_debug;
+	if ( FACEBOOK_LIKE == 1) // Megjelenítés csak akkor, ha ezt az admin menüből bekapcsoltuk
+	{
+		echo '<iframe src="http://www.facebook.com/widgets/like.php?href='; // Facebook like iFrame bevezetése
+		echo "http://".$cfg['phost'].$_SERVER['REQUEST_URI']; // A like-oláshoz szükséges cím (http:// + domain (phost) + aktuális lap címe)
+		echo '" scrolling="no" frameborder="0" style="border: none; width: 400px; height: 35px"></iframe>'; // Iframe zárása
+		
+		$wf_debug->RegisterDLEvent("Facebook LIKE button generálva");
+	}
+}
+
+function GoogleAnalytics() // Google Analytics kód
+{
+	global $wf_debug;
+	if ( GOOGLE_ANALYTICS == 1) // Megjelenítés csak akkor, ha ezt bekapcsoltuk
+	{
+		if ( GOOGLE_ALANYTICS_ID != $NULL ) // Megjelenítés csak akkor, ha van megadott Google Analytics ID
+		{
+			GenerateGoogleAnalyticsJS(); // Meghívjuk a másik fájlban lévő függvényt
+			
+			$wf_debug->RegisterDLEvent("Google Analytics JavaScript létrehozva, követési adatok elküldve");
+		}
+	}
+}
 function Lablec()
 {
 	global $cfg, $sql, $wf_debug;
@@ -40,7 +66,9 @@ function Lablec()
 	
 	$genIdo = substr(($current_time - $start_time), 0, 5);
 	
-	print("WhispyFórum " .RELEASE_TYPE. " " .VERSION. " • Kiadás dátuma: " .RELEASE_DATE. " • <a href='mailto:" .$cfg['webmaster_email']. "'>" .$cfg['webmaster']. "</a> • Az oldal generálása " .$genIdo. " másodpercig tartott");
+	print("WhispyFórum " .RELEASE_TYPE. " " .VERSION. " • Kiadás dátuma: " .RELEASE_DATE. " • <a href='mailto:" .$cfg['webmaster_email']. "'>" .$cfg['webmaster']. "</a> • Az oldal generálása " .$genIdo. " másodpercig tartott<br>");
+	FacebookLikeButton(); // Facebook LIKE gomb generálása
+	GoogleAnalytics(); // Google Analytics kód generálása
 	print("</div>"); // Blokkzárás
 	
 	$sql->Disconnect(); // Adatbáziskapcsolat lezárása
@@ -61,6 +89,7 @@ function Inicialize ( $pagename )
  /* SZÜKSÉGES FÁJLOK BETÖLTÉSE */
  require('config.php'); // Konfigurációs állomány betöltése
  require('debug.php'); // Hibakeresési funkciót engedélyező/tiltó állomány betöltése
+ include('analytics.php'); // Google analytics leírókód
  
  // Funkciótárak és osztályok betöltése
  require('includes/debug.php'); // Hibakereső
@@ -94,11 +123,13 @@ function Inicialize ( $pagename )
   /* Portálmotor-beállítások bekérése */
  $siteconfig_allowReg = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."siteconfig WHERE variable='allow_registration'")); // Regisztráció engedélyezése
  $siteconfig_logDepth = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."siteconfig WHERE variable='log_depth'")); // Naplómélység
+ $siteconfig_fbLike = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."siteconfig WHERE variable='facebook_like'")); // Naplómélység
  /* Bekért adatok mentése a portálrendszer számára 
 	Itt maradunk a hagyományos DEFINE metódusnál, hogy ne kelljen az egész rendszerben a jelen változókat ellenörző
 	sorokat átkódolni. */
  define('ALLOW_REGISTRATION', $siteconfig_allowReg[0]);
  define('LOG_DEPTH', $siteconfig_logDepth[0]);
+ define('FACEBOOK_LIKE', $siteconfig_fbLike[0]);
  $wf_debug->RegisterDLEvent("Rendszerváltozók bekérve az adatbázisból");
  
  /* Verzióadatok elleörzése */
