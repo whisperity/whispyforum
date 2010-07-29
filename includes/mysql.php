@@ -64,8 +64,6 @@ class mysql // Definiáljuk az osztályt
 	{
 		global $wf_debug;
 		
-		WriteLog("SQL", $lekerd);
-		
 		$eredmeny = @mysql_query($lekerd);
 		
 		if (!$eredmeny)

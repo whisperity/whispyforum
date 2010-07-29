@@ -95,10 +95,6 @@ function FunctionsHelp()
 	
 	print("<hr>");
 	
-	print("<h2>Naplóba írás</h2><br>A függvény használata: <b>WriteLog(\$micsoda, \$mit)</b><br>A függvény a szükséges naplómélység ellenőrzése után a megadott eseményt a naplóba vési.<br><br><b>\$micsoda</b>: A naplóba írandó esemény típusa<br><b>\$mit</b>: A beírandó esemény paraméterei (a paramétereket <tt>,</tt>-vel (vessző) kell elválasztani)");
-	
-	print("<hr>");
-	
 	print("<h2>Meghajtó tárterület</h2><br><b>A függvények használaton kívül szerepelnek a kódbázisban!</b><br>");
 	print("<br>A függvények segítségével megtekinthetjük a megadott meghajtó tárterületét<br><br>
 	<table border='1' cellspacing='1' cellpadding='1'>

@@ -122,13 +122,11 @@ function Inicialize ( $pagename )
  
   /* Portálmotor-beállítások bekérése */
  $siteconfig_allowReg = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."siteconfig WHERE variable='allow_registration'")); // Regisztráció engedélyezése
- $siteconfig_logDepth = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."siteconfig WHERE variable='log_depth'")); // Naplómélység
- $siteconfig_fbLike = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."siteconfig WHERE variable='facebook_like'")); // Naplómélység
+ $siteconfig_fbLike = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."siteconfig WHERE variable='facebook_like'")); // Facebook like gomb
  /* Bekért adatok mentése a portálrendszer számára 
 	Itt maradunk a hagyományos DEFINE metódusnál, hogy ne kelljen az egész rendszerben a jelen változókat ellenörző
 	sorokat átkódolni. */
  define('ALLOW_REGISTRATION', $siteconfig_allowReg[0]);
- define('LOG_DEPTH', $siteconfig_logDepth[0]);
  define('FACEBOOK_LIKE', $siteconfig_fbLike[0]);
  $wf_debug->RegisterDLEvent("Rendszerváltozók bekérve az adatbázisból");
  

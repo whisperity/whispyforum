@@ -34,23 +34,7 @@ print("
 		print("> Nem <input type='radio' name='allow_registration' value='1'");
 			if ( ALLOW_REGISTRATION == 1 )
 			print(" checked ");
-		print("> Igen<br>
-		Naplómélység: <input type='radio' name='log_depth' value='0'");
-			if ( LOG_DEPTH == 0 )
-				print(" checked ");
-		print("> Kikapcsolva<br><input type='radio' name='log_depth' value='1'");
-			if ( LOG_DEPTH == 1)
-				print(" checked ");
-		print("> Alacsony (hibaüzenetek)<br><input type='radio' name='log_depth' value='2'");
-			if ( LOG_DEPTH == 2 )
-				print(" checked ");
-		print("> Közepes (felhasználói aktivitás)<br><input type='radio' name='log_depth' value='3'");
-			if ( LOG_DEPTH == 3 )
-				print(" checked ");
-		print("> Mély (lapmegtekintések)<br><input type='radio' name='log_depth' value='4'");
-			if ( LOG_DEPTH == 4 )
-				print(" checked ");
-		print("> Mélyebb (SQL-kérések)");
+		print("> Igen");
 		
 print("<br>
 	Hibakeresési információk megjelenítése: ");

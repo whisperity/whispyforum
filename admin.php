@@ -77,7 +77,6 @@
 		MenuItem("addons", "Addonok kezelése");
 	
 	MenuItem("", "Naplózás", 'TITLE');
-		MenuItem("log", "Webhelynapló megtekintése");
 		MenuItem("installlog", "Telepítési napló megtekintése");
 	
 	MenuItem("", "Tartalmak kezelése", 'TITLE');
@@ -103,10 +102,6 @@
 	case 'addforum':
 		$admin = TRUE;
 		include("admin/addforum.php");
-		break;
-	case 'log':
-		$admin = TRUE;
-		include("admin/log.php");
 		break;
 	case 'installlog':
 		$admin = TRUE;

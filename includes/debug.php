@@ -151,10 +151,6 @@
 				<td>" .RELEASE_DATE. "</td>
 			</tr>
 			<tr>
-				<td>LOG_DEPTH</td>
-				<td>" .LOG_DEPTH. "</td>
-			</tr>
-			<tr>
 				<td>ALLOW_REGISTRATION</td>
 				<td>" .ALLOW_REGISTRATION. "</td>
 			</tr>

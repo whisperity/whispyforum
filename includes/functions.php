@@ -226,10 +226,7 @@ function Datum( $ev, $honap, $nap, $ora, $perc, $masodperc, $epoch = '' ) // A m
 		}
 		
 		print("</div><div class='hibacim'>" .$Hmsg['title']. "</div><div class='hibaszoveg'>" .$Hmsg['desc']. "</div></div>");
-		
-		// Beleírjuk az aktuális értéket a naplóba
-		WriteLog($Hmsg['tipus'], $Hmsg['title']. ';' .$Hmsg['desc']. ';' .$Hmsg['fajl']. ';' .$Hmsg['line']);
-		
+			
 		//if ($Hmsg['tipus'] == "CRITICAL") // Ha kritikus (CRITICAL) a hiba, a futtatás megakad.
 			//die("A script futtatása megszakítva a következő helyen: <b>" . $Hmsg['fajl'] . "</b> fájl <b>" . $Hmsg['line'] . ".</b> sora.");
 			//die("Kritikus hiba miatt a futtatás megszakadt!");
@@ -265,46 +262,5 @@ function Datum( $ev, $honap, $nap, $ora, $perc, $masodperc, $epoch = '' ) // A m
 	
 	return str_replace($emoteN, $hrefs, $kisbetu);
  }
- 
- function WriteLog( $micsoda = '', $mit = '' ) // Napló írása
- {
-  if ( LOG_DEPTH > 0 )
-  {
-	if (! (file_exists('logs/site.log')))
-	{
-		// Ha nem létezik a napló fájl, létrehozunk egyet
-		file_put_contents('logs/site.log',time(). ';LOG_CREATE');
-	}
-	
-	// Beleírjuk az aktuális értéket a naplóba
-	// naplómélységi adattól függően
-	switch ( $micsoda )
-	{
-		case "WARNING":
-		case "ERROR":
-		case "CRITICAL":
-			if ( LOG_DEPTH >= 1 )
-				file_put_contents('logs/site.log', "\n" .time(). ';' .$micsoda. ';' .$mit, FILE_APPEND);
-			break;
-		case "USR_REGISTERED_SUCCESSFULLY":
-		case "USR_ACTIVATE":
-			if ( LOG_DEPTH >= 2 )
-				file_put_contents('logs/site.log', "\n" .time(). ';' .$micsoda. ';' .$mit, FILE_APPEND);
-			break;
-		case "PAGE_VIEW":
-			if ( LOG_DEPTH >= 3 )
-				file_put_contents('logs/site.log', "\n" .time(). ';' .$micsoda. ';' .$mit. ';' .var_export($_POST, TRUE). ';' .var_export($_GET, TRUE), FILE_APPEND);
-			break;
-		case "SQL_CONNECT_SELECTDB":
-		case "SQL_DC":
-			if ( LOG_DEPTH >= 4)
-				file_put_contents('logs/site.log', "\n" .time(). ';' .$micsoda, FILE_APPEND);
-			break;
-		case "SQL":
-			if ( LOG_DEPTH >= 4)
-				file_put_contents('logs/site.log', "\n" .time(). ';' .$micsoda. ';' .$mit, FILE_APPEND);
-			break;
-	}
-  }
- }
+
 ?>
