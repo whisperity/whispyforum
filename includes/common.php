@@ -14,7 +14,8 @@ function Fejlec()
 	print("<div class='headerbox'>"); // Blokknyitás
 	$wf_debug->RegisterDLEvent("Fejléc létrehozása");
 	
-	// KÓD IDE //
+	print("<center><img src='themes/" .$_SESSION['themeName']. "/header.png'></center><br>\n");
+	
 	print("</div>"); // Blokkzárás
 	
 	/* A footer elcsúszás kiiktatása végett egy láthatatlan táblázatba kerül a középső rész */
