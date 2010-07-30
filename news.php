@@ -10,7 +10,7 @@
  include('includes/common.php'); // Betöltjük a portálrendszer alapscriptjeit (common.php elvégzi)
  Inicialize('news.php');
  
-  if ( $_POST['action'] != $NULL )
+ if ( $_POST['action'] != $NULL )
  {
 	// Ha POST-tal érkeznek az adatok, a POST action lesz az érték
 	$ekson = $_POST['action'];
