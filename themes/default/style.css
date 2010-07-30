@@ -233,3 +233,6 @@ blockquote.quote {  }
 
 /* Hírek */
 div.newsitem { background-color: #ABCCBA }
+
+/* Letöltések */
+h3.download-categ { border-bottom: 1px solid black;}

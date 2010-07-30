@@ -43,7 +43,6 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 				<th>Cím/Név</th>
 				<th>Típus</th>
 				<th>Elhelyezkedés</th>
-				
 			</tr>");
 		
 		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."modules");

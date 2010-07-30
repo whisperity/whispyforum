@@ -105,10 +105,10 @@ function Inicialize ( $pagename )
  $wf_debug->RegisterDLEvent("Szükséges fájlok betöltve");
  
  // Témafájl betöltése
- print("<link rel='stylesheet' type='text/css' href='themes/" .$_SESSION['themeName']. "/style.css'>
+ print("\n<link rel='stylesheet' type='text/css' href='themes/" .$_SESSION['themeName']. "/style.css'>
 ");
  if ( $_SESSION['themeName'] == $NULL )
-	print("<link rel='stylesheet' type='text/css' href='themes/default/style.css'>
+	print("\n<link rel='stylesheet' type='text/css' href='themes/default/style.css'>
 ");
  /* */
  
@@ -124,11 +124,13 @@ function Inicialize ( $pagename )
   /* Portálmotor-beállítások bekérése */
  $siteconfig_allowReg = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."siteconfig WHERE variable='allow_registration'")); // Regisztráció engedélyezése
  $siteconfig_fbLike = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."siteconfig WHERE variable='facebook_like'")); // Facebook like gomb
+ $siteconfig_DLMinLevel = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."siteconfig WHERE variable='download_minlvl'")); // Letöltések megtekintéséhez szükséges minimális szint (userLevel)
  /* Bekért adatok mentése a portálrendszer számára 
 	Itt maradunk a hagyományos DEFINE metódusnál, hogy ne kelljen az egész rendszerben a jelen változókat ellenörző
 	sorokat átkódolni. */
  define('ALLOW_REGISTRATION', $siteconfig_allowReg[0]);
  define('FACEBOOK_LIKE', $siteconfig_fbLike[0]);
+ define('DOWNLOAD_MINLVL', $siteconfig_DLMinLevel[0]);
  $wf_debug->RegisterDLEvent("Rendszerváltozók bekérve az adatbázisból");
  
  /* Verzióadatok elleörzése */

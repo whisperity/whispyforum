@@ -185,6 +185,14 @@
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Statikus tartalom
  WOut('tabla', 'plain');
  
+ $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."download_categ` (
+`id` INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`title` VARCHAR(512) NOT NULL ,
+`descr` TEXT NOT NULL ,
+`files` INT(10) NOT NULL DEFAULT '0'
+) ENGINE = MYISAM DEFAUÉT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Letöltés-kategóriák
+ WOut('tabla', 'download_categ');
+
  /* Kezdeti adatok */
  /* Modulok */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name,type,side, hOrder) VALUES
@@ -196,13 +204,15 @@
 	('1','Kezdőlap','index.php', 1),
 	('1','Hírek','news.php', 2),
 	('1','Fórum','viewforum.php', 3),
-	('1','Google keresés','http://google.hu', 4),
-	('1','Statikus tartalom','plain.php?id=1', 5)", 'INSTALL'); // Főmenü elemei
+	('1','Letöltések','download.php', 4)
+	('1','Statikus tartalom','plain.php?id=1', 5)
+	('1','Google keresés','http://google.hu', 6),", 'INSTALL'); // Főmenü elemei
  WOut('sor', 'menuitems', 'Főmenü/Kezdőlap');
  WOut('sor', 'menuitems', 'Főmenü/Fórum');
  WOut('sor', 'menuitems', 'Főmenü/Hírek');
+ WOut('sor', 'menuitems', 'Főmenü/Letöltések');
+ WOut('sor', 'menuitems', 'Főmenü/Statikus tartalom');
  WOut('sor', 'menuitems', 'Főmenü/Google keresés (google.hu)');
- WOut('sor', 'menuitems', 'Statikus tartalom');
  
  /* Fórumok */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."forum(name, description, topics, posts, lastpostdate, lastuser, lpTopic, lpId) VALUES
@@ -236,9 +246,11 @@
   /* Portál beállítások */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."siteconfig(variable, value) VALUES
 	('allow_registration', '1'),
-	('facebook_like', '0')", 'INSTALL');
+	('facebook_like', '0'),
+	('download_minlvl', '0')", 'INSTALL');
  WOut('sor', 'siteconfig', 'AllowRegistration: 1');
  WOut('sor', 'siteconfig', 'Facebook_like: 0');
+ WOut('sor', 'siteconfig', 'Download min level: 0');
  
  /* Statikus tartalom */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."plain(title, content) VALUES

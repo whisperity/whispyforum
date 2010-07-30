@@ -73,15 +73,16 @@
 	
 	MenuItem("", "Weboldal beállításai", 'TITLE');
 		MenuItem("configs", "Beállítások");
-		MenuItem("menueditor", "Menüszerkesztő");
 		MenuItem("addons", "Addonok kezelése");
 	
 	MenuItem("", "Naplózás", 'TITLE');
 		MenuItem("installlog", "Telepítési napló megtekintése");
 	
 	MenuItem("", "Tartalmak kezelése", 'TITLE');
+		MenuItem("menueditor", "Menüszerkesztő");
 		MenuItem("addforum", "Fórum hozzáadása");
 		MenuItem("plain", "Statikus tartalmak");
+		MenuItem("downloads", "Letöltések");
 	
 	MenuItem("", "", 'TITLE');
 		MenuItem("checks", "Ellenörzés");
@@ -131,6 +132,10 @@
 	case 'plain':
 		$admin = TRUE;
 		include("admin/plain.php");
+		break;
+	case 'downloads':
+		$admin = TRUE;
+		include("admin/downloads.php");
 		break;
 	default:
 		/* Telepítési információk bekérése */

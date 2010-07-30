@@ -169,6 +169,10 @@
 			<tr>
 				<td>GOOGLE_ANALYTICS_ID</td>
 				<td>" .GOOGLE_ANALYTICS_ID. "</td>
+			</tr>
+			<tr>
+				<td>DOWNLOAD_MINLVL</td>
+				<td>" .DOWNLOAD_MINLVL. "</td>
 			</tr>"); // A WF által használt define-ok kiírása
 		
 		echo '</table>'; // Táblázat zárás
