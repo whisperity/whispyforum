@@ -48,14 +48,14 @@ if ( $_POST['action'] != $NULL )
 			print("<tr>
 			<td>" .$sor['title']. "</td>
 			<td>" .$sor['descr']. "</td>
-			<td>" .$sor['files']. "</td>");
-			/*print("<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+			<td>" .$sor['files']. "</td>
+			<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
 				<input type='hidden' name='site' value='downloads'>
 				<input type='hidden' name='action' value='viewitems'>
 				<input type='hidden' name='id' value='" .$sor['id']. "'>
 				<input type='submit' value='Letöltések megtekintése'>
-			</form></td>");*/
-			print("<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+			</form></td>
+			<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
 				<input type='hidden' name='site' value='downloads'>
 				<input type='hidden' name='action' value='editcateg'>
 				<input type='hidden' name='id' value='" .$sor['id']. "'>
@@ -138,6 +138,57 @@ if ( $_POST['action'] != $NULL )
 				$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."download_categ(title, descr, files) VALUES ('" .mysql_real_escape_string($_POST['title']). "', '" .mysql_real_escape_string($_POST['descr']). "', 0)");
 				print("<div class='messagebox'>Az új kategória hozzáadása megtörtént!<br><a href='admin.php?site=downloads'>Vissza a kategórialistához</a></div>");
 			}
+		}
+		
+		break;
+	case "viewitems": // Letöltések megtekintése egy kategórián belül
+		if ( $_GET['id'] == $NULL )
+		{
+			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
+		} else {
+			$kategoria = mysql_fetch_assoc($sql->Lekerdezes("SELECT title, files FROM " .$cfg['tbprf']."download_categ WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
+			print("<h3 class='download-categ'>" .$kategoria['title']. " (" .$kategoria['files']. ")</h3>\n");
+			
+			print("<br><br><div class='userbox'><table border='0' cellspacing='1' cellpadding='1'>
+			<tr>
+				<th>Cím</th>
+				<th>Leírás</th>
+				<th>Letöltések száma</th>
+				<th>Feltöltés időpontja</th>
+				<th>Feltöltő felhasználó neve</th>
+			</tr>");
+			
+			$letoltesek = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."downloads WHERE cid='" .mysql_real_escape_string($_GET['id']). "'");
+			while ( $sor = mysql_fetch_assoc($letoltesek) )
+			{
+				$felhasznaloneve = mysql_fetch_assoc($sql->Lekerdezes("SELECT username FROM " .$cfg['tbprf']."user WHERE id='" .$sor['uid']. "'"));
+				print("<tr>
+				<td>" .$sor['title']. "</td>
+				<td>" .$sor['descr']. "</td>
+				<td>" .$sor['download_count']. "</td>
+				<td>" .Datum("normal", "kisbetu", "dL", "H", "i", "s", $sor['upload_date']). "</td>
+				<td>" .$felhasznaloneve['username']. "</td>");
+				/*print("<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+				<input type='hidden' name='site' value='downloads'>
+				<input type='hidden' name='action' value='editdwl'>
+				<input type='hidden' name='id' value='" .$sor['id']. "'>
+				<input type='submit' value='Szerkesztés'>
+			</form></td>
+			<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+				<input type='hidden' name='site' value='downloads'>
+				<input type='hidden' name='action' value='deldwl'>
+				<input type='hidden' name='id' value='" .$sor['id']. "'>
+				<input type='submit' value='Törlés'>
+			</form></td>");*/
+			print("</tr>");
+			}
+			
+			print("</table></div>");
+			/*print("<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+				<input type='hidden' name='site' value='downloads'>
+				<input type='hidden' name='action' value='newdwl'>
+				<input type='submit' value='Új letöltés hozzáadása'>
+			</form>");*/
 		}
 		
 		break;

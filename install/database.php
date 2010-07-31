@@ -185,6 +185,19 @@
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Statikus tartalom
  WOut('tabla', 'plain');
  
+ $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."downloads (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `cid` int(10) NOT NULL DEFAULT '0',
+  `uid` int(10) NOT NULL DEFAULT '0',
+  `href` varchar(1024) COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(512) COLLATE utf8_unicode_ci NOT NULL,
+  `descr` text COLLATE utf8_unicode_ci NOT NULL,
+  `download_count` int(11) NOT NULL DEFAULT '0',
+  `upload_date` varchar(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Letöltések
+ WOut('tabla', 'downloads');
+ 
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."download_categ` (
 `id` INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 `title` VARCHAR(512) NOT NULL ,
