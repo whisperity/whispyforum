@@ -71,11 +71,11 @@ if ( $_POST['action'] != $NULL )
 		}
 		
 		print("</table></div>");
-		/*print("<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+		print("<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
 				<input type='hidden' name='site' value='downloads'>
 				<input type='hidden' name='action' value='newcateg'>
 				<input type='submit' value='Új kategória hozzáadása'>
-			</form>");*/
+			</form>");
 		break;
 	case "editcateg": // Kategória szerkesztése
 		if ( $_GET['id'] == $NULL )
@@ -83,7 +83,7 @@ if ( $_POST['action'] != $NULL )
 			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
 		} else {
 			$kategoriaadat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."download_categ WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
-			print("<form method='POST' action='" .$_SERVER['PHP_SELF']. "'>
+			print("Minden mezőt ki kell tölteni!\n<form method='POST' action='" .$_SERVER['PHP_SELF']. "'>
 			<span class='formHeader'>Kategória szerkesztése: " .$kategoriaadat['title']. "</span>
 			<p class='formText'>Címsor: <input type='text' name='title' value='" .$kategoriaadat['title']. "'><br>
 			Leírás: <textarea name='descr' rows='15' cols='60'>" .$kategoriaadat['descr']. "</textarea></p>
@@ -98,7 +98,7 @@ if ( $_POST['action'] != $NULL )
 	case "editcateg_do": // Kategóriaszerkesztés futtatása
 		if ( ($_POST['id'] == $NULL) || ($_POST['title'] == $NULL) || ($_POST['descr'] == $NULL) )
 		{
-			Hibauzenet("CRITICAL", "Kötelezően kitöltendő mezők hiányoznak!");
+			Hibauzenet("CRITICAL", "Kötelezően kitöltendő mezők hiányoznak!", "A <b>Címsor</b> és a <b>Leírás</b> mezőt kötelező kitölteni!");
 		} else {
 			if ( $_POST['parancs'] == "Szerkeszt" )
 			{
@@ -115,6 +115,29 @@ if ( $_POST['action'] != $NULL )
 		} else {
 			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."download_categ WHERE id='" .mysql_real_escape_string($_GET['id']). "'");
 			print("<div class='messagebox'>A kategória törlése megtörtént!<br><a href='admin.php?site=downloads'>Vissza a kategórialistához</a></div>");
+		}
+		
+		break;
+	case "newcateg": // Új kategória hozzáadása
+		print("Minden mezőt ki kell tölteni!\n<form method='POST' action='" .$_SERVER['PHP_SELF']. "'>
+			<span class='formHeader'>Új kategória hozzáadása</span>
+			<p class='formText'>Címsor: <input type='text' name='title'><br>
+			Leírás: <textarea name='descr' rows='15' cols='60'></textarea></p>
+				<input type='hidden' name='site' value='downloads'>
+				<input type='hidden' name='action' value='newcateg_do'>
+				<input type='submit' name='parancs' value='Hozzáad'>
+			</form>");
+		break;
+	case "newcateg_do": // Kategóriahozzáadás futtatása
+		if ( ($_POST['title'] == $NULL) || ($_POST['descr'] == $NULL) )
+		{
+			Hibauzenet("CRITICAL", "Kötelezően kitöltendő mezők hiányoznak!", "A <b>Címsor</b> és a <b>Leírás</b> mezőt kötelező kitölteni!");
+		} else {
+			if ( $_POST['parancs'] == "Hozzáad" )
+			{
+				$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."download_categ(title, descr, files) VALUES ('" .mysql_real_escape_string($_POST['title']). "', '" .mysql_real_escape_string($_POST['descr']). "', 0)");
+				print("<div class='messagebox'>Az új kategória hozzáadása megtörtént!<br><a href='admin.php?site=downloads'>Vissza a kategórialistához</a></div>");
+			}
 		}
 		
 		break;
