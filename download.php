@@ -46,11 +46,37 @@
 		$kategoriak = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."download_categ");
 		while ( $sor = mysql_fetch_assoc($kategoriak) )
 		{
-			print("<h3 class='download-categ'>" .$sor['title']. " (" .$sor['files']. ")</h3>\n" .$sor['descr']);
-			//print("\n<br><p align='right'><small><a href='download.php?action=viewcateg&id=" .$sor['id']. "'>Kategória böngészése</a></small></p>\n");
+			print("<h3 class='download-categ'>" .$sor['title']. " (" .$sor['files']. ")</h3>\n" .$sor['descr']. "\n<br><p align='right'><small><a href='download.php?action=viewcateg&id=" .$sor['id']. "'>Kategória böngészése</a></small></p>\n");
 		}
 		
 		$wf_debug->RegisterDLEvent("A letöltéskategóriák listázása befejeződött");
+		break;
+	case "viewcateg": // Kategória böngészése
+		if ( $_GET['id'] == $NULL )
+		{
+			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
+		} else {
+			$kategoria = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."download_categ WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
+			SetTitle("Letöltések: " .$kategoria['title']);
+			print("<center><h2 class='header'>Letöltések</h2></center>\n");
+			print("<h3 class='download-categ'>" .$kategoria['title']. " (" .$kategoria['files']. ")</h3>\n");
+			
+			$letoltesek = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."downloads WHERE cid='" .mysql_real_escape_string($_GET['id']). "'");
+			print("<table border='0'>");
+			while ( $sor = mysql_fetch_assoc($letoltesek) )
+			{
+				print("<tr>
+				<td>" .$sor['title']. "</td>
+				<td>" .$sor['descr']. "</td>
+				<td><a href='download.php?action=viewdwl&id=" .$sor['id']. "'>Letöltés</a></td>
+				</tr>");
+			}
+			print("</table>");
+		}
+		
+		break;
+	case "viewdwl": // Letöltés megtekintése
+		
 		break;
  }
  
