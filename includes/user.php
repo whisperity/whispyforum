@@ -181,7 +181,7 @@ class user // Definiáljuk az osztályt (felhasználók)
 	{
 		global $cfg, $sql, $session, $wf_debug;
 		
-		$wf_debug->RegisterDLEvent("Felhasználó bejelentkezettségénel ellenörzése");
+		$wf_debug->RegisterDLEvent("Felhasználó bejelentkezettségének ellenörzése");
 		
 		if ($username != '')
 		{

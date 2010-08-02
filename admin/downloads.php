@@ -149,7 +149,7 @@ if ( $_POST['action'] != $NULL )
 			$kategoria = mysql_fetch_assoc($sql->Lekerdezes("SELECT title, files FROM " .$cfg['tbprf']."download_categ WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
 			print("<h3 class='download-categ'>" .$kategoria['title']. " (" .$kategoria['files']. ")</h3>\n");
 			
-			print("<br><br><div class='userbox'><table border='0' cellspacing='1' cellpadding='1'>
+			print("<br><div class='userbox'><table border='0' cellspacing='1' cellpadding='1'>
 			<tr>
 				<th>Cím</th>
 				<th>Leírás</th>
