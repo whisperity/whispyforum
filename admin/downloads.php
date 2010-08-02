@@ -146,7 +146,7 @@ if ( $_POST['action'] != $NULL )
 		{
 			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
 		} else {
-			$kategoria = mysql_fetch_assoc($sql->Lekerdezes("SELECT title, files FROM " .$cfg['tbprf']."download_categ WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
+			$kategoria = mysql_fetch_assoc($sql->Lekerdezes("SELECT id, title, files FROM " .$cfg['tbprf']."download_categ WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
 			print("<h3 class='download-categ'>" .$kategoria['title']. " (" .$kategoria['files']. ")</h3>\n");
 			
 			print("<br><div class='userbox'><table border='0' cellspacing='1' cellpadding='1'>
@@ -167,8 +167,8 @@ if ( $_POST['action'] != $NULL )
 				<td>" .$sor['descr']. "</td>
 				<td>" .$sor['download_count']. "</td>
 				<td>" .Datum("normal", "kisbetu", "dL", "H", "i", "s", $sor['upload_date']). "</td>
-				<td>" .$felhasznaloneve['username']. "</td>");
-				/*print("<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+				<td>" .$felhasznaloneve['username']. "</td>
+			<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
 				<input type='hidden' name='site' value='downloads'>
 				<input type='hidden' name='action' value='editdwl'>
 				<input type='hidden' name='id' value='" .$sor['id']. "'>
@@ -179,16 +179,65 @@ if ( $_POST['action'] != $NULL )
 				<input type='hidden' name='action' value='deldwl'>
 				<input type='hidden' name='id' value='" .$sor['id']. "'>
 				<input type='submit' value='Törlés'>
-			</form></td>");*/
-			print("</tr>");
+			</form></td>
+			</tr>");
 			}
 			
 			print("</table></div>");
-			/*print("<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+			print("<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
 				<input type='hidden' name='site' value='downloads'>
 				<input type='hidden' name='action' value='newdwl'>
+				<input type='hidden' name='cid' value='" .$kategoria['id']. "'>
 				<input type='submit' value='Új letöltés hozzáadása'>
-			</form>");*/
+			</form>");
+		}
+		
+		break;
+	case "editdwl": // Letöltés szerkesztése
+		if ( $_GET['id'] == $NULL )
+		{
+			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
+		} else {
+			$letoltesadatok = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."downloads WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
+			$felhasznalo = mysql_fetch_assoc($sql->Lekerdezes("SELECT username FROM " .$cfg['tbprf']."user WHERE id='" .mysql_real_escape_string($letoltesadatok['uid']). "'"));
+			
+			print("Minden mezőt ki kell tölteni!\n<form method='POST' action='" .$_SERVER['PHP_SELF']. "'>
+			<span class='formHeader'>Letöltés szerkesztése: " .$letoltesadatok['title']. "</span>
+			<p class='formText'>Cím: <input type='text' name='title' value='" .$letoltesadatok['title']. "'><br>
+			Hivatkozás: " .$letoltesadatok['href']. "<br>
+			Leírás: <textarea name='descr' rows='15' cols='60'>" .$letoltesadatok['descr']. "</textarea><br>
+			Feltöltő neve: " .$felhasznalo['username']. "<br>
+			Feltöltés időpontja: " .Datum("normal", "kisbetu", "dL", "H", "i", "s", $letoltesadatok['upload_date']). "<br>
+			Letöltések száma: " .$letoltesadatok['download_count']. "</p>
+				<input type='hidden' name='site' value='downloads'>
+				<input type='hidden' name='action' value='editdwl_do'>
+				<input type='hidden' name='id' value='" .$letoltesadatok['id']. "'>
+				<input type='submit' name='parancs' value='Szerkeszt'>
+			</form>");
+		}
+		
+		break;
+	case "editdwl_do": // Letöltés szerkesztése - futtatás
+		if ( ($_POST['title'] == $NULL) || ($_POST['descr'] == $NULL) )
+		{
+			Hibauzenet("CRITICAL", "Kötelezően kitöltendő mezők hiányoznak!", "A <b>Cím</b> és a <b>Leírás</b> mezőt kötelező kitölteni!");
+		} else {
+			if ( $_POST['parancs'] == "Szerkeszt" )
+			{
+				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."downloads SET title='" .mysql_real_escape_string($_POST['title']). "', descr='" .mysql_real_escape_string($_POST['descr']). "' WHERE id='" .mysql_real_escape_string($_POST['id']). "'");
+				print("<div class='messagebox'>A letöltés frissítése sikeresen befejeződött!<br><a href='admin.php?site=downloads&action=viewitems&id=" .$_POST['id']. "'>Vissza a letöltések listájához</a></div>");
+			}
+		}
+		
+		break;
+	case "deldwl": // Letöltés törlése
+		if ( $_GET['id'] == $NULL )
+		{
+			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
+		} else {
+			$kategoriaid = mysql_fetch_assoc($sql->Lekerdezes("SELECT cid FROM " .$cfg['tbprf']."downloads WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
+			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."downloads WHERE id='" .mysql_real_escape_string($_GET['id']). "'");
+			print("<div class='messagebox'>A letöltés törlése megtörtént!<br><a href='admin.php?site=downloads&action=viewitems&id=" .$kategoriaid['cid']. "'>Vissza a listához</a></div>");
 		}
 		
 		break;

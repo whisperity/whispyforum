@@ -68,7 +68,7 @@
 				print("<tr>
 				<td>" .$sor['title']. "</td>
 				<td>" .$sor['descr']. "</td>
-				<td><a href='download.php?action=viewdwl&id=" .$sor['id']. "'>Letöltés</a></td>
+				<td><a href='download.php?action=viewdwl&id=" .$sor['id']. "'>Részletek</a></td>
 				</tr>");
 			}
 			print("</table>");
