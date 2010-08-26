@@ -184,8 +184,11 @@ function FunctionsHelp()
 function UpdateHelp()
 {
 	print("<h2>Frissítéssel kapcsolatos információk</h2>\n
-		Ha azt a hibaüzenetet kapod, hogy a futtatott és a telepített verzió nem egyezik, nem feltétlenül kell aggódnod.
-		<br>Az eltérő verziók használata a legtöbb esetben csak apró kompatibilitási problémákat okoz, azonban, ha a hibaüzenet elszaporodnak, meg kell fontolni a rendszer újratelepítését.<br>A fejlesztők dolgoznak egy egyesítőscripten, mellyel az újratelepítés nélkül lehetne az adatbázist frissíteni, azonban ez még a jövő zenéje. Addig is, az adatbázist a telepítőscripttel (<a href='../install/index.php'>itt elérhető</a>) telepítheted újra.");
+		Ha azt a hibaüzenetet kapod, hogy a futtatott<sup>*</sup> és a telepített<sup>**</sup> verzió nem egyezik, nem feltétlenül kell aggódnod.
+		<br>Az eltérő verziók használata a legtöbb esetben csak apró kompatibilitási problémákat okoz, azonban, ha a hibaüzenetek elszaporodnak, meg kell fontolni a rendszer újratelepítését.<br>A fejlesztők dolgoznak egy egyesítőscripten, mellyel az újratelepítés nélkül lehetne az adatbázist frissíteni, azonban ez még a jövő zenéje.
+		Addig is, az adatbázist a telepítőscripttel (<a href='../install/index.php'>itt elérhető</a>) telepítheted újra.<br>
+		FONTOS!: Az újratelepítés előtt készíts teljes biztonsági mentést a fájlokról és az adatbázis tartalmáról.<br><br>
+		<small>*: A szerverre másolt fájlok<br>**: A telepítés pillanatában a szerveren lévő fájlok</sup>");
 }
 
 function BBCodeHelp()
