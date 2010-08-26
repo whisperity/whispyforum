@@ -3,8 +3,8 @@
    http://code.google.com/p/whispyforum/
 */
 
-/* index.php
-   nyítóoldal
+/* download.php
+   letöltések
 */
  
  include('includes/common.php'); // Betöltjük a portálrendszer alapscriptjeit (common.php elvégzi)
@@ -76,7 +76,42 @@
 		
 		break;
 	case "viewdwl": // Letöltés megtekintése
-		
+		if ( $_GET['id'] == $NULL )
+		{
+			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
+		} else {
+			$letoltes = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."downloads WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
+			
+			SetTitle("Letöltés adatai: " .$letoltes['title']);
+			
+			print("<table>
+			<tr>
+				<td>Letöltés címe</td>
+				<td>" .$letoltes['title']. "</td>
+			</tr><tr>
+				<td>Letöltés leírása</td>
+				<td>" .$letoltes['descr']. "</td>
+			</tr><tr>
+				<td>Feltöltő neve</td>
+				<td><a href='profile.php?id=");
+			
+			$felhasznalo = mysql_fetch_assoc($sql->Lekerdezes("SELECT id, username FROM " .$cfg['tbprf']. "user WHERE id='" .mysql_real_escape_string($letoltes['uid']). "'"));
+			print($felhasznalo['id']. "'>" .$felhasznalo['username']. "</a></td>
+			</tr><tr>
+				<td>Feltöltés időpontja</td>
+				<td>" .Datum("normal", "kisbetu", "dl", "H", "i", "s", $letoltes['upload_date']). "</td>
+			</tr><tr>
+				<td>Fájl mérete</td>
+				<td>" .DecodeSize(@filesize("uploads/" .md5($letoltes['href']))). "</td>
+			</tr><tr>
+				<td>Letöltés</td>
+				<td><a href='download_do.php?id=" .$_GET['id']. "' target='_blank'><img src='themes/" .$_SESSION['themeName']. "/download.gif' alt='Letöltés' border='0'></a></td>
+			</tr><tr>
+				<td>Letöltések száma</td>
+				<td>" .$letoltes['download_count']. "</td>
+			</tr>
+			</table>");
+		}
 		break;
  }
  

@@ -105,11 +105,13 @@ function Inicialize ( $pagename )
  $wf_debug->RegisterDLEvent("Szükséges fájlok betöltve");
  
  // Témafájl betöltése
- print("\n<link rel='stylesheet' type='text/css' href='themes/" .$_SESSION['themeName']. "/style.css'>
+ if ( $pagename != "download_do.php") {
+	print("\n<link rel='stylesheet' type='text/css' href='themes/" .$_SESSION['themeName']. "/style.css'>
 ");
- if ( $_SESSION['themeName'] == $NULL )
-	print("\n<link rel='stylesheet' type='text/css' href='themes/default/style.css'>
+	if ( $_SESSION['themeName'] == $NULL )
+		print("\n<link rel='stylesheet' type='text/css' href='themes/default/style.css'>
 ");
+ }
  /* */
  
  /* Telepítettség ellenörzése */
@@ -140,8 +142,10 @@ function Inicialize ( $pagename )
 	<a href='' onClick=\"window.open('includes/help.php?cmd=Update', 'popupwindow', 'width=570,height=320'); return false;\">kattints ide</a>");
 	
 
- if ($pagename != "admin.php") // Az admin.php-n ezeknek NEM kell megjelenniük
+ if ( ($pagename == "admin.php") || ($pagename == "download_do.php") ) // Az admin.php-n és a letöltéskor ezeknek NEM kell megjelenniük
  {
+	// Nem történik semmi
+ } else {
 	$addons->LoadAddons(); // Addonok betöltése
 	Fejlec(); // Fejléc
 	

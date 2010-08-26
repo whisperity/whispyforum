@@ -154,6 +154,7 @@ if ( $_POST['action'] != $NULL )
 				<th>Cím</th>
 				<th>Leírás</th>
 				<th>Letöltések száma</th>
+				<th>Fájl mérete</th>
 				<th>Feltöltés időpontja</th>
 				<th>Feltöltő felhasználó neve</th>
 			</tr>");
@@ -165,6 +166,7 @@ if ( $_POST['action'] != $NULL )
 				print("<tr>
 				<td>" .$sor['title']. "</td>
 				<td>" .$sor['descr']. "</td>
+				<td>" .DecodeSize(@filesize("uploads/" .md5($sor['href']))). "</td>
 				<td>" .$sor['download_count']. "</td>
 				<td>" .Datum("normal", "kisbetu", "dL", "H", "i", "s", $sor['upload_date']). "</td>
 				<td>" .$felhasznaloneve['username']. "</td>
@@ -205,6 +207,7 @@ if ( $_POST['action'] != $NULL )
 			<span class='formHeader'>Letöltés szerkesztése: " .$letoltesadatok['title']. "</span>
 			<p class='formText'>Cím: <input type='text' name='title' value='" .$letoltesadatok['title']. "'><br>
 			Hivatkozás: " .$letoltesadatok['href']. "<br>
+			Fájlméret: " .DecodeSize(@filesize("uploads/" .md5($letoltesadatok['href']))). "<br>
 			Leírás: <textarea name='descr' rows='15' cols='60'>" .$letoltesadatok['descr']. "</textarea><br>
 			Feltöltő neve: " .$felhasznalo['username']. "<br>
 			Feltöltés időpontja: " .Datum("normal", "kisbetu", "dL", "H", "i", "s", $letoltesadatok['upload_date']). "<br>
@@ -241,6 +244,17 @@ if ( $_POST['action'] != $NULL )
 		}
 		
 		break;
+	case "newdwl": // Letöltés hozzáadása (in layman's terms: feltöltés)
+	{
+		if ( $_GET['cid'] == $NULL )
+		{
+			Hibauzenet("CRITICAL", "A kategória azonosítóját kötelező megadni!");
+		} else {
+			
+		}
+		
+		break;
+	}
  }
  
 print("</td><td class='right' valign='top'>"); // Középső doboz zárása, jobboldali üres doboz elhelyezése (td.right-ot az admin.php zárja)
