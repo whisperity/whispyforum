@@ -42,8 +42,7 @@ if ($_POST['cmd'] == "add") // Ha a bejövő parancs "ADD" (fórum hozzáadása)
 			
 			/* Lehetőség azonnal új post létrehozására */
 			$szam = mysql_num_rows($sorlekerdezes); // Sorok száma (az új sor miatt +1-gyel használjuk)
-			print("<div class='messagebox'>A fórum sikeresen hozzáadásra került!<br><a href='viewforum.php'>Fórumok megtekintése</a><br><a href='newtopic.php?id=" .($szam+1). "'>Új téma hozzáadása a fórumhoz</a></div>"); // MessageBox stílusú <div>-be nyomtatunk
-			
+			ReturnTo("A fórum sikeresen hozzáadva", "viewtopics.php?id=" .($szam+1), "A fórum megtekintése", TRUE);
 			print("</td><td class='right' valign='top'>"); // Dobozzárás
 			Lablec(); // Lábléc létrehozása
 			die(); // A lenti kódoknak már nem kell lefutnia

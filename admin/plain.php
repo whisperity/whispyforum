@@ -91,7 +91,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		break;
 	case "doedit": // Szerkesztés lebonyolítása (SQL)
 		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."plain SET title='" .mysql_real_escape_string($_POST['title']). "', content='" .mysql_real_escape_string($_POST['content']). "' WHERE id='" .mysql_real_escape_string($_POST['id']). "'");
-		print("<div class='messagebox'>Szerkesztés sikeres!<br>\n<a href='admin.php?site=plain'>Vissza a listához</a></div>");
+		ReturnTo("A statikus tartalom szerkesztése sikeres!", "admin.php?site=plain", "Vissza a listához", TRUE);
 		break;
 	case "delete": // Modul törlése
 		if ( $_GET['id'] == $NULL )
@@ -99,7 +99,8 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
 		} else {
 			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."plain WHERE id='" .mysql_real_escape_string($_GET['id']). "'");
-			print("<div class='messagebox'>A statikus tartalom sikeresen törölve!<br><a href='admin.php?site=plain'>Vissza a listához</a></td><td class='right' valign='top'>");
+			ReturnTo("A statikus tartalom sikeresen törölve!", "admin.php?site=plain", "Vissza a listához", TRUE);
+			print("</td><td class='right' valign='top'>");
 			Lablec();
 			die();
 		}
@@ -123,7 +124,8 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 			die();
 		} else {
 			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."plain(title, content) VALUES('" .mysql_real_escape_string($_POST['title']). "', '" .mysql_real_escape_string($_POST['content']). "')");
-			print("<div class='messagebox'>A statikus tartalom hozzáadva!<br><a href='admin.php?site=plain'>Vissza a listához</a></td><td class='right' valign='top'>");
+			ReturnTo("A statikus tartalom hozzáadása sikeres!", "admin.php?site=plain", "Vissza a listához", TRUE);
+			print("</td><td class='right' valign='top'>");
 		}
 		break;
 }

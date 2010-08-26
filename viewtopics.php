@@ -186,7 +186,7 @@
 		
 		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."topics SET locked='" .$locked. "', type='" .$_GET['type']. "' WHERE id='" .mysql_real_escape_string($getid). "'");
 		$sor5 = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE id='" .mysql_real_escape_string($getid). "'")); // Téma adatai
-		print("<div class='messagebox'>A téma sikeresen szerkesztve!<br><a href='viewtopics.php?id=" .$sor5['fId']. "'>Vissza a fórumhoz</a>");
+		ReturnTo("Téma sikeresen szerkesztve", "viewtopics.php?id=" .$sor5['fId'], "Vissza a fórumhoz", TRUE);
 		DoFooter();
 		die(); // A többi kód ne fusson le
 	}
@@ -271,8 +271,7 @@
 		$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."topics WHERE id='" .mysql_real_escape_string($getid). "'"); // Téma törlése
 		$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."posts WHERE tId='" .mysql_real_escape_string($getid). "'"); // Hozzászólások törlése
 		
-		print("<div class='messagebox'>A téma sikeresen törölve!<br><a href='viewtopics.php?id=" .$sor3['fId']. "'>Vissza a fórumhoz</a>");
-		
+		ReturnTo("Hozzászólás sikeresen törölve", "viewtopics.php?id=" .$sor3['fId'], "Vissza a fórumhoz", TRUE);
 		DoFooter();
 		die(); // A többi kód ne fusson le
 	}

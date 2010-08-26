@@ -103,7 +103,7 @@ if ( $_POST['action'] != $NULL )
 			if ( $_POST['parancs'] == "Szerkeszt" )
 			{
 				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."download_categ SET title='" .mysql_real_escape_string($_POST['title']). "', descr='" .mysql_real_escape_string($_POST['descr']). "' WHERE id='" .mysql_real_escape_string($_POST['id']). "'");
-				print("<div class='messagebox'>A kategória szerkesztése megtörtént!<br><a href='admin.php?site=downloads'>Vissza a kategórialistához</a></div>");
+				ReturnTo("A kategória szerkesztése megtörtént!", "admin.php?site=downloads", "Vissza a kategórialistához", TRUE);
 			}
 		}
 		
@@ -114,7 +114,7 @@ if ( $_POST['action'] != $NULL )
 			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
 		} else {
 			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."download_categ WHERE id='" .mysql_real_escape_string($_GET['id']). "'");
-			print("<div class='messagebox'>A kategória törlése megtörtént!<br><a href='admin.php?site=downloads'>Vissza a kategórialistához</a></div>");
+			ReturnTo("A kategória törlése megtörtént!", "admin.php?site=downloads", "Vissza a kategórialistához", TRUE);
 		}
 		
 		break;
@@ -136,7 +136,7 @@ if ( $_POST['action'] != $NULL )
 			if ( $_POST['parancs'] == "Hozzáad" )
 			{
 				$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."download_categ(title, descr, files) VALUES ('" .mysql_real_escape_string($_POST['title']). "', '" .mysql_real_escape_string($_POST['descr']). "', 0)");
-				print("<div class='messagebox'>Az új kategória hozzáadása megtörtént!<br><a href='admin.php?site=downloads'>Vissza a kategórialistához</a></div>");
+				ReturnTo("Az új kategória hozzáadása megtörtént!", "admin.php?site=downloads", "Vissza a kategórialistához", TRUE);
 			}
 		}
 		
@@ -225,7 +225,7 @@ if ( $_POST['action'] != $NULL )
 			if ( $_POST['parancs'] == "Szerkeszt" )
 			{
 				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."downloads SET title='" .mysql_real_escape_string($_POST['title']). "', descr='" .mysql_real_escape_string($_POST['descr']). "' WHERE id='" .mysql_real_escape_string($_POST['id']). "'");
-				print("<div class='messagebox'>A letöltés frissítése sikeresen befejeződött!<br><a href='admin.php?site=downloads&action=viewitems&id=" .$_POST['id']. "'>Vissza a letöltések listájához</a></div>");
+				ReturnTo("A letöltés frissítése megtörtént!", "admin.php?site=downloads&action=viewitems&id=" .$_POST['id'], "Vissza a letöltések listájához", TRUE);
 			}
 		}
 		
@@ -237,7 +237,7 @@ if ( $_POST['action'] != $NULL )
 		} else {
 			$kategoriaid = mysql_fetch_assoc($sql->Lekerdezes("SELECT cid FROM " .$cfg['tbprf']."downloads WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
 			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."downloads WHERE id='" .mysql_real_escape_string($_GET['id']). "'");
-			print("<div class='messagebox'>A letöltés törlése megtörtént!<br><a href='admin.php?site=downloads&action=viewitems&id=" .$kategoriaid['cid']. "'>Vissza a listához</a></div>");
+			ReturnTo("A letöltés törlése megtörtént!", "admin.php?site=downloads&action=viewitems&id=" .$kategoriaid['cid'], "Vissza a letöltések listájához", TRUE);
 		}
 		
 		break;

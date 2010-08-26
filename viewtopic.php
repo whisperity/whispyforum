@@ -192,7 +192,7 @@
 		SetTitle("Hozzászólás szerkesztése");
 		$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "posts SET pTitle='" .mysql_real_escape_string($_POST['title']). "', pText='" .mysql_real_escape_string($_POST['post']). "', edited=1, euId=" .$_SESSION['userID']. ", eDate=" .time(). " WHERE id='" .mysql_real_escape_string($getid). "'"); // Hozzászólás frissítése, szerkesztési adatok hozzáírása
 		// Szerkesztés
-		print("<div class='messagebox'>Hozzászólás sikeresen szerkesztve!<br><a href='viewtopic.php?id=" .$sor2['id']. "#pid" .$getid. "'>Vissza a hozzászóláshoz</a>");
+		ReturnTo("Hozzászólás sikeresen szerkesztve", "viewtopic.php?id=" .$sor2['id']. "#pid" .$getid, "Vissza a hozzászóláshoz", TRUE);
 		
 		DoFooter();
 		die(); // A többi kód ne fusson le
@@ -302,7 +302,7 @@
 		// Hozzászólás eltávolítása az adatbázisból
 		$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."posts WHERE id='" .mysql_real_escape_string($getid). "'");
 		// Hozzászólás törlése
-		print("<div class='messagebox'>Hozzászólás sikeresen törölve!<br><a href='viewtopic.php?id=" .$adat['tId']. "#pid" .$getid. "'>Vissza a témához</a>");
+		ReturnTo("Hozzászólás sikeresen törölve", "viewtopic.php?id=" .$adat['tId']. "#pid" .$getid, "Vissza a témához", TRUE);
 		
 		DoFooter();
 		die(); // A többi kód ne fusson le

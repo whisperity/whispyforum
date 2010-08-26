@@ -50,7 +50,7 @@
 			$sor4 = mysql_fetch_array($sql->Lekerdezes("SELECT postCount FROM " .$cfg['tbprf']."user WHERE id='" .$_SESSION['userID']. "'"), MYSQL_ASSOC); // Felhasználó hozzászólásszáma
 			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET postCount='" .($sor4['postCount']+1). "'");
 			
-			print("<div class='messagebox'>Az új témát létrehoztam!<br><a href='viewtopics.php?id=" .$_POST['id']. "'>Vissza a fórumhoz</a></div>"); // Visszatérési link
+			ReturnTo("Az új téma létrehozva!", "viewtopics.php?id=" .$_POST['id'], "Vissza a fórumhou", TRUE); // Visszatérési link
 			DoFooter();
 			die(); // A többi kód nem fut le!
 		}

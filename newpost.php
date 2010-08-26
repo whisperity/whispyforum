@@ -45,7 +45,7 @@
 				$sor4 = mysql_fetch_array($sql->Lekerdezes("SELECT postCount FROM " .$cfg['tbprf']."user WHERE id='" .$_SESSION['userID']. "'"), MYSQL_ASSOC); // Felhasználó hozzászólásszáma
 				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET postCount='" .($sor4['postCount']+1). "'");
 				
-				print("<div class='messagebox'>Hozzászólásod elküldve!<br><a href='viewtopic.php?id=" .$_POST['id']. "'>Vissza a témához</a></div>"); // Visszatérési link
+				ReturnTo("Hozzászólás elküldve!", "viewtopic.php?id=" .$_POST['id'], "Vissza a témához", TRUE);
 				DoFooter();
 				die(); // A többi kód nem fut le!
 			}

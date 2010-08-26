@@ -170,6 +170,15 @@ function FunctionsHelp()
 	</tr>
 	</table>");
 	
+	print("<hr>");
+	
+	print("<h2>Visszatérési sablon (ReturnTo)</h2>A függvény egy <code>div.messagebox</code> stílusú üzenetet generál a megadott visszatérési linkkel. Bizonyos esetben automatikus (http meta) átirányítás is létrehozható vele.<br>\nA függvény paraméterei:
+	<ul>
+	<li><b>\$text</b>: A doboz szövege. Tartalmazhat HTML-kódot.</li>
+	<li><b>\$href</b>: Visszatérési link. Ha hiányzik, nem lesz visszatérési hivatkozás.</li>
+	<li><b>\$hreftext</b>: A visszatérési link szövege. Ha a \$href változó értéke üres, nem használható!</li>
+	<li><b>\$metareturn</b>: <i>HTTP META</i> átirányítás. Ha a \$href változó értéke üres, nem használható!</li>
+	</ul>");
 }
 
 function UpdateHelp()

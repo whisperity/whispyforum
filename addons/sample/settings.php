@@ -11,7 +11,7 @@
  {
 	$addons->SetCFG("sample", "peldaaddon_sajatszoveg", $_POST['sajatszoveg']);
 	/* Értesítés, további kódok lefutásának megakadályozása */
-	print("<div class='messagebox'>Addon beállításai sikeresen módosítva!<br><a href='admin.php?site=addons'>Visszatérés az addonok listájához</a></div>");
+	ReturnTo("Az addon beállításai sikeresen módosítva!", "admin.php?site=addons", "Vissza az addonok listájához", TRUE);
 	print("</td><td class='right' valign='top'>");
 	Lablec();
 	die();

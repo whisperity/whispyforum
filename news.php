@@ -179,7 +179,7 @@
 			SetTitle("Hozzászólás beküldve");
 			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."news_comments(nId, uId, text, postDate) VALUES
 				(" .$_POST['id']. ", " .$_SESSION['userID']. ", '" .mysql_real_escape_string($_POST['post']). "', " .time(). ")");
-			print("<div class='messagebox'>Hozzászólás sikeresen beküldve<br><a href='news.php?id=" .$_POST['id']. "&action=view'><< Vissza a hírhez</a></div>");
+			ReturnTo("Hozzászólás sikeresen beküldve", "news.php?id=" .$_POST['id']. "&action=view", "Vissza a hírhez", TRUE);
 		}
 		
 		break;
@@ -224,8 +224,7 @@
 			$adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."news_comments WHERE id='" .$_POST['cid']. "'")); // Hozzászólás adatainak bekérése
 			
 			// Szerkesztés
-			print("<div class='messagebox'>Hozzászólás sikeresen szerkesztve!<br><a href='news.php?id=" .$adat['nId']. "&action=view'>Vissza a hírhez</a>");
-			
+			ReturnTo("Hozzászólás sikeresen szerkesztve", "news.php?id=" .$adat['nId']. "&action=view", "Vissza a hírhez", TRUE);
 			DoFooter();
 			die(); // A többi kód ne fusson le
 		}
@@ -299,7 +298,7 @@
 			
 			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."news_comments WHERE id='" .$getid. "'"); // Törlés
 			
-			print("<div class='messagebox'>Hozzászólás sikeresen törölve!<br><a href='news.php?id=" .$adat['nId']. "&action=view'>Vissza a hírhez</a>"); // Visszatérési link (az $adat előbb jött létre, ezért nem zavar be a törlés)
+			ReturnTo("Hozzászólás sikeresen törölve", "news.php?id=" .$adat['nId']. "&action=view", "Vissza a hírhez", TRUE); // Visszatérési link (az $adat előbb jött létre, ezért nem zavar be a törlés)
 			
 			// A többi kód ne fusson le
 			DoFooter();
@@ -342,7 +341,7 @@
 			}
 				
 			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."news(title, text, postDate, uId, commentable) VALUES ('" .$_POST['title']. "', '" .$_POST['post']. "', " .time(). ", " .$_SESSION['userID']. ", " .$commentable. ")");
-			print("<div class='messagebox'>Hír (" .$_POST['title']. ") sikeresen beküldve<br><a href='news.php'><< Vissza a hírekhez</a></div>");
+			ReturnTo("Hír (" .$_POST['title']. ") sikeresen beküldve!", "news.php", "Vissza a hírhekhez", TRUE);
 		}
 		
 		break;

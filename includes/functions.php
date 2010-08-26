@@ -262,5 +262,75 @@ function Datum( $ev, $honap, $nap, $ora, $perc, $masodperc, $epoch = '' ) // A m
 	
 	return str_replace($emoteN, $hrefs, $kisbetu);
  }
-
+ 
+ function ReturnTo($text, $href = '', $hreftext = '', $metareturn = FALSE ) // Visszatérési üzenetdoboz generálása
+ {
+	// $text: a megjelenő sablon szövege
+	// $href: visszatérési link (ha van, megjelenik egy visszatérési link)
+	// $hreftext: a visszatérési link szövege (ha van, megjelenik egy visszatérési link)
+	// $metareturn: ha TRUE, akkor HTTP META átirányítással pár másodperc után automatikusan visszatérünk
+	
+	print("<div class='messagebox'>" .$text); // Kiírjuk a doboz szövegét
+	
+	if ( ($href != '') && ($hreftext != '') ) // Ha href és hreftext is rendelkezik értékkel
+	{
+		print("<br><a href='" .$href. "'>" .$hreftext. "</a>"); // Visszatérő link kiíratása
+	}
+	
+	if ( ($href == '') && ($hreftext != '') ) // Ha href-nek nincs értéke, de hreftextnek van
+	{
+		Hibauzenet("WARNING", "A visszatérő sablon érvénytelen paraméterekkel rendelkezik", "A visszatérő sablonban a visszatérési linkje a következő szöveget viselte volna: <tt>" .$hreftext. "</tt>, ám a visszatérési hivatkozás érvénytelen (üres)");
+	}
+	
+	if ( ($href != '') && ($hreftext == '') ) // Ha href-nek van értéke, de hreftextnek nincs
+	{
+		Hibauzenet("WARNING", "A visszatérő sablon érvénytelen paraméterekkel rendelkezik", "A visszatérő sablonban a visszatérési linkje a következő helyre irányította volna a felhasználót: <tt><a href='" .$href. "'>" .$href. "</a></tt>, de a visszatérő link nem kapott szöveget!");
+	}
+		
+	if ( ($href != '') && ($hreftext != '') && ( $metareturn == TRUE) ) // Ha van visszatérési link, szöveg, és a metareturn igaz
+	{
+		echo '<meta http-equiv="refresh" content="3;url=' .$cfg['phost']. '/' .$href. '" />'; // META visszatérési parancsot küldünk, mely a böngészőt 3 sec után automatikusan átirányítja
+		print("&nbsp;<small><span id='dotdotdots'></span>"); // dotdotdots = visszaszámlálás
+		print("<span id='returnmsg'></span></small>"); // returnmsg = 0 visszaszámlálás értéknél bónusz üzenet
+		
+		?>
+		<SCRIPT language=javascript>
+function GetObject(name)
+{
+	var o=null;
+	if(document.getElementById)
+		o=document.getElementById(name);
+	else if(document.all)
+		o=document.all.item(name);
+	else if(document.layers)
+		o=document.layers[name];
+	if (o==null && document.getElementsByName)
+	{
+		var e=document.getElementsByName(name);
+		if (e.length==1) o=e[0];
+	}
+	return o;
+}
+function rvl(n)
+{
+	if (n==51)
+	{
+		var o2=GetObject("returnmsg");
+		if (o2) o2.innerHTML="<br>META-átirányítás folyamatban...";
+		setTimeout("document.location=document.location;",1000);
+	}
+	else
+	{
+		var o=GetObject("dotdotdots");
+		if (o) o.innerHTML="3 másodperc...<br>2 másodperc...<br>1 másodperc...".substr(0,n);
+		setTimeout("rvl("+(n+1)+");",45);
+	}
+}
+rvl(0);
+</SCRIPT>
+	<?php
+	}
+	
+	print("</div>");
+ }
 ?>

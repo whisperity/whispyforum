@@ -57,7 +57,7 @@
 		if ( ($_GET['seta'] == "settheme") && ($_GET['themename'] != $NULL) )
 		{
 			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."user SET theme='" .mysql_real_escape_string($_GET['themename']). "' WHERE id='" .$_SESSION['userID']. "'");
-			print("<div class='messagebox'>A témát sikeresen módosítottad!<br><a href='index.php'>Kezdőlap</a></div>");
+			ReturnTo("A témát sikeresen módosítottad!", "ucp.php", "Vissza a vezérlőpultba", TRUE);
 			DoFooter();
 			die();
 		}
@@ -119,7 +119,7 @@
 		if ( $_POST['seta'] == "setdatas" )
 		{
 			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."user SET bemutatkozas='" .mysql_real_escape_string($_POST['bemutatkozas']). "', thely='" .mysql_real_escape_string($_POST['thely']). "' WHERE id='" .$_SESSION['userID']. "'");
-			print("<div class='messagebox'>Adatok frissítve!</div>");
+			ReturnTo("Adatok frissítve!", "ucp.php", "Vissza a vezérlőpultba", TRUE);
 			DoFooter();
 			die();
 		}
@@ -144,10 +144,11 @@
 					if(move_uploaded_file($_FILES['picfile']['tmp_name'], "uploads/" .md5($_SESSION['username']). ".pict"))
 					{
 						// Sikeres feltöltés esetén
-						print("<div class='messagebox'>Az avatarod frissítése sikeresen megtörtént!</div>");
+						ReturnTo("Az avatarod frissítése sikeresen megtörtént!", "ucp.php", "Vissza a vezérlőpultba", TRUE);
 					} else {
 						// Hiba volt a feltöltés közben
 						Hibauzenet("ERROR", "A fájlt nem sikerült feltölteni!");
+						ReturnTo("", "ucp.php", "Vissza a vezérlőpultba", FALSE);
 					}
 				} else {
 					Hibauzenet("WARNING", "A feltöltött fájlnak JPG, GIF vagy PNG típusúnak kell lennie!", "A te általad feltöltött fájl (" .$_FILES['picfile']['name']. ") nem érvényes képfájl!");

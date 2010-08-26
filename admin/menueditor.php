@@ -151,7 +151,8 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
 		} else {
 			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."modules WHERE id='" .mysql_real_escape_string($_GET['id']). "'");
-			print("<div class='messagebox'>A modul sikeresen törölve!<br><a href='admin.php?site=menueditor'>Vissza a menüszerkesztőhöz</a></td><td class='right' valign='top'>");
+			ReturnTo("A modul sikeresen törölve", "admin.php?site=menueditor", "Vissza a menüszerkesztőhöz", TRUE);
+			print("</td><td class='right' valign='top'>");
 			Lablec();
 			die();
 		}
@@ -162,7 +163,8 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
 		} else {
 			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."menuitems WHERE id='" .mysql_real_escape_string($_GET['id']). "'");
-			print("<div class='messagebox'>A menüelem sikeresen törölve!<br><a href='admin.php?site=menueditor'>Vissza a menüszerkesztőhöz</a></td><td class='right' valign='top'>");
+			ReturnTo("A menüelem sikeresen törölve", "admin.php?site=menueditor", "Vissza a menüszerkesztőhöz", TRUE);
+			print("</td><td class='right' valign='top'>");
 			Lablec();
 			die();
 		}
@@ -177,7 +179,8 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 				// A menü szerkesztésének mentése
 				
 				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."menuitems SET text='" .mysql_real_escape_string($_POST['text']). "', href='" .mysql_real_escape_string($_POST['href']). "', hOrder='" .mysql_real_escape_string($_POST['hOrder']). "' WHERE id='" .mysql_real_escape_string($_POST['id']). "'");
-				print("<div class='messagebox'>A menüelem sikeresen szerkesztve!<br><a href='admin.php?site=menueditor'>Vissza a menüszerkesztőhöz</a></td><td class='right' valign='top'>");
+				ReturnTo("A menüelem sikeresen szerkesztve", "admin.php?site=menueditor", "Vissza a menüszerkesztőhöz", TRUE);
+				print("</td><td class='right' valign='top'>");
 				Lablec();
 				die();
 			}
@@ -218,7 +221,8 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 				
 				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."modules SET name='" .mysql_real_escape_string($_POST['name']). "', type='" .mysql_real_escape_string($_POST['type']). "', side='" .mysql_real_escape_string($_POST['side']). "', hOrder='" .mysql_real_escape_string($_POST['hOrder']). "' WHERE id='" .mysql_real_escape_string($_POST['id']). "'");
 				
-				print("<div class='messagebox'>A modul sikeresen szerkesztve!<br><a href='admin.php?site=menueditor'>Vissza a menüszerkesztőhöz</a></div></td><td class='right' valign='top'>");
+				ReturnTo("A modul sikeresen szerkesztve", "admin.php?site=menueditor", "Vissza a menüszerkesztőhöz", TRUE);
+				print("</td><td class='right' valign='top'>");
 				Lablec();
 				die();
 			}
@@ -295,7 +299,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		if ( ($_POST['name'] != $NULL) && ($_POST['side'] != $NULL) && ($_POST['type'] != $NULL) )
 		{
 			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name, type, side) VALUES ('" .mysql_real_escape_string($_POST['name']). "', '" .mysql_real_escape_string($_POST['type']). "', '" .mysql_real_escape_string($_POST['side']). "')"); // Hozzáadás
-			print("<div class='messagebox'>A modul hozzáadása sikeres volt!<br><a href='admin.php?site=menueditor'>Visszatérés a listához</a></div>");
+			ReturnTo("A modul sikeresen hozzáadva", "admin.php?site=menueditor", "Vissza a listához", TRUE);
 		} else {
 			header('Location: admin.php?site=menueditor&action=newmodule'); // Visszatérés, ha egy kötelező adat hiányzott
 		}
@@ -336,7 +340,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		{
 			// Hozzáadás, ha a szükséges értékek megvannak
 			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."menuitems(menuId, text, href, hOrder) VALUES (" .mysql_real_escape_string($_POST['id']). ", '" .mysql_real_escape_string($_POST['text']). "', '" .mysql_real_escape_string($_POST['href']). "', " .mysql_real_escape_string($_POST['hOrder']). ")");
-			print("<div class='messagebox'>A menüelem hozzáadása sikeres volt!<br><a href='admin.php?site=menueditor&action=viewitems&id=" .$_POST['id']. "'>Visszatérés a listához</a></div>");
+			ReturnTo("A menüelem sikeresen hozzáadva", "admin.php?site=menueditor&action=viewitems&id=" .$_POST['id'], "Vissza a listához", TRUE);
 		} else {
 			header('Location: admin.php?site=menueditor&action=newmenuentry&id=' .$_POST['id']); // Visszatérés, ha egy kötelező adat hiányzott
 		}

@@ -22,7 +22,8 @@ if ( $_POST['cmd'] == "setup" )
 	$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."siteconfig SET value='" .mysql_real_escape_string($_POST['facebook_like']). "' WHERE variable='facebook_like'");
 	$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."siteconfig SET value='" .mysql_real_escape_string($_POST['download_minlvl']). "' WHERE variable='download_minlvl'");
 	
-	print("<div class='messagebox'>A beállítások módosítása megtörtént!<br><a href='admin.php?site=configs'>Vissza</a></td><td class='right' valign='top'>");
+	ReturnTo("A beállítások módosítása megtörtént!", "admin.php?site=configs", "Vissza", TRUE);
+	print("</td><td class='right' valign='top'>");
 	Lablec();
 	die();
 }

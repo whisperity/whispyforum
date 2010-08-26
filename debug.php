@@ -19,5 +19,5 @@
 	   kikapcsolásához írj 0-t.
 	*/
 	
-	define('SHOWDEBUG', 1);
+	define('SHOWDEBUG', 0);
 ?>
