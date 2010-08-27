@@ -323,7 +323,7 @@ function AddonHelp($tipus)
 	Az addonok karbantartását az <a href='../admin.php?site=addons'>admin menü</a>ből érheted el. A lista tartalmazza minden telepített addon nevét, almappája nevét, szerzőjét (a szerző nevére kattintva e-mailt küldhetsz a szerzőnek), teljes tárterületigényét (a fájlok méretét), valamint leírását. Ezek mellett minden sorban helyet kap egy <b>Eltávolítás</b> gomb is, melyre kattintva betöltődik az addon telepítőkódjának eltávolító része, és az addon törlődik a rendszerből. Előfordulhat, hogy az eltávolítóscript további adatokat kér, vagy információkat jelenít meg.
 	<br>Ha az addon fejlesztői szükségesnek tartják, az addon tartalmazhat egy, a beállításait módosító fájlt is. Ha az addon rendelkezik speciális beállításokkal, az Eltávolítás gomb mellett megtalálható egy <b>Beállítások</b> gomb is. Erre kattintva betöltődik a beállításokat módosító kód, mely segítségével az addon beállításai módosíthatóak.
 	<br><br>
-	A lista alatt helyet kap egy <b>Új addon telepítése</b> gomb is, melyre kattintva új addont telepíthetünk. A gombra kattintva először megjelennek a főbb biztonsági intézkedésre felszólító figyelmeztetések, majd meg kell adni az addon almappájának nevét, vagy fel kell tölteni a kötegelt addonfájlt. Ezután betöltődik az addon telepítőscriptje, mely telepíti a kívánt addont. Előfordulhat, hogy a telepítőscript további adatokat kér el.");
+	A lista alatt helyet kap egy <b>Új addon telepítése</b> gomb is, melyre kattintva új addont telepíthetünk. A gombra kattintva először megjelennek a főbb biztonsági intézkedésre felszólító figyelmeztetések, majd meg kell adni az addon almappájának nevét. Ezután betöltődik az addon telepítőscriptje, mely telepíti a kívánt addont. Előfordulhat, hogy a telepítőscript további adatokat kér el.");
 			break;
 		case "developer":
 			print("<h2>Addonok</h2>
@@ -375,7 +375,7 @@ function AddonHelp($tipus)
 			...</code><br><br>
 		<dt>egyéb fájlok</dt>
 			<dd>Ezen felül a mappa tartalmazza a további szükséges fájlokat</dd>
-	</dl><br>A fejlesztés előtt ajánlott átnézni a portálrendszerrel együtt szállított sample addon fájlait, mely példaként minden szükséges fájlt tartalmaz.<br>Az addon fájljait egy úgynevezett kötegelt addonfájlba (.baa fájl) is lehet konvertálni, és azzal szállítani. Ezen fájlok a webböngészőn keresztül a szerverre feltöltve önkicsomagolódnak, és elindítják saját telepítőjüket.");
+	</dl><br>A fejlesztés előtt ajánlott átnézni a portálrendszerrel együtt szállított sample addon fájlait, mely példaként minden szükséges fájlt tartalmaz.");
 			break;
 	}
 }
