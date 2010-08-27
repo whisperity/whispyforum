@@ -39,7 +39,9 @@ if ( $_POST['action'] != $NULL )
 			<tr>
 				<th>Cím</th>
 				<th>Leírás</th>
-				<th>Letöltések száma</th>
+				<th>Fájlok száma</th>
+				<th>Letöltések száma összesen</th>
+				<th>Fájlok mérete összesen</th>
 			</tr>");
 		
 		$kategoriak = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."download_categ");
@@ -48,7 +50,19 @@ if ( $_POST['action'] != $NULL )
 			print("<tr>
 			<td>" .$sor['title']. "</td>
 			<td>" .$sor['descr']. "</td>
-			<td>" .$sor['files']. "</td>
+			<td>" .$sor['files']. "</td>");
+			
+			$letoltesosszes = 0;
+			$meretosszes = 0;
+			$letoltesekInCateg = $sql->Lekerdezes("SELECT href, download_count FROM " .$cfg['tbprf']."downloads WHERE cid='" .$sor['id']. "'");
+			while ( $dwlsor = mysql_fetch_assoc($letoltesekInCateg) )
+			{
+				$letoltesosszes += $dwlsor['download_count'];
+				$meretosszes += @filesize("uploads/" .md5($dwlsor['href']));
+			}
+			
+			print("<td>" .$letoltesosszes. "</td>
+			<td>" .DecodeSize($meretosszes). "</td>
 			<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
 				<input type='hidden' name='site' value='downloads'>
 				<input type='hidden' name='action' value='viewitems'>
@@ -149,7 +163,7 @@ if ( $_POST['action'] != $NULL )
 			$kategoria = mysql_fetch_assoc($sql->Lekerdezes("SELECT id, title, files FROM " .$cfg['tbprf']."download_categ WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
 			print("<h3 class='download-categ'>" .$kategoria['title']. " (" .$kategoria['files']. ")</h3>\n");
 			
-			print("<br><div class='userbox'><table border='0' cellspacing='1' cellpadding='1'>
+			print("<br><a href='admin.php?site=downloads'>Vissza a kategóriákhoz</a><div class='userbox'><table border='0' cellspacing='1' cellpadding='1'>
 			<tr>
 				<th>Cím</th>
 				<th>Leírás</th>
@@ -166,8 +180,8 @@ if ( $_POST['action'] != $NULL )
 				print("<tr>
 				<td>" .$sor['title']. "</td>
 				<td>" .$sor['descr']. "</td>
-				<td>" .DecodeSize(@filesize("uploads/" .md5($sor['href']))). "</td>
 				<td>" .$sor['download_count']. "</td>
+				<td>" .DecodeSize(@filesize("uploads/" .md5($sor['href']))). "</td>
 				<td>" .Datum("normal", "kisbetu", "dL", "H", "i", "s", $sor['upload_date']). "</td>
 				<td>" .$felhasznaloneve['username']. "</td>
 			<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
@@ -239,22 +253,82 @@ if ( $_POST['action'] != $NULL )
 			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
 		} else {
 			$kategoriaid = mysql_fetch_assoc($sql->Lekerdezes("SELECT cid FROM " .$cfg['tbprf']."downloads WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
+			$letoltes = mysql_fetch_assoc($sql->Lekerdezes("SELECT href FROM " .$cfg['tbprf']."downloads WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
+			$categ = mysql_fetch_assoc($sql->Lekerdezes("SELECT files FROM " .$cfg['tbprf']."download_categ WHERE id='" .$kategoriaid['cid']. "'"));
+			
 			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."downloads WHERE id='" .mysql_real_escape_string($_GET['id']). "'");
+			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."download_categ SET files='" .($categ['files']-1). "' WHERE id='" .$kategoriaid['cid']. "'");
+			unlink("uploads/" .md5($letoltes['href']));
 			ReturnTo("A letöltés törlése megtörtént!", "admin.php?site=downloads&action=viewitems&id=" .$kategoriaid['cid'], "Vissza a letöltések listájához", TRUE);
 		}
 		
 		break;
 	case "newdwl": // Letöltés hozzáadása (in layman's terms: feltöltés)
-	{
-		if ( $_GET['cid'] == $NULL )
+		if ( $_POST['cid'] != $NULL )
+		{
+			// Ha POST-tal érkeznek az adatok, a POST action lesz az érték
+			$gcid = $_POST['cid'];
+		} else {
+			// Ha nem post, akkor vagy GET-tel jött az adat, vagy sehogy
+			if ( $_GET['cid'] != $NULL )
+			{
+				// Ha gettel érkezik, az lesz az érték
+				$gcid = $_GET['cid'];
+			} else {
+				// Sehogy nem érkezett adat
+				$gcid = $NULL;
+			}
+		}
+		
+		if ( $gcid == $NULL )
 		{
 			Hibauzenet("CRITICAL", "A kategória azonosítóját kötelező megadni!");
 		} else {
+			$categ = mysql_fetch_assoc($sql->Lekerdezes("SELECT title, files FROM " .$cfg['tbprf']."download_categ WHERE id='" .mysql_real_escape_string($gcid). "'"));
 			
+			if ( $_POST['feltolt'] == "yes" ) // Ha elküldtük a feltöltése parancsot
+			{
+				if ( $_POST['title'] == $NULL )
+				{
+					Hibauzenet("CRITICAL", "A címsor mező kitöltése kötelező");
+				} else {
+				
+				if ( $_FILES['newfile']['size'] > 157286400 )
+				{
+					Hibauzenet("ERROR", "A feltöltött fájl túl nagy méretű!", "A feltöltött fájl mérete " .DecodeSize($_FILES['newfile']['size']). ", azonban a maximális megengedett méret csak " .DecodeSize(157286400). "! Kérlek töltsd fel egy kisebb méretű fájlt!");
+				} else {
+					if(move_uploaded_file($_FILES['newfile']['tmp_name'], "uploads/" .md5($_FILES['newfile']['name'])))
+					{
+						// Sikeres feltöltés esetén
+						$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."downloads (cid, uid, href, title, descr, upload_date) VALUES (" .mysql_real_escape_string($gcid). ", " .$_SESSION['userID']. ", '" .$_FILES['newfile']['name']. "', '" .$_POST['title']. "', '" .$_POST['descr']. "', " .time(). ")");
+						$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."download_categ SET files='" .($categ['files']+1). "' WHERE id='" .mysql_real_escape_string($gcid). "'");
+						
+						ReturnTo("A feltöltés sikeres!", "admin.php?site=downloads&action=viewitems&id=" .$gcid, "Vissza a kategória letöltéseihez", TRUE);
+					} else {
+						// Hiba volt a feltöltés közben
+						Hibauzenet("ERROR", "A fájlt nem sikerült feltölteni!");
+						ReturnTo("", "admin.php?site=downloads&action=newdwl&cid=" .$gcid, "Vissza a feltöltéshez", FALSE);
+					}
+				}
+				}
+			} else {
+		
+				print("Fájl feltöltése a következő kategóriába: <i>" .$categ['title']. "</i>
+			<form enctype='multipart/form-data' action='" .$_SERVER['PHP_SELF']. "' method='POST'>
+			<p class='formText'>Címsor<a class='feature-extra'><span class='hover'><span class='h3'><center><span class='star'>*</span> Kötelezően kitöltendő mező <span class='star'>*</span></center></span>Ezt a mezőt kötelező kitölteni, kitöltése nélkül az űrlap érvénytelenül lesz beadva.</span><span class='star'>*</span></a>: <input type='text' name='title' size='50'><br>
+			Leírás: <textarea name='descr' rows='10' cols='25'></textarea><br>
+			Új fájl feltöltéséhez tallózd be a fájlt a merevlemezedről. A feltölthető fájl mérete maximálisan: " .DecodeSize(157286400). "
+			<br><a class='feature-extra'><span class='hover'><span class='h3'><center><span class='star'>*</span> Kötelezően kitöltendő mező <span class='star'>*</span></center></span>Ezt a mezőt kötelező kitölteni, kitöltése nélkül az űrlap érvénytelenül lesz beadva.</span><span class='star'>*</span></a><input name='newfile' type='file' size='50' accept='application/octet-stream'><br>
+			<input type='submit' value='Feltöltés'>
+			<input type='hidden' name='site' value='downloads'>
+			<input type='hidden' name='action' value='newdwl'>
+			<input type='hidden' name='cid' value='" .$gcid. "'>
+			<input type='hidden' name='feltolt' value='yes'></p>
+			</form>");
+			}
 		}
 		
 		break;
-	}
  }
  
 print("</td><td class='right' valign='top'>"); // Középső doboz zárása, jobboldali üres doboz elhelyezése (td.right-ot az admin.php zárja)
