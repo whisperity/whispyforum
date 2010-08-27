@@ -11,6 +11,7 @@
  include('includes/mysql.php'); // Adatbázis osztály
  include('includes/functions.php'); // Funkcióosztály
  include('includes/versions.php'); // Verzióadatok
+ include('includes/debug.php'); // Hibakeresési osztály
  print("<link rel='stylesheet' type='text/css' href='themes/default/style.css'>"); // Témaaadatok
  print("<center><h2 class='header'>Telepítés</h2></center>"); // Címsor
  print("<title>WhispyFórum - Telepítés</title>"); // HTML-címsor
@@ -202,7 +203,14 @@ global \$cfg;
 			<form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
 				<input type='hidden' value='5' name='pos'>
 				<input type='hidden' name='createdb' value='" .$_POST['createdb']. "'>
-				<input type='submit' value='Tovább >> (Táblák létrehozása)'>
+				<input type='hidden' name='exdata' value='no'>
+				<input type='submit' value='Tovább >> (Táblák létrehozása) (kezdeti adatok nélkül)'>
+			</form>
+			<form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
+				<input type='hidden' value='5' name='pos'>
+				<input type='hidden' name='createdb' value='" .$_POST['createdb']. "'>
+				<input type='hidden' name='exdata' value='yes'>
+				<input type='submit' value='Tovább >> (Táblák létrehozása) (kezdeti adatokkal)'>
 			</form>");
 		}
 		@mysql_close($link); // Kapcsolat zárása
@@ -231,6 +239,7 @@ global \$cfg;
 			include('install/createdb.php'); // A script betöltésével az adatbázis létrejön
 		}
 		
+		$exampledata = $_POST['exdata'];
 		include('install/database.php'); // Egyszerűen betöltjük a megfelelő fájlt és lefut a script.
 		print("<br>A táblák létrehozása sikeresen befejeződött!<br><form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
 				<input type='hidden' value='6' name='pos'>
