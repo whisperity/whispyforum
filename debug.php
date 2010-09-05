@@ -1,23 +1,23 @@
 <?php
-/* WhispyForum CMS-forum portálrendszer
+/* WhispyForum CMS-forum portÃ¡lrendszer
    http://code.google.com/p/whispyforum/
 */
 
 /* debug.php
-   hibakeresési fájl
+   hibakeresÃ©si fÃ¡jl
 */
 
-/* a hibakeresési script a
-   /includes/debug.php fájlban található.
+/* a hibakeresÃ©si script a
+   /includes/debug.php fÃ¡jlban talÃ¡lhatÃ³.
 */
 
-	/* Ez a fájl lényegében csak annyit csinál, hogy
-	   átállítja egy DEFINE konstans értékét.
+	/* Ez a fÃ¡jl lÃ©nyegÃ©ben csak annyit csinÃ¡l, hogy
+	   Ã¡tÃ¡llÃ­tja egy DEFINE konstans Ã©rtÃ©kÃ©t.
 	   
-	   A hibakeresési információk megjelenítéséhez
-	   a következõ kódban a második paraméter értékhez írj 1-et,
-	   kikapcsolásához írj 0-t.
+	   A hibakeresÃ©si informÃ¡ciÃ³k megjelenÃ­tÃ©sÃ©hez
+	   a kÃ¶vetkezÅ‘ kÃ³dban a mÃ¡sodik paramÃ©ter Ã©rtÃ©khez Ã­rj 1-et,
+	   kikapcsolÃ¡sÃ¡hoz Ã­rj 0-t.
 	*/
 	
-	define('SHOWDEBUG', 0);
+	define('SHOWDEBUG', 1);
 ?>
