@@ -76,7 +76,7 @@
 				echo '<a href="#" onclick="debugShow(\'debugGlobals' .$tombnev. '\'); return false;"><abbr title="Doboz megjelenítése/elrejtése">[+/-]</abbr></a>';
 				echo '<div id="debugGlobals' .$tombnev. '" style="text-align: left;">'; // Doboz nyitása
 				
-				print("<table border='1' style='border: black 1px dotted; font-size: 13px;'>
+				print("<table border='0' style='border: black 1px dotted; font-size: 13px;'>
 				<tr>
 					<th>Tömb neve:</th>
 					<th>" .$tombnev. "</th>
@@ -132,7 +132,7 @@
 			echo '<br><b>DEFINE-konstansok</b>: <a href="#" onclick="debugShow(\'debugDefines\'); return false;"><abbr title="Doboz megjelenítése/elrejtése">[+/-]</abbr></a>';
 			echo '<div id="debugDefines" style="text-align: left;">'; // Doboz nyitása
 			
-			print("<table border='1' style='border: black 1px dotted; font-size: 13px;'>
+			print("<table border='0' style='border: black 1px dotted; font-size: 13px;'>
 			<tr>
 				<th>Név</th>
 				<th>Érték</th>
@@ -222,7 +222,7 @@
 		echo '<div id="debugHistory" style="text-align: left;">'."<br>\n";
 		echo '<b>Naplózott események száma:</b> ' .$this->numDLevents. "<br>\n";
 		
-		echo "<table border='1' style='border: black 1px dotted; font-size: 13px;'>
+		echo "<table border='0' style='border: black 1px dotted; font-size: 13px;'>
 		<tr>
 			<th>Idő/eltolódás (sec)</th>
 			<th>Szöveg</th>
