@@ -125,7 +125,7 @@
 	for ($j = 1; $j <= $szavazas['opcount']; $j++) { // Beírjuk a kódba a lehetőségek nevét
 		print($lehetosegszamok[$j]['text']);
 		if ($j != $szavazas['opcount']) {
-			print ("|"); // Ha az adat nem az utolsó, beírunk egy vesszőt (,)
+			print ("|"); // Ha az adat nem az utolsó, beírjuk az elválasztó karaktert
 		}
 	}
 	
@@ -135,7 +135,7 @@
 		print("|".$k);
 	}
 	
-	print("|" .$maxszavszam. "'>\n</div>");
+	print("|" .$maxszavszam. "&chtt=" .$szavazas['title']. "'>\n</div>");
 	
 	$wf_debug->RegisterDLEvent("Google Chart grafikon rajzolása megtörtént");
  }
