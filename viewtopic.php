@@ -54,11 +54,11 @@
  $adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."posts WHERE tId='" .mysql_real_escape_string($getid). "'"); // Témák betöltése az adott fórumból
  
  /* Fórum id megállapítása */
- $sor2 = mysql_fetch_array($sql->Lekerdezes("SELECT name, fId, locked FROM " .$cfg['tbprf']."topics WHERE id='" .mysql_real_escape_string($getid). "'"), MYSQL_ASSOC);
+ $sor2 = mysql_fetch_assoc($sql->Lekerdezes("SELECT name, fId, locked FROM " .$cfg['tbprf']."topics WHERE id='" .mysql_real_escape_string($getid). "'"));
  $forumId = $sor2['fId'];
  SetTitle($sor2['name']);
  
- $sor3 = mysql_fetch_array($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."forum WHERE id='" .$forumId. "'"), MYSQL_ASSOC);
+ $sor3 = mysql_fetch_assoc($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."forum WHERE id='" .$forumId. "'"), MYSQL_ASSOC);
  print("<p class='header'><a href='viewtopics.php?id=" .$forumId. "'><< Vissza a fórumhoz (" .$sor3['name']. ")</a><img src='themes/" .$_SESSION['themeName']. "/x.bmp'>"); // Visszatérési link kiírása
  
  /* Hozzászólási link / lezártsági kép */
@@ -74,14 +74,14 @@
  
  print("</p>");
  /* +1 megtekintés hozzáadása */
- $sor4 = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE id='" .mysql_real_escape_string($getid). "'"), MYSQL_ASSOC);
+ $sor4 = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE id='" .mysql_real_escape_string($getid). "'"));
  $sql->Lekerdezes("UPDATE " .$cfg['tbprf']."topics SET opens='" .($sor4['opens']+1). "' WHERE id='" .mysql_real_escape_string($getid). "'");
  
  print("<h3 class='header'><p class='header'>" .$sor4['name']. "</p></h3>"); // Fejléc
  
- while ($sor = mysql_fetch_array($adat, MYSQL_ASSOC)) { // Hozzászólások listázása
+ while ($sor = mysql_fetch_assoc($adat)) { // Hozzászólások listázása
 	// Felhasználók nevének betöltése
-	$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT id, username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['uId']. "'"), MYSQL_ASSOC);
+	$adat2 = mysql_fetch_assoc($sql->Lekerdezes("SELECT id, username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['uId']. "'"));
 	
 	switch ($adat2['userLevel']) // Beállítjuk a szöveges userLevel értéket (userLevelTXT)
 	{
@@ -165,7 +165,7 @@
  }
  // Felhasználói rang, felhasználó ellenörzése
  $adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."posts WHERE id='" .mysql_real_escape_string($getid). "'")); // Post adatainak bekérése
- $adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT id, username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$adat['uId']. "'"), MYSQL_ASSOC);
+ $adat2 = mysql_fetch_assoc($sql->Lekerdezes("SELECT id, username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$adat['uId']. "'"));
  if ( ($_SESSION['userLevel'] == 0) || ( $_SESSION['userLevel'] == 1) )
  {
 	$jog = 0; // Ha a felhasználó userszintje 0 (vendég) vagy 1 (felhasználó), nincs joga szerkeszteni
@@ -263,7 +263,7 @@
  }
  // Felhasználói rang, felhasználó ellenörzése
  $adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."posts WHERE id='" .mysql_real_escape_string($getid). "'")); // Post adatainak bekérése
- $adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT id, username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$adat['uId']. "'"), MYSQL_ASSOC);
+ $adat2 = mysql_fetch_assoc($sql->Lekerdezes("SELECT id, username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$adat['uId']. "'"));
  if ( ($_SESSION['userLevel'] == 0) || ( $_SESSION['userLevel'] == 1) )
  {
 	$jog = 0; // Ha a felhasználó userszintje 0 (vendég) vagy 1 (felhasználó), nincs joga szerkeszteni

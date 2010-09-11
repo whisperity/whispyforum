@@ -28,7 +28,7 @@
 	if ($_SESSION['loggedin'] != 1) { // Ha a felhasználó nincs bejelentkezve, nem szólhat hozzá
 		Hibauzenet("ERROR", "Amíg nem jelentkezel be, nem készíthetsz új témát");
 	} else {		
-		$sor2 = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."forum WHERE id='" .mysql_real_escape_string($fId). "'"), MYSQL_ASSOC); // Fórum adatai
+		$sor2 = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."forum WHERE id='" .mysql_real_escape_string($fId). "'")); // Fórum adatai
 		
 		if ( $_POST['submit'] != $NULL )
 		{
@@ -47,7 +47,7 @@
 			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "forum SET lpTopic='" .$ujtopicid. "', lpId='" .$ujpostid. "', lastuser='" .$_SESSION['userID']. "', lastpostdate='" .time(). "' WHERE id='" .mysql_real_escape_string($fId). "'"); // Fórum utolsó post és téma adatok beállítása
 			
 			/* Felhasználó hozzászólásszámának növelése */
-			$sor4 = mysql_fetch_array($sql->Lekerdezes("SELECT postCount FROM " .$cfg['tbprf']."user WHERE id='" .$_SESSION['userID']. "'"), MYSQL_ASSOC); // Felhasználó hozzászólásszáma
+			$sor4 = mysql_fetch_assoc($sql->Lekerdezes("SELECT postCount FROM " .$cfg['tbprf']."user WHERE id='" .$_SESSION['userID']. "'")); // Felhasználó hozzászólásszáma
 			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET postCount='" .($sor4['postCount']+1). "'");
 			
 			ReturnTo("Az új téma létrehozva!", "viewtopics.php?id=" .$_POST['id'], "Vissza a fórumhou", TRUE); // Visszatérési link

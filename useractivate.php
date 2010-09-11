@@ -23,7 +23,7 @@
 	</form>");
  } else {
 	// Aktiválás
-	$adat = mysql_fetch_array($sql->Lekerdezes("SELECT activateToken, activated, userLevel FROM " .$cfg['tbprf']. "user WHERE username='" .mysql_real_escape_string($_GET['username']). "'"));
+	$adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT activateToken, activated, userLevel FROM " .$cfg['tbprf']. "user WHERE username='" .mysql_real_escape_string($_GET['username']). "'"));
 	
 	if ($_GET['token'] != $adat['activateToken']) // Aktiválókulcs ellenörzése
 	{

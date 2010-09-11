@@ -53,16 +53,16 @@
 	<th class='forumheader'>Utolsó hozzászólás</th>
  </tr>"); // Fejléc
  /* Fórum címe, weblapfejléc */
- $forumCime = mysql_fetch_array($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."forum WHERE id='" .mysql_real_escape_string($_GET['id']). "'"), MYSQL_ASSOC);
+ $forumCime = mysql_fetch_assoc($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."forum WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
  SetTitle($forumCime["name"]);
  
  /* Közlemények */
  $adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE fId='" .$_GET['id']. "' AND type='2'"); // Közlemények betöltése az adott fórumból
  
- while ($sor = mysql_fetch_array($adat, MYSQL_ASSOC)) { // Témák listázása
+ while ($sor = mysql_fetch_assoc($adat)) { // Témák listázása
 	// Felhasználók nevének betöltése
-	$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT id, username FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['startuser']. "'"), MYSQL_ASSOC);
-	$adat3 = mysql_fetch_array($sql->Lekerdezes("SELECT id, username FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['lastuser']. "'"), MYSQL_ASSOC);
+	$adat2 = mysql_fetch_assoc($sql->Lekerdezes("SELECT id, username FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['startuser']. "'"));
+	$adat3 = mysql_fetch_assoc($sql->Lekerdezes("SELECT id, username FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['lastuser']. "'"));
 	print("<tr>
 		<td class='forumlist'>"); // Ikon
 	
@@ -99,10 +99,10 @@
  /* Többi téma */
  $adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE fId='" .$_GET['id']. "' AND type NOT IN('2')"); // Közlemények betöltése az adott fórumból
  
- while ($sor = mysql_fetch_array($adat, MYSQL_ASSOC)) { // Témák listázása
+ while ($sor = mysql_fetch_assoc($adat)) { // Témák listázása
 	// Felhasználók nevének betöltése
-	$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT id, username FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['startuser']. "'"), MYSQL_ASSOC);
-	$adat3 = mysql_fetch_array($sql->Lekerdezes("SELECT id, username FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['lastuser']. "'"), MYSQL_ASSOC);
+	$adat2 = mysql_fetch_assoc($sql->Lekerdezes("SELECT id, username FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['startuser']. "'"));
+	$adat3 = mysql_fetch_assoc($sql->Lekerdezes("SELECT id, username FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['lastuser']. "'"));
 		
 	print("<tr>
 		<td class='forumlist'>"); // Ikon
@@ -255,7 +255,7 @@
 		
 		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."posts WHERE tId='" .mysql_real_escape_string($getid). "'"); // A téma tartalmának betöltése (postok)
 		$hozzaszolas_torolve = 0; // 0 hozzászólás törölve
-		while($sor = mysql_fetch_array($adat, MYSQL_ASSOC))
+		while($sor = mysql_fetch_assoc($adat))
 		{
 			// Felhasználó hozzászólásszám csökkentése
 			$sor2 = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."user WHERE id='" .$sor['uId']. "'")); // A hozzászólást beküldő felhasználó adatai

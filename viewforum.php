@@ -21,9 +21,9 @@
  
  global $cfg, $sql;
  $adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."forum"); // Fórumok betöltése
- while ($sor = mysql_fetch_array($adat, MYSQL_ASSOC)) { // Fórumok listázása
+ while ($sor = mysql_fetch_assoc($adat)) { // Fórumok listázása
 	// Felhasználó nevének betöltése
-	$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT id, username FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['lastuser']. "'"), MYSQL_ASSOC);
+	$adat2 = mysql_fetch_assoc($sql->Lekerdezes("SELECT id, username FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['lastuser']. "'"));
 		
 	print("<tr>
 		<td class='forumlist'><p><a href='viewtopics.php?id=" .$sor['id']. "'>" .$sor['name']. "</a><br>" .$sor['description']. "</p></td>
