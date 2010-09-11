@@ -145,7 +145,7 @@
 			$regisztralt = 1; // Induljunk ki abból, hogy a regisztráció sikerülni fog...
 		
 			// Megnézzük, van-e már ilyen nevű user
-			$adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .mysql_real_escape_string($_POST['username']). "'"));
+			$adat = mysql_fetch_row($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .mysql_real_escape_string($_POST['username']). "'"));
 			if ( $adat[0] != "" )
 			{
 				Hibauzenet("ERROR", "Már létezik ilyen nevű felhasználó: " .$_POST['username']); // Hibaüzeneti ablak generálása
@@ -162,7 +162,7 @@
 			}
 		
 			// Megnézzük, regisztrálták-e már ezt az e-mail címet
-			$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE email='" .mysql_real_escape_string($_POST['email']). "'"));
+			$adat2 = mysql_fetch_row($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE email='" .mysql_real_escape_string($_POST['email']). "'"));
 			if ( $adat2[0] != "" )
 			{
 				Hibauzenet("ERROR", "Már regisztrálták ezt az e-mail címet: " .$_POST['email']); // Hibaüzeneti ablak generálása
