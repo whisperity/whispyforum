@@ -79,10 +79,11 @@
 		MenuItem("installlog", "Telepítési napló megtekintése");
 	
 	MenuItem("", "Tartalmak kezelése", 'TITLE');
-		MenuItem("menueditor", "Menüszerkesztő");
+		MenuItem("moduleeditor", "Modulszerkesztő");
 		MenuItem("addforum", "Fórum hozzáadása");
 		MenuItem("plain", "Statikus tartalmak");
 		MenuItem("downloads", "Letöltések");
+		MenuItem("polls", "Szavazások");
 	
 	MenuItem("", "", 'TITLE');
 		MenuItem("checks", "Ellenörzés");
@@ -96,9 +97,9 @@
  <td class='center' valign='top'>"); // Bal oldali doboz lezárása, középső doboz nyitása
  switch ( $website ) // Az érkező SITE paraméter alapján megválogatjuk a beillesztendő weboldalat
  {
-	case 'menueditor':
+	case 'moduleeditor':
 		$admin = TRUE;
-		include("admin/menueditor.php");
+		include("admin/moduleeditor.php");
 		break;
 	case 'addforum':
 		$admin = TRUE;
@@ -136,6 +137,10 @@
 	case 'downloads':
 		$admin = TRUE;
 		include("admin/downloads.php");
+		break;
+	case 'polls':
+		$admin = TRUE;
+		include("admin/polls.php");
 		break;
 	default:
 		/* Telepítési információk bekérése */

@@ -207,14 +207,43 @@
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Letöltés kategóriák
  WOut('tabla', 'download_categ');
  
+ $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."polls (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `title` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `type` tinyint(1) NOT NULL DEFAULT '0',
+  `opcount` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Szavazások
+ WOut('tabla', 'polls');
+ 
+ $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."poll_opinions (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `pollid` int(10) NOT NULL DEFAULT '0',
+  `opinion` varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `opinionid` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Szavazás lehetőségek
+ WOut('tabla', 'poll_opinions');
+ 
+ $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."votes_cast (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `userid` int(10) NOT NULL DEFAULT '0',
+  `pollid` int(10) NOT NULL DEFAULT '0',
+  `opinionid` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Beküldött szavazatok
+ WOut('tabla', 'votes_cast');
+ 
  if ( $exampledata == 'yes' )
  {
  /* Kezdeti adatok */
  // Létrehozás csak akkor, ha ezt az opciót választottuk
  /* Modulok */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name,type,side, hOrder) VALUES
-	('Főmenü','menu','1', 0)", 'INSTALL'); // Főmenü
+	('Főmenü','menu','1', 0),
+	('voteModule','coremodule','2', 0)", 'INSTALL'); // Főmenü
  WOut('sor', 'modules', 'Főmenü');
+ WOut('sor', 'modules', 'voteModule - Szavazás');
  
  /* Menüelemek */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."menuitems(menuId, text, href, hOrder) VALUES
@@ -259,6 +288,18 @@
  /* Statikus tartalom */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."plain(title, content) VALUES
 	('Statikus tartalom', 'Üdvözöllek!\nEz egy statikus tartalom.\n\nA tartalmat az [url]admin.php?site=plain[/url]admin menü[/a]ből tudod módosítani.')", 'INSTALL'); // Statikus tartalom példa
+	
+ /* Szavazások */
+ $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."votes (title, type, opcount) VALUES
+	('Mennyire tetszik a fórummotor?', '1', 5)", 'INSTALL'); // Alapszavazás
+ 
+ /* Szavazás lehetőségek */
+ $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."vote_opinions(voteid, opinion, opinionid) VALUES
+	(1, 'Nagyon jó (5)', 1),
+	(1, 'Jó (4)', 2),
+	(1, 'Középszintű (3)', 3),
+	(1, 'Rossz (2)', 4),
+	(1, 'Semmitmondó! (1)', 5)", 'INSTALL'); // Alapszavazás lehetőségei
  }
  
  // Van pár adat amit mindenképpen hozzá kell adnunk az adatbázishoz!!

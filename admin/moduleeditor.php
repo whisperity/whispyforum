@@ -3,15 +3,15 @@
    http://code.google.com/p/whispyforum/
 */
 
-/* admin/menueditor.php
-   menüszerkesztő
+/* admin/moduleeditor.php
+   modulszerkesztő
 */
 
 if ( $admin == 1)
 {
 // Script megjelenítése csak akkor, ha admin menüből hívjuk meg
 ?>
-<center><h2 class='header'>Menüszerkesztő</h2></center>
+<center><h2 class='header'>Modulszerkesztő</h2></center>
 <?php
 
 if ( $_POST['action'] != $NULL )
@@ -51,13 +51,23 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 			print("<tr>
 				<td>" .$sor['id']. "</td>
 				<td>" .$sor['hOrder']. "</td>
-				<td>" .$sor['name']. "</td>
+				<td>");
+			
+			if ( $sor['name'] == "voteModule" ) {
+				print("Szavazás");
+			} else {
+				print($sor['name']);
+			}
+			
+			print("</td>
 				<td>");
 			
 			if ( $sor['type'] == "menu" )
 				print("menü");
 			if ( $sor['type'] == "addonmodule")
 				print("addon-modul");
+			if ( $sor['type'] == "coremodule")
+				print("rendszermodul");
 			
 			print("</td>
 				<td>");
@@ -72,7 +82,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 			if ( $sor['type'] == "menu")
 			{
 				print("<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
-				<input type='hidden' name='site' value='menueditor'>
+				<input type='hidden' name='site' value='moduleeditor'>
 				<input type='hidden' name='action' value='viewitems'>
 				<input type='hidden' name='id' value='" .$sor['id']. "'>
 				<input type='submit' value='Menüelemek megtekintése'>
@@ -82,13 +92,13 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 			}
 			
 			print("<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
-				<input type='hidden' name='site' value='menueditor'>
+				<input type='hidden' name='site' value='moduleeditor'>
 				<input type='hidden' name='action' value='edit'>
 				<input type='hidden' name='id' value='" .$sor['id']. "'>
 				<input type='submit' value='Szerkesztés'>
 			</form></td>
 			<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
-				<input type='hidden' name='site' value='menueditor'>
+				<input type='hidden' name='site' value='moduleeditor'>
 				<input type='hidden' name='action' value='delete'>
 				<input type='hidden' name='id' value='" .$sor['id']. "'>
 				<input type='submit' value='Törlés'>
@@ -98,7 +108,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		
 		print("</table></div>
 		<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
-				<input type='hidden' name='site' value='menueditor'>
+				<input type='hidden' name='site' value='moduleeditor'>
 				<input type='hidden' name='action' value='newmodule'>
 				<input type='submit' value='Új modul hozzáadása'>
 			</form>");
@@ -124,13 +134,13 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 				<td>" .$sor['text']. "</td>
 				<td>" .$sor['href']. "</td>
 				<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
-				<input type='hidden' name='site' value='menueditor'>
+				<input type='hidden' name='site' value='moduleeditor'>
 				<input type='hidden' name='action' value='itemedit'>
 				<input type='hidden' name='id' value='" .$sor['id']. "'>
 				<input type='submit' value='Szerkesztés'>
 			</form></td>
 				<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
-				<input type='hidden' name='site' value='menueditor'>
+				<input type='hidden' name='site' value='moduleeditor'>
 				<input type='hidden' name='action' value='itemdelete'>
 				<input type='hidden' name='id' value='" .$sor['id']. "'>
 				<input type='submit' value='Törlés'>
@@ -139,7 +149,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		}
 		
 		print("</table></div><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
-				<input type='hidden' name='site' value='menueditor'>
+				<input type='hidden' name='site' value='moduleeditor'>
 				<input type='hidden' name='action' value='newmenuentry'>
 				<input type='hidden' name='id' value='" .$_GET['id']. "'>
 				<input type='submit' value='Új elem hozzáadása'>
@@ -151,7 +161,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
 		} else {
 			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."modules WHERE id='" .mysql_real_escape_string($_GET['id']). "'");
-			ReturnTo("A modul sikeresen törölve", "admin.php?site=menueditor", "Vissza a menüszerkesztőhöz", TRUE);
+			ReturnTo("A modul sikeresen törölve", "admin.php?site=moduleeditor", "Vissza a menüszerkesztőhöz", TRUE);
 			print("</td><td class='right' valign='top'>");
 			Lablec();
 			die();
@@ -163,7 +173,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
 		} else {
 			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."menuitems WHERE id='" .mysql_real_escape_string($_GET['id']). "'");
-			ReturnTo("A menüelem sikeresen törölve", "admin.php?site=menueditor", "Vissza a menüszerkesztőhöz", TRUE);
+			ReturnTo("A menüelem sikeresen törölve", "admin.php?site=moduleeditor", "Vissza a menüszerkesztőhöz", TRUE);
 			print("</td><td class='right' valign='top'>");
 			Lablec();
 			die();
@@ -179,7 +189,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 				// A menü szerkesztésének mentése
 				
 				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."menuitems SET text='" .mysql_real_escape_string($_POST['text']). "', href='" .mysql_real_escape_string($_POST['href']). "', hOrder='" .mysql_real_escape_string($_POST['hOrder']). "' WHERE id='" .mysql_real_escape_string($_POST['id']). "'");
-				ReturnTo("A menüelem sikeresen szerkesztve", "admin.php?site=menueditor", "Vissza a menüszerkesztőhöz", TRUE);
+				ReturnTo("A menüelem sikeresen szerkesztve", "admin.php?site=moduleeditor", "Vissza a menüszerkesztőhöz", TRUE);
 				print("</td><td class='right' valign='top'>");
 				Lablec();
 				die();
@@ -204,7 +214,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		/* Form zárása */
 		print("</select><a class='feature-extra'><span class='hover'><span class='h3'>Menüoszlop</span>Ez a kis lista vázlatban tartalmazza a megadott menüben található elemeket a függőleges helyzetük (sorszámuk) azonosítójával. A doboz segítségével egy vázlat tekinthető meg a függőleges helyzetek szerint rendezett (<b>mint ahogy az oldalon megjelenik</b>) menüelemekről, a szerkesztés <b>előtt</b>i állapotból.</span><sup>?</sup></a></p><input type='hidden' name='id' value='" .$sor['id']. "'>
 		<input type='hidden' name='action' value='itemedit'>
-		<input type='hidden' name='site' value='menueditor'>
+		<input type='hidden' name='site' value='moduleeditor'>
 		<input type='submit' name='parancs' value='Szerkeszt'>
 		</form>");
 		}
@@ -221,7 +231,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 				
 				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."modules SET name='" .mysql_real_escape_string($_POST['name']). "', type='" .mysql_real_escape_string($_POST['type']). "', side='" .mysql_real_escape_string($_POST['side']). "', hOrder='" .mysql_real_escape_string($_POST['hOrder']). "' WHERE id='" .mysql_real_escape_string($_POST['id']). "'");
 				
-				ReturnTo("A modul sikeresen szerkesztve", "admin.php?site=menueditor", "Vissza a menüszerkesztőhöz", TRUE);
+				ReturnTo("A modul sikeresen szerkesztve", "admin.php?site=moduleeditor", "Vissza a menüszerkesztőhöz", TRUE);
 				print("</td><td class='right' valign='top'>");
 				Lablec();
 				die();
@@ -230,7 +240,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 			
 			print("<form method='POST' action='" .$_SEVER['PHP_SELF']. "'>
 		<span class='formHeader'>Modul szerkesztése: " .$sor['name']. "</span><br>
-		<p class='formText'>Címsor (addon modul esetén /addons mappától relatív hivatkozás): <input type='text' name='name' value='" .$sor['name']. "' size='64'><br>
+		<p class='formText'>Címsor (addon modul esetén /addons mappától relatív hivatkozás, rendszermodul esetén válaszd ki a megfelelő nevet <a href='includes/help.php' onClick=\"window.open('includes/help.php?cmd=adminCoreModules', 'popupwindow', 'width=800,height=600,resize=no,scrollbars=yes'); return false;\">innen</a>): <input type='text' name='name' value='" .$sor['name']. "' size='64'><br>
 		Típus: <input type='radio' name='type' value='menu'");
 			if ( $sor['type'] == "menu") // Ha a modul típusa menü, akkor alapból a menü gomb kerül bejelölésre
 				print(" checked ");
@@ -238,7 +248,10 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		print("> Menü <input type='radio' name='type' value='addonmodule'");
 			if ( $sor['type'] == "addonmodule") // Ha a modul egy addon, a megfelelő gomb lesz bejelölve
 			print(" checked ");
-		print("> Addon-modul<br>
+		print("> Addon-modul <input type='radio' name='type' value='coremodule'");
+			if ( $sor['type'] == "coremodule") // Ha a modul egy rendszermodul, a megfelelő gomb lesz bejelölve
+			print(" checked ");
+		print("> Rendszermodul<br>
 		Oldal: <input type='radio' name='side' value='1'");
 			if ( $sor['side'] == 1)  // Ha a modul bal oldali, a bal oldali gomb kerül bejelölésre
 				print(" checked ");
@@ -268,7 +281,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		
 		print(" oldalon lévő modulokat a függőleges helyzetük (sorszámuk) azonosítójával. A doboz segítségével egy vázlat tekinthető meg a függőleges helyzetek szerint rendezett (<b>mint ahogy az oldalon megjelenik</b>) modulokról, a szerkesztés <b>előtt</b>i állapotból.</span><sup>?</sup></a></p><input type='hidden' name='id' value='" .$sor['id']. "'>
 		<input type='hidden' name='action' value='edit'>
-		<input type='hidden' name='site' value='menueditor'>
+		<input type='hidden' name='site' value='moduleeditor'>
 		<input type='submit' name='parancs' value='Szerkeszt'>
 		</form>");
 		}
@@ -276,21 +289,16 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 	case "newmodule": // Új modul hozzáadása
 		print("<form method='POST' action='" .$_SEVER['PHP_SELF']. "'>
 		<span class='formHeader'>Modul hozzáadása</span><br>
-		<p class='formText'>Címsor (addon modul esetén /addons mappától relatív hivatkozás): <input type='text' name='name' value='" .$sor['name']. "' size='64'><br>
-		Típus: <input type='radio' name='type' value='menu'");
-			if ( $sor['type'] == "menu") // Ha a modul típusa menü, akkor alapból a menü gomb kerül bejelölésre
-				print(" checked ");
-		
-		print("> Menü <input type='radio' name='type' value='addonmodule'");
-			if ( $sor['type'] == "addonmodule") // Ha a modul egy addon, a megfelelő gomb lesz bejelölve
-			print(" checked ");
-		print("> Addon-modul<br>
+		<p class='formText'>Címsor (addon modul esetén /addons mappától relatív hivatkozás, rendszermodul esetén válaszd ki a megfelelő nevet <a href='includes/help.php' onClick=\"window.open('includes/help.php?cmd=adminCoreModules', 'popupwindow', 'width=800,height=600,resize=no,scrollbars=yes'); return false;\">innen</a>): <input type='text' name='name' value='" .$sor['name']. "' size='64'><br>
+		Típus: <input type='radio' name='type' value='menu'> Menü
+		<input type='radio' name='type' value='addonmodule'> Addon-modul
+		<input type='radio' name='type' value='coremodule'> Rendszermodul<br>
 		Oldal: <input type='radio' name='side' value='1'> Bal <input type='radio' name='side' value='2'> Jobb<br>");
 		
 		
 		/* Form zárása */
 		print("<input type='hidden' name='action' value='addnewmodule'>
-		<input type='hidden' name='site' value='menueditor'>
+		<input type='hidden' name='site' value='moduleeditor'>
 		<input type='submit' name='parancs' value='Modul hozzáadása'>
 		</form>");
 		
@@ -299,9 +307,9 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		if ( ($_POST['name'] != $NULL) && ($_POST['side'] != $NULL) && ($_POST['type'] != $NULL) )
 		{
 			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name, type, side) VALUES ('" .mysql_real_escape_string($_POST['name']). "', '" .mysql_real_escape_string($_POST['type']). "', '" .mysql_real_escape_string($_POST['side']). "')"); // Hozzáadás
-			ReturnTo("A modul sikeresen hozzáadva", "admin.php?site=menueditor", "Vissza a listához", TRUE);
+			ReturnTo("A modul sikeresen hozzáadva", "admin.php?site=moduleeditor", "Vissza a listához", TRUE);
 		} else {
-			header('Location: admin.php?site=menueditor&action=newmodule'); // Visszatérés, ha egy kötelező adat hiányzott
+			header('Location: admin.php?site=moduleeditor&action=newmodule'); // Visszatérés, ha egy kötelező adat hiányzott
 		}
 		
 		break;
@@ -328,7 +336,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		/* Form zárása */
 		print("</select><a class='feature-extra'><span class='hover'><span class='h3'>Menüoszlop</span>Ez a kis lista vázlatban tartalmazza a megadott menüben található elemeket a függőleges helyzetük (sorszámuk) azonosítójával. A doboz segítségével egy vázlat tekinthető meg a függőleges helyzetek szerint rendezett (<b>mint ahogy az oldalon megjelenik</b>) menüelemekről, a szerkesztés <b>előtt</b>i állapotból.</span><sup>?</sup></a></p><input type='hidden' name='id' value='" .$_GET['id']. "'>
 		<input type='hidden' name='action' value='addnewmenuentry'>
-		<input type='hidden' name='site' value='menueditor'>
+		<input type='hidden' name='site' value='moduleeditor'>
 		<input type='submit' name='parancs' value='Menüelem hozzáadása'>
 		</form>");
 		
@@ -340,9 +348,9 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		{
 			// Hozzáadás, ha a szükséges értékek megvannak
 			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."menuitems(menuId, text, href, hOrder) VALUES (" .mysql_real_escape_string($_POST['id']). ", '" .mysql_real_escape_string($_POST['text']). "', '" .mysql_real_escape_string($_POST['href']). "', " .mysql_real_escape_string($_POST['hOrder']). ")");
-			ReturnTo("A menüelem sikeresen hozzáadva", "admin.php?site=menueditor&action=viewitems&id=" .$_POST['id'], "Vissza a listához", TRUE);
+			ReturnTo("A menüelem sikeresen hozzáadva", "admin.php?site=moduleeditor&action=viewitems&id=" .$_POST['id'], "Vissza a listához", TRUE);
 		} else {
-			header('Location: admin.php?site=menueditor&action=newmenuentry&id=' .$_POST['id']); // Visszatérés, ha egy kötelező adat hiányzott
+			header('Location: admin.php?site=moduleeditor&action=newmenuentry&id=' .$_POST['id']); // Visszatérés, ha egy kötelező adat hiányzott
 		}
 		
 		break;
@@ -351,6 +359,6 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 print("</td><td class='right' valign='top'>"); // Középső doboz zárása, jobboldali üres doboz elhelyezése (td.right-ot az admin.php zárja)
 } else {
 	// Ha nem admin menüből hívódik meg, felhasználó átirányítása az admin menübe
-	header("Location: /admin.php?site=menueditor");
+	header("Location: /admin.php?site=moduleeditor");
 }
 ?>

@@ -553,6 +553,23 @@ function AddonClassHelp()
 	</table>");
 }
 
+function coreModulesHelp()
+{
+	print("<h2>Rendszermodulok</h2>");
+	print("<br>A rendszermodulok az addon-modulokhoz hasonló működésű, de külön telepítést nem igénylő bővítmények.<br><br>
+	<table border='1' cellspacing='1' cellpadding='1'>
+	<tr>
+	<tr>
+		<th>Modul belső neve<br>(ezt kell beírni az adminisztrátori menü Címsor részébe,<br>kis-nagybetű érzékeny!)</th>
+		<th>A modul funkciója</th>
+	</tr>
+	<tr>
+		<th>voteModule</th>
+		<td>A szavazásrendszer aktuális szavazásának lebonyolítása</td>
+	</tr>
+	</table>");
+}
+
 switch ($_GET['cmd'])
 {
 	case "Update":
@@ -579,6 +596,9 @@ switch ($_GET['cmd'])
 	case "AddonClass":
 		AddonClassHelp();
 		break;
+	case "adminCoreModules":
+		coreModulesHelp();
+		break;
 	case "adminTools":
 		/* Választási űrlap létrehozása */
 		
@@ -586,6 +606,7 @@ switch ($_GET['cmd'])
 		$forms->UrlapElem("select", "cmd", "", 1, "Kérlek válassz a lenyíló listából adminisztrátori eszközt", TRUE, "Súgólehetőségek", "Válassz a lenyíló listából, hogy a kívánt súgó oldalára juss");
 		$forms->UrlapElem("option", "A portálrendszer frissítése", "Update");
 		$forms->UrlapElem("option", "Addonok", "Addons-admin");
+		$forms->UrlapElem("option", "Rendszermodulok", "adminCoreModules");
 		$forms->UrlapElem("option", "", "adminTools");
 		$forms->UrlapElem("option", "<< Vissza a főmenübe", $NULL);
 		$forms->UrlapElem("select-end", "", "");

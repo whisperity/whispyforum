@@ -14,13 +14,16 @@ class templates // Osztálydeklaráció
 		global $cfg, $sql, $wf_debug;
 		
 		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."modules WHERE side='1' ORDER BY hOrder"); // Bal oldalra beállított modulok bekérése
-		while ($sor = mysql_fetch_array($adat, MYSQL_ASSOC)) { // Modulok adatainak olvasása
+		while ($sor = mysql_fetch_assoc($adat)) { // Modulok adatainak olvasása
 			switch ($sor['type']) { // Típus alapú szelektálás
 				case 'menu': // Ha menü
-					$this->Menu($sor['id'], $sor['name']);
+					$this->DoMenu($sor['id'], $sor['name']);
 					break;
 				case 'addonmodule': // Ha egy addon egy modulja
 					$this->LoadAddonModule($sor['id'], $sor['name']);
+					break;
+				case 'coremodule': // Rendszermodul
+					$this->LoadCoreModule($sor['id'], $sor['name']);
 					break;
 			}
 		}
@@ -33,13 +36,16 @@ class templates // Osztálydeklaráció
 		global $cfg, $sql, $wf_debug;
 		
 		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."modules WHERE side='2' ORDER BY hOrder"); // Bal oldalra beállított modulok bekérése
-		while ($sor = mysql_fetch_array($adat, MYSQL_ASSOC)) { // Modulok adatainak olvasása
+		while ($sor = mysql_fetch_assoc($adat)) { // Modulok adatainak olvasása
 			switch ($sor['type']) { // Típus alapú szelektálás
 				case 'menu': // Ha menü
-					$this->Menu($sor['id'], $sor['name']);
+					$this->DoMenu($sor['id'], $sor['name']);
 					break;
 				case 'addonmodule': // Ha egy addon egy modulja
 					$this->LoadAddonModule($sor['id'], $sor['name']);
+					break;
+				case 'coremodule': // Rendszermodul
+					$this->LoadCoreModule($sor['id'], $sor['name']);
 					break;
 			}
 		}
@@ -47,7 +53,7 @@ class templates // Osztálydeklaráció
 		$wf_debug->RegisterDLEvent("Jobb oldali modulok betöltve");
 	}
 	
-	function Menu($id, $menuName) // Menü generálása
+	function DoMenu($id, $menuName) // Menü generálása
 	{
 		global $cfg, $sql, $wf_debug;
 		
@@ -56,7 +62,7 @@ class templates // Osztálydeklaráció
 		
 		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."menuItems WHERE menuId='" .$id. "' ORDER BY hOrder");
 		
-		while ($sor = mysql_fetch_array($adat, MYSQL_ASSOC)) {
+		while ($sor = mysql_fetch_assoc($adat)) {
 			$http = explode('://', $sor['href']); // Kivágjuk az esetleges HTTP előtagot
 			
 			print("<a class='menuitem' href='" .$sor['href']. "'"); // Bevezetés (stílus, a href)
@@ -105,6 +111,19 @@ class templates // Osztálydeklaráció
 		} else { // Ha az addon létezik, betöltjük a modul kódját
 			include("addons/" .$name);
 			$wf_debug->RegisterDLEvent("Addon modul " .$name. " betöltve");
+		}
+	}
+	
+	function LoadCoreModule($id, $name) // Rendszermodul betöltése
+	{
+		global $wf_debug;
+		$wf_debug->RegisterDLEvent("Rendszermodul " .$name. " betöltése");
+		switch ($name) {
+			case "voteModule":
+				VS_LoadModule();
+				break;
+			default:
+				$wf_debug->RegisterDLEvent($name ." rendszermodul nem tölthető be, nincs ilyen modul");
 		}
 	}
 }
