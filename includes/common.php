@@ -136,7 +136,7 @@ function Inicialize ( $pagename )
  $wf_debug->RegisterDLEvent("Rendszerváltozók bekérve az adatbázisból");
  
  /* Verzióadatok elleörzése */
- $adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."version"), MYSQL_ASSOC);
+ $adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."version"));
  if ( ($adat["RELEASE_TYPE"] != RELEASE_TYPE) || ($adat["VERSION"] != VERSION) || ($adat["RELEASE_DATE"] != RELEASE_DATE) )
 	Hibauzenet("CRITICAL", "A futó verzió nem egyezik a telepített verzióval", "Futó verzió: <b>" .RELEASE_TYPE. " " .VERSION. " (" .RELEASE_DATE. ")</b><br>Telepített verzió: <b>" .$adat['RELEASE_TYPE']. " " .$adat['VERSION']. " (" .$adat['RELEASE_DATE']. ")</b><br>Bővebb információ: 
 	<a href='' onClick=\"window.open('includes/help.php?cmd=Update', 'popupwindow', 'width=570,height=320'); return false;\">kattints ide</a>");

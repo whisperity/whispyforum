@@ -21,7 +21,7 @@
 	if ( $_POST['id'] != $NULL)
 		$tId = $_POST['id'];
 	
-	$sor2 = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE id='" .mysql_real_escape_string($tId). "'"), MYSQL_ASSOC); // Tábla adatai
+	$sor2 = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."topics WHERE id='" .mysql_real_escape_string($tId). "'")); // Tábla adatai
 	if ( $sor2 == FALSE )
 	{
 		Hibauzenet("ERROR", "A megadott azonosítójú téma nem létezik");
@@ -33,7 +33,7 @@
 			if ( $_POST['submit'] != $NULL )
 			{
 				// Fórum hozzászólásszámok bekérése
-				$sor3 = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."forum WHERE id='" .$sor2['fId']. "'"), MYSQL_ASSOC); // Fórum sor
+				$sor3 = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."forum WHERE id='" .$sor2['fId']. "'")); // Fórum sor
 				// Hozzászólás beküldése
 				$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."posts(tId, uId, pTitle, pText, pDate) VALUES ( " .mysql_real_escape_string($_POST["id"]). ", '" .$_SESSION["userID"]. "', '" .mysql_real_escape_string($_POST["title"]). "', '" .mysql_real_escape_string($_POST['post']). "', '" .time(). "')"); // Beküldés az adatbázisba
 				$ujpostid = mysql_insert_id();
@@ -42,7 +42,7 @@
 				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "forum SET posts='" .($sor3['posts']+1). "', lpTopic='" .$tId. "', lastuser='" .$_SESSION['userID']. "', lpId='" .$ujpostid. "', lastpostdate='" .time(). "' WHERE id='" .$sor2['fId']. "'"); // Hozzászólásszám növelése a fórumon, utolsó téma-post beállítása
 				
 				/* Felhasználó hozzászólásszámának növelése */
-				$sor4 = mysql_fetch_array($sql->Lekerdezes("SELECT postCount FROM " .$cfg['tbprf']."user WHERE id='" .$_SESSION['userID']. "'"), MYSQL_ASSOC); // Felhasználó hozzászólásszáma
+				$sor4 = mysql_fetch_assoc($sql->Lekerdezes("SELECT postCount FROM " .$cfg['tbprf']."user WHERE id='" .$_SESSION['userID']. "'")); // Felhasználó hozzászólásszáma
 				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET postCount='" .($sor4['postCount']+1). "'");
 				
 				ReturnTo("Hozzászólás elküldve!", "viewtopic.php?id=" .$_POST['id'], "Vissza a témához", TRUE);

@@ -112,7 +112,7 @@
 			print("<div class='content'>" .$comBody. "</div></div><div class='postright'>");
 			
 			/* Hozzászóló adatai */
-			$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT id, username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['uId']. "'"), MYSQL_ASSOC);
+			$adat2 = mysql_fetch_assoc($sql->Lekerdezes("SELECT id, username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$sor['uId']. "'"));
 			
 			switch ($adat2['userLevel']) // Beállítjuk a szöveges userLevel értéket (userLevelTXT)
 			{
@@ -192,7 +192,7 @@
 		$getid = $_GET['cid']; // Hozzászólás azonosítója
 		
 		$adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."news_comments WHERE id='" .mysql_real_escape_string($getid). "'")); // Hozzászólás adatainak bekérése
-		$adat2 = mysql_fetch_array($sql->Lekerdezes("SELECT id, username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$adat['uId']. "'"), MYSQL_ASSOC); // Felhasználó adatainak bekérése
+		$adat2 = mysql_fetch_assoc($sql->Lekerdezes("SELECT id, username, userLevel, postCount, regdate FROM " .$cfg['tbprf']. "user WHERE id='" .$adat['uId']. "'")); // Felhasználó adatainak bekérése
 		$hiradat = mysql_fetch_assoc($sql->Lekerdezes("SELECT commentable FROM " .$cfg['tbprf']."news WHERE id='" .$adat['nId']. "'")); // A hozzászóláshoz kapcsolódó hír kommentelhetőségének bekérése
 		
 		if ( ($_SESSION['userLevel'] == 0) || ( $_SESSION['userLevel'] == 1) )

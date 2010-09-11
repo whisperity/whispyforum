@@ -45,7 +45,7 @@ class user // Definiáljuk az osztályt (felhasználók)
 		global $cfg, $sql, $session, $wf_debug;
 		$sql->Connect();
 		
-		$adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .mysql_real_escape_string($un). "'"));
+		$adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .mysql_real_escape_string($un). "'"));
 		
 		if ( (md5($pw) == $adat['pwd']) && ($adat['activated'] == 1 ) )
 		{
@@ -131,7 +131,7 @@ class user // Definiáljuk az osztályt (felhasználók)
 	function GetUserData() // Felhasználó adatok cachelése sessionbe
 	{
 		global $cfg, $sql, $wf_debug;
-		$adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .mysql_real_escape_string($_SESSION['username']). "' AND pwd='" .md5(mysql_real_escape_string($_SESSION['pass'])). "'")); // Bekérjük az adatokat
+		$adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .mysql_real_escape_string($_SESSION['username']). "' AND pwd='" .md5(mysql_real_escape_string($_SESSION['pass'])). "'")); // Bekérjük az adatokat
 		
 		$_SESSION['userLevel'] = $adat['userLevel']; // Tároljuk a felhasználó szintjét
 		
@@ -213,7 +213,7 @@ class session // Munkamenet (session) kezelő osztály
 		
 		$wf_debug->RegisterDLEvent("Session ellenörzése");
 		
-		$adat = mysql_fetch_array($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .mysql_real_escape_string($_SESSION['username']). "' AND pwd='" .md5(mysql_real_escape_string($_SESSION['pass'])). "'")); // Bekérjük a session adatokat és IP-t
+		$adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "user WHERE username='" .mysql_real_escape_string($_SESSION['username']). "' AND pwd='" .md5(mysql_real_escape_string($_SESSION['pass'])). "'")); // Bekérjük a session adatokat és IP-t
 		
 		if ( ($sid == $adat['cursessid']) && ($ip == $adat['curip']) ) // Egyezés ellenörzése (ip cím és session ID)
 		{

@@ -26,7 +26,7 @@ if ($_POST['cmd'] == "add") // Ha a bejövő parancs "ADD" (fórum hozzáadása)
 		$sikeres = TRUE; // Alapból sikerrel indulunk
 		
 		$sorlekerdezes = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']. "forum");
-		while ($sor = mysql_fetch_array($sorlekerdezes, MYSQL_ASSOC)) {
+		while ($sor = mysql_fetch_assoc($sorlekerdezes)) {
 			if ( $_POST['name'] == $sor['name'] )
 			{
 				echo "<span class='star'>A megadott nevű fórum már létezik!</span> Kérlek válassz másik nevet!<br>";
