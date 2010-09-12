@@ -157,7 +157,156 @@ A <b>függő</b> szavazások azok a szavazások, amelyek még nem lettek archiv�
 		{
 			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
 		} else {
+			$szavazas = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."polls WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
 			
+			print("<a href='admin.php?site=polls'><< Vissza</a><br>
+			Szavazati opciók a szavazáson: <b>" .$szavazas['title']. "</b>
+			<div class='userbox'><table border='0' cellspacing='1' cellpadding='1'>
+			<tr>
+				<th>id</th>
+				<th>Szöveg</th>
+			</tr>");
+		
+		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."poll_opinions WHERE pollid='" .mysql_real_escape_string($_GET['id']). "'");
+		while ( $sor = mysql_fetch_assoc($adat) )
+		{
+			print("<tr>
+				<td>" .$sor['id']. "</td>
+				<td>" .$sor['opinion']. "</td>
+				<td>");
+			
+			/*if ( ( $szavazas['type'] == 0 ) || ( $szavazas['type'] == 1) )
+			{
+				print("<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+				<input type='hidden' name='site' value='polls'>
+				<input type='hidden' name='action' value='op_edit'>
+				<input type='hidden' name='id' value='" .$sor['id']. "'>
+				<input type='submit' value='Szerkesztés'>
+			</form></td>
+			<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+				<input type='hidden' name='site' value='polls'>
+				<input type='hidden' name='action' value='op_delete'>
+				<input type='hidden' name='id' value='" .$sor['id']. "'>
+				<input type='submit' value='Törlés'>
+			</form></td>
+			</tr>");
+			} else {
+				print("<td></td>");
+			}*/
+		}
+		
+		print("</table></div>");
+		
+		if ( ( $szavazas['type'] == 0 ) || ( $szavazas['type'] == 1) )
+		{
+			print("<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+				<input type='hidden' name='site' value='polls'>
+				<input type='hidden' name='action' value='newopinion'>
+				<input type='hidden' name='pollid' value='" .$szavazas['id']. "'>
+				<input type='submit' value='Új szavazat hozzáadása'>
+			</form>");
+		}
+		
+		}
+		
+		break;
+	/*
+	case "op_edit": // Szavazati lehetőség szerkesztése
+		if ( $_GET['id'] == $NULL )
+		{
+			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
+		} else {
+			$sor = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."poll_opinions WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
+			$szavazas = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."polls WHERE id='" .$sor['pollid']. "'"));
+			
+			if ( $_POST['parancs'] == "Szerkeszt" )
+			{
+				// A szavazati lehetőség szerkesztésének mentése
+				
+				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."poll_opinions SET opinion='" .mysql_real_escape_string($_POST['opinion']). "' WHERE id='" .mysql_real_escape_string($_POST['id']). "'");
+				
+				ReturnTo("A szavazati lehetőség sikeresen szerkesztve", "admin.php?site=polls&action=viewopinions&id=" .$sor['pollid'], "Vissza a lehetőségekhez", TRUE);
+				print("</td><td class='right' valign='top'>");
+				Lablec();
+				die();
+			}
+			
+			if ( ( $szavazas['type'] == 0 ) || ( $szavazas['type'] == 1 ) )
+			{
+				print("<form method='POST' action='" .$_SEVER['PHP_SELF']. "'>
+		<span class='formHeader'>Szavazati lehetőség szerkesztése: " .$sor['opinion']. "</span><br>
+		<p class='formText'>Lehetőség: <input type='text' name='opinion' value='" .$sor['opinion']. "' size='64'><br>
+		<input type='hidden' name='id' value='" .$sor['id']. "'>
+		<input type='hidden' name='action' value='op_edit'>
+		<input type='hidden' name='site' value='polls'>
+		<input type='submit' name='parancs' value='Szerkeszt'>
+		</form>");
+			} else {
+				Hibauzenet("CRITICAL", "A szavazati lehetőség nem szerkeszthető, mivel a szavazás már archív!");
+			}
+		}
+		
+		break;
+	case "op_delete": // Szavazati lehetőség törlése
+		if ( $_GET['id'] == $NULL )
+		{
+			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
+		} else {
+			
+			$sor = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."poll_opinions WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
+			$szavazas = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."polls WHERE id='" .$sor['pollid']. "'"));
+			
+			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."polls SET opcount='" .($szavazas['opcount']-1). "' WHERE id='" .$sor['pollid']. "'"); // Kivonunk az összes szavazat számából egyet
+			
+			// Kitöröljük az adott szavazati opcióra adott szavazatokat
+			// De előbb bekell olvasnunk pár szükséges adatot a megfelelő SQL-kérés létrehozásához
+			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."votes_cast WHERE pollid='" .mysql_real_escape_string($sor['pollid']). "' AND opinionid='" .mysql_real_escape_string($sor['opinionid']). "'");
+			
+			// Szavazati lehetőség törlése
+			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."poll_opinions WHERE id='" .mysql_real_escape_string($_GET['id']). "'");
+			
+			ReturnTo("A szavazati lehetőség törölve", "admin.php?site=polls&action=viewopinions&id=" .$sor['pollid'], "Vissza a lehetőségekhez", TRUE);
+			print("</td><td class='right' valign='top'>");
+			Lablec();
+			die();
+		}
+		
+		break;
+	*/
+	case "newopinion": // Új szavazati lehetőség hozzáadása
+		if ( $_GET['pollid'] == $NULL )
+		{
+			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
+		} else {
+			$szavazas = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."polls WHERE id='" .$_GET['pollid']. "'"));
+			
+			if ( $_POST['parancs'] == "Hozzáad" )
+			{
+				// A szavazati lehetőség szerkesztésének mentése
+				
+				$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."poll_opinions(pollid, opinionid, opinion) VALUES ('" .mysql_real_escape_string($_GET['pollid']). "', '" .mysql_real_escape_string(($szavazas['opcount']+1)). "', '" .mysql_real_escape_string($_POST['opinion']). "')");
+				
+				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."polls SET opcount='" .($szavazas['opcount']+1). "' WHERE id='" .mysql_real_escape_string($_GET['pollid']). "'");
+				
+				ReturnTo("A szavazati lehetőség hozzáadva", "admin.php?site=polls&action=viewopinions&id=" .$_GET['pollid'], "Vissza a lehetőségekhez", TRUE);
+				print("</td><td class='right' valign='top'>");
+				Lablec();
+				die();
+			}
+			
+			if ( ( $szavazas['type'] == 0 ) || ( $szavazas['type'] == 1 ) )
+			{
+				print("<form method='POST' action='" .$_SEVER['PHP_SELF']. "'>
+		<span class='formHeader'>Szavazati lehetőség hozzáadása: " .$szavazas['title']. "</span><br>
+		<p class='formText'>Lehetőség neve: <input type='text' name='opinion' size='64'><br>
+		<input type='hidden' name='pollid' value='" .$_GET['pollid']. "'>
+		<input type='hidden' name='action' value='newopinion'>
+		<input type='hidden' name='site' value='polls'>
+		<input type='submit' name='parancs' value='Hozzáad'>
+		</form>");
+			} else {
+				Hibauzenet("CRITICAL", "A szavazati lehetőség nem szerkeszthető, mivel a szavazás már archív!");
+			}
 		}
 		
 		break;
