@@ -63,39 +63,50 @@ A <b>függő</b> szavazások azok a szavazások, amelyek még nem lettek archiv�
 			if ( $sor['type'] == 2)
 				print("archív");
 			
-			print("</td>");
+			print("</td>
+			<td>");
 			
 			if ( $sor['type'] == 0 )
 			{
-				print("<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+				print("<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
 				<input type='hidden' name='site' value='polls'>
 				<input type='hidden' name='action' value='makeactive'>
 				<input type='hidden' name='id' value='" .$sor['id']. "'>
 				<input type='submit' value='Aktívvá tétel'>
-			</form></td>");
-			} else {
-				print("<td></td>");
+			</form>");
 			}
 			
 			if ( ( $sor['type'] == 0 ) || ( $sor['type'] == 1 ) )
 			{
-				print("<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+				print("<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+				<input type='hidden' name='site' value='polls'>
+				<input type='hidden' name='action' value='archiv'>
+				<input type='hidden' name='id' value='" .$sor['id']. "'>
+				<input type='submit' value='Archiválás'>
+			</form>");
+			}
+			
+			print("</td>
+			<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
 				<input type='hidden' name='site' value='polls'>
 				<input type='hidden' name='action' value='viewopinions'>
 				<input type='hidden' name='id' value='" .$sor['id']. "'>
 				<input type='submit' value='Lehetőségek megtekintése'>
+			</form></td>");
+			
+			if ( $sor['type'] == 2 )
+			{
+				print("<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+				<input type='hidden' name='site' value='polls'>
+				<input type='hidden' name='action' value='edit'>
+				<input type='hidden' name='id' value='" .$sor['id']. "'>
+				<input type='submit' value='Szerkesztés'>
 			</form></td>");
 			} else {
 				print("<td></td>");
 			}
 			
 			print("<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
-				<input type='hidden' name='site' value='polls'>
-				<input type='hidden' name='action' value='edit'>
-				<input type='hidden' name='id' value='" .$sor['id']. "'>
-				<input type='submit' value='Szerkesztés'>
-			</form></td>
-			<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
 				<input type='hidden' name='site' value='polls'>
 				<input type='hidden' name='action' value='delete'>
 				<input type='hidden' name='id' value='" .$sor['id']. "'>
@@ -110,6 +121,36 @@ A <b>függő</b> szavazások azok a szavazások, amelyek még nem lettek archiv�
 				<input type='hidden' name='action' value='newpoll'>
 				<input type='submit' value='Új szavazás hozzáadása'>
 			</form>");
+		break;
+	case "edit": // Szavazás szerkesztése
+		if ( $_GET['id'] == $NULL )
+		{
+			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
+		} else {
+			if ( $_POST['parancs'] == "Szerkeszt" )
+			{
+				// A szavazás szerkesztésének mentése
+				
+				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."polls SET title='" .mysql_real_escape_string($_POST['title']). "' WHERE id='" .mysql_real_escape_string($_POST['id']). "'");
+				
+				ReturnTo("A szavazás sikeresen szerkesztve", "admin.php?site=polls", "Vissza a szavazásokhoz", TRUE);
+				print("</td><td class='right' valign='top'>");
+				Lablec();
+				die();
+			}
+			$sor = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."polls WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
+			
+			print("<form method='POST' action='" .$_SEVER['PHP_SELF']. "'>
+		<span class='formHeader'>Szavazás szerkesztése: " .$sor['title']. "</span><br>
+		<p class='formText'>Cím: <input type='text' name='title' value='" .$sor['title']. "' size='64'><br>
+		<input type='hidden' name='id' value='" .$sor['id']. "'>
+		<input type='hidden' name='action' value='edit'>
+		<input type='hidden' name='site' value='polls'>
+		<input type='submit' name='parancs' value='Szerkeszt'>
+		</form>");
+			
+		}
+		
 		break;
 	}
 
