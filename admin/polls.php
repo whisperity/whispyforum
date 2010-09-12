@@ -94,7 +94,7 @@ A <b>függő</b> szavazások azok a szavazások, amelyek még nem lettek archiv�
 				<input type='submit' value='Lehetőségek megtekintése'>
 			</form></td>");
 			
-			if ( $sor['type'] == 2 )
+			if ( ( $sor['type'] == 0 ) || ( $sor['type'] == 1) )
 			{
 				print("<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
 				<input type='hidden' name='site' value='polls'>
@@ -148,6 +148,15 @@ A <b>függő</b> szavazások azok a szavazások, amelyek még nem lettek archiv�
 		<input type='hidden' name='site' value='polls'>
 		<input type='submit' name='parancs' value='Szerkeszt'>
 		</form>");
+			
+		}
+		
+		break;
+	case "viewopinions": // Szavazati lehetőségek megtekintése
+		if ( $_GET['id'] == $NULL )
+		{
+			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
+		} else {
 			
 		}
 		
