@@ -102,6 +102,12 @@ A <b>függő</b> szavazások azok a szavazások, amelyek még nem lettek archiv�
 				<input type='hidden' name='action' value='viewopinions'>
 				<input type='hidden' name='id' value='" .$sor['id']. "'>
 				<input type='submit' value='Lehetőségek megtekintése'>
+			</form></td>
+			<td><form action='vote_cast.php' method='POST'>
+				<input type='hidden' name='pollop_id' value='eredmeny'>
+				<input type='hidden' name='pollid' value='" .$sor['id']. "'>
+				<input type='hidden' name='adminmenu' value='yes'>
+				<input type='submit' value='Eredmények megtekintése'>
 			</form></td>");
 			
 			if ( ( $sor['type'] == 0 ) || ( $sor['type'] == 1) )

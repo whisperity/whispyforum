@@ -23,6 +23,10 @@
  
  if ( ($_POST['pollop_id'] == "eredmeny") && ($_POST['pollid'] != $NULL) )
  {
+	if ( $_POST['adminmenu'] == "yes" )
+	{
+		print("<a href='admin.php?site=polls'>Vissza az admin menübe</a>");
+	}
 	VS_GenerateResults($_POST['pollid']); // Eredmények kiírása
  }
  
