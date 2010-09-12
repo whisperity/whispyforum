@@ -86,15 +86,15 @@ A <b>függő</b> szavazások azok a szavazások, amelyek még nem lettek archiv�
 			</form>");
 			}
 			
-			/*if ( ( $sor['type'] == 0 ) || ( $sor['type'] == 1 ) )
+			if ( ( $sor['type'] == 0 ) || ( $sor['type'] == 1 ) )
 			{
 				print("<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
 				<input type='hidden' name='site' value='polls'>
-				<input type='hidden' name='action' value='archiv'>
+				<input type='hidden' name='action' value='archive'>
 				<input type='hidden' name='id' value='" .$sor['id']. "'>
 				<input type='submit' value='Archiválás'>
 			</form>");
-			}*/
+			}
 			
 			print("</td>
 			<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
@@ -131,6 +131,21 @@ A <b>függő</b> szavazások azok a szavazások, amelyek még nem lettek archiv�
 				<input type='hidden' name='action' value='newpoll'>
 				<input type='submit' value='Új szavazás hozzáadása'>
 			</form>");
+		break;
+	case "archive": // Szavazás archiválása
+		if ( $_GET['id'] == $NULL )
+		{
+			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
+		} else {
+			// Kiválasztot szavazás archívvá tétele
+			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."polls SET type=2 WHERE id='" .mysql_real_escape_string($_GET['id']). "'");
+			
+			ReturnTo("A szavazás archiválása sikeres", "admin.php?site=polls", "Vissza a szavazásokhoz", TRUE);
+			print("</td><td class='right' valign='top'>");
+			Lablec();
+			die();
+		}
+		
 		break;
 	case "makeactive": // Aktívvá tétel
 		if ( $_GET['id'] == $NULL )
