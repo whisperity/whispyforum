@@ -13,6 +13,9 @@
 	
 	$szavazas = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."polls WHERE type=1 LIMIT 1")); // Aktív szavazás bekérése
 	
+	if ( $szavazas != FALSE )
+	{
+	
 	if ( VS_CheckUserVoteOnPoll($szavazas['id']) == 1 )
 	{
 		VS_GenerateResults($szavazas['id']);
@@ -52,6 +55,7 @@
 	
 	print("<input type='hidden' name='pollid' value='" .$szavazas['id']. "'>
 	</form></div>");
+	}
 	}
  }
  
