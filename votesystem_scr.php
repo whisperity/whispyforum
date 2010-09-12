@@ -80,7 +80,7 @@
 	$szavazas = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."polls WHERE id='" .mysql_real_escape_string($pollid). "'")); // Szavazás adatainak bekérése
 	
 	print("<div class='menubox'><span class='menutitle'>Eredmények: " .$szavazas['title']."</span><br>");
-	//print("<ul>");
+	print("<ul>");
 	
 	$lehetosegszamok = array();
 	
@@ -98,10 +98,11 @@
 			$lehetosegszamok[$lehetoseg['opinionid']]['count']++;
 		}
 		
-		//print("<li>" .$lehetosegszamok[$lehetoseg['opinionid']]['text']. ": " .$lehetosegszamok[$lehetoseg['opinionid']]['count']. "</li>\n");
+		print("<li>" .$lehetosegszamok[$lehetoseg['opinionid']]['text']. ": " .$lehetosegszamok[$lehetoseg['opinionid']]['count']. "</li>\n");
 	}
 	
-	//print("</ul>Grafikonon:\n<br>");
+	print("</ul>");
+	/*print("Grafikonon:\n<br>");
 	// Megkaptuk az $lehetosegszamok tömb $lehetoseg['opinionid'] tömbjében két értéket:
 	// text = lehetőség neve
 	// count = szavazatok száma
@@ -139,9 +140,10 @@
 		print("|".$k);
 	}
 	
-	print("|" .$maxszavszam. "&chtt=" .$szavazas['title']. "'>\n</div>");
+	print("|" .$maxszavszam. "'>\n</div>");
 	
 	$wf_debug->RegisterDLEvent("Google Chart grafikon rajzolása megtörtént");
+	*/
  }
  
  function VS_CheckUserVoteOnPoll($pollid) // Megnézzük, hogy a felhasználó szavazott-e már
