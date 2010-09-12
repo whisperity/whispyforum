@@ -76,7 +76,17 @@ A <b>függő</b> szavazások azok a szavazások, amelyek még nem lettek archiv�
 			</form>");
 			}
 			
-			if ( ( $sor['type'] == 0 ) || ( $sor['type'] == 1 ) )
+			if ( $sor['type'] == 1 )
+			{
+				print("<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+				<input type='hidden' name='site' value='polls'>
+				<input type='hidden' name='action' value='makepending'>
+				<input type='hidden' name='id' value='" .$sor['id']. "'>
+				<input type='submit' value='Függővé tétel'>
+			</form>");
+			}
+			
+			/*if ( ( $sor['type'] == 0 ) || ( $sor['type'] == 1 ) )
 			{
 				print("<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
 				<input type='hidden' name='site' value='polls'>
@@ -84,7 +94,7 @@ A <b>függő</b> szavazások azok a szavazások, amelyek még nem lettek archiv�
 				<input type='hidden' name='id' value='" .$sor['id']. "'>
 				<input type='submit' value='Archiválás'>
 			</form>");
-			}
+			}*/
 			
 			print("</td>
 			<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
@@ -121,6 +131,62 @@ A <b>függő</b> szavazások azok a szavazások, amelyek még nem lettek archiv�
 				<input type='hidden' name='action' value='newpoll'>
 				<input type='submit' value='Új szavazás hozzáadása'>
 			</form>");
+		break;
+	case "makeactive": // Aktívvá tétel
+		if ( $_GET['id'] == $NULL )
+		{
+			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
+		} else {
+			// Első lépésként az összes többi aktív szavazást függővé tesszük
+			$aktivszavazasok = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."polls WHERE type=1"); // Aktív szavazások
+			
+			while ( $szav = mysql_fetch_assoc($aktivszavazasok) ) { // Egyesével mindet függővé tesszük
+				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."polls SET type=0 WHERE id='" .$szav['id']. "'");
+			}
+			
+			// Kiválasztott szavazás aktívvá tétele
+			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."polls SET type=1 WHERE id='" .mysql_real_escape_string($_GET['id']). "'");
+			
+			ReturnTo("A szavazás aktívvá tétele sikeres", "admin.php?site=polls", "Vissza a szavazásokhoz", TRUE);
+			print("</td><td class='right' valign='top'>");
+			Lablec();
+			die();
+		}
+		
+		break;
+	case "makepending": // Függővé tétel
+		if ( $_GET['id'] == $NULL )
+		{
+			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
+		} else {
+			// Kiválasztot szavazás függővé tétele
+			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."polls SET type=0 WHERE id='" .mysql_real_escape_string($_GET['id']). "'");
+			
+			ReturnTo("A szavazás függővé tétele sikeres", "admin.php?site=polls", "Vissza a szavazásokhoz", TRUE);
+			print("</td><td class='right' valign='top'>");
+			Lablec();
+			die();
+		}
+		
+		break;
+	case "delete": // Szavazás törlése
+		if ( $_GET['id'] == $NULL )
+		{
+			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
+		} else {
+			// Kitöröljük a szavazással együtt az
+			// összes lehetőséget a szavazáshoz rendelve,
+			// az összes leadott szavazatot
+			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."votes_cast WHERE pollid='" .mysql_real_escape_string($_GET['id']). "'");
+			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."poll_opinions WHERE pollid='" .mysql_real_escape_string($_GET['id']). "'");
+			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."polls WHERE id='" .mysql_real_escape_string($_GET['id']). "'"); // Végül a szavazást is
+			
+			ReturnTo("A szavazás törölve", "admin.php?site=polls", "Vissza a szavazásokhoz", TRUE);
+			print("</td><td class='right' valign='top'>");
+			Lablec();
+			die();
+		}
+		
 		break;
 	case "edit": // Szavazás szerkesztése
 		if ( $_GET['id'] == $NULL )
@@ -308,6 +374,30 @@ A <b>függő</b> szavazások azok a szavazások, amelyek még nem lettek archiv�
 				Hibauzenet("CRITICAL", "A szavazati lehetőség nem szerkeszthető, mivel a szavazás már archív!");
 			}
 		}
+		
+		break;
+	case "newpoll": // Új szavazás hozzáadása
+		$szavazas = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."polls WHERE id='" .$_GET['pollid']. "'"));
+		
+		if ( $_POST['parancs'] == "Hozzáad" )
+		{
+			// Az új szavazás hozzáadása
+			
+			$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."polls(title, type, opcount) VALUES ('" .mysql_real_escape_string($_POST['title']). "', 0, 0)");
+			
+			ReturnTo("A szavazás hozzáadva", "admin.php?site=polls", "Vissza a szavazásokhoz", TRUE);
+			print("</td><td class='right' valign='top'>");
+			Lablec();
+			die();
+		}
+		
+			print("<form method='POST' action='" .$_SEVER['PHP_SELF']. "'>
+		<span class='formHeader'>Új szavazás hozzáadása</span><br>
+		<p class='formText'>Szavazás címe: <input type='text' name='title' size='64'><br>
+		<input type='hidden' name='action' value='newpoll'>
+		<input type='hidden' name='site' value='polls'>
+		<input type='submit' name='parancs' value='Hozzáad'>
+		</form>");
 		
 		break;
 	}
