@@ -18,7 +18,7 @@
  
  if ( ($_POST['pollop_id'] != "eredmeny") && ($_POST['pollop_id'] != $NULL) && ($_POST['pollid'] != $NULL) )
  {
-	VS_RegisterVote($_POST['pollid'], $_POST['pollop_id']); // Szavazat beküldése
+	PS_RegisterVote($_POST['pollid'], $_POST['pollop_id']); // Szavazat beküldése
  }
  
  if ( ($_POST['pollop_id'] == "eredmeny") && ($_POST['pollid'] != $NULL) )
@@ -27,7 +27,7 @@
 	{
 		print("<a href='admin.php?site=polls'>Vissza az admin menübe</a>");
 	}
-	VS_GenerateResults($_POST['pollid']); // Eredmények kiírása
+	PS_GenerateResults($_POST['pollid']); // Eredmények kiírása
  }
  
  DoFooter();

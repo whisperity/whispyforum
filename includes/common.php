@@ -100,7 +100,7 @@ function Inicialize ( $pagename )
  require('includes/sendmail.php'); // Levélküldési osztály
  require('includes/templates.php'); // Modulkezelő
  
- require('votesystem_scr.php'); // Szavazási rendszer
+ require('pollsystem_scr.php'); // Szavazási rendszer
  
  // Leírófájlok
  require('includes/versions.php'); // Verzióinformációk

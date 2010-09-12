@@ -120,7 +120,7 @@ class templates // Osztálydeklaráció
 		$wf_debug->RegisterDLEvent("Rendszermodul " .$name. " betöltése");
 		switch ($name) {
 			case "voteModule":
-				VS_LoadModule();
+				PS_LoadModule();
 				break;
 			default:
 				$wf_debug->RegisterDLEvent($name ." rendszermodul nem tölthető be, nincs ilyen modul");

@@ -3,11 +3,12 @@
    http://code.google.com/p/whispyforum/
 */
 
-/* votesystem_scr.php
+/* pollsystem_scr.php
    szavazásrendszer
+   csak functiön
 */
  
- function VS_LoadModule() // Szavazási modul létrehozása
+ function PS_LoadModule() // Szavazási modul létrehozása
  {
 	global $cfg, $sql, $wf_debug;
 	
@@ -16,9 +17,9 @@
 	if ( $szavazas != FALSE )
 	{
 	
-	if ( VS_CheckUserVoteOnPoll($szavazas['id']) == 1 )
+	if ( PS_CheckUserVoteOnPoll($szavazas['id']) == 1 )
 	{
-		VS_GenerateResults($szavazas['id']);
+		PS_GenerateResults($szavazas['id']);
 	} else {
 	
 	$lehetosegek = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."poll_opinions WHERE pollid='" .mysql_real_escape_string($szavazas['id']). "'"); // A szavazáshoz tartozó lehetőségek bekérése
@@ -59,7 +60,7 @@
 	}
  }
  
- function VS_RegisterVote($pollid, $opinionid) // Szavazat elküldése (regisztrálása)
+ function PS_RegisterVote($pollid, $opinionid) // Szavazat elküldése (regisztrálása)
  {
 	global $cfg, $sql, $wf_debug;
 	
@@ -71,7 +72,7 @@
 	print("A szavazatod lementésre került! Köszönjük, hogy szavaztál!");
  }
  
- function VS_GenerateResults($pollid) // Eredmények kiírása
+ function PS_GenerateResults($pollid) // Eredmények kiírása
  {
 	global $cfg, $sql, $wf_debug;
 	
@@ -146,7 +147,7 @@
 	*/
  }
  
- function VS_CheckUserVoteOnPoll($pollid) // Megnézzük, hogy a felhasználó szavazott-e már
+ function PS_CheckUserVoteOnPoll($pollid) // Megnézzük, hogy a felhasználó szavazott-e már
  {
 	global $cfg, $sql, $wf_debug;
 	
@@ -156,7 +157,7 @@
 	
 	if ( $felhasznaloszavazat != FALSE ) {
 		$wf_debug->RegisterDLEvent("A felhasználó már szavazott!");
-		return 1; // Ha szavazott, 1-t küldünk vissza, így a VS_LoadModule az eredményeket tölti be
+		return 1; // Ha szavazott, 1-t küldünk vissza, így a PS_LoadModule az eredményeket tölti be
 	}
  }
 ?>
