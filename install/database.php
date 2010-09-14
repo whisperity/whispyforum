@@ -310,10 +310,14 @@
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."siteconfig(variable, value) VALUES
 	('allow_registration', '1'),
 	('facebook_like', '0'),
-	('download_minlvl', '0')");
+	('download_minlvl', '0'),
+	('db_lastoptimize', '0'),
+	('db_lastbackup', '0')");
  WOut('sor', 'siteconfig', 'AllowRegistration: 1');
  WOut('sor', 'siteconfig', 'Facebook_like: 0');
  WOut('sor', 'siteconfig', 'Download min level: 0');
+ WOut('sor', 'siteconfig', 'Database last optimize: 0');
+ WOut('sor', 'siteconfig', 'Database last backup: 0');
  
  file_put_contents('install.log', "\r\nTáblák létrehozása befejezve: " .Datum("normal", "nagybetu", "dL", "H", "i", "s"). " ( " .time(). " )", FILE_APPEND); // Napló zárása
  $sql->Disconnect();

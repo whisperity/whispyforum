@@ -75,6 +75,10 @@
 		MenuItem("configs", "Beállítások");
 		MenuItem("addons", "Addonok kezelése");
 	
+	MenuItem("", "Adatbázis", 'TITLE');
+		MenuItem("dboptimize", "Optimalizáció");
+		MenuItem("dbbackup", "Biztonsági mentése");
+	
 	MenuItem("", "Naplózás", 'TITLE');
 		MenuItem("installlog", "Telepítési napló megtekintése");
 	
@@ -141,6 +145,14 @@
 	case 'polls':
 		$admin = TRUE;
 		include("admin/polls.php");
+		break;
+	case 'dboptimize':
+		$admin = TRUE;
+		include("admin/dboptimize.php");
+		break;
+	case 'dbbackup':
+		$admin = TRUE;
+		include("admin/dbbackup.php");
 		break;
 	default:
 		/* Telepítési információk bekérése */

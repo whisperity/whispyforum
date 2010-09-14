@@ -87,6 +87,7 @@ span.star { color: #FF0000;
 fieldset.submit-buttons {
 	text-align: center;
 	vertical-align: middle;
+	border: 0
 }
 
 fieldset.submit-buttons input {
