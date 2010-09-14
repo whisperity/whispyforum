@@ -3,9 +3,8 @@
    http://code.google.com/p/whispyforum/
 */
 
-/* pollsystem_scr.php
+/* includes/pollsystem_scr.php
    szavazásrendszer
-   csak functiön
 */
  
  function PS_LoadModule() // Szavazási modul létrehozása
