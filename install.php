@@ -23,9 +23,9 @@
 	// Napló írása
 	if ( $ido == FALSE )
 	{
-		file_put_contents('logs/install.log', "\r\n" .$szoveg, FILE_APPEND); // Időérték nélkül
+		file_put_contents('install.log', "\r\n" .$szoveg, FILE_APPEND); // Időérték nélkül
 	} else {
-		file_put_contents('logs/install.log', "\r\n" .$szoveg. ": " .Datum("normal","nagybetu","dL","H","i","s"). " ( " .time(). " )", FILE_APPEND); // Időértékkel
+		file_put_contents('install.log', "\r\n" .$szoveg. ": " .Datum("normal","nagybetu","dL","H","i","s"). " ( " .time(). " )", FILE_APPEND); // Időértékkel
 	}
  }
  
@@ -33,8 +33,8 @@
  if ( file_exists('install.lock') )
  {	
 	print("A portálrendszer már telepítve van. Kérlek töröld az <i>install.lock</i> fájlt a rendszerből");
-	file_put_contents('logs/install.log', "\r\n\r\n\r\n", FILE_APPEND);
-	file_put_contents('logs/install.log', "Telepítés megkezdve: " .Datum("normal","nagybetu","dL","H","i","s"). " ( " .time(). " )", FILE_APPEND);
+	file_put_contents('install.log', "\r\n\r\n\r\n", FILE_APPEND);
+	file_put_contents('install.log', "Telepítés megkezdve: " .Datum("normal","nagybetu","dL","H","i","s"). " ( " .time(). " )", FILE_APPEND);
 	Naplo("A portálrendszer már telepítve van, kérlek töröld az install.lock fájlt!");
 	die();
  }
@@ -64,7 +64,7 @@
 		<span class='regNem'>6. Adminisztrátor létrehozása</span><br>
 		<span class='regNem'>7. Befejezés</span>
 		</p></div>");
-		file_put_contents('logs/install.log', "Telepítés megkezdve: " .Datum("normal","nagybetu","dL","H","i","s"). " ( " .time(). " )");
+		file_put_contents('install.log', "Telepítés megkezdve: " .Datum("normal","nagybetu","dL","H","i","s"). " ( " .time(). " )");
 		break;
 	case 2:
 		// Adatbázis adatainak megadása
@@ -144,7 +144,6 @@ global \$cfg;
 ?>";
 			file_put_contents('config.php', $konfig);
 			Naplo("config.php létrehozva", TRUE);
-			Naplo("Konfigurációs fájl:\r\n" .$konfig. "\r\n\r\n");
 			
 			if ( file_get_contents('config.php') != $konfig )
 			{
@@ -305,12 +304,15 @@ global \$cfg;
 	case 7:
 		// Befejezés
 		Naplo("Telepítés befejezve...", TRUE);
-		file_put_contents('install.lock', "INSTALL_LOCK\nINSTALL_TS," .time(). "\nINSTALL_IP," .$_SERVER['REMOTE_ADDR']);
+		$telepitesinaplo = file_get_contents('install.log');
+		$tloghash = md5($telepitesinaplo);
+		rename('install.log', $tloghash);
+		file_put_contents('install.lock', "INSTALL_LOCK\nINSTALL_TS," .time(). "\nINSTALL_IP," .$_SERVER['REMOTE_ADDR']. "\nIL," .$tloghash);
 		print("<div class='postbox'><h3 class='header'><p class='header'>7. Befejezés</p></h3>"); // Fejléc
 		print("A portálrendszered telepítése ezzel befejeződött. Az alább található gombra kattintva használatba veheted a portálodat.<br>Biztonsági okokból kérlek távolítsd el a telepítési mappádból az <b>install.php</b> fájlt és a teljes <b>/install</b> mappát. Amíg ezt nem teszed meg, az oldal felett könnyen átvehető az irányítás. Az <b>install.lock</b> fájlt hagyd meg!<br>
 			<form action='index.php' method='POST'>
 				<input type='submit' value='Tovább >> (Telepítés befejezése)'>
-		</form>Telepítési napló:<br><textarea rows='20' cols='80' disabled>" .file_get_contents('logs/install.log'). "</textarea>");
+		</form>Telepítési napló:<br><textarea rows='20' cols='80' disabled>" .file_get_contents($tloghash). "</textarea>");
 		
 		// Oldalsó menü
 		print("</div><div class='postright'><div class='menubox'><span class='menutitle'>Telepítés</span><br>");

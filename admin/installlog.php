@@ -13,8 +13,10 @@ if ( $admin == 1)
 ?>
 <center><h2 class='header'>Telepítési napló megtekintése</h2></center>
 <?php
+$telepitesizarolo = file_get_contents("install.lock");
+$telnaplonev = explode("IL,", $telepitesizarolo);
 
-$data = @file_get_contents("logs/install.log"); // Fájl megnyitása
+$data = @file_get_contents($telnaplonev[1]); // Fájl megnyitása
 if ( $data == $NULL )
 {
 	print("A telepítési naplófájl nem található.");

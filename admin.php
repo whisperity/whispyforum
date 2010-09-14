@@ -147,7 +147,12 @@
 		$installock = file_get_contents("install.lock");
 		$instimestamp = explode("INSTALL_LOCK\nINSTALL_TS,", $installock);
 		$instip = explode("\nINSTALL_IP,", $instimestamp[1]);
-		/* $instip[0] = telepítési timestamp, $instip[1] = telepítési IP */
+		$instnaplo = explode("\nIL,", $instip[1]);
+		/* A telepítési zárolófájl szétvágása
+		$instip[0] = telepítési timestamp
+		$instnaplo[0] = telepítő IP-címe
+		$instnaplo[1] = telepítési naplófájl neve
+		*/
 		
 		print("<center><h2 class='header'>Adminisztrátori vezérlőpult</h2></center>
 		<br>
@@ -159,8 +164,8 @@
 			<b>Verziószám:</b> " .VERSION. "<br>
 			<b>Kiadás dátuma:</b> " .RELEASE_DATE. "<br>
 			<b>Telepítés időpontja:</b> " .Datum("normal", "kisbetu", "dl", "H", "i", "s", $instip[0]). "<br>
-			<b>Telepítő IP-címe:</b> " .$instip[1]);
-		if ( $_SERVER['REMOTE_ADDR'] == $instip[1] )
+			<b>Telepítő IP-címe:</b> " .$instnaplo[0]);
+		if ( $_SERVER['REMOTE_ADDR'] == $instnaplo[0] )
 			print(" <span style='color: darkgreen'><b>(Tied)</b></span>");
 		
 		print("</p></div>

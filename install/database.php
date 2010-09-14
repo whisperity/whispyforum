@@ -7,7 +7,7 @@
    adatbázis tábla létrehozó rendszer
 */
  $sql->Connect();
- file_put_contents('logs/install.log', "Táblák létrehozása megkezdve: " .Datum("normal","nagybetu","dL","H","i","s"). " ( " .time(). " )", FILE_APPEND); // Naplófájl létrehozása
+ file_put_contents('install.log', "Táblák létrehozása megkezdve: " .Datum("normal","nagybetu","dL","H","i","s"). " ( " .time(). " )", FILE_APPEND); // Naplófájl létrehozása
  function WOut( $tipus, $tabla, $sor = '' )
  {
 	global $cfg;
@@ -19,11 +19,11 @@
 	{
 		case "tabla":
 			print("<small>A tábla</small> <b>`" .$cfg['dbname']. "`.`" .$cfg['tbprf'].$tabla."`</b> <small>sikeresen létrehozva.</small>"); // Kiírás
-			file_put_contents('logs/install.log', "\r\nA tábla `" .$cfg['dbname']. "`.`" .$cfg['tbprf'].$tabla."` sikeresen létrehozva.", FILE_APPEND); // Napló
+			file_put_contents('install.log', "\r\nA tábla `" .$cfg['dbname']. "`.`" .$cfg['tbprf'].$tabla."` sikeresen létrehozva.", FILE_APPEND); // Napló
 			break;
 		case "sor":
 			print("<small>Új sor hozzáadva a táblához:</small> <b>`" .$cfg['dbname']. "`.`" .$cfg['tbprf'].$tabla."`</b><br><small>A sor adatai:</small> " .$sor); // Kiírás
-			file_put_contents('logs/install.log', "\r\nÚj sor hozzáadva a táblához: `" .$cfg['dbname']. "`.`" .$cfg['tbprf'].$tabla."`\r\nA sor adatai: " .$sor, FILE_APPEND); // Napló
+			file_put_contents('install.log', "\r\nÚj sor hozzáadva a táblához: `" .$cfg['dbname']. "`.`" .$cfg['tbprf'].$tabla."`\r\nA sor adatai: " .$sor, FILE_APPEND); // Napló
 			break;
 	}
 	print("</div>"); // Dobozzárás, újsor
@@ -276,7 +276,7 @@
  
  /* Hírek */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."news(title, text, postDate, uId) VALUES
-	('Első híred!', 'Üdvözlünk! Ez egy próba hír, mely bemutatja, hogy itt is [b]használhatóak[/b] [i]a[/i] [u]BB-kódok[/u] és a :jawohl: :banhammer: hangulatjelek :D', " .time(). ", 1)", 'INSTALL"'); // Első híred!
+	('Első híred!', 'Üdvözlünk! Ez egy próba hír, mely bemutatja, hogy itt is [b]használhatóak[/b] [i]a[/i] [u]BB-kódok[/u] és a :jawohl: :banhammer: hangulatjelek :D', " .time(). ", 1)"); // Első híred!
  WOut('sor', 'news', 'Első híred!');
  
  /* Első hírhozzászólás */
@@ -315,6 +315,6 @@
  WOut('sor', 'siteconfig', 'Facebook_like: 0');
  WOut('sor', 'siteconfig', 'Download min level: 0');
  
- file_put_contents('logs/install.log', "\r\nTáblák létrehozása befejezve: " .Datum("normal", "nagybetu", "dL", "H", "i", "s"). " ( " .time(). " )", FILE_APPEND); // Napló zárása
+ file_put_contents('install.log', "\r\nTáblák létrehozása befejezve: " .Datum("normal", "nagybetu", "dL", "H", "i", "s"). " ( " .time(). " )", FILE_APPEND); // Napló zárása
  $sql->Disconnect();
 ?>
