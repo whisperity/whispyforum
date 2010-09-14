@@ -63,13 +63,17 @@
  function PS_RegisterVote($pollid, $opinionid) // Szavazat elküldése (regisztrálása)
  {
 	global $cfg, $sql, $wf_debug;
-	
-	$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."votes_cast(userid, pollid, opinionid) VALUES 
-		(" .$_SESSION['userID']. ", " .mysql_real_escape_string($pollid). ", " .mysql_real_escape_string($opinionid). ")");
-	
-	$wf_debug->RegisterDLEvent("Szavazat regisztrálása");
-	
-	print("A szavazatod lementésre került! Köszönjük, hogy szavaztál!");
+	if ( PS_CheckUserVoteOnPoll($pollid) == 1 )
+	{
+		Hibauzenet("WARNING", "Te már szavaztál erre a szavazásra egyszer!", "Egy szavazásra csak egyszer szavazhatsz");
+	} else {
+		$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."votes_cast(userid, pollid, opinionid) VALUES 
+			(" .$_SESSION['userID']. ", " .mysql_real_escape_string($pollid). ", " .mysql_real_escape_string($opinionid). ")");
+		
+		$wf_debug->RegisterDLEvent("Szavazat regisztrálása");
+		
+		print("A szavazatod lementésre került! Köszönjük, hogy szavaztál!");
+	}
  }
  
  function PS_GenerateResults($pollid) // Eredmények kiírása

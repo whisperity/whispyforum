@@ -13,7 +13,7 @@
  
  if ( ($_POST['pollop_id'] == $NULL) || ($_POST['pollid'] == $NULL) )
  {
-	Hibauzenet(CRITICAL, "Érvénytelen szavazat!", "Valószínűleg helytelenül adtad le a szavazati űrlapot, kérlek szavazz újra!");
+	Hibauzenet("CRITICAL", "Érvénytelen szavazat!", "Valószínűleg helytelenül adtad le a szavazati űrlapot, kérlek szavazz újra!");
  }
  
  if ( ($_POST['pollop_id'] != "eredmeny") && ($_POST['pollop_id'] != $NULL) && ($_POST['pollid'] != $NULL) )

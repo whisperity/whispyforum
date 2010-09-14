@@ -18,7 +18,7 @@ class mysql // Definiáljuk az osztályt
 		
 		if (!$kapcsolat)
 		{
-			Hibauzenet('CRITICAL',"Nem sikerült a kapcsolódás az adatbázisszerverhez (" .$cfg['dbhost']. " -user " .$cfg['dbuser']. ")", "", __FILE__, __LINE__);
+			Hibauzenet("CRITICAL","Nem sikerült a kapcsolódás az adatbázisszerverhez (" .$cfg['dbhost']. " -user " .$cfg['dbuser']. ")", "", __FILE__, __LINE__);
 			$this->querys++;
 			$this->queryArray[$this->querys] = array("id" => $this->querys, "time" => $wf_debug->TimeGet(), "query" => "SELECT DB " .$cfg['dbname'], "completed" => 0, "mysql_error" => mysql_error());
 		} else {
