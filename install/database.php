@@ -54,8 +54,7 @@
   `bemutatkozas` text COLLATE utf8_unicode_ci NOT NULL,
   `thely` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
- ", 'INSTALL'); // Felhasználók
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Felhasználók
  WOut('tabla', 'user');
  
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."modules (
@@ -65,7 +64,7 @@
   `side` tinyint(1) NOT NULL DEFAULT '1',
   `hOrder` INT(5) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Modulok
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Modulok
  WOut('tabla', 'modules');
  
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."menuitems (
@@ -75,7 +74,7 @@
   `href` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `hOrder` INT(5) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Menüelemek
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Menüelemek
  WOut('tabla', 'menuitems');
  
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."forum (
@@ -89,7 +88,7 @@
   `lpTopic` int(10) NOT NULL DEFAULT '0',
   `lpId` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Fórumok
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Fórumok
  WOut('tabla', 'forum');
  
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."topics (
@@ -106,7 +105,7 @@
   `locked` TINYINT(1) NOT NULL DEFAULT '0',
   `lpId` INT(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Fórumtopicok
+) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Fórumtopicok
  WOut('tabla', 'topics');
  
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."posts (
@@ -120,7 +119,7 @@
   `euId` INT(10) DEFAULT '0',
   `eDate` VARCHAR(32) COLLATE utf8_unicode_ci DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Postok
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Postok
  WOut('tabla', 'posts');
  
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."news (
@@ -131,7 +130,7 @@
   `uId` INT(10) NOT NULL,
   `commentable` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Hírek
+) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Hírek
  WOut('tabla', 'news');
  
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."news_comments (
@@ -141,7 +140,7 @@
   `text` TEXT COLLATE utf8_unicode_ci NOT NULL,
   `postDate` VARCHAR(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Hírhozzászólások
+) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Hírhozzászólások
  WOut('tabla', 'news_comments');
  
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."bannedips (
@@ -151,7 +150,7 @@
   `uId` INT(10) NOT NULL DEFAULT '0',
   `comment` VARCHAR(512) COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
-) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // IP kitiltások
+) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // IP kitiltások
  WOut('tabla', 'bannedips');
 
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."addons (
@@ -162,27 +161,27 @@
   `author` VARCHAR(128) COLLATE utf8_unicode_ci,
   `authoremail` VARCHAR(128) COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
-) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Addonok
+) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Addonok
  WOut('tabla', 'addons');
  
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."version (
   `RELEASE_TYPE` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `VERSION` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `RELEASE_DATE` varchar(128) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Verzióadatok
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Verzióadatok
  WOut('tabla', 'version');
  
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."siteconfig (
   `variable` VARCHAR(64) COLLATE utf8_unicode_ci NOT NULL,
   `value` VARCHAR(1024) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Portál-beállítások
+) ENGINE=MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Portál-beállítások
  WOut('tabla', 'version');
  
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."plain (
 `id` INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 `title` VARCHAR(512) COLLATE utf8_unicode_ci NOT NULL,
 `content` TEXT COLLATE utf8_unicode_ci NOT NULL
-) ENGINE = MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Statikus tartalom
+) ENGINE = MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Statikus tartalom
  WOut('tabla', 'plain');
  
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."downloads (
@@ -195,7 +194,7 @@
   `download_count` int(11) NOT NULL DEFAULT '0',
   `upload_date` varchar(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Letöltések
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Letöltések
  WOut('tabla', 'downloads');
  
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."download_categ (
@@ -204,7 +203,7 @@
   `descr` text COLLATE utf8_unicode_ci NOT NULL,
   `files` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Letöltés kategóriák
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Letöltés kategóriák
  WOut('tabla', 'download_categ');
  
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."polls (
@@ -213,7 +212,7 @@
   `type` tinyint(1) NOT NULL DEFAULT '0',
   `opcount` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Szavazások
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Szavazások
  WOut('tabla', 'polls');
  
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."poll_opinions (
@@ -222,7 +221,7 @@
   `opinion` varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `opinionid` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Szavazás lehetőségek
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Szavazás lehetőségek
  WOut('tabla', 'poll_opinions');
  
  $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."votes_cast (
@@ -231,7 +230,7 @@
   `pollid` int(10) NOT NULL DEFAULT '0',
   `opinionid` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", 'INSTALL'); // Beküldött szavazatok
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Beküldött szavazatok
  WOut('tabla', 'votes_cast');
  
  if ( $exampledata == 'yes' )
@@ -241,7 +240,7 @@
  /* Modulok */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name,type,side, hOrder) VALUES
 	('Főmenü','menu','1', 0),
-	('voteModule','coremodule','2', 0)", 'INSTALL'); // Főmenü
+	('voteModule','coremodule','2', 0)"); // Főmenü
  WOut('sor', 'modules', 'Főmenü');
  WOut('sor', 'modules', 'voteModule - Szavazás');
  
@@ -252,7 +251,7 @@
 	('1','Fórum','viewforum.php', 3),
 	('1','Letöltések','download.php', 4),
 	('1','Statikus tartalom','plain.php?id=1', 5),
-	('1','Google keresés','http://google.hu', 6)", 'INSTALL'); // Főmenü elemei
+	('1','Google keresés','http://google.hu', 6)"); // Főmenü elemei
  WOut('sor', 'menuitems', 'Főmenü/Kezdőlap');
  WOut('sor', 'menuitems', 'Főmenü/Fórum');
  WOut('sor', 'menuitems', 'Főmenü/Hírek');
@@ -262,17 +261,17 @@
  
  /* Fórumok */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."forum(name, description, topics, posts, lastpostdate, lastuser, lpTopic, lpId) VALUES
-	('Első fórumod', 'Ez az első fórumod', '1', '1', '" .time(). "', '1', '1', '1')", 'INSTALL'); // Első fórumod
+	('Első fórumod', 'Ez az első fórumod', '1', '1', '" .time(). "', '1', '1', '1')"); // Első fórumod
  WOut('sor', 'forum', 'Első fórumod');
  
  /* Témák */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."topics(fId, name, type, startuser, startdate, lastuser, lastpostdate, replies, opens, locked)
-	VALUES ('1', 'Első témád, használd örömmel', '1', '1', '" .time(). "', '1', '" .time(). "', '1', '0', '0')", 'INSTALL'); // Első témád
+	VALUES ('1', 'Első témád, használd örömmel', '1', '1', '" .time(). "', '1', '" .time(). "', '1', '0', '0')"); // Első témád
  WOut('sor', 'topics', 'Első fórumod/Első témád');
  
  /* Postok */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."posts(tId, uId, pTitle, pText, pDate) VALUES
-	('1', '1', 'Próbahozzászólás', 'Üdvözlünk az új fórumodban!\nEz egy próbahozzászólás, mely [b]bemutatja[/b] a BB-kódokat, és a többi ügyes dolgot, amit a fejlesztők létrehoztak\n:) ;) :wned: :spam: :banhammer: :wonder:\n\nJó szórakozást!', '" .time(). "')", 'INSTALL'); // Próbahozzászólás
+	('1', '1', 'Próbahozzászólás', 'Üdvözlünk az új fórumodban!\nEz egy próbahozzászólás, mely [b]bemutatja[/b] a BB-kódokat, és a többi ügyes dolgot, amit a fejlesztők létrehoztak\n:) ;) :wned: :spam: :banhammer: :wonder:\n\nJó szórakozást!', '" .time(). "')"); // Próbahozzászólás
  WOut('sor', 'posts', 'Első fórumod/Első témád/Próbahozzászólás');
  
  /* Hírek */
@@ -282,36 +281,36 @@
  
  /* Első hírhozzászólás */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."news_comments(nId, uId, text, postDate) VALUES
-	(1, 1, 'Első hírhozzászólás', " .time(). ")", 'INSTALL'); // Első hírhozzászólás
+	(1, 1, 'Első hírhozzászólás', " .time(). ")"); // Első hírhozzászólás
  WOut('sor', 'news_comments', 'Első hírhozzászólás');
  
  /* Statikus tartalom */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."plain(title, content) VALUES
-	('Statikus tartalom', 'Üdvözöllek!\nEz egy statikus tartalom.\n\nA tartalmat az [url]admin.php?site=plain[/url]admin menü[/a]ből tudod módosítani.')", 'INSTALL'); // Statikus tartalom példa
+	('Statikus tartalom', 'Üdvözöllek!\nEz egy statikus tartalom.\n\nA tartalmat az [url]admin.php?site=plain[/url]admin menü[/a]ből tudod módosítani.')"); // Statikus tartalom példa
 	
  /* Szavazások */
- $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."votes (title, type, opcount) VALUES
-	('Mennyire tetszik a fórummotor?', '1', 5)", 'INSTALL'); // Alapszavazás
+ $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."polls (title, type, opcount) VALUES
+	('Mennyire tetszik a fórummotor?', '1', 5)"); // Alapszavazás
  
  /* Szavazás lehetőségek */
- $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."vote_opinions(voteid, opinion, opinionid) VALUES
+ $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."poll_opinions(voteid, opinion, opinionid) VALUES
 	(1, 'Nagyon jó (5)', 1),
 	(1, 'Jó (4)', 2),
 	(1, 'Középszintű (3)', 3),
 	(1, 'Rossz (2)', 4),
-	(1, 'Semmitmondó! (1)', 5)", 'INSTALL'); // Alapszavazás lehetőségei
+	(1, 'Semmitmondó! (1)', 5)"); // Alapszavazás lehetőségei
  }
  
  // Van pár adat amit mindenképpen hozzá kell adnunk az adatbázishoz!!
  /* Verzióadatok */
- $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."version (RELEASE_TYPE, VERSION, RELEASE_DATE) VALUES ('" .RELEASE_TYPE. "', '" .VERSION. "', '" .RELEASE_DATE. "')", 'INSTALL'); // Verzióadatok
+ $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."version (RELEASE_TYPE, VERSION, RELEASE_DATE) VALUES ('" .RELEASE_TYPE. "', '" .VERSION. "', '" .RELEASE_DATE. "')"); // Verzióadatok
  WOut('sor', 'version', 'Verzióadatok: ' .RELEASE_TYPE. " " .VERSION. " (" .RELEASE_DATE. ")");
  
  /* Portál beállítások */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."siteconfig(variable, value) VALUES
 	('allow_registration', '1'),
 	('facebook_like', '0'),
-	('download_minlvl', '0')", 'INSTALL');
+	('download_minlvl', '0')");
  WOut('sor', 'siteconfig', 'AllowRegistration: 1');
  WOut('sor', 'siteconfig', 'Facebook_like: 0');
  WOut('sor', 'siteconfig', 'Download min level: 0');
