@@ -293,7 +293,7 @@
 	('Mennyire tetszik a fórummotor?', '1', 5)"); // Alapszavazás
  
  /* Szavazás lehetőségek */
- $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."poll_opinions(voteid, opinion, opinionid) VALUES
+ $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."poll_opinions(pollid, opinion, opinionid) VALUES
 	(1, 'Nagyon jó (5)', 1),
 	(1, 'Jó (4)', 2),
 	(1, 'Középszintű (3)', 3),
