@@ -76,6 +76,7 @@
 		MenuItem("addons", "Addonok kezelése");
 	
 	MenuItem("", "Adatbázis", 'TITLE');
+		MenuItem("dbtables", "Részletek");
 		MenuItem("dboptimize", "Optimalizáció");
 		MenuItem("dbbackup", "Biztonsági mentés");
 	
@@ -153,6 +154,10 @@
 	case 'dbbackup':
 		$admin = TRUE;
 		include("admin/dbbackup.php");
+		break;
+	case 'dbtables':
+		$admin = TRUE;
+		include("admin/dbtables.php");
 		break;
 	default:
 		/* Telepítési információk bekérése */
