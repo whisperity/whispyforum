@@ -88,26 +88,26 @@ A <b>függő</b> szavazások azok a szavazások, amelyek még nem lettek archiv�
 			
 			if ( ( $sor['type'] == 0 ) || ( $sor['type'] == 1 ) )
 			{
-				print("<form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
+				print("</td><td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
 				<input type='hidden' name='site' value='polls'>
 				<input type='hidden' name='action' value='archive'>
 				<input type='hidden' name='id' value='" .$sor['id']. "'>
 				<input type='submit' value='Archiválás'>
-			</form>");
+			</form></td>");
 			}
 			
-			print("</td>
+			print("
 			<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
 				<input type='hidden' name='site' value='polls'>
 				<input type='hidden' name='action' value='viewopinions'>
 				<input type='hidden' name='id' value='" .$sor['id']. "'>
-				<input type='submit' value='Lehetőségek megtekintése'>
+				<input type='submit' value='Lehetőségek'>
 			</form></td>
 			<td><form action='vote_cast.php' method='POST'>
 				<input type='hidden' name='pollop_id' value='eredmeny'>
 				<input type='hidden' name='pollid' value='" .$sor['id']. "'>
 				<input type='hidden' name='adminmenu' value='yes'>
-				<input type='submit' value='Eredmények megtekintése'>
+				<input type='submit' value='Eredmények'>
 			</form></td>");
 			
 			if ( ( $sor['type'] == 0 ) || ( $sor['type'] == 1) )

@@ -68,21 +68,21 @@
 		<span class='menutitle'><a class='menuitem' href='admin.php'>Adminisztrátori vezérlőpult</a></span><br><br>");
 	
 	MenuItem("", "Felhasználók", 'TITLE');
-		MenuItem("banip", "IP-cím alapú kitiltások kezelése");
+		MenuItem("banip", "IP-kitiltások");
 		MenuItem("banuser", "Felhasználók kitiltása");
 	
-	MenuItem("", "Weboldal beállításai", 'TITLE');
+	MenuItem("", "Beállítások", 'TITLE');
 		MenuItem("configs", "Beállítások");
 		MenuItem("addons", "Addonok kezelése");
 	
 	MenuItem("", "Adatbázis", 'TITLE');
 		MenuItem("dboptimize", "Optimalizáció");
-		MenuItem("dbbackup", "Biztonsági mentése");
+		MenuItem("dbbackup", "Biztonsági mentés");
 	
 	MenuItem("", "Naplózás", 'TITLE');
 		MenuItem("installlog", "Telepítési napló megtekintése");
 	
-	MenuItem("", "Tartalmak kezelése", 'TITLE');
+	MenuItem("", "Tartalmak", 'TITLE');
 		MenuItem("moduleeditor", "Modulszerkesztő");
 		MenuItem("addforum", "Fórum hozzáadása");
 		MenuItem("plain", "Statikus tartalmak");
@@ -180,7 +180,40 @@
 		if ( $_SERVER['REMOTE_ADDR'] == $instnaplo[0] )
 			print(" <span style='color: darkgreen'><b>(Tied)</b></span>");
 		
-		print("</p></div>
+		print("</p></div>");
+		
+		$lastoptimizeT = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."siteconfig WHERE variable='db_lastoptimize'"));
+		$lastopt = $lastoptimizeT[0];
+		$lastbackupT = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."siteconfig WHERE variable='db_lastbackup'"));
+		$lastbck = $lastbackupT[0];
+		
+		// Táblaméret kiszámítása
+		$tablameret = $sql->Lekerdezes("SELECT DATA_LENGTH, INDEX_LENGTH, DATA_FREE FROM information_schema.tables WHERE TABLE_SCHEMA='" .$cfg['dbname']. "'");
+		$adatmeret = 0;
+		$indexmeret = 0;
+		$osszmeret = 0;
+		$feluliras = 0;
+		
+		while ( $sor = mysql_fetch_assoc($tablameret)) {
+			$adatmeret = $adatmeret + $sor['DATA_LENGTH'];
+			$indexmeret = $indexmeret + $sor['INDEX_LENGTH'];
+			$feluliras = $feluliras + $sor['DATA_FREE'];
+		}
+		$osszmeret = $adatmeret + $indexmeret;
+		
+		print("<br style='clear: both'><div class='menubox'><span class='menutitle'>Adatbázis</span><br>
+		<p class='formText'>
+			<b>Típus:</b> MySQL<br>
+			<b>Táblák összmérete: </b> " .DecodeSize($osszmeret). " (" .DecodeSize($adatmeret). " adat, " .DecodeSize($indexmeret). " index)<br>");
+			
+			if ( $feluliras > 0 ) {
+				print("<span style='color: red'><b>Felülírás:</b> " .DecodeSize($feluliras). "</span><br>");
+			} elseif ( $feluliras == 0 ) {
+				print("<b>Felülírás:</b> " .DecodeSize($feluliras). "<br>");
+			}
+			print("<b>Utoljára optimalizálva:</b> " .Datum("normal", "kisbetu", "dL", "H", "i", "s", $lastopt). " <small><a href='admin.php?site=dboptimize'>(optimalizálás)</a></small><br>
+			<b>Utoljára biztonsági mentés készítve:</b> " .Datum("normal", "kisbetu", "dL", "H", "i", "s", $lastbck). " <small><a href='admin.php?site=dbbackup'>(biztonsági mentés)</a></small><br>
+			</p></div>
 			<br style='clear: both'>");
 		print("</td><td class='right' valign='top'>");
 		break;

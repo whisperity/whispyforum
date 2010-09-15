@@ -26,7 +26,7 @@ A jelenlegi modul segítségével egy önellenőrzést hajtatsz végre a portál
  print("<br>");
 function Eredmeny($status, $title, $message)
 {
-	global $ellenorzes, $cfg;
+	global $ellenorzes;
 	/* Egy biztonsági ellenörzés eredményének kiírása */
 	$ellenorzes['szama']++; // Ellenörzések számának növelése
 	$ellenorzes[$status]++; // Ellenörzés eredményének megfelelő számláló növelése
@@ -35,11 +35,11 @@ function Eredmeny($status, $title, $message)
 			$status = 'Rendben';
 			$icon = 'passed';
 		break;
-		case WARNING :
+		case WARNING:
 			$status = 'Figyelmeztetés';
 			$icon = 'warning';
 		break;
-		case FAILED :
+		case FAILED:
 			$status = 'Kritikus biztonsági rés';
 			$icon = 'failed';
 		break;
@@ -47,8 +47,15 @@ function Eredmeny($status, $title, $message)
 	print("<img src='admin/" .$icon. ".gif' height='24' width='24' alt='" .$status. "' align='left'>
 	<h3 style='border-bottom: 1px dotted black; margin: 0px 0px 0px 24px;'>" .$title. "</h3>
 		<div align='right'>
-			<b>" .$status. "</b>	
+			<b>" .$status. "</b>
 		</div>
+	<p>" .$message. "</p></div>");
+}
+
+function Javaslat($message)
+{
+	print("<img src='admin/recommend.png' height='24' width='24' alt='Javaslat' align='left'>
+	<h5 style='border-bottom: 0.5px dotted black; margin: 0px 0px 0px 24px;'>Javaslat:</h4>
 	<p>" .$message. "</p></div>");
 }
 	
@@ -58,8 +65,9 @@ function Eredmeny($status, $title, $message)
 	if ( ( is_dir('install') ) || ( file_exists('install.php') ) )
 	{
 		Eredmeny(FAILED, "Telepítőscriptek megléte", "A portálrendszer telepítőfájljai még mindig megtalálhatóak a szerveren. Sikeres telepítés után ezen fájlok már nem szükségesek, és komoly biztonsági rést nyitnak. Kérlek távolítsd el őket!");
+		Javaslat("Töröld a szerverről az <b>install</b> mappát és az <b>install.php</b> fájlt. <b>FONTOS! Az install.lock fájlt NE töröld!</b>");
 	} else {
-		Eredmeny(OK, "Telepítőscriptek törlése", "");
+		Eredmeny(OK, "Telepítőscriptek törölve", "A telepítőscriptek már el lettek távolítva a szerverről.");
 	}
 	
 	/* Konfigurációs fájl írhatósága
@@ -68,8 +76,9 @@ function Eredmeny($status, $title, $message)
 	if ( is_writeable('config.php') )
 	{
 		Eredmeny(WARNING, "<code>config.php</code> írásvédettsége", "A telepítés után már nem szükséges a fájlnak írhatónak lennie.");
+		Javaslat("Tedd a fájlt írásvédetté. WINDOWS alapú szerveren, a <code>attrib +r config.php</code>, FTP szerveren a <code>chmod 644 config.php</code> futtatásával.");
 	} else {
-		Eredmeny(OK, "<code>config.php</code> írásvédettsége", "");
+		Eredmeny(OK, "<code>config.php</code> írásvédettsége", "A konfigurációs fájl írásvédett.");
 	}
 	
 	/* mysql felhasználó neve
@@ -78,6 +87,7 @@ function Eredmeny($status, $title, $message)
 	if ( $cfg['dbuser'] == "root" )
 	{
 		Eredmeny(FAILED, "mysql felhasználóinév: <code>root</code>", "A <i>root</i> felhasználó teljes jogkörrel rendelkezik a mySQL szerveren, valamint természeténél fogva nem távolítható el, ezért erősen ellenjavallot a használata!");
+		Javaslat("Konzultálj a szerver rendszergazdájával egy új felhasználó regisztrálásáról, majd az új felhasználónak a megfelelő jogkör biztosításáról a portálrendszer adatbázisához.");
 	} else {
 		Eredmeny(OK, "mysql felhasználóinév", "");
 	}
@@ -89,6 +99,7 @@ function Eredmeny($status, $title, $message)
 	if ( ($cfg['dbname'] == "mysql") || ($cfg['dbname'] == "INFORMATION_SCHEMA") )
 	{
 		Eredmeny(FAILED, "Adatbázis neve: <code>" .$cfg['dbname']. "</code>", "A használt adatbázis az adatbázisszerver kritikus adatbázisa, használata a szerver összeomlásához vezethet!");
+		Javaslat("Sürgős áttérés egy saját adatbázis használtára. Konzultálj a hálózati rendszergazdával!");
 	} else {
 		Eredmeny(OK, "Adatbázis neve: <code>" .$cfg['dbname']. "</code>", "A portál saját adatbázist használ");
 	}
@@ -110,7 +121,8 @@ function Eredmeny($status, $title, $message)
 	{
 		Eredmeny(OK, "<code>\$_GLOBALS</code> változók regisztrálása", "A globális változók regisztrálása ki van kapcsolva.");
 	} else {
-		Eredmeny(FAILED, "<code>\$_GLOBALS</code> változók regisztrálása", "A globális változók regisztrálása be van kapcsolva. Kikapcsolása erősen ajánlott, mivel szükségtelen biztonsági rést nyit. (A rendszer 100%-ig működik kikapcsolt register_globals esetén is)<br>Kikapcsolásához állítsd a php.ini register_globals tartalmát Off-ra. (<code>ini_set(<span style='color: grey'>'register_globals'</span>, <span style='color: grey'>'Off'</span>);)");
+		Eredmeny(FAILED, "<code>\$_GLOBALS</code> változók regisztrálása", "A globális változók regisztrálása be van kapcsolva. Kikapcsolása erősen ajánlott, mivel szükségtelen biztonsági rést nyit. (A rendszer 100%-ig működik kikapcsolt register_globals esetén is)");
+		Javaslat("Kikapcsolásához állítsd a php.ini register_globals tartalmát Off-ra. (<code>ini_set(<span style='color: grey'>'register_globals'</span>, <span style='color: grey'>'Off'</span>);)");
 	}
 	
 	/* Hibák megjelenítése
@@ -120,7 +132,8 @@ function Eredmeny($status, $title, $message)
 	{
 		Eredmeny(OK, "Hibák megjelenítése kikapcsolva", "A hibák megjelenítése ki van kapcsolva. A hibákról a keretrendszer hibakezelője értesíti a felhasználókat.");
 	} else {
-		Eredmeny(FAILED, "Hibák megjelenítése bekapcsolva", "A hibák megjelenítése a PHP-értelmezőnek nem szükséges, mivel a keretrendszer tartalmaz egy beépített hibaüzenet-megjelenítőt. Emelett a PHP hibaüzenetei tartalmazhatnak utalásokat az adatbázis struktúrájára, tartalmára, a webszerver elérési útjára, és egyéb érzékeny információkra! (<code>ini_set(<span style='color: grey'>'display_errors'</span>, <span style='color: grey'>'Off'</span>);)");
+		Eredmeny(FAILED, "Hibák megjelenítése bekapcsolva", "A hibák megjelenítése a PHP-értelmezőnek nem szükséges, mivel a keretrendszer tartalmaz egy beépített hibaüzenet-megjelenítőt. Emelett a PHP hibaüzenetei tartalmazhatnak utalásokat az adatbázis struktúrájára, tartalmára, a webszerver elérési útjára, és egyéb érzékeny információkra!");
+		Javaslat("<code>ini_set(<span style='color: grey'>'display_errors'</span>, <span style='color: grey'>'Off'</span>);");
 	}
 	
 	/* Hibák megjelenítése ($wf_debug osztály)
@@ -130,7 +143,8 @@ function Eredmeny($status, $title, $message)
 	{
 		Eredmeny(OK, "Hibakeresési információk kikapcsolva", "");
 	} else {
-		Eredmeny(FAILED, "Hibakeresési információk bekapcsolva", "A hibakeresési információk megjelenítése be van kapcsolva. A megjelenítés kikapcsolása éles rendszerben <b>KIMONDOTTAN AJÁNLOTT</b>, mivel a megjelenítő által a képernyőre írt adat tartalmaz minden rejtett SQL-kérést, generálási naplót, munkamenetinformációt és a konfigurációs tábla adatait (ahonnan kiolvasható például a mysql-hozzáférési nevet és jelszót!");
+		Eredmeny(FAILED, "Hibakeresési információk bekapcsolva", "A hibakeresési információk megjelenítése be van kapcsolva. A megjelenítés kikapcsolása éles rendszerben <b>KIMONDOTTAN AJÁNLOTT</b>, mivel a megjelenítő által a képernyőre írt adat tartalmaz minden rejtett SQL-kérést, generálási naplót, munkamenetinformációt és a konfigurációs tábla adatait (ahonnan kiolvasható például a mysql-hozzáférési név és jelszó!");
+		Javaslat("A <b>debug.php</b> állományban a megfelelő konstans 0-ra állítása megoldja ezt a problémát.");
 	}
 	
 	print("Az ellenörzés véget ért " .Datum("normal","kisbetu","dL","H","i","s"). "-kor. A végeredmény: <b>" .$ellenorzes['szama']. "</b> ellenörzésből <b>" .$ellenorzes['FAILED']. "</b> kritikus biztonsági rés került felfedezésre, <b>" .$ellenorzes['WARNING']. "</b> kisebb hiányosságra (figyelmeztetések) derült fény, és <b>" .$ellenorzes['OK']. "</b> ponton kiválóan teljesített a weboldal.");
@@ -149,7 +163,7 @@ function Eredmeny($status, $title, $message)
 	if ( $arany <= 39 )
 		print("<img src='admin/failed.gif' height='24' width='24' alt='Kritikus biztonsági rés'> Kritikus");
 		
-	print("&nbsp;&nbsp;&nbsp;(100% esetén minden ponton RENDBEN eredményt kap a rendszer, 0% esetén minden ponton kritikus biztonsági rés található)");
+	print("&nbsp;(100% esetén minden ponton RENDBEN eredményt kap a rendszer, 0% esetén minden ponton kritikus biztonsági rés található)");
 print("</td><td class='right' valign='top'>"); // Középső doboz zárása, jobboldali üres doboz elhelyezése (td.right-ot az admin.php zárja)
 } else {
 	// Ha nem admin menüből hívódik meg, felhasználó átirányítása az admin menübe
