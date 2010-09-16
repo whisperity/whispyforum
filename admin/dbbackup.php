@@ -53,7 +53,7 @@ function BackupTable($table)
 	}
 	$wf_debug->RegisterDLEvent("Oszlopok létrehozva");
 	
-	file_put_contents($fajlnev, ") VALUES \n", FILE_APPEND);
+	file_put_contents($fajlnev, ") VALUES", FILE_APPEND);
 	$wf_debug->RegisterDLEvent("Sorok létrehozása...");
 	
 	// Sorok
