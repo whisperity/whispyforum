@@ -16,7 +16,7 @@ if ( $admin == 1)
 
 print("<div class='userbox'><table border='0' cellspacing='1' cellpadding='1'>
 			<tr>
-				<td><b>Tábla</b></td>
+				<td><b>Tábla</b><a class='feature-extra'><span class='hover'><span class='h3'>Tábla neve</span>Azon soroknál, ahol a tábla neve nyers nevet tartalmaz (tehát nincs lokalizálva, pl. Letöltések, XYZ addon beállításai), a tábla valószínűleg egy addon táblája, vagy nem is a portálmotor része.</span><sup>?</sup></a></td>
 				<td><b>Adatméret</b></td>
 				<td><b>Index-méret</b></td>
 				<td><b>Tárolt méret</b><a class='feature-extra'><span class='hover'><span class='h3'>Tárolt méret</span>A táblában tárolt összes adat és index mérete.</span><sup>?</sup></a></td>
@@ -37,8 +37,19 @@ while ( $sor = mysql_fetch_assoc($tablameret)) {
 	$osszmeret = $osszmeret + $sor['DATA_LENGTH'] + $sor['INDEX_LENGTH'];
 	$feluliras = $feluliras + $sor['DATA_FREE'];
 	
+	
+	// A táblaprefixum miatti kavarodás megszüntetése
+	$tblnexplode = explode($cfg['tbprf'], $sor['TABLE_NAME']);
+	
+	if ( ( $tblnexplode[0] == $NULL ) && ( $tblnexplode[1] != $NULL ) && ( count($tblnexplode) >=2 ) )
+	{
+		$tnev = $tblnexplode[1];
+	} elseif ( ( $tblnexplode[0] != $NULL ) && ( count($tblnexplode) == 1 ) ) {
+		$tnev = $tblnexplode[0];
+	}
+	
 	$tablanev = "";
-	switch ( $sor['TABLE_NAME'] ) {
+	switch ( $tnev ) {
 		case "addons":
 			$tablanev = "<a href='admin.php?site=addons'>Addonok</a>";
 			break;
@@ -94,7 +105,17 @@ while ( $sor = mysql_fetch_assoc($tablameret)) {
 			$tablanev = "Leadott szavazatok";
 			break;
 		default:
-			$tablanev = $sor['TABLE_NAME'];
+			$tablanev = $tnev;
+	}
+	
+	// Az addonbeállítási tömbök megnézése
+	$addonset = explode("addonsettings_", $tablanev);
+	
+	if ( ( $addonset[0] == $NULL ) && ( $addonset[1] != $NULL ) && ( count($addonset) >=2 ) )
+	{
+		$tablanev = $addonset[1]." addon beállításai";
+	} elseif ( ( $addonset[0] != $NULL ) && ( count($addonset) == 1 ) ) {
+		$tablanev = $addonset[0];
 	}
 	
 	print("<tr>
