@@ -117,7 +117,7 @@ if ( $_POST['command'] == "backup_all" )
 	$wf_debug->RegisterDLEvent("Fájl lezárva");
 	
 	$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."siteconfig SET value='" .time(). "' WHERE variable='db_lastbackup'");
-	print("<div class='userbox'><span class='formHeader'>Adatbázis biztonsági mentés lefuttatva</span><p class='formText'>A biztonságimentés SQL-fájlja megtalálható a szerveren.</p></div>");
+	ReturnTo("A biztonsági mentés létrehozva", "admin.php?site=dbbackup", "Vissza", TRUE);
 	
 	// Nem fut le a további kód
 	print("</td><td class='right' valign='top'>");

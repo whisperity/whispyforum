@@ -41,7 +41,7 @@ if ( $_POST['command'] == "optimize_all" )
 	$wf_debug->RegisterDLEvent("Optimalizáció kész");
 	
 	$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."siteconfig SET value='" .time(). "' WHERE variable='db_lastoptimize'");
-	print("<div class='userbox'><span class='formHeader'>Adatbázis optimalizáció lefuttatva</span><p class='formText'>Az optimalizáció lefuttatva.</p></div>");
+	ReturnTo("A Táblák optimalizálása sikeres.", "admin.php?site=dboptimize", "Vissza", TRUE);
 	
 	// Nem fut le a további kód
 	print("</td><td class='right' valign='top'>");
