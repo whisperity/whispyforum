@@ -92,10 +92,10 @@ function Datum( $ev, $honap, $nap, $ora, $perc, $masodperc, $epoch = '' ) // A m
 		$Anap = $hetNapjai[date(N, $epoch)];
 		break;
 	case "dl": // Nap száma vezető nullákkal és neve kisbetűvel
-		$Anap = date(d) .". ". $hetNapjaiKB[date(N, $epoch)];
+		$Anap = date(d, $epoch) .". ". $hetNapjaiKB[date(N, $epoch)];
 		break;
 	case "dL": // Nap száma vezető nullákkal és neve nagybetűvel
-		$Anap = date(d) .". ". $hetNapjai[date(N, $epoch)];
+		$Anap = date(d, $epoch) .". ". $hetNapjai[date(N, $epoch)];
 		break;
  }
  
