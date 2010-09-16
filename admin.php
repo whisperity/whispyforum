@@ -223,6 +223,60 @@
 			}
 			print("<b>Utoljára optimalizálva:</b> " .Datum("normal", "kisbetu", "dL", "H", "i", "s", $lastopt). " <small><a href='admin.php?site=dboptimize'>(optimalizálás)</a></small><br>
 			<b>Utoljára biztonsági mentés készítve:</b> " .Datum("normal", "kisbetu", "dL", "H", "i", "s", $lastbck). " <small><a href='admin.php?site=dbbackup'>(biztonsági mentés)</a></small><br>
+			</p></div>");
+		
+		// Pár kisebb statisztikai adat kiírása
+		$honapok = array(  // Létrehozzuk a hónapok neveit
+  1 => "Január",
+  2 => "Február",
+  3 => "Március",
+  4 => "Április",
+  5 => "Május",
+  6 => "Június",
+  7 => "Július",
+  8 => "Augusztus",
+  9 => "Szeptember",
+  10 => "Október",
+  11 => "November",
+  12 => "December"
+ );
+		
+		$gd = getdate(); // GetDate
+		
+		// Összes látogatás
+		$osszes = 0;
+		for ($ev = 1999; $ev <= 2020; $ev++) {
+			$result = $sql->Lekerdezes("SELECT year FROM " .$cfg['tbprf']."statistics WHERE year=" .$ev);
+			
+			$osszes = $osszes + mysql_num_rows($result);
+			mysql_free_result($result);
+		}
+		
+		// Idei év
+		$EVosszes = 0;
+		$result = $sql->Lekerdezes("SELECT year FROM " .$cfg['tbprf']."statistics WHERE year=" .$gd['year']);
+		$EVosszes = mysql_num_rows($result);
+		mysql_free_result($result);
+		
+		// Aktuális hónap
+		$HOosszes = 0;
+		$result = $sql->Lekerdezes("SELECT year, month FROM " .$cfg['tbprf']."statistics WHERE year=" .$gd['year']. " AND month=" .$gd['mon']);
+		$HOosszes = mysql_num_rows($result);
+		mysql_free_result($result);
+		
+		// Mai nap
+		$NAPosszes = 0;
+		$result = $sql->Lekerdezes("SELECT year, month, day FROM " .$cfg['tbprf']."statistics WHERE year=" .$gd['year']. " AND month=" .$gd['mon']. " AND day=" .$gd['mday']);
+		$NAPosszes = mysql_num_rows($result);
+		mysql_free_result($result);
+		
+		print("<br style='clear: both'><div class='menubox'><span class='menutitle'><a href='admin.php?site=statistics'>Statisztika</a></span>
+			<p class='formText'>
+				<b>Eddigi összes látogatás:</b> " .$osszes. "<br>
+				<br>
+				<b><a href='admin.php?site=statistics&mode=months&year=" .$gd['year']. "' alt='Az idei év részletei'>Idei</a> látogatók:</b> " .$EVosszes. "<br>
+				<b><a href='admin.php?site=statistics&mode=days&year=" .$gd['year']. "&month=" .$gd['mon']. "' alt='Az aktuális hónap részletei'>" .$honapok[$gd['mon']]. "i</a> látogatók:</b> " .$HOosszes. "<br>
+				<b><a href='admin.php?site=statistics&mode=ip_days&year=" .$gd['year']. "&month=" .$gd['mon']. "&day=" .$gd['mday']. "' alt='A mai nap információinak megjelenítése'>Mai</a> látogatók: </b>" .$NAPosszes. "<br>
 			</p></div>
 			<br style='clear: both'>");
 		print("</td><td class='right' valign='top'>");

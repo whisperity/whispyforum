@@ -109,7 +109,7 @@ function WriteStatistics() // Statisztika írása
 		$wf_debug->RegisterDLEvent("Látogatottsági infó hozzáadva");
 	} else {
 		// Ha igen, nem történik semmi.
-		//$wf_debug->RegisterDLEvent("Látogatottsági adat nem növelve, a felhasználó már járt itt");
+		$wf_debug->RegisterDLEvent("Látogatottsági adat nem növelve, a felhasználó már járt itt");
 	}
 }
 
