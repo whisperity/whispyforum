@@ -243,7 +243,10 @@ switch ( $_GET['mode'] ) {
 			</tr>");
 		}
 		
-		print("</table></div>");
+		print("<tr>
+			<td><b>Összesen:</b></td>
+			<td><b>" .mysql_num_rows($result). "</b></td>
+		</tr></table></div>");
 		}
 		
 		$wf_debug->RegisterDLEvent("Statisztika generálása befejezve");
