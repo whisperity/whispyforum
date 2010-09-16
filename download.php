@@ -16,7 +16,7 @@
 	if ( $_SESSION['userLevel'] == $NULL )
 		$_SESSION['userLevel'] = 0;
 	
-	Hibauzenet("ERROR","Az letöltések nem érhetőek el","A menü használatához MINIMUM level " .DOWNLOAD_MINLVL. " jogosultság kell<br>A te jogosultságod: " .$_SESSION['userLevelTXT']. " (level " .$_SESSION['userLevel'].").");
+	Hibauzenet("ERROR","Az letöltések nem érhetőek el","A letöltések használatához MINIMUM level " .DOWNLOAD_MINLVL. " jogosultság kell<br>A te jogosultságod: " .$_SESSION['userLevelTXT']. " (level " .$_SESSION['userLevel'].").");
 	DoFooter();
 	die();
  }
