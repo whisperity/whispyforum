@@ -92,6 +92,9 @@ while ( $sor = mysql_fetch_assoc($tablameret)) {
 		case "siteconfig":
 			$tablanev = "<a href='admin.php?site=configs'>Portál beállítások</a>";
 			break;
+		case "statistics":
+			$tablanev = "<a href='admin.php?site=statistics'>Statisztika</a>";
+			break;
 		case "topics":
 			$tablanev = "Fórumtémák";
 			break;

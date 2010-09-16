@@ -42,12 +42,26 @@ function GoogleAnalytics() // Google Analytics kód
 	{
 		if ( GOOGLE_ALANYTICS_ID != $NULL ) // Megjelenítés csak akkor, ha van megadott Google Analytics ID
 		{
-			GenerateGoogleAnalyticsJS(); // Meghívjuk a másik fájlban lévő függvényt
+			echo "<!--- Google Analytics Követőkód --->
+<script type='text/javascript'>
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', '" .GOOGLE_ANALYTICS_ID. "']);
+	_gaq.push(['_trackPageview']);
+	
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+
+</script>
+	<!--- Google Analytics Követőkód VÉGE --->";
 			
 			$wf_debug->RegisterDLEvent("Google Analytics JavaScript létrehozva, követési adatok elküldve");
 		}
 	}
 }
+
 function Lablec()
 {
 	global $cfg, $sql, $wf_debug;
@@ -77,6 +91,28 @@ function Lablec()
 	$wf_debug->GenerateFooterInf(); // Debug információk megjelnítése
 }
 
+function WriteStatistics() // Statisztika írása
+{
+	global $cfg, $sql, $wf_debug;
+	$wf_debug->RegisterDLEvent("Látogatási statisztika írása...");
+	
+	$gdatum = getdate(); // Aktuális dátum
+	
+	// Először ellenőrizzük, hogy a látogató járt-e ma már itt.
+	$ellenorzes = mysql_fetch_assoc($sql->Lekerdezes("SELECT ip, year, month, day FROM " .$cfg['tbprf']."statistics WHERE ip='" .$_SERVER['REMOTE_ADDR']. "' AND year=" .$gdatum["year"]. " AND month=" .$gdatum["mon"]. " AND day=" .$gdatum["mday"]. " LIMIT 1")); // Lekérdezés
+	
+	if ( $ellenorzes == FALSE )
+	{
+		// Ha még nem járt itt,
+		$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."statistics(ip, year, month, day, hour, minute, second, epoch) VALUES
+			('" .$_SERVER['REMOTE_ADDR']. "', " .$gdatum["year"]. ", " .$gdatum["mon"]. ", " .$gdatum["mday"]. ", " .$gdatum["hours"]. ", " .$gdatum["minutes"]. ", " .$gdatum["seconds"]. ", '" .time(). "')"); // Most már igen
+		$wf_debug->RegisterDLEvent("Látogatottsági infó hozzáadva");
+	} else {
+		// Ha igen, nem történik semmi.
+		//$wf_debug->RegisterDLEvent("Látogatottsági adat nem növelve, a felhasználó már járt itt");
+	}
+}
+
 function Inicialize ( $pagename )
 {
  /* Generálás kezdete, idő eltárolása */
@@ -90,7 +126,7 @@ function Inicialize ( $pagename )
  /* SZÜKSÉGES FÁJLOK BETÖLTÉSE */
  require('config.php'); // Konfigurációs állomány betöltése
  require('debug.php'); // Hibakeresési funkciót engedélyező/tiltó állomány betöltése
- include('analytics.php'); // Google analytics leírókód
+ require('analytics.php'); // Google analytics leírókód
  
  // Funkciótárak és osztályok betöltése
  require('includes/debug.php'); // Hibakereső
@@ -124,6 +160,8 @@ function Inicialize ( $pagename )
  $sql->Connect(); // Csatlakozás az adatbázisszerverhez
  CheckIfIPBanned(); // Megnézzük, hogy a felhasználó IP-címe bannolva van-e
  $user->GetUserData(); // Felhasználó adatainak frissítése
+ 
+ WriteStatistics(); // Statisztika írása
  
   /* Portálmotor-beállítások bekérése */
  $siteconfig_allowReg = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."siteconfig WHERE variable='allow_registration'")); // Regisztráció engedélyezése

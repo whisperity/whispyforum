@@ -233,6 +233,18 @@
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Beküldött szavazatok
  WOut('tabla', 'votes_cast');
  
+ $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."statistics (
+  `ip` varchar(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0.0.0.0',
+  `year` int(10) NOT NULL DEFAULT '0',
+  `month` int(10) NOT NULL DEFAULT '0',
+  `day` int(10) NOT NULL DEFAULT '0',
+  `hour` int(10) NOT NULL DEFAULT '0',
+  `minute` int(10) NOT NULL DEFAULT '0',
+  `second` int(10) NOT NULL DEFAULT '0',
+  `epoch` VARCHAR(16) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Látogatottsági adatok
+ WOut('tabla', 'statistics');
+ 
  if ( $exampledata == 'yes' )
  {
  /* Kezdeti adatok */

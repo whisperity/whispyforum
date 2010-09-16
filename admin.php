@@ -82,6 +82,7 @@
 	
 	MenuItem("", "Naplózás", 'TITLE');
 		MenuItem("installlog", "Telepítési napló megtekintése");
+		MenuItem("statistics", "Statisztika");
 	
 	MenuItem("", "Tartalmak", 'TITLE');
 		MenuItem("moduleeditor", "Modulszerkesztő");
@@ -159,6 +160,10 @@
 		$admin = TRUE;
 		include("admin/dbtables.php");
 		break;
+	case 'statistics':
+		$admin = TRUE;
+		include("admin/statistics.php");
+		break;
 	default:
 		/* Telepítési információk bekérése */
 		$installock = file_get_contents("install.lock");
@@ -209,7 +214,7 @@
 		print("<br style='clear: both'><div class='menubox'><span class='menutitle'>Adatbázis</span><br>
 		<p class='formText'>
 			<b>Típus:</b> MySQL<br>
-			<b>Táblák összmérete: </b> " .DecodeSize($osszmeret). " (" .DecodeSize($adatmeret). " adat, " .DecodeSize($indexmeret). " index)<br>");
+			<b>Táblák összmérete: </b> " .DecodeSize($osszmeret). " (" .DecodeSize($adatmeret). " adat, " .DecodeSize($indexmeret). " index) <small><a href='admin.php?site=dbtables'>(részletek)</a></small><br>");
 			
 			if ( $feluliras > 0 ) {
 				print("<span style='color: red'><b>Felülírás:</b> " .DecodeSize($feluliras). "</span><br>");

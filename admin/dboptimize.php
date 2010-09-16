@@ -32,6 +32,7 @@ if ( $_POST['command'] == "optimize_all" )
 	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."poll_opinions");
 	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."posts");
 	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."siteconfig");
+	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."statistics");
 	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."topics");
 	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."user");
 	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."version");

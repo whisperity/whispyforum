@@ -105,6 +105,7 @@ if ( $_POST['command'] == "backup_all" )
 	BackupTable("poll_opinions");
 	BackupTable("posts");
 	BackupTable("siteconfig");
+	BackupTable("statistics");
 	BackupTable("topics");
 	BackupTable("user");
 	BackupTable("version");
