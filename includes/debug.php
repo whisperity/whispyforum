@@ -256,6 +256,10 @@
 	}
  }
  
+ function pretty_var($myArray){
+    print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($myArray,true))."<br>";
+ }
+ 
  // Létrehozzuk a globális $wf_debug változót
  // mellyel meghívhatjuk a függvényeket
  global $wf_debug;
