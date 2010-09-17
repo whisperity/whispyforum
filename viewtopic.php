@@ -58,7 +58,7 @@
  $forumId = $sor2['fId'];
  SetTitle($sor2['name']);
  
- $sor3 = mysql_fetch_assoc($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."forum WHERE id='" .$forumId. "'"), MYSQL_ASSOC);
+ $sor3 = mysql_fetch_assoc($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."forum WHERE id='" .$forumId. "'"));
  print("<p class='header'><a href='viewtopics.php?id=" .$forumId. "'><< Vissza a fórumhoz (" .$sor3['name']. ")</a><img src='themes/" .$_SESSION['themeName']. "/x.bmp'>"); // Visszatérési link kiírása
  
  /* Hozzászólási link / lezártsági kép */

@@ -116,7 +116,14 @@ while ( $sor = mysql_fetch_assoc($tablameret)) {
 	
 	if ( ( $addonset[0] == $NULL ) && ( $addonset[1] != $NULL ) && ( count($addonset) >=2 ) )
 	{
-		$tablanev = $addonset[1]." addon beállításai";
+		$addonid = mysql_fetch_assoc($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."addons WHERE subdir='" .mysql_real_escape_string($addonset[1]). "' LIMIT 1"));
+		
+		if ( file_exists("addons/" .$addonset[1]. "/settings.php") ) {
+			$tablanev = "<a href='admin.php?site=addons&action=settings&id=" .$addonid['id']. "'>" .$addonset[1]. " addon beállításai</a>";
+		} else {
+			$tablanev = $addonset[1]." addon beállításai";
+		}
+		
 	} elseif ( ( $addonset[0] != $NULL ) && ( count($addonset) == 1 ) ) {
 		$tablanev = $addonset[0];
 	}
