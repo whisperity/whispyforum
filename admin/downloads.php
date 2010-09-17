@@ -34,7 +34,7 @@ if ( $_POST['action'] != $NULL )
  {
 	case $NULL: // Alapeset (nincs beérkező változó)
 		// Bevezető szöveg, kategórialista megjelenítése
-		print("A most megnyitott bővítmény segítségével kezelheted a letölthető tartalmakat.");
+		print("A most megnyitott bővítmény segítségével kezelheted a letölthető tartalmakat.<br><a href='admin.php?site=downloads&action=viewitems&id=0' alt='Kategorizálatlan szavazások'>A kategória nélküli szavazások megtekintéséhez kattints ide</a>.");
 		print("<br><br><div class='userbox'><table border='0' cellspacing='1' cellpadding='1'>
 			<tr>
 				<th>Cím</th>
@@ -127,6 +127,7 @@ if ( $_POST['action'] != $NULL )
 		{
 			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
 		} else {
+			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."downloads SET cid='0' WHERE cid='" .mysql_real_escape_string($_GET['id']). "'");
 			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."download_categ WHERE id='" .mysql_real_escape_string($_GET['id']). "'");
 			ReturnTo("A kategória törlése megtörtént!", "admin.php?site=downloads", "Vissza a kategórialistához", TRUE);
 		}
@@ -161,7 +162,13 @@ if ( $_POST['action'] != $NULL )
 			Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
 		} else {
 			$kategoria = mysql_fetch_assoc($sql->Lekerdezes("SELECT id, title, files FROM " .$cfg['tbprf']."download_categ WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
-			print("<h3 class='download-categ'>" .$kategoria['title']. " (" .$kategoria['files']. ")</h3>\n");
+			
+			if ( $_GET['id'] != 0 )
+			{
+				print("<h3 class='download-categ'>" .$kategoria['title']. " (" .$kategoria['files']. ")</h3>\n");
+			} elseif ( $_GET['id'] == 0 ) {
+				print("<h3 class='download-categ'>Kategória nélküli letöltések</h3>\n");
+			}
 			
 			print("<br><a href='admin.php?site=downloads'>Vissza a kategóriákhoz</a><div class='userbox'><table border='0' cellspacing='1' cellpadding='1'>
 			<tr>
@@ -225,10 +232,20 @@ if ( $_POST['action'] != $NULL )
 			Leírás: <textarea name='descr' rows='15' cols='60'>" .$letoltesadatok['descr']. "</textarea><br>
 			Feltöltő neve: " .$felhasznalo['username']. "<br>
 			Feltöltés időpontja: " .Datum("normal", "kisbetu", "dL", "H", "i", "s", $letoltesadatok['upload_date']). "<br>
-			Letöltések száma: " .$letoltesadatok['download_count']. "</p>
+			Letöltések száma: " .$letoltesadatok['download_count']. "<br>
+			Áthelyezés másik kategóriába: <select name='newcateg_id'>");
+			
+			$kategoriak = $sql->Lekerdezes("SELECT id, title FROM " .$cfg['tbprf']."download_categ WHERE id <> " .$letoltesadatok['cid']);
+			
+			while ( $ksor = mysql_fetch_assoc($kategoriak) ) {
+				print("<option value='" .$ksor['id']. "'>" .$ksor['title']. "</option>\n");
+			}
+			
+			print("</select></p>
 				<input type='hidden' name='site' value='downloads'>
 				<input type='hidden' name='action' value='editdwl_do'>
 				<input type='hidden' name='id' value='" .$letoltesadatok['id']. "'>
+				<input type='hidden' name='kateg' value='" .$letoltesadatok['cid']. "'>
 				<input type='submit' name='parancs' value='Szerkeszt'>
 			</form>");
 		}
@@ -241,8 +258,14 @@ if ( $_POST['action'] != $NULL )
 		} else {
 			if ( $_POST['parancs'] == "Szerkeszt" )
 			{
-				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."downloads SET title='" .mysql_real_escape_string($_POST['title']). "', descr='" .mysql_real_escape_string($_POST['descr']). "' WHERE id='" .mysql_real_escape_string($_POST['id']). "'");
-				ReturnTo("A letöltés frissítése megtörtént!", "admin.php?site=downloads&action=viewitems&id=" .$_POST['id'], "Vissza a letöltések listájához", TRUE);
+				$oldkateg = mysql_fetch_assoc($sql->Lekerdezes("SELECT files FROM " .$cfg['tbprf']."download_categ WHERE id='" .mysql_real_escape_string($_POST['kateg']). "'"));
+				$uj = mysql_fetch_assoc($sql->Lekerdezes("SELECT files FROM " .$cfg['tbprf']."download_categ WHERE id='" .mysql_real_escape_string($_POST['newcateg_id']). "'"));
+				
+				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."download_categ SET files='" .($oldkateg['files'] - 1). "' WHERE id='" .mysql_real_escape_string($_POST['kateg']). "'");
+				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."download_categ SET files='" .($ujkateg['files'] + 1). "' WHERE id='" .mysql_real_escape_string($_POST['newcateg_id']). "'");
+				
+				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."downloads SET title='" .mysql_real_escape_string($_POST['title']). "', descr='" .mysql_real_escape_string($_POST['descr']). "', cid='" .mysql_real_escape_string($_POST['newcateg_id']). "' WHERE id='" .mysql_real_escape_string($_POST['id']). "'");
+				ReturnTo("A letöltés frissítése megtörtént!", "admin.php?site=downloads&action=viewitems&id=" .$_POST['kateg'], "Vissza a letöltések listájához", TRUE);
 			}
 		}
 		
