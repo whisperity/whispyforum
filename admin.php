@@ -71,9 +71,10 @@
 		MenuItem("banip", "IP-kitiltások");
 		MenuItem("banuser", "Felhasználók kitiltása");
 	
-	MenuItem("", "Beállítások", 'TITLE');
+	MenuItem("", $cfg['pname'], 'TITLE');
 		MenuItem("configs", "Beállítások");
 		MenuItem("addons", "Addonok kezelése");
+		MenuItem("checks", "Ellenörzés");
 	
 	MenuItem("", "Adatbázis", 'TITLE');
 		MenuItem("dbtables", "Részletek");
@@ -90,9 +91,6 @@
 		MenuItem("plain", "Statikus tartalmak");
 		MenuItem("downloads", "Letöltések");
 		MenuItem("polls", "Szavazások");
-	
-	MenuItem("", "", 'TITLE');
-		MenuItem("checks", "Ellenörzés");
 	
 	print("
 	<br><a class='menuItem' href='includes/help.php' onClick=\"window.open('includes/help.php?cmd=adminTools', 'popupwindow', 'width=800,height=600,resize=no,scrollbars=yes'); return false;\">Súgó megjelenítése</a><br>
@@ -223,6 +221,65 @@
 			}
 			print("<b>Utoljára optimalizálva:</b> " .Datum("normal", "kisbetu", "dL", "H", "i", "s", $lastopt). " <small><a href='admin.php?site=dboptimize'>(optimalizálás)</a></small><br>
 			<b>Utoljára biztonsági mentés készítve:</b> " .Datum("normal", "kisbetu", "dL", "H", "i", "s", $lastbck). " <small><a href='admin.php?site=dbbackup'>(biztonsági mentés)</a></small><br>
+			</p></div>");
+			
+			print("<br style='clear: both'><div class='menubox'><span class='menutitle'>Tárterület</span>
+			<p class='formText'>
+			<b>Meghajtó: </b> Szabad / Összes (Foglalt) [Szabad %]<br>");
+			
+			$osszszabad = 0;
+			$osszossz = 0;
+			$osszfoglalt = 0;
+			for ($i = 67; $i <= 90; $i++)
+			{
+				$drive = chr($i);
+				if (is_dir($drive.':'))
+				{
+					$freespace             = disk_free_space($drive.':');
+					$total_space         = disk_total_space($drive.':');
+					$used_space			 = $total_space - $freespace;
+					$percentage_free     = $freespace ? @round($freespace / $total_space, 2) * 100 : 0;
+					
+					$osszszabad = $osszszabad + $freespace;
+					$osszossz = $osszossz + $total_space;
+					$osszfoglalt = $osszfoglalt + $used_space;
+					
+					print("<b>" .$drive. "</b>: 
+						 " .DecodeSize($freespace). " / 
+						 " .DecodeSize($total_space). "
+						(" .DecodeSize($used_space). ")
+						[" .$percentage_free. "%]
+					<br>");
+				}
+			}
+			
+			if (is_dir('/'))
+			{
+				$freespace             = disk_free_space('/');
+				$total_space         = disk_total_space('/');
+				$used_space			 = $total_space - $freespace;
+				$percentage_free     = $freespace ? @round($freespace / $total_space, 2) * 100 : 0;
+				
+				$osszszabad = $osszszabad + $freespace;
+				$osszossz = $osszossz + $total_space;
+				$osszfoglalt = $osszfoglalt + $used_space;
+				
+				print("<b>/</b>: 
+					 " .DecodeSize($freespace). " / 
+					 " .DecodeSize($total_space). "
+					(" .DecodeSize($used_space). ")
+					[" .$percentage_free. "%]
+				<br>");
+			}
+			
+			$osszszabadarany = $osszszabad ? @round($osszszabad / $osszossz, 2) * 100 : 0;
+			
+			print("<br>
+				<b>Összesen:</b>
+				" .DecodeSize($osszszabad). " /
+				" .DecodeSize($osszossz). "
+				(" .DecodeSize($osszfoglalt). ") 
+				[" .$osszszabadarany. "%]
 			</p></div>");
 		
 		// Pár kisebb statisztikai adat kiírása
