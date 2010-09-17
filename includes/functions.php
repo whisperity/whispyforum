@@ -289,10 +289,19 @@ function Datum( $ev, $honap, $nap, $ora, $perc, $masodperc, $epoch = '' ) // A m
 		
 	if ( ($href != '') && ($hreftext != '') && ( $metareturn == TRUE) ) // Ha van visszatérési link, szöveg, és a metareturn igaz
 	{
-		echo '<meta http-equiv="refresh" content="3;url=' .$cfg['phost']. '/' .$href. '" />'; // META visszatérési parancsot küldünk, mely a böngészőt 3 sec után automatikusan átirányítja
+		if ( SHOWDEBUG == 0 )
+		{
+			echo '<meta http-equiv="refresh" content="3;url=' .$cfg['phost']. '/' .$href. '" />'; // META visszatérési parancsot küldünk, mely a böngészőt 3 sec után automatikusan átirányítja
+		}
 		print("&nbsp;<small><span id='dotdotdots'></span>"); // dotdotdots = visszaszámlálás
 		print("<span id='returnmsg'></span></small>"); // returnmsg = 0 visszaszámlálás értéknél bónusz üzenet
 		
+		if ( SHOWDEBUG == 1 )
+		{
+			print("<small>3 másodperc...<br>2 másodperc..<br>1 másodperc..<br>META-átirányítás folyamatban...<br><br>ReturnTo() folyamat megszakítva a hibakeresés bekapcsoltsága miatt</small>");
+		}
+		
+		if ( SHOWDEBUG == 0 ) {
 		?>
 		<SCRIPT language=javascript>
 function GetObject(name)
@@ -329,6 +338,7 @@ function rvl(n)
 rvl(0);
 </SCRIPT>
 	<?php
+	}
 	}
 	
 	print("</div>");
