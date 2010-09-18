@@ -21,6 +21,9 @@ if ( $_POST['cmd'] == "setup" )
 	$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."siteconfig SET value='" .mysql_real_escape_string($_POST['log_depth']). "' WHERE variable='log_depth'");
 	$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."siteconfig SET value='" .mysql_real_escape_string($_POST['facebook_like']). "' WHERE variable='facebook_like'");
 	$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."siteconfig SET value='" .mysql_real_escape_string($_POST['download_minlvl']). "' WHERE variable='download_minlvl'");
+	$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."siteconfig SET value='" .mysql_real_escape_string($_POST['under_construct']). "' WHERE variable='under_construct'");
+	$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."siteconfig SET value='" .mysql_real_escape_string($_POST['const_msg']). "' WHERE variable='const_msg'");
+	$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."siteconfig SET value='" .mysql_real_escape_string($_SESSION['userID']). "' WHERE variable='const_msg_uid'");
 	
 	ReturnTo("A beállítások módosítása megtörtént!", "admin.php?site=configs", "Vissza", TRUE);
 	print("</td><td class='right' valign='top'>");
@@ -76,7 +79,19 @@ print("<br>
 			print(" checked ");
 		print("> Felhasználó (level 1)");
 	
-	print("</p><input type='hidden' name='cmd' value='setup'>
+	print("<br>Karbantartási mód: <input type='radio' name='under_construct' value='0'");
+		if ( CONSTRUCTION == 0)
+			print(" checked ");
+		print("> Kikapcsolva <input type='radio' name='under_construct' value='1'");
+			if ( CONSTRUCTION == 1 )
+			print(" checked ");
+		print("> Bekapcsolva");
+	
+	print(" <a class='feature-extra'><span class='hover'><span class='h3'>Karbantartási mód</span>Ha bekapcsolod a karbantartási módot, a weboldalra érkező összes látogató egy speciális lapra lesz irányítva. <b>Adminisztrátorok</b> bejelentkezhetnek, és elérhetnek minden lehetséges weblapot, ám mindenki más csak a speciális lapot fogja látni.<br>A bekapcsolt karbantartási módra a fejlécben megjelenő szerszám-jel is figyelmeztet.</span><sup>?</sup></a>");
+	
+	print("<br>
+	Karbantartási üzenet (megjelenik a weboldalra látogatóknak)<br>: <textarea name='const_msg' rows='10' cols='20'>" .CONSTRUCTION_MESSAGE. "</textarea>
+</p><input type='hidden' name='cmd' value='setup'>
 <input type='hidden' name='site' value='configs'>
 <input type='submit' value='Beállítások módosítása'>
 </form>"); // Információ, űrlap

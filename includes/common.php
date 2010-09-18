@@ -14,7 +14,17 @@ function Fejlec()
 	print("<div class='headerbox'>"); // Blokknyitás
 	$wf_debug->RegisterDLEvent("Fejléc létrehozása");
 	
-	print("<center><img src='themes/" .$_SESSION['themeName']. "/header.png'></center><br>\n");
+	print("<center>");
+	
+	if ( CONSTRUCTION == 1 )
+		print("<img src='themes/" .$_SESSION['themeName']. "/construction.png' alt='Karbantartás alatt'>");
+	
+	print("<img src='themes/" .$_SESSION['themeName']. "/header.png'>");
+	
+	if ( CONSTRUCTION == 1 )
+		print("<img src='themes/" .$_SESSION['themeName']. "/construction.png' alt='Karbantartás alatt'>");
+	
+	print("</center><br>\n");
 	
 	print("</div>"); // Blokkzárás
 	
@@ -167,12 +177,18 @@ function Inicialize ( $pagename )
  $siteconfig_allowReg = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."siteconfig WHERE variable='allow_registration'")); // Regisztráció engedélyezése
  $siteconfig_fbLike = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."siteconfig WHERE variable='facebook_like'")); // Facebook like gomb
  $siteconfig_DLMinLevel = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."siteconfig WHERE variable='download_minlvl'")); // Letöltések megtekintéséhez szükséges minimális szint (userLevel)
+  $siteconfig_construction = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."siteconfig WHERE variable='under_construct'")); // Karbantartási üzenet
+  $siteconfig_constructionMSG = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."siteconfig WHERE variable='const_msg'")); // Karbantartási üzenet az adminoktól
+  $siteconfig_constructionMSG_UID = mysql_fetch_row($sql->Lekerdezes("SELECT value FROM " .$cfg['tbprf']."siteconfig WHERE variable='const_msg_uid'")); // Karbantartási üzenet az adminoktól (felhasználóazonosító)
  /* Bekért adatok mentése a portálrendszer számára 
 	Itt maradunk a hagyományos DEFINE metódusnál, hogy ne kelljen az egész rendszerben a jelen változókat ellenörző
 	sorokat átkódolni. */
  define('ALLOW_REGISTRATION', $siteconfig_allowReg[0]);
  define('FACEBOOK_LIKE', $siteconfig_fbLike[0]);
  define('DOWNLOAD_MINLVL', $siteconfig_DLMinLevel[0]);
+ define('CONSTRUCTION', $siteconfig_construction[0]);
+ define('CONSTRUCTION_MESSAGE', $siteconfig_constructionMSG[0]);
+ define('CONSTRUCTION_MESSAGE_USERID', $siteconfig_constructionMSG_UID[0]);
  $wf_debug->RegisterDLEvent("Rendszerváltozók bekérve az adatbázisból");
  
  /* Verzióadatok elleörzése */
@@ -186,6 +202,13 @@ function Inicialize ( $pagename )
  {
 	// Nem történik semmi
  } else {
+	
+	// Karbantartási mód
+	if ( ( CONSTRUCTION == 1 ) && ( $pagename != "construction.php") && ( $_SESSION['userLevel'] != 3 ) )
+	{
+		header("Location: construction.php");
+	}
+	
 	$addons->LoadAddons(); // Addonok betöltése
 	Fejlec(); // Fejléc
 	

@@ -203,13 +203,23 @@ function Datum( $ev, $honap, $nap, $ora, $perc, $masodperc, $epoch = '' ) // A m
 		{
 			case "WARNING":
 				$kepnev = 'warning.png';
+				$kepalt = 'Figyelmeztetés';
 				break;
 			case "ERROR":
+				$kepnev = 'error.png';
+				$kepalt = 'Hiba';
+				break;
 			case "CRITICAL":
 				$kepnev = 'error.png';
+				$kepalt = 'Kritikus hiba';
 				break;
 			case "BAN":
 				$kepnev = 'stop_hand.png';
+				$kepalt = 'Tiltás';
+				break;
+			case "CONSTRUCTION":
+				$kepnev = 'construction.png';
+				$kepalt = 'Karbantartás alatt';
 				break;
 			default:
 				$kepnev = 'x.bmp';
@@ -220,9 +230,9 @@ function Datum( $ev, $honap, $nap, $ora, $perc, $masodperc, $epoch = '' ) // A m
 		
 		if ( $_SESSION['theme'] == $NULL )
 		{
-			print("<img src='themes/default/" .$kepnev. "'>");
+			print("<img src='themes/default/" .$kepnev. "' alt='" .$kepalt. "'>");
 		} else {
-			print("<img src='themes/" .$_SESSION['themeName']. "/" .$kepnev. "'>");
+			print("<img src='themes/" .$_SESSION['themeName']. "/" .$kepnev. "' alt='" .$kepalt. "'>");
 		}
 		
 		print("</div><div class='hibacim'>" .$Hmsg['title']. "</div><div class='hibaszoveg'>" .$Hmsg['desc']. "</div></div>");

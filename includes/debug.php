@@ -173,6 +173,18 @@
 			<tr>
 				<td>DOWNLOAD_MINLVL</td>
 				<td>" .DOWNLOAD_MINLVL. "</td>
+			</tr>
+			<tr>
+				<td>CONSTRUCTION</td>
+				<td>" .CONSTRUCTION. "</td>
+			</tr>
+			<tr>
+				<td>CONSTRUCTION_MESSAGE</td>
+				<td>" .CONSTRUCTION_MESSAGE. "</td>
+			</tr>
+			<tr>
+				<td>CONSTRUCTION_MESSAGE_USERID</td>
+				<td>" .CONSTRUCTION_MESSAGE_USERID. "</td>
 			</tr>"); // A WF által használt define-ok kiírása
 		
 		echo '</table>'; // Táblázat zárás

@@ -323,13 +323,19 @@
 	('allow_registration', '1'),
 	('facebook_like', '0'),
 	('download_minlvl', '0'),
+	('under_construct', '0'),
+	('const_msg', ''),
+	('const_msg_uid', '0'),
 	('db_lastoptimize', '0'),
 	('db_lastbackup', '0')");
- WOut('sor', 'siteconfig', 'AllowRegistration: 1');
- WOut('sor', 'siteconfig', 'Facebook_like: 0');
- WOut('sor', 'siteconfig', 'Download min level: 0');
- WOut('sor', 'siteconfig', 'Database last optimize: 0');
- WOut('sor', 'siteconfig', 'Database last backup: 0');
+ WOut('sor', 'siteconfig', 'Regisztráció engedélyezve: 1');
+ WOut('sor', 'siteconfig', 'Facebook like gomb: 0');
+ WOut('sor', 'siteconfig', 'Letöltések min. szint: 0');
+ WOut('sor', 'siteconfig', 'Karbantartási mód: 0');
+ WOut('sor', 'siteconfig', 'Karbantartási üzenet: ""');
+ WOut('sor', 'siteconfig', 'Karbantartási üzenet felhasználó#: 0');
+ WOut('sor', 'siteconfig', 'Adatbázis utolsó optimalizáció: 0');
+ WOut('sor', 'siteconfig', 'Adatbázis utolsó biztonsági mentés: 0');
  
  file_put_contents('install.log', "\r\nTáblák létrehozása befejezve: " .Datum("normal", "nagybetu", "dL", "H", "i", "s"). " ( " .time(). " )", FILE_APPEND); // Napló zárása
  $sql->Disconnect();
