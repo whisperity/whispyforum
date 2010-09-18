@@ -20,7 +20,7 @@ if ( $_POST['command'] != $NULL )
 		case "truncate":
 			$wf_debug->RegisterDLEvent("Chat törlése");
 			
-			$sql->Lekerdezes("TRUNCATE TABLE " .$cfg['tbprf']."chat");
+			$sql->Lekerdezes("DELETE FROM " .$cfg['tbprf']."chat");
 			
 			ReturnTo("A chat törölve. Minden hozzászólás el lett távolítva", "admin.php?site=chat", "Vissza a chat opciókhoz", TRUE);
 			// Nem fut le a további kód
