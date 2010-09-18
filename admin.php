@@ -91,6 +91,7 @@
 		MenuItem("plain", "Statikus tartalmak");
 		MenuItem("downloads", "Letöltések");
 		MenuItem("polls", "Szavazások");
+		MenuItem("chat", "Chat");
 	
 	print("
 	<br><a class='menuItem' href='includes/help.php' onClick=\"window.open('includes/help.php?cmd=adminTools', 'popupwindow', 'width=800,height=600,resize=no,scrollbars=yes'); return false;\">Súgó megjelenítése</a><br>
@@ -161,6 +162,10 @@
 	case 'statistics':
 		$admin = TRUE;
 		include("admin/statistics.php");
+		break;
+	case 'chat':
+		$admin = TRUE;
+		include("admin/chat.php");
 		break;
 	default:
 		/* Telepítési információk bekérése */

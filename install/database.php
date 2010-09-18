@@ -245,16 +245,27 @@
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Látogatottsági adatok
  WOut('tabla', 'statistics');
  
+ $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."chat (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `timeepoch` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `uid` tinyint(1) NOT NULL DEFAULT '0',
+  `szoveg` text COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Chat hozzászólások
+ WOut('tabla', 'chat');
+ 
  if ( $exampledata == 'yes' )
  {
  /* Kezdeti adatok */
  // Létrehozás csak akkor, ha ezt az opciót választottuk
  /* Modulok */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."modules(name,type,side, hOrder) VALUES
-	('Főmenü','menu','1', 0),
-	('voteModule','coremodule','2', 0)"); // Főmenü
+	('Főmenü','menu', '1', 0),
+	('VoteModule','coremodule', '2', 0),
+	('Chat', 'coremodule', '2', 1)"); // Főmenü
  WOut('sor', 'modules', 'Főmenü');
- WOut('sor', 'modules', 'voteModule - Szavazás');
+ WOut('sor', 'modules', 'VoteModule - Szavazás');
+ WOut('sor', 'modules', 'Chat');
  
  /* Menüelemek */
  $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."menuitems(menuId, text, href, hOrder) VALUES
@@ -311,6 +322,11 @@
 	(1, 'Középszintű (3)', 3),
 	(1, 'Rossz (2)', 4),
 	(1, 'Semmitmondó! (1)', 5)"); // Alapszavazás lehetőségei
+ 
+ /* Chat */
+ $sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."chat(timeepoch, uid, szoveg) VALUES
+	('" .time(). "', 1, 'Üdv a Chatben!')"); // Első fórumod
+ WOut('sor', 'forum', 'Chat üzenet');
  }
  
  // Van pár adat amit mindenképpen hozzá kell adnunk az adatbázishoz!!

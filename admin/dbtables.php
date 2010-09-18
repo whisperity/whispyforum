@@ -59,6 +59,9 @@ while ( $sor = mysql_fetch_assoc($tablameret)) {
 		case "download_categ":
 			$tablanev = "Letöltés kategóriák";
 			break;
+		case "chat":
+			$tablanev = "<a href='admin.php?site=chat'>Chat</a>";
+			break;
 		case "downloads":
 			$tablanev = "<a href='admin.php?site=downloads'>Letöltések</a>";
 			break;

@@ -564,8 +564,12 @@ function coreModulesHelp()
 		<th>A modul funkciója</th>
 	</tr>
 	<tr>
-		<th>voteModule</th>
+		<th>VoteModule</th>
 		<td>A szavazásrendszer aktuális szavazásának lebonyolítása</td>
+	</tr>
+	<tr>
+		<th>Chat</th>
+		<td>&nbsp;</td>
 	</tr>
 	</table>");
 }

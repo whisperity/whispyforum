@@ -93,6 +93,7 @@ if ( $_POST['command'] == "backup_all" )
 	
 	BackupTable("addons");
 	BackupTable("bannedips");
+	BackupTable("chat");
 	BackupTable("downloads");
 	BackupTable("download_categ");
 	BackupTable("forum");

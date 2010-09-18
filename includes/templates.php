@@ -119,8 +119,12 @@ class templates // Osztálydeklaráció
 		global $wf_debug;
 		$wf_debug->RegisterDLEvent("Rendszermodul " .$name. " betöltése");
 		switch ($name) {
-			case "voteModule":
+			case "VoteModule":
 				PS_LoadModule();
+				break;
+			case "Chat":
+				require('includes/chatsystem_scr.php'); // Chatrendszer betöltése
+				Chat_LoadModule();
 				break;
 			default:
 				$wf_debug->RegisterDLEvent($name ." rendszermodul nem tölthető be, nincs ilyen modul");

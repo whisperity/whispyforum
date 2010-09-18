@@ -20,6 +20,7 @@ if ( $_POST['command'] == "optimize_all" )
 	
 	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."addons");
 	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."bannedips");
+	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."chat");
 	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."downloads");
 	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."download_categ");
 	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."forum");
