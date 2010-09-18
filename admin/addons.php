@@ -21,6 +21,7 @@ function Addonbeallitasok($addonid)
 	$addonsor = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."addons WHERE id='" .$addonid. "'")); // Addon adatai
 	if ( file_exists("addons/" .$addonsor['subdir']. "/settings.php") ) // Ha megtalálható a szerveren az addon beállítási fájl
 	{
+		$addonadmin = TRUE;
 		include("addons/" .$addonsor['subdir']. "/settings.php"); // Betöltjük
 	}
 	// Egyéb esetben sokminden nem történhet, mivel ha nincs beállítási fájl, ezt a függvényt meghívó gomb sem jelenik meg
