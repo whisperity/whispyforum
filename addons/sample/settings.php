@@ -11,6 +11,7 @@
  {
 	// Script megjelenítése csak akkor, ha admin menüből hívjuk meg
 	
+	global $addons;
 	if ( $_POST['setchange'] == "igaz" ) // Ha változtattunk az adatokon
 	{
 		$addons->SetCFG("sample", "peldaaddon_sajatszoveg", $_POST['sajatszoveg']);
