@@ -50,7 +50,7 @@
 		print("<input type='hidden' name='chat' value='sendmsg'>
 		<input type='submit' value='Hozzászól'>");
 	} else {
-		print("<input type='button' value='Hozzászól előtt kérlek jelentkezz be!' disabled>");
+		print("<input type='button' value='Hozzászólás előtt kérlek jelentkezz be!' disabled>");
 	}
 	print("</p>
 	</form>");
