@@ -341,6 +341,26 @@
 				<b><a href='admin.php?site=statistics&mode=ip_days&year=" .$gd['year']. "&month=" .$gd['mon']. "&day=" .$gd['mday']. "' alt='A mai nap információinak megjelenítése'>Mai</a> látogatók: </b>" .$NAPosszes. "<br>
 			</p></div>
 			<br style='clear: both'>");
+		
+		print("<div class='menubox'><span class='menutitle'>Tartalmak számossága</span>
+			<p class='formText'>
+				<b>Addonok száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."addons")). "<br>
+				<b>Modulok száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."modules")). "<br>
+				<b>Menüelemek száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."menuitems")). "<br>
+				<b>Fórumok száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."forum")). "<br>
+				<b>Fórumtopikok száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."topics")). "<br>
+				<b>Hozzászólások száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."posts")). "<br>
+				<b>Hírek száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."news")). "<br>
+				<b>Hírhozzászólások száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."news_comments")). "<br>
+				<b>Statikus tartalmak száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."plain")). "<br>
+				<b>Letöltés kategóriák száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."download_categ")). "<br>
+				<b>Letöltések száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."downloads")). "<br>
+				<b>Szavazások száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."polls")). "<br>
+				<b>Szavazati lehetőségek száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."poll_opinions")). "<br>
+				<b>Leadott szavazatok száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."votes_cast")). "<br>
+				<b>Felhasználók száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."user")). "<br>
+			</p></div>
+			<br style='clear: both'>");
 		print("</td><td class='right' valign='top'>");
 		break;
  }
