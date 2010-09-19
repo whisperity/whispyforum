@@ -108,7 +108,16 @@ switch ( $_GET['mode'] ) {
 			Hibauzenet("CRITICAL", "Hiányzó paraméterek!", "Meg kell adni a kívánt év számát!");
 		} else {
 		
-		print("Kiválasztott időszak: <b>" .$_GET['year']. ".</b><br>Kattints az adott hónap nevére a bővebb statisztikáért.<div class='userbox'><table border='0' cellspacing='1' cellpadding='1'>
+		if ( $_GET['year'] > 1999 )
+			print("<a href='admin.php?site=statistics&mode=months&year=" .($_GET['year']-1). "' alt='Előző év'>&lt;&nbsp;" .($_GET['year']-1). "</a>");
+
+		if ( ( $_GET['year'] > 1999 ) && ( $_GET['year'] < 2020 ) )
+			echo ' • ';
+		
+		if ( $_GET['year'] < 2020 )
+			print("<a href='admin.php?site=statistics&mode=months&year=" .($_GET['year']+1). "' alt='Következő év'>" .($_GET['year']+1). "&nbsp;&gt;</a>");
+		
+		print("<br>Kiválasztott időszak: <b>" .$_GET['year']. ".</b><br>Kattints az adott hónap nevére a bővebb statisztikáért.<div class='userbox'><table border='0' cellspacing='1' cellpadding='1'>
 			<tr>
 				<th>Hónap</th>
 				<th>Látogatók száma</th>
@@ -166,7 +175,16 @@ switch ( $_GET['mode'] ) {
 				Hibauzenet("CRITICAL", "Hiányzó paraméterek!", "Meg kell adni a kívánt hónap számát!");
 		} else {
 		
-		print("Kiválasztott időszak: <b>" .$_GET['year']. ". " .$honapok[$_GET['month']]. ".</b><br>Kattints az adott nap számára a bővebb statisztikáért.<div class='userbox'><table border='0' cellspacing='1' cellpadding='1'>
+		if ( $_GET['month'] > 1 )
+			print("<a href='admin.php?site=statistics&mode=days&year=" .$_GET['year']. "&month=" .($_GET['month']-1). "' alt='Előző hónap'>&lt;&nbsp;" .$honapok[($_GET['month']-1)]. "</a>");
+
+		if ( ( $_GET['month'] > 1 ) && ( $_GET['month'] < 12 ) )
+			echo ' • ';
+		
+		if ( $_GET['month'] < 12 )
+			print("<a href='admin.php?site=statistics&mode=days&year=" .$_GET['year']. "&month=" .($_GET['month']+1). "' alt='Következő hónap'>" .$honapok[($_GET['month']+1)]. "&nbsp;&gt;</a>");
+		
+		print("<br>Kiválasztott időszak: <b>" .$_GET['year']. ". " .$honapok[$_GET['month']]. ".</b><br>Kattints az adott nap számára a bővebb statisztikáért.<div class='userbox'><table border='0' cellspacing='1' cellpadding='1'>
 			<tr>
 				<th>Nap</th>
 				<th>Látogatók száma</th>
@@ -226,7 +244,16 @@ switch ( $_GET['mode'] ) {
 				Hibauzenet("CRITICAL", "Hiányzó paraméterek!", "Meg kell adni a kívánt nap számát!");
 		} else {
 		
-		print("Kiválasztott időszak: <b>" .$_GET['year']. ". " .$honapok[$_GET['month']]. " " .$_GET['day']. ".</b><div class='userbox'><table border='0' cellspacing='1' cellpadding='1'>
+		if ( $_GET['day'] > 1 )
+			print("<a href='admin.php?site=statistics&mode=ip_days&year=" .$_GET['year']. "&month=" .$_GET['month']. "&day=" .($_GET['day']-1). "' alt='Előző nap'>&lt;&nbsp;" .($_GET['day']-1). "</a>");
+
+		if ( ( $_GET['day'] > 1 ) && ( $_GET['day'] < 31 ) )
+			echo ' • ';
+		
+		if ( $_GET['day'] < 31 )
+			print("<a href='admin.php?site=statistics&mode=ip_days&year=" .$_GET['year']. "&month=" .$_GET['month']. "&day=" .($_GET['day']+1). "' alt='Következő nap'>" .($_GET['day']+1). "&nbsp;&gt;</a>");
+		
+		print("<br>Kiválasztott időszak: <b>" .$_GET['year']. ". " .$honapok[$_GET['month']]. " " .$_GET['day']. ".</b><div class='userbox'><table border='0' cellspacing='1' cellpadding='1'>
 			<tr>
 				<th>IP-cím</th>
 				<th>Első látogatás időpontja</th>
