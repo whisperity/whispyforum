@@ -142,6 +142,7 @@ class user // Definiáljuk az osztályt (felhasználók)
 				break;
 			case 0:
 				$_SESSION['userLevelTXT'] = 'Nincs aktiválva';
+				$_SESSION['userLevel'] = 0;
 				break;
 			case 1:
 				$_SESSION['userLevelTXT'] = 'Felhasználó';

@@ -184,10 +184,13 @@ function FunctionsHelp()
 function UpdateHelp()
 {
 	print("<h2>Frissítéssel kapcsolatos információk</h2>\n
-		Ha azt a hibaüzenetet kapod, hogy a futtatott<sup>*</sup> és a telepített<sup>**</sup> verzió nem egyezik, nem feltétlenül kell aggódnod.
-		<br>Az eltérő verziók használata a legtöbb esetben csak apró kompatibilitási problémákat okoz, azonban, ha a hibaüzenetek elszaporodnak, meg kell fontolni a rendszer újratelepítését.<br>A fejlesztők dolgoznak egy egyesítőscripten, mellyel az újratelepítés nélkül lehetne az adatbázist frissíteni, azonban ez még a jövő zenéje.
-		Addig is, az adatbázist a telepítőscripttel (<a href='../install/index.php'>itt elérhető</a>) telepítheted újra.<br>
-		FONTOS!: Az újratelepítés előtt készíts teljes biztonsági mentést a fájlokról és az adatbázis tartalmáról.<br><br>
+		Ha azt a hibaüzenetet kapod, hogy a futtatott<sup>*</sup> és a telepített<sup>**</sup> verzió nem egyezik, szükséges lehet a rendszer frissítése.
+		<br>
+		Az eltérő verziók használata kompatibilitási problémákat okozhat, ha például az adatbázis struktúrája megváltozott. A frissítőscript az adminisztrátorok és a felhasználók kényelmét szolgálja azáltal, hogy a frissítendő fájlokat frissíti (pl. adatbázis struktúra), azonban a benne tárolt adatokat megtartja. Azonban, semmi sem lehet tökéletes, ezért kérlek, hogy mindennemű frissítés előtt <b>készíts biztonsági másolatot az adatbázisról és a portál fájlairól</b>.
+		<br>
+		Az adatbázis biztonsági mentését <a href='/admin.php?site=dbbackup' target='_blank'>ide kattintva</a> megteheted. A fájlok biztonsági mentéséhez másold le a szerveren lévő összes fájlt.<br>
+		Ha a rendszer készen áll a frissítésre, ezt <a href='/update.php' target='_blank'>ide</a> kattintva megteheted.
+		<br><br>
 		<small>*: A szerverre másolt fájlok<br>**: A telepítés pillanatában a szerveren lévő fájlok</sup>");
 }
 

@@ -70,6 +70,17 @@ function Javaslat($message)
 		Eredmeny(OK, "Telepítőscriptek törölve", "A telepítőscriptek már el lettek távolítva a szerverről.");
 	}
 	
+	/* Frissítőscript meglétének ellenörzése 
+		meglétük esetén FAILED
+		hiányuk estén OK */
+	if (  file_exists('update.php') ) 
+	{
+		Eredmeny(FAILED, "Frissítőscript megléte", "A portálrendszer frissítőscriptje még mindig megtalálható a szerveren! A frissítési fájl nem szükséges, ha a rendszert nem kell frissíteni.");
+		Javaslat("Töröld a szerverről az <b>update.php</b> fájlt.");
+	} else {
+		Eredmeny(OK, "Frissítőscript törölve", "A frissítőscript már el lett távolítva a szerverről.");
+	}
+	
 	/* Konfigurációs fájl írhatósága
 		írhatóság esetén WARNING
 		zároltsága esetén OK */
@@ -154,7 +165,7 @@ function Javaslat($message)
 	$Farany = ($ellenorzes['FAILED'] / $ellenorzes['szama']) * 100;
 	$Warany = (($ellenorzes['WARNING'] / $ellenorzes['szama']) * 100) / 2;
 	$arany = 100 - ($Farany + $Warany);
-	print("<br>A végeredmény: <b>" .$arany. "%</b> ");
+	print("<br>A végeredmény: <b>" .round($arany, 2). "%</b> ");
 	
 	if ( $arany >= 75 )
 		print("<img src='admin/passed.gif' height='24' width='24' alt='Rendben'> Rendben");

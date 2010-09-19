@@ -193,12 +193,12 @@ function Inicialize ( $pagename )
  
  /* Verzióadatok elleörzése */
  $adat = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."version"));
- if ( ($adat["RELEASE_TYPE"] != RELEASE_TYPE) || ($adat["VERSION"] != VERSION) || ($adat["RELEASE_DATE"] != RELEASE_DATE) )
+ if ( ( ($adat["RELEASE_TYPE"] != RELEASE_TYPE) || ($adat["VERSION"] != VERSION) || ($adat["RELEASE_DATE"] != RELEASE_DATE) ) && ( $pagename != "update.php") )
 	Hibauzenet("CRITICAL", "A futó verzió nem egyezik a telepített verzióval", "Futó verzió: <b>" .RELEASE_TYPE. " " .VERSION. " (" .RELEASE_DATE. ")</b><br>Telepített verzió: <b>" .$adat['RELEASE_TYPE']. " " .$adat['VERSION']. " (" .$adat['RELEASE_DATE']. ")</b><br>Bővebb információ: 
-	<a href='' onClick=\"window.open('includes/help.php?cmd=Update', 'popupwindow', 'width=570,height=320'); return false;\">kattints ide</a>");
+	<a href='' onClick=\"window.open('includes/help.php?cmd=Update', 'popupwindow', 'width=600,height=370'); return false;\">kattints ide</a>");
 	
 
- if ( ($pagename == "admin.php") || ($pagename == "download_do.php") ) // Az admin.php-n és a letöltéskor ezeknek NEM kell megjelenniük
+ if ( ($pagename == "admin.php") || ($pagename == "download_do.php") || ( $pagename == "update.php" ) ) // Az admin.php-n, a frissítéskor és a letöltéskor ezeknek NEM kell megjelenniük
  {
 	// Nem történik semmi
  } else {
