@@ -34,8 +34,13 @@ if ( $_POST['command'] != $NULL )
 
 $sorok = $sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."chat");
 
-print("A Chatet ebből a menüpontból tudod vezérelni.<br><br>Jelenlegi chat hozzászólások száma: " .mysql_num_rows($sorok). ".<br>Egyszerre maximálisan megengedhető hozzászólások száma: 20.<br>
-<input type='checkbox' checked='1' disabled>Új hozzászólás esetén a régi hozzászólás törlése, ha a hozzászólások száma több lenne, mint 20.
+print("A Chatet ebből a menüpontból tudod vezérelni.<br><br>Jelenlegi chat hozzászólások száma: " .mysql_num_rows($sorok). ".<br>Egyszerre maximálisan megengedhető hozzászólások száma: 20.<br>Fennmaradó sorok száma: " .(20-mysql_num_rows($sorok)). "<br>
+<input type='checkbox'");
+
+if ( (20-mysql_num_rows($sorok)) <= 0 )
+	print(" checked='1'");
+
+print(" disabled>Új hozzászólás esetén a régi hozzászólás törlése, ha a hozzászólások száma több lenne, mint 20.
 <br><br>A chat aktuális tartalma:<br>");
 
 include('includes/chatsystem_scr.php');
