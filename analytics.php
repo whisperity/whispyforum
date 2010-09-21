@@ -4,7 +4,7 @@
 */
 
 /* analytics.php
-   google analytics kódja
+   google analytics beállítások
 */
 	// A Google Analytics követés bekapcsolásához állítsd ezt a változót 1, kikapcsolásához 0 értékbe
 	define('GOOGLE_ANALYTICS', 0);
