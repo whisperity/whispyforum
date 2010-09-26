@@ -97,7 +97,32 @@
 		<span class='regNem'>3. Befejezés</span><br>
 		</p></div>");
 		} else {
-		
+			
+			if ($verzio['RELEASE_TYPE'] != RELEASE_TYPE) {
+			print("<div style='font-weight: bold;
+	color: Maroon;
+	background-color: #FFC0C0;
+	border: 1px solid maroon;
+	padding: 6px;
+	line-height: 125%;
+
+	margin: 1em auto'><b><h3>FIGYELMEZTETÉS!</h3></b>
+		A telepített és a futtatott változat kiadási típusa nem egyezik meg. Különböző kiadási típusok között nem lehet frissíteni.
+	</div>
+		<form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
+		<input type='hidden' name='pos' value='25'>
+		<input type='submit' value='Tovább >>'>
+		</form>");
+			
+			// Oldalsó menü
+			print("</div><div class='postright'><div class='menubox'><span class='menutitle'>Frissítés</span><br>");
+			print("<p>
+			<span class='regNem'>1. Bevezetés</span><br>
+			<span class='regThis'>2. Frissítési lépések ismertetése</span><br>
+			<span class='regNem'>3. Befejezés</span><br>
+			</p></div>");
+		}
+			
 			if ( ( $verzio['RELEASE_TYPE'] == "revision" ) && ( RELEASE_TYPE == "revision" ) )
 			{
 				if ( $verzio['VERSION'] < VERSION )
@@ -117,13 +142,30 @@
 				}
 			}
 			
+			if ( ( $verzio['RELEASE_TYPE'] == "lt19" ) && ( RELEASE_TYPE == "lt19" ) )
+			{
+				print("<div style='font-weight: bold;
+	color: Maroon;
+	background-color: #FFC0C0;
+	border: 1px solid maroon;
+	padding: 6px;
+	line-height: 125%;
+
+	margin: 1em auto'><b><h3>FIGYELMEZTETÉS!</h3></b>
+		A portálmotor aktuális kiadása személyesen a ____ -re készült. Az aktuális verzióhoz nem érhető el frissítés.
+	</div>
+		<form action='" .$_SERVER['PHP_SELF']. "' method='POST'>
+		<input type='hidden' name='pos' value='25'>
+		<input type='submit' value='Tovább >>'>
+		</form>");
+			}
+			
 			// Oldalsó menü
 			print("</div><div class='postright'><div class='menubox'><span class='menutitle'>Frissítés</span><br>");
 			print("<p>
 			<span class='regNem'>1. Bevezetés</span><br>
 			<span class='regThis'>2. Frissítési lépések ismertetése</span><br>
-			<span class='regNem'>3. Frissítés futtatása</span><br>
-			<span class='regNem'>4. Befejezés</span><br>
+			<span class='regNem'>3. Befejezés</span><br>
 			</p></div>");
 		}
 		
