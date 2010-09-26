@@ -34,7 +34,7 @@ if ( $_POST['action'] != $NULL )
  {
 	case $NULL: // Alapeset (nincs beérkező változó)
 		// Bevezető szöveg, kategórialista megjelenítése
-		print("A most megnyitott bővítmény segítségével kezelheted a letölthető tartalmakat.<br><a href='admin.php?site=downloads&action=viewitems&id=0' alt='Kategorizálatlan szavazások'>A kategória nélküli szavazások megtekintéséhez kattints ide</a>.");
+		print("A most megnyitott bővítmény segítségével kezelheted a letölthető tartalmakat.<br><a href='admin.php?site=downloads&action=viewitems&id=0' alt='Kategorizálatlan letöltések'>A kategória nélküli letöltések megtekintéséhez kattints ide</a>.");
 		print("<br><br><div class='userbox'><table border='0' cellspacing='1' cellpadding='1'>
 			<tr>
 				<th>Cím</th>

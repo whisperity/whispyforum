@@ -200,7 +200,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		<span class='formHeader'>Menüelem szerkesztése (" .$sor3['name']. ")</span><br>
 		<p class='formText'>Címsor: <input type='text' name='text' value='" .$sor['text']. "' size='96'><br>
 		Hivatkozás<a class='feature-extra'><span class='hover'><span class='h3'>Hivatkozás</span><b>Belső hivatkozásnál:</b> A menüelem hivatkozása a weboldal gyökeréhez (" .$cfg['phost']. "/) képest (pl. a kezdőlaphoz <i>index.php</i>).<br><b>Külső hivatkozásnál:</b> A teljes link, a bevezető <b>http://</b>-rel is (pl. <i>http://google.com</i>)</span><sup>?</sup></a>: 
-		<input type='text' name='href' value='" .$sor['href']. "'><br>
+		<input type='text' name='href' value='" .$sor['href']. "' size='70'><br>
 		Függőleges elhelyezkedés: <input type='text' name='hOrder' value='" .$sor['hOrder']. "' size='3'>\t\t");
 		
 		/* Egy listába tesszük a szerkesztett modullal megegyező oldalon lévő modulokat (hOrder példa) */
@@ -322,7 +322,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		<span class='formHeader'>Új menüelem hozzáadása a menühöz: " .$menu['name']. "</span><br>
 		<p class='formText'>Címsor: <input type='text' name='text' value='" .$sor['text']. "' size='96'><br>
 		Hivatkozás<a class='feature-extra'><span class='hover'><span class='h3'>Hivatkozás</span><b>Belső hivatkozásnál:</b> A menüelem hivatkozása a weboldal gyökeréhez (" .$cfg['phost']. "/) képest (pl. a kezdőlaphoz <i>index.php</i>).<br><b>Külső hivatkozásnál:</b> A teljes link, a bevezető <b>http://</b>-rel is (pl. <i>http://google.com</i>)</span><sup>?</sup></a>: 
-		<input type='text' name='href' value='" .$sor['href']. "'><br>
+		<input type='text' name='href' value='" .$sor['href']. "' size='70'><br>
 		Függőleges elhelyezkedés: <input type='text' name='hOrder' value='" .$sor['hOrder']. "' size='3'>\t\t");
 		
 		/* Egy listába tesszük a szerkesztett modullal megegyező oldalon lévő modulokat (hOrder példa) */
