@@ -9,6 +9,6 @@
 
 	/* Verzióinformációk beállítása */
 	define('RELEASE_TYPE', 'revision'); // Kiadás típusa (dev-fejlesztői, rc-kiadásra jelölt, pre-kiadás előtti, beta, stable-stabil, ...)
-	define('VERSION', '334'); // Verziószám
+	define('VERSION', '337'); // Verziószám
 	define('RELEASE_DATE', "folyamatos"); // Kiadás dátuma (nem unix időben)
 ?>
