@@ -11,14 +11,12 @@
  Inicialize('useractivate.php');
  SetTitle("Felhasználó aktiválása");
  
- global $cfg, $sql, $user;
- 
  if ( ($_GET['token'] == $NULL) || ($_GET['username'] == $NULL) )
  {
 	// Ha nincsen megadva token, kirakunk egy űrlapot
 	print("<form method='GET' action='" .$_SERVER['PHP_SELF']. "'>
-	<p class='formText'>Felhasználói név: <input type='text' name='username' value='" .$_GET['username']. "'></p>
-	<p class='formText'>Aktiválókulcs (token): <input type='text' name='token' value='" .$_GET['token']. "' size='33'></p>
+	<p class='formText'>Felhasználói név: <input type='text' name='username' value='" .$_GET['username']. "'><br>
+	Aktiválókulcs (token): <input type='text' name='token' value='" .$_GET['token']. "' size='33'></p>
 	<input type='submit' value='Aktiválás'>
 	</form>");
  } else {
@@ -30,8 +28,8 @@
 		Hibauzenet("ERROR", "Az aktiválókulcs nem megfelelő"); // Hibaüzenet generálása
 		// Űrlap újragenerálása
 		print("<form method='GET' action='" .$_SERVER['PHP_SELF']. "'>
-	<p class='formText'>Felhasználói név: <input type='text' name='username' value='" .$_GET['username']. "'></p>
-	<p class='formText'>Aktiválókulcs (token): <input type='text' name='token' value='" .$_GET['token']. "' size='33'></p>
+	<p class='formText'>Felhasználói név: <input type='text' name='username' value='" .$_GET['username']. "'><br>
+	Aktiválókulcs (token): <input type='text' name='token' value='" .$_GET['token']. "' size='33'></p>
 	<input type='submit' value='Aktiválás'>
 	</form>");
 	} else {

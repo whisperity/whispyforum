@@ -53,6 +53,7 @@
   `theme` varchar(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'default',
   `bemutatkozas` text COLLATE utf8_unicode_ci NOT NULL,
   `thely` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `tempToken` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Felhasználók
  WOut('tabla', 'user');

@@ -30,9 +30,9 @@ class sendmail // Definiáljuk az osztályt
 			if( $realname != '')
 			{
 				// Ha a felhasználó megadta a valódi nevét
-				$message .= "<h3>Kedves " .$realname. " (" .$name. ")</h3>"; // Valódi név (usernév) formájában köszöntjük
+				$message .= "<h3>Kedves " .$realname. " (" .$name. ")!</h3>"; // Valódi név (usernév) formájában köszöntjük
 			} else {
-				$message .="<h3>Kedves " .$name. "</h3>"; // Usernevén köszöntjük
+				$message .="<h3>Kedves " .$name. "!</h3>"; // Usernevén köszöntjük
 			}
 			
 			$headers  = 'MIME-Version: 1.0' . "\r\n" . 'Content-type: text/html; charset=utf-8' . "\r\n"; // Levél fejlécek (mime-típus, html-levél)
@@ -57,6 +57,47 @@ class sendmail // Definiáljuk az osztályt
 		
 		mail($email, "Regisztrációs értesítés", $message, $headers);
 		$wf_debug->RegisterDLEvent("Regisztrációs értesítő e-mail elküldve");
+	}
+	
+	function SendPwdRecoveryMail( $name, $token, $realname = '' ) // Jelszóemlékeztető
+	{   
+		global $cfg, $wf_debug;
+		if ( $cfg['sendmail_html'] == 1)
+		{
+			// HTTP üzenet küldése
+			$message = "
+<html>
+<head>
+  <title>Jelszóemlékeztető - " .$cfg['pname']. "</title>
+</head><bod>"; // Bevezetés
+			if( $realname != '')
+			{
+				// Ha a felhasználó megadta a valódi nevét
+				$message .= "<h3>Kedves " .$realname. " (" .$name. ")!</h3>"; // Valódi név (usernév) formájában köszöntjük
+			} else {
+				$message .="<h3>Kedves " .$name. "!</h3>"; // Usernevén köszöntjük
+			}
+			
+			$headers  = 'MIME-Version: 1.0' . "\r\n" . 'Content-type: text/html; charset=utf-8' . "\r\n"; // Levél fejlécek (mime-típus, html-levél)
+			$headers .= 'Reply-To: ' .$cfg['webmaster_email'] . "\r\n" . 'X-Mailer: PHP/' . phpversion() . "\r\n" . 'Website-domain: ' .$cfg['phost']; // Válaszcím, levélküldő típusa, weboldal URL
+			
+			$recovLink = "http://" .$cfg['phost']. "/userpassrecovery.php?mode=recover&token=" .$token. "&username=" .$name;
+			$recovLinkNoToken = "http://" .$cfg['phost']. "/userpassrecovery.php?mode=recover";
+			
+			$message .= "Jelszóemlékeztetőt kértél a weboldalon (" .$cfg['pname']. ").<br>A jelszó módosításához kövesd a következő lépéseket: Kattints a linkre: ";
+			$message .= "<br><a href='" .$recovLink ."'>" .$recovLink ."</a><br>";
+			$message .= "Ha a link nem működne, nyisd meg az jelszóvisszaállítási lapot (<a href='" .$recovLinkNoToken. "'>" .$recovLinkNoToken. "</a>) a böngésződben, majd a megjelenő lapon írd be a felhasználóneved (<b>" .$name. "</b>) és az kulcsod: <b>" .$token. "</b>";
+			$message .= "<br><br>Jó szórakozást és további eredményes portálhasználatot kívánunk, a fejlesztők, és " .$cfg['webmaster']. ", webmester";
+		} else {
+			// Szöveges üzenet küldése
+			$headers = 'Reply-To: ' .$cfg['webmaster_email'] . "\r\n" . 'X-Mailer: PHP/' . phpversion() . "\r\n" . 'Website-domain: ' .$cfg['phost']; // Válaszcím, levélküldő típusa, weboldal URL
+			$message .= "Jelszóemlékeztetőt kértél a weboldalon (" .$cfg['pname']. ").\r\n\r\nA jelszó módosításához kövesd a következő lépéseket: Kattints a linkre: " .$recovLinkNoToken. "lapon beírod a felhasználóneved (" .$name. ") és az kulcsod: " .$token. "";
+			$message .= "\r\n\r\nJó szórakozást és további eredményes portálhasználatot kívánunk, a fejlesztők, és " .$cfg['webmaster']. ", webmester";
+		}
+		
+		//mail($email, "Elfelejtett jelszó", $message, $headers);
+		print("<h>Elfelejtett jelszó</h><pre><code>" .$headers. "</code></pre>" .$message);
+		$wf_debug->RegisterDLEvent("Jelszóemlékeztető levél elküldve");
 	}
 }
 

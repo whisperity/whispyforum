@@ -35,7 +35,8 @@ class user // Definiáljuk az osztályt (felhasználók)
  <input type='submit' value='Bejelentkezés'>
  <input type='hidden' name='cmd' value='loginusr'>
  <input type='hidden' name='id' value='" .$getid. "'><br>
- <a href='registration.php'>Regisztráció</a></form><br>");
+ <a href='registration.php'>Regisztráció</a><br>
+ <a href='userpassrecovery.php?mode=uname'>Elfelejtett jelszó</a></form><br>");
 		
 		$wf_debug->RegisterDLEvent("Bejelentkezési űrlap létrehozva");
 	}
@@ -58,7 +59,7 @@ class user // Definiáljuk az osztályt (felhasználók)
 				Hibauzenet("ERROR", "Nem sikerült a bejelentkezés", "A felhasználód ki van tiltva az oldalról, így nem léphetsz be!");
 			}
 		} else {
-			Hibauzenet("WARNING", "Nem sikerült a bejelentkezés", "A felhasználónév nem megfelelő, vagy még nem aktiváltad a felhasználód.<br><a href='useractivate.php?username=" .$un. "'>Aktiválási űrlap megnyitása</a>");
+			Hibauzenet("CRITICAL", "Nem sikerült a bejelentkezés", "A felhasználónév nem megfelelő, érvénytelen a beírt jelszó, vagy még nem aktiváltad a felhasználód.<br><a href='useractivate.php?username=" .$un. "'>Aktiválási űrlap megnyitása</a>");
 			$wf_debug->RegisterDLEvent("A bejelentkezés nem sikerült");
 		}
 	}

@@ -20,7 +20,7 @@
  
  print("<center><h2 class='header'>Felhasználói vezérlőpult</h2></center>");
  $felhasznalo = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."user WHERE id='" .$_SESSION['userID']. "'"));
- print("<div class='menubox'><a href='ucp.php'>Kezdőlap</a> • <a href='ucp.php?set=theme' class='menuItem'>Téma módosítása</a> • <a href='ucp.php?set=avatar' class='menuItem'>Megjelenítendő kép feltöltése</a> • <a href='ucp.php?set=otherdata' class='menuItem'>Egyéb adatok szerkesztése</a></div><br>");
+ print("<div class='menubox'><a href='ucp.php'>Kezdőlap</a> • <a href='ucp.php?set=passw' class='menuItem'>Jelszó módosítása</a> • <a href='ucp.php?set=theme' class='menuItem'>Témaváltás</a> • <a href='ucp.php?set=avatar' class='menuItem'>Megjelenítendő kép feltöltése</a> • <a href='ucp.php?set=otherdata' class='menuItem'>Egyéb adatok szerkesztése</a></div><br>");
  
  if ( $_POST['set'] != $NULL )
  {
@@ -52,7 +52,40 @@
  
  switch ( $gpset )
  {
-	case "theme":
+	case "passw": // Jelszó módosítása
+		if ( ( $_POST['seta'] == "setpass" ) && ( $_POST['pwd'] != $NULL ) && ( $_POST['npass'] != $NULL ) && ( $_POST['npassdva'] != $NULL ) )
+		{
+			// A jelszó átállítását lefuttatjuk, ha:
+			// ez a rejtett parancs jön (a modulon belül)
+			// megadtuk az aktuális jelszót, és kétszer az új jelszót
+			// az aktuális jelszó tényleg az aktuális jelszó
+			// a két új jelszó egyenlő
+			if ( ( $_POST['npass'] == $_POST['npassdva'] ) && ( $_POST['pwd'] == $_SESSION['pass'] ) )
+			{
+				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."user SET pwd='" .md5($_POST['npass']). "' WHERE id='" .$_SESSION['userID']. "'");
+				$user->Logout(); // Kijelentkeztetés
+				ReturnTo("A jelszavazad sikeresen megváltozott.<br>Mostantól bejelentkezhetsz az új jelszavaddal!", "index.php", "Kezdőlap", TRUE);
+				DoFooter();
+				die();
+			}
+			
+			// Ha nem fut le a kód, hibát jelenítünk meg
+			if ( $_POST['pwd'] != $_SESSION['pass'] ) // Érvénytelen aktuális jelszó
+				Hibauzenet("CRITICAL", "Érvénytelen jelszó", "Az aktuális jelszóként megadott érték érvénytelen, mivel nem az aktuális jelszavad!");
+			
+			if ( $_POST['npass'] != $_POST['npassdva'] ) // A két új jelszó nem egyeizk
+				Hibauzenet("CRITICAL", "Érvénytelen jelszó", "Az új jelszóként megadott kód, és az ismétlése nem egyezik.");
+		}
+		
+		print("<form method='POST' action='" .$_SERVER['PHP_SELF']. "'>
+			<p class='formText'>Aktuális jelszavad: <input type='password' name='pwd'><br>
+			Új jelszavad: <input type='password' name='npass'><br>
+			Új jelszavad (mégegyszer): <input type='password' name='npassdva'>
+			<input type='hidden' name='set' value='passw'>
+			<input type='hidden' name='seta' value='setpass'>
+			<input type='submit' value='Adatok szerkesztése'></form>");
+		break;
+	case "theme": // Témaváltás
 		
 		if ( ($_GET['seta'] == "settheme") && ($_GET['themename'] != $NULL) )
 		{
