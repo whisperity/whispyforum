@@ -223,7 +223,6 @@ if ( $_POST['action'] != $NULL )
 		} else {
 			$letoltesadatok = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."downloads WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
 			$felhasznalo = mysql_fetch_assoc($sql->Lekerdezes("SELECT username FROM " .$cfg['tbprf']."user WHERE id='" .mysql_real_escape_string($letoltesadatok['uid']). "'"));
-			$aktualiskategoria = mysql_fetch_assoc($sql->Lekerdezes("SELECT id, title FROM " .$cfg['tbprf']."download_categ WHERE id='" .$letoltesadatok['cid']. "'"));
 			
 			print("Minden mezőt ki kell tölteni!\n<form method='POST' action='" .$_SERVER['PHP_SELF']. "'>
 			<span class='formHeader'>Letöltés szerkesztése: " .$letoltesadatok['title']. "</span>
@@ -235,6 +234,8 @@ if ( $_POST['action'] != $NULL )
 			Feltöltés időpontja: " .Datum("normal", "kisbetu", "dL", "H", "i", "s", $letoltesadatok['upload_date']). "<br>
 			Letöltések száma: " .$letoltesadatok['download_count']. "<br>
 			Áthelyezés másik kategóriába: <select name='newcateg_id'>");
+			
+			$aktualiskategoria = mysql_fetch_assoc($sql->Lekerdezes("SELECT id, title FROM " .$cfg['tbprf']."download_categ WHERE id='" .$letoltesadatok['cid']. "'"));
 			
 			print("<option value='" .$aktualiskategoria['id']. "'>(Nincs áthelyezés) " .$aktualiskategoria['title']. "</option>\n");
 			
@@ -262,7 +263,7 @@ if ( $_POST['action'] != $NULL )
 			if ( $_POST['parancs'] == "Szerkeszt" )
 			{
 				$oldkateg = mysql_fetch_assoc($sql->Lekerdezes("SELECT files FROM " .$cfg['tbprf']."download_categ WHERE id='" .mysql_real_escape_string($_POST['kateg']). "'"));
-				$uj = mysql_fetch_assoc($sql->Lekerdezes("SELECT files FROM " .$cfg['tbprf']."download_categ WHERE id='" .mysql_real_escape_string($_POST['newcateg_id']). "'"));
+				$ujkateg = mysql_fetch_assoc($sql->Lekerdezes("SELECT files FROM " .$cfg['tbprf']."download_categ WHERE id='" .mysql_real_escape_string($_POST['newcateg_id']). "'"));
 				
 				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."download_categ SET files='" .($oldkateg['files'] - 1). "' WHERE id='" .mysql_real_escape_string($_POST['kateg']). "'");
 				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."download_categ SET files='" .($ujkateg['files'] + 1). "' WHERE id='" .mysql_real_escape_string($_POST['newcateg_id']). "'");
