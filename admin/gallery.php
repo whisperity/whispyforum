@@ -171,7 +171,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 				<th>Név</th>
 				<th>Feltöltő neve</th>
 				<th>Feltöltés időpontja</th>
-				<th>Kép</th>
+				<th></th>
 			</tr>");
 		
 		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."gallery_pictures WHERE gid='" .mysql_real_escape_string($_GET['id']). "'");
@@ -183,7 +183,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 				<td>" .$sor['title']. "</td>
 				<td><a href='profile.php?id=" .$felhasznalonev['id']. "'>" .$felhasznalonev['username']. "</a></td>
 				<td>" .Datum("normal", "kisbetu", "dL", "H", "i", "s", $sor['uploaddate']). "</td>
-				<td><img src='uploads/" .$sor['filename']. "' width='240' height='120' alt='Kis kép'></td>
+				<td><img src='uploads/" .$sor['filename']. "' width='160' height='120' alt='Kis kép'></td>
 				<td><form action='" .$_SERVER['PHP_SELF']. "' method='GET'>
 				<input type='hidden' name='site' value='gallery'>
 				<input type='hidden' name='action' value='editpic'>
@@ -245,7 +245,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 					if(move_uploaded_file($_FILES['newpicfile']['tmp_name'], "uploads/g" .$gcid. "_p" .($gal['picCount']+1). "_" .$_FILES['newpicfile']['name']))
 					{
 						// Sikeres feltöltés esetén
-						$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."gallery_pictures (title, gid, uid, uploaddate, origfilename, filename) VALUES ('" .mysql_real_escape_string($_POST['title']). "', " .mysql_real_escape_string($gcid). ", " .$_SESSION['userID']. ", '" .time(). "', '" .$_FILES['newfile']['name']. "', 'g" .$gcid. "_p" .($gal['picCount']+1). "_" .$_FILES['newpicfile']['name']. "')");
+						$sql->Lekerdezes("INSERT INTO " .$cfg['tbprf']."gallery_pictures (title, gid, uid, uploaddate, origfilename, filename) VALUES ('" .mysql_real_escape_string($_POST['title']). "', " .mysql_real_escape_string($gcid). ", " .$_SESSION['userID']. ", '" .time(). "', '" .$_FILES['newpicfile']['name']. "', 'g" .$gcid. "_p" .($gal['picCount']+1). "_" .$_FILES['newpicfile']['name']. "')");
 						
 						$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."galleries SET picCount='" .($gal['picCount']+1). "' WHERE id='" .mysql_real_escape_string($gcid). "'");
 						
@@ -285,7 +285,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 			print("Minden mezőt ki kell tölteni!\n<form method='POST' action='" .$_SERVER['PHP_SELF']. "'>
 			<span class='formHeader'>Kép szerkesztése: " .$kepadatok['title']. "</span>
 			<p class='formText'>Cím: <input type='text' name='title' value='" .$kepadatok['title']. "' size='50'><br>
-			<img src='uploads/" .$kepadatok['filename']. "' width='240' height='120' alt='Kis kép'><br>
+			<img src='uploads/" .$kepadatok['filename']. "' width='160' height='120' alt='Kis kép'><br>
 			Fájlméret: " .DecodeSize(@filesize("uploads/" .$kepadatok['filename'])). "<br>
 			Feltöltő neve: " .$felhasznalo['username']. "<br>
 			Feltöltés időpontja: " .Datum("normal", "kisbetu", "dL", "H", "i", "s", $kepadatok['uploaddate']). "<br>
