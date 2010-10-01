@@ -262,11 +262,14 @@ if ( $_POST['action'] != $NULL )
 		} else {
 			if ( $_POST['parancs'] == "Szerkeszt" )
 			{
-				$oldkateg = mysql_fetch_assoc($sql->Lekerdezes("SELECT files FROM " .$cfg['tbprf']."download_categ WHERE id='" .mysql_real_escape_string($_POST['kateg']). "'"));
-				$ujkateg = mysql_fetch_assoc($sql->Lekerdezes("SELECT files FROM " .$cfg['tbprf']."download_categ WHERE id='" .mysql_real_escape_string($_POST['newcateg_id']). "'"));
-				
-				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."download_categ SET files='" .($oldkateg['files'] - 1). "' WHERE id='" .mysql_real_escape_string($_POST['kateg']). "'");
-				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."download_categ SET files='" .($ujkateg['files'] + 1). "' WHERE id='" .mysql_real_escape_string($_POST['newcateg_id']). "'");
+				if ( $_POST['kateg'] != $_POST['newcateg_id'] ) // Csak akkor frissítjük a letöltések számát, ha történt áthelyezés
+				{
+					$oldkateg = mysql_fetch_assoc($sql->Lekerdezes("SELECT files FROM " .$cfg['tbprf']."download_categ WHERE id='" .mysql_real_escape_string($_POST['kateg']). "'"));
+					$ujkateg = mysql_fetch_assoc($sql->Lekerdezes("SELECT files FROM " .$cfg['tbprf']."download_categ WHERE id='" .mysql_real_escape_string($_POST['newcateg_id']). "'"));
+					
+					$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."download_categ SET files='" .($oldkateg['files'] - 1). "' WHERE id='" .mysql_real_escape_string($_POST['kateg']). "'");
+					$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."download_categ SET files='" .($ujkateg['files'] + 1). "' WHERE id='" .mysql_real_escape_string($_POST['newcateg_id']). "'");
+				}
 				
 				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."downloads SET title='" .mysql_real_escape_string($_POST['title']). "', descr='" .mysql_real_escape_string($_POST['descr']). "', cid='" .mysql_real_escape_string($_POST['newcateg_id']). "' WHERE id='" .mysql_real_escape_string($_POST['id']). "'");
 				ReturnTo("A letöltés frissítése megtörtént!", "admin.php?site=downloads&action=viewitems&id=" .$_POST['kateg'], "Vissza a letöltések listájához", TRUE);
