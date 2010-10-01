@@ -3,7 +3,7 @@
    http://code.google.com/p/whispyforum/
 */
 
-/* includessendmail.php
+/* includes/sendmail.php
    Levélküldési osztály
 */
 

@@ -151,7 +151,7 @@
 	case "otherdata": // Egyéb adatok szerkesztése
 		if ( $_POST['seta'] == "setdatas" )
 		{
-			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."user SET bemutatkozas='" .mysql_real_escape_string($_POST['bemutatkozas']). "', thely='" .mysql_real_escape_string($_POST['thely']). "' WHERE id='" .$_SESSION['userID']. "'");
+			$sql->Lekerdezes("UPDATE " .$cfg['tbprf']."user SET bemutatkozas='" .mysql_real_escape_string($_POST['bemutatkozas']). "', thely='" .mysql_real_escape_string($_POST['thely']). "', showemail='" .mysql_real_escape_string($_POST['showemail']). "' WHERE id='" .$_SESSION['userID']. "'");
 			ReturnTo("Adatok frissítve!", "ucp.php", "Vissza a vezérlőpultba", TRUE);
 			DoFooter();
 			die();
@@ -159,8 +159,17 @@
 		
 		print("<form method='POST' action='" .$_SERVER['PHP_SELF']. "'>
 			<p class='formText'>Bemutatkozás: <textarea name='bemutatkozas' rows='8' cols='25'>" .$felhasznalo['bemutatkozas'] ."</textarea><br>
-			Tartózkodási hely: <input type='text' name='thely' value='" .$felhasznalo['thely']. "'><br>
-			<input type='hidden' name='set' value='otherdata'>
+			Tartózkodási hely: <input type='text' name='thely' value='" .$felhasznalo['thely']. "'><br>");
+			
+			print("E-mail megtekintése: <input type='radio' name='showemail' value='0'");
+		if ( $felhasznalo['showemail'] == 0)
+			print(" checked ");
+		print("> Letiltva <input type='radio' name='showemail' value='1'");
+			if ( $felhasznalo['showemail'] == 1 )
+			print(" checked ");
+		print("> Engedélyezve");
+			
+			print("</p><input type='hidden' name='set' value='otherdata'>
 			<input type='hidden' name='seta' value='setdatas'>
 			<input type='submit' value='Adatok szerkesztése'></form>");
 			

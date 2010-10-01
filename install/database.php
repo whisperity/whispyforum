@@ -35,6 +35,7 @@
   `username` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `pwd` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `showemail` tinyint(1) NOT NULL DEFAULT '0',
   `realName` varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `regsessid` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `regip` varchar(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0.0.0.0',
