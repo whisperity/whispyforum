@@ -14,30 +14,37 @@ if ( $admin == 1)
 <center><h2 class='header'>Adatbázis optimalizáció</h2></center>
 <?php
 
+function OptimizeTable($tablanev)
+{
+	global $cfg, $sql;
+	
+	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf'].$tablanev);
+}
+
 if ( $_POST['command'] == "optimize_all" )
 {
 	$wf_debug->RegisterDLEvent("Adatbázisoptimalizáció futtatása...");
 	
-	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."addons");
-	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."bannedips");
-	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."chat");
-	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."downloads");
-	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."download_categ");
-	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."forum");
-	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."menuitems");
-	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."modules");
-	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."news");
-	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."news_comments");
-	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."plain");
-	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."polls");
-	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."poll_opinions");
-	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."posts");
-	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."siteconfig");
-	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."statistics");
-	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."topics");
-	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."user");
-	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."version");
-	$sql->Lekerdezes("OPTIMIZE TABLE " .$cfg['tbprf']."votes_cast");
+	OptimizeTable("addons");
+	OptimizeTable("bannedips");
+	OptimizeTable("chat");
+	OptimizeTable("downloads");
+	OptimizeTable("download_categ");
+	OptimizeTable("forum");
+	OptimizeTable("menuitems");
+	OptimizeTable("modules");
+	OptimizeTable("news");
+	OptimizeTable("news_comments");
+	OptimizeTable("plain");
+	OptimizeTable("polls");
+	OptimizeTable("poll_opinions");
+	OptimizeTable("posts");
+	OptimizeTable("siteconfig");
+	OptimizeTable("statistics");
+	OptimizeTable("topics");
+	OptimizeTable("user");
+	OptimizeTable("version");
+	OptimizeTable("votes_cast");
 	
 	$wf_debug->RegisterDLEvent("Optimalizáció kész");
 	
