@@ -115,13 +115,17 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 		break;
 	
 	case "viewitems": // Menüelemek megtekintése
+	if ( $_GET['id'] == $NULL )
+	{
+		Hibauzenet("CRITICAL", "Az id-t kötelező megadni!");
+	} else {
 		$menuNev = mysql_fetch_assoc($sql->Lekerdezes("SELECT name FROM " .$cfg['tbprf']."modules WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
 		print("A(z) <b>" .$menuNev['name']. "</b> menü elemeinek szerkesztése.<br><br><div class='userbox'><table border='0' cellspacing='1' cellpadding='1'>
 			<tr>
 				<th>id</th>
 				<th>Függőleges elhelyezkedés</th>
 				<th>Név</th>
-				<th>Hivatkozás</th>				
+				<th>Hivatkozás</th>
 			</tr>");
 		
 		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."menuitems WHERE menuId='" .mysql_real_escape_string($_GET['id']). "' ORDER BY hOrder");
@@ -154,6 +158,7 @@ switch ( $action ) // A bejövő ACTION paraméter szerint nézzük, mi történ
 				<input type='hidden' name='id' value='" .$_GET['id']. "'>
 				<input type='submit' value='Új elem hozzáadása'>
 			</form>");
+	}
 		break;
 	case "delete": // Modul törlése
 		if ( $_GET['id'] == $NULL )

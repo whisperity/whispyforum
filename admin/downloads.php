@@ -223,10 +223,11 @@ if ( $_POST['action'] != $NULL )
 		} else {
 			$letoltesadatok = mysql_fetch_assoc($sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."downloads WHERE id='" .mysql_real_escape_string($_GET['id']). "'"));
 			$felhasznalo = mysql_fetch_assoc($sql->Lekerdezes("SELECT username FROM " .$cfg['tbprf']."user WHERE id='" .mysql_real_escape_string($letoltesadatok['uid']). "'"));
+			$aktualiskategoria = mysql_fetch_assoc($sql->Lekerdezes("SELECT id, title FROM " .$cfg['tbprf']."download_categ WHERE id='" .$letoltesadatok['cid']. "'"));
 			
 			print("Minden mezőt ki kell tölteni!\n<form method='POST' action='" .$_SERVER['PHP_SELF']. "'>
 			<span class='formHeader'>Letöltés szerkesztése: " .$letoltesadatok['title']. "</span>
-			<p class='formText'>Cím: <input type='text' name='title' value='" .$letoltesadatok['title']. "'><br>
+			<p class='formText'>Cím: <input type='text' name='title' value='" .$letoltesadatok['title']. "' size='50'><br>
 			Hivatkozás: " .$letoltesadatok['href']. "<br>
 			Fájlméret: " .DecodeSize(@filesize("uploads/" .md5($letoltesadatok['href']))). "<br>
 			Leírás: <textarea name='descr' rows='15' cols='60'>" .$letoltesadatok['descr']. "</textarea><br>
@@ -234,6 +235,8 @@ if ( $_POST['action'] != $NULL )
 			Feltöltés időpontja: " .Datum("normal", "kisbetu", "dL", "H", "i", "s", $letoltesadatok['upload_date']). "<br>
 			Letöltések száma: " .$letoltesadatok['download_count']. "<br>
 			Áthelyezés másik kategóriába: <select name='newcateg_id'>");
+			
+			print("<option value='" .$aktualiskategoria['id']. "'>(Nincs áthelyezés) " .$aktualiskategoria['title']. "</option>\n");
 			
 			$kategoriak = $sql->Lekerdezes("SELECT id, title FROM " .$cfg['tbprf']."download_categ WHERE id <> " .$letoltesadatok['cid']);
 			
