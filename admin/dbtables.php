@@ -68,6 +68,12 @@ while ( $sor = mysql_fetch_assoc($tablameret)) {
 		case "forum":
 			$tablanev = "Fórumok";
 			break;
+		case "galleries":
+			$tablanev = "<a href='admin.php?site=gallery'>Galériák</a>";
+			break;
+		case "gallery_pictures":
+			$tablanev = "Galéria képek";
+			break;
 		case "menuitems":
 			$tablanev = "Menüelemek";
 			break;

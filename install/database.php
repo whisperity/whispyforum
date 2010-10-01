@@ -256,6 +256,27 @@
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Chat hozzászólások
  WOut('tabla', 'chat');
  
+ $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."galleries (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `title` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `uid` tinyint(1) NOT NULL DEFAULT '0',
+  `picCount` INT(5) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Galériák
+ WOut('tabla', 'galleries');
+ 
+ $sql->Lekerdezes("CREATE TABLE " .$cfg['tbprf']."gallery_pictures (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `title` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `uid` tinyint(1) NOT NULL DEFAULT '0',
+  `gid` tinyint(1) NOT NULL DEFAULT '0',
+  `uploaddate` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `origfilename` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `filename` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci"); // Galériába feltöltött képek
+ WOut('tabla', 'gallery_pictures');
+ 
  if ( $exampledata == 'yes' )
  {
  /* Kezdeti adatok */
@@ -275,12 +296,14 @@
 	('1','Hírek','news.php', 2),
 	('1','Fórum','viewforum.php', 3),
 	('1','Letöltések','download.php', 4),
-	('1','Statikus tartalom','plain.php?id=1', 5),
-	('1','Google keresés','http://google.hu', 6)"); // Főmenü elemei
+	('1','Galéria','gallery.php', 5),
+	('1','Statikus tartalom','plain.php?id=1', 6),
+	('1','Google keresés','http://google.hu', 7)"); // Főmenü elemei
  WOut('sor', 'menuitems', 'Főmenü/Kezdőlap');
  WOut('sor', 'menuitems', 'Főmenü/Fórum');
  WOut('sor', 'menuitems', 'Főmenü/Hírek');
  WOut('sor', 'menuitems', 'Főmenü/Letöltések');
+ WOut('sor', 'menuitems', 'Főmenü/Galéria');
  WOut('sor', 'menuitems', 'Főmenü/Statikus tartalom');
  WOut('sor', 'menuitems', 'Főmenü/Google keresés (google.hu)');
  

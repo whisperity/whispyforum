@@ -89,6 +89,7 @@
 		MenuItem("moduleeditor", "Modulszerkesztő");
 		MenuItem("addforum", "Fórum hozzáadása");
 		MenuItem("plain", "Statikus tartalmak");
+		MenuItem("gallery", "Galéria");
 		MenuItem("downloads", "Letöltések");
 		MenuItem("polls", "Szavazások");
 		MenuItem("chat", "Chat");
@@ -102,21 +103,18 @@
  <td class='center' valign='top'>"); // Bal oldali doboz lezárása, középső doboz nyitása
  switch ( $website ) // Az érkező SITE paraméter alapján megválogatjuk a beillesztendő weboldalat
  {
-	case 'moduleeditor':
-		$admin = TRUE;
-		include("admin/moduleeditor.php");
-		break;
-	case 'addforum':
-		$admin = TRUE;
-		include("admin/addforum.php");
-		break;
-	case 'installlog':
-		$admin = TRUE;
-		include("admin/installlog.php");
-		break;
 	case 'banip':
 		$admin = TRUE;
 		include("admin/banip.php");
+		break;
+	case 'banuser':
+		print("<center><h2 class='header'>Felhasználók kitiltása</h2></center>
+		<br>A felhasználók kitiltásához használd a kitiltani kívánt felhasználó profilján található segédeszközt. <a href='profile.php?id=" .$_SESSION['userID']. "'>Saját profilod megtekintése</a>");
+		print("</td><td class='right' valign='top'>");
+		break;
+	case 'configs':
+		$admin = TRUE;
+		include("admin/configs.php");
 		break;
 	case 'addons':
 		$admin = TRUE;
@@ -126,26 +124,9 @@
 		$admin = TRUE;
 		include("admin/checks.php");
 		break;
-	case 'configs':
+	case 'dbtables':
 		$admin = TRUE;
-		include("admin/configs.php");
-		break;
-	case 'banuser':
-		print("<center><h2 class='header'>Felhasználók kitiltása</h2></center>
-		<br>A felhasználók kitiltásához használd a kitiltani kívánt felhasználó profilján található segédeszközt. <a href='profile.php?id=" .$_SESSION['userID']. "'>Saját profilod megtekintése</a>");
-		print("</td><td class='right' valign='top'>");
-		break;
-	case 'plain':
-		$admin = TRUE;
-		include("admin/plain.php");
-		break;
-	case 'downloads':
-		$admin = TRUE;
-		include("admin/downloads.php");
-		break;
-	case 'polls':
-		$admin = TRUE;
-		include("admin/polls.php");
+		include("admin/dbtables.php");
 		break;
 	case 'dboptimize':
 		$admin = TRUE;
@@ -155,13 +136,37 @@
 		$admin = TRUE;
 		include("admin/dbbackup.php");
 		break;
-	case 'dbtables':
+	case 'installlog':
 		$admin = TRUE;
-		include("admin/dbtables.php");
+		include("admin/installlog.php");
 		break;
 	case 'statistics':
 		$admin = TRUE;
 		include("admin/statistics.php");
+		break;
+	case 'moduleeditor':
+		$admin = TRUE;
+		include("admin/moduleeditor.php");
+		break;
+	case 'addforum':
+		$admin = TRUE;
+		include("admin/addforum.php");
+		break;
+	case 'plain':
+		$admin = TRUE;
+		include("admin/plain.php");
+		break;
+	case 'gallery':
+		$admin = TRUE;
+		include("admin/gallery.php");
+		break;
+	case 'downloads':
+		$admin = TRUE;
+		include("admin/downloads.php");
+		break;
+	case 'polls':
+		$admin = TRUE;
+		include("admin/polls.php");
 		break;
 	case 'chat':
 		$admin = TRUE;
@@ -353,6 +358,11 @@
 				<b>Hírek száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."news")). "<br>
 				<b>Hírhozzászólások száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."news_comments")). "<br>
 				<b>Statikus tartalmak száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."plain")). "<br>
+				<b>Galériák száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."galleries")). "<br>
+				<b>Feltöltött képek száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."gallery_pictures")). "<br>");
+				//<b>Galériahozzászólások száma:</b> " .@mysql_num_rows(@$sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."")). "<br>
+				//<b>Képhozzászólások száma:</b> " .@mysql_num_rows(@$sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."")). "<br>
+				print("<b>Felhasználók száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."user")). "<br>
 				<b>Letöltés kategóriák száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."download_categ")). "<br>
 				<b>Letöltések száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."downloads")). "<br>
 				<b>Szavazások száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."polls")). "<br>

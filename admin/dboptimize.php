@@ -31,6 +31,8 @@ if ( $_POST['command'] == "optimize_all" )
 	OptimizeTable("downloads");
 	OptimizeTable("download_categ");
 	OptimizeTable("forum");
+	OptimizeTable("galleries");
+	OptimizeTable("gallery_pictures");
 	OptimizeTable("menuitems");
 	OptimizeTable("modules");
 	OptimizeTable("news");

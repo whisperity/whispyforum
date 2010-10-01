@@ -97,6 +97,8 @@ if ( $_POST['command'] == "backup_all" )
 	BackupTable("downloads");
 	BackupTable("download_categ");
 	BackupTable("forum");
+	BackupTable("galleries");
+	BackupTable("gallery_pictures");
 	BackupTable("menuitems");
 	BackupTable("modules");
 	BackupTable("news");
