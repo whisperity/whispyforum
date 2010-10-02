@@ -60,7 +60,7 @@ class templates // Osztálydeklaráció
 		print("<div class='menubox'><span class='menutitle'>" .$menuName. "</span><br><p>"); // Menü fejléc
 		$wf_debug->RegisterDLEvent("Menü " .$menuName. " létrehozása");
 		
-		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."menuItems WHERE menuId='" .$id. "' ORDER BY hOrder");
+		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."menuitems WHERE menuId='" .$id. "' ORDER BY hOrder");
 		
 		while ($sor = mysql_fetch_assoc($adat)) {
 			$http = explode('://', $sor['href']); // Kivágjuk az esetleges HTTP előtagot
