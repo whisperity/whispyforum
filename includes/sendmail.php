@@ -95,8 +95,7 @@ class sendmail // Definiáljuk az osztályt
 			$message .= "\r\n\r\nJó szórakozást és további eredményes portálhasználatot kívánunk, a fejlesztők, és " .$cfg['webmaster']. ", webmester";
 		}
 		
-		//mail($email, "Elfelejtett jelszó", $message, $headers);
-		print("<h>Elfelejtett jelszó</h><pre><code>" .$headers. "</code></pre>" .$message);
+		mail($email, "Elfelejtett jelszó", $message, $headers);
 		$wf_debug->RegisterDLEvent("Jelszóemlékeztető levél elküldve");
 	}
 }

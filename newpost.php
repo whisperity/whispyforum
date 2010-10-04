@@ -43,7 +43,7 @@
 				
 				/* Felhasználó hozzászólásszámának növelése */
 				$sor4 = mysql_fetch_assoc($sql->Lekerdezes("SELECT postCount FROM " .$cfg['tbprf']."user WHERE id='" .$_SESSION['userID']. "'")); // Felhasználó hozzászólásszáma
-				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET postCount='" .($sor4['postCount']+1). "'");
+				$sql->Lekerdezes("UPDATE " .$cfg['tbprf']. "user SET postCount='" .($sor4['postCount']+1). "' WHERE id='" .$_SESSION['userID']. "'");
 				
 				ReturnTo("Hozzászólás elküldve!", "viewtopic.php?id=" .$_POST['id'], "Vissza a témához", TRUE);
 				DoFooter();

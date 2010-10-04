@@ -362,7 +362,7 @@
 				<b>Feltöltött képek száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."gallery_pictures")). "<br>");
 				//<b>Galériahozzászólások száma:</b> " .@mysql_num_rows(@$sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."")). "<br>
 				//<b>Képhozzászólások száma:</b> " .@mysql_num_rows(@$sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."")). "<br>
-				print("<b>Felhasználók száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."user")). "<br>
+				print("
 				<b>Letöltés kategóriák száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."download_categ")). "<br>
 				<b>Letöltések száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."downloads")). "<br>
 				<b>Szavazások száma:</b> " .mysql_num_rows($sql->Lekerdezes("SELECT id FROM " .$cfg['tbprf']."polls")). "<br>
