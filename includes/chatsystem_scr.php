@@ -148,7 +148,7 @@
 
  }
  
- if ( ( $_POST['chat'] == "sendmsg") && ( $_POST['message'] != $NULL ) ) // Hozzászólás beküldése
+ if ( ( $_POST['chat'] == "sendmsg") && ( $_POST['message'] != $NULL ) && ( $_SESSION['userID'] != $NULL ) ) // Hozzászólás beküldése
  {
 	$wf_debug->RegisterDLEvent("Üzenet mentése...");
 	
