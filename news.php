@@ -37,7 +37,7 @@
 			print("<a href='news.php?action=newentry'>Hír beküldése</a><br>"); // Hír beküldése link, ha a felhasználó moderátor/admin
 		
 		/* Hírek betöltése */
-		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."news");
+		$adat = $sql->Lekerdezes("SELECT * FROM " .$cfg['tbprf']."news ORDER BY id DESC");
  
 		/* Hírek listázása */
 		while ( $sor = mysql_fetch_assoc($adat) )
