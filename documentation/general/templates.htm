@@ -1,0 +1,44 @@
+<html>
+
+<head>
+<title>Templates</title>
+</head>
+
+<body>
+
+<h2 align="center">Templates</h2>
+<h3 align="left">Description</h3>
+
+<p align="left">Templates are static HTML files located in the <tt>/templates</tt> folder. 
+Template control are maintained by the
+<a href="../includes/templates.class.php.htm">template conductor</a>
+<a href="classes.htm">class</a>.</p>
+
+<h3 align="left">Layout</h3>
+
+<p align="left">The basic layout of the template file is the following</p>
+
+<blockquote><pre>Hello, {NAME}!
+The current time is {TIME}, today is {DAY_NAME}</pre></blockquote>
+
+<p>The dynamic places are the variables inside <tt>{ }</tt> brackets. These 
+variables are being replaced to their values runtime while parsing.</p>
+
+<h3>Example</h3>
+<p>Let's call the above template <i>welcome</i> (thus it's filename and path is
+<i>/templates/welcome.htm</i>). When the template is used, it's called with the
+<a title="templates.class.php: useTemplate()" href="../includes/templates.class.php.htm#pub_func_useTemplate">following script</a>.</p>
+<blockquote><pre><font color="#00008B">$Ctemplate</font><font color="#8000FF">-&gt;</font>useTemplate<font color="#8000FF">(</font><font color="#808080">&quot;welcome&quot;</font>, <font color="#0000FF">array</font><font color="#8000FF">(</font>
+&nbsp;&nbsp;&nbsp; <font color="#808080">'NAME'</font>&nbsp;&nbsp;&nbsp; <font color="#8000FF">=&gt;</font>&nbsp;&nbsp;&nbsp; <font color="#808080">&quot;John Doe&quot;</font><font color="#8000FF">,</font>
+&nbsp;&nbsp;&nbsp; <font color="#808080">'TIME'</font>&nbsp;&nbsp;&nbsp; <font color="#8000FF">=&gt;</font>&nbsp;&nbsp;&nbsp; <font color="#808080">&quot;12:04:25&quot;</font><font color="#8000FF">,</font>
+&nbsp;&nbsp;&nbsp; <font color="#808080">'DAY_NAME'</font>&nbsp;&nbsp;&nbsp; <font color="#8000FF">=&gt;</font>&nbsp;&nbsp;&nbsp; <font color="#808080">&quot;Tuesday&quot;</font><font color="#8000FF">));</font></pre></blockquote>
+<p>It'll give the output:</p>
+<blockquote><pre>Hello, <i>John Doe</i>!
+The current time is <i>12:04:25</i>, today is <i>Tuesday</i>.</pre></blockquote>
+
+<p>You can always test your template without modifing the script with the
+<a href="../tool.template-test.php.htm">template tester tool</a>.</p>
+
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+/**
+ * WhispyForum stylesheet - style.css
+ * 
+ * CSS stylesheet used to define the look of the site
+ * 
+ * Theme name: winky
+ * 
+ * WhispyForum
+ */
+
+/* ************************************ */
+/* General */
+span.red-star { color: #FF0000;
+	font-weight: bold }
+
+/* Forms */
+form {}
+
+input {}
+
+span.form-header {}
+
+
+
+/* ************************************ */
+/* Error message box template */
+table.errorbox { font-weight: bold;
+        color: Maroon;
+        background-color: #FFC0C0;
+        border: 1px solid maroon;
+        padding: 3px;
+        line-height: 125%;
+        margin: 1em auto }
+	
+td.errortitle { font-family: MS Sans Serif;
+	font-size:14pt;
+	text-decoration:underline;
+	font-weight:bold;}
+
+td.errorpicture {}
+
+td.errorbody {}
+/* Error message box template */
+
+/* ************************************ */
+/* Install */
+table.install-header { width: 100% } /* Do not remove width: 100% */
+
+h1.install-header {}
+
+td.install-picture { width: 96px }
+
+table.install-center { width: 100% }
+
+td.install-block-left { width: 75% }
+
+td.install-block-right { width: 25% }
+
+div.install-rightmenu { font-family: MS Sans Serif;
+        font-size: 10pt;
+        margin-left: 5px;
+        margin-right: 5px;
+        background-color: #00BBEE;
+        border: 1px dashed #AB1852 }
+
+span.install-menu-actual { color: #543210 }
+
+span.install-menu-entries { color: #5B00FF }
+/* Install */
