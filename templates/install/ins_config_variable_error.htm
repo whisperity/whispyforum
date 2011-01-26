@@ -1,0 +1,44 @@
+<!--- BEGIN install config variable error -->
+<!--- Usage: config file empty variable error box -->
+<table class="install-header" border="1">
+<tr>
+<td class="install-picture"><img src="themes/winky/Nuvola_devices_nfs_mount.png" alt="Installer wizard"></td>
+<td><h1 class="install-header" align="center">Installer - Configuration file</h1></td>
+</tr>
+</table>
+
+<!--- We need to crate a new <table> because of modified sizes -->
+
+<table border="1" class="install-center">
+<tr>
+<td class="install-block-left">
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/winky/Nuvola_filesystems_folder_txt.png" alt="Error!"></td>
+		<td class="errortitle">Error!</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">You didn't entered one of the required variables, {VARIABLE} cannot be empty. The installation cannot continue until every required variable is entered.</td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+<form method="POST" action="install.php">
+<input type="hidden" name="dbhost" value="{DBHOST}">
+<input type="hidden" name="dbuser" value="{DBUSER}">
+<input type="hidden" name="dbpass" value="{DBPASS}">
+<input type="hidden" name="dbname" value="{DBNAME}">
+<input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
+<input type="submit" value="<< Back">
+<input type="hidden" name="instPos" value=1> <!--- Going back to step 2 -->
+</form>
+</td>
+<td class="install-block-right" valign="top">
+<div class="install-rightmenu">
+<span class="install-menu-entries">1. Introduction</span><br>
+<span class="install-menu-entries">2. Configuration file</span><br>
+<span class="install-menu-actual">3. Writing configuration file.</span>
+</div>
+</td>
+</tr>
+</table>
+<!--- END install config variable error -->
