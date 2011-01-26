@@ -132,10 +132,29 @@
 			'DBUSER'	=>	$_POST['dbuser'], // Database user
 			'DBPASS'	=>	$_POST['dbpass'], // Database password
 			'DBNAME'	=>	$_POST['dbname'], // Database name
-			'UUID'	=>	generateHexToken() // Random token
+			'UUID'	=>	generateHexToken(), // Random token
+			'GDATE'	=>	date('l jS \of F Y h:i:s A') // Generation date
 		), TRUE); // Generating the file from template
 		
+		// Writing file. If write error occurs, give output.
+		$wrSuccess = @file_put_contents("config.php", $configfile); // wrSuccess is undefined if there's error
 		
+		if (!$wrSuccess) // Checking whether a writing error occured.
+		{
+			$Ctemplate->useTemplate("install/ins_config_write_error", array(
+				// We need to pass these variables for a working return form.
+				'DBHOST'	=>	$_POST['dbhost'], // Database host
+				'DBUSER'	=>	$_POST['dbuser'], // Database user
+				'DBPASS'	=>	$_POST['dbpass'], // Database password
+				'DBNAME'	=>	$_POST['dbname'], // Database name
+			), FALSE); // We give error output
+		} else { // If there isn't any writing errors, 
+			$Ctemplate->useStaticTemplate("install/ins_config_write_success", FALSE);
+		}
+		
+		break;
+	case 3:
+		// Testing database connection
 		break;
  }
 ?>

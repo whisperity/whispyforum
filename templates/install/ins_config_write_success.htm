@@ -1,0 +1,40 @@
+<!--- BEGIN install config write success -->
+<!--- Usage: config file writing succes, forward form -->
+<table class="install-header" border="1">
+<tr>
+<td class="install-picture"><img src="themes/winky/Nuvola_devices_nfs_mount.png" alt="Installer wizard"></td>
+<td><h1 class="install-header" align="center">Installer - Configuration file</h1></td>
+</tr>
+</table>
+
+<!--- We need to crate a new <table> because of modified sizes -->
+
+<table border="1" class="install-center">
+<tr>
+<td class="install-block-left">
+<table class="successbox"> <!--- copying the successbox template -->
+	<tr>
+		<td class="successpicture"><img src="themes/winky/Nuvola_filesystems_folder_txt.png" alt="Success!"></td>
+		<td class="successtitle"><tt>config.php</tt> created</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="successbody">The configuration file was written successfully. You can proceed to the next step.</td>
+	</tr>
+</table> <!--- copying the successbox template -->
+
+<form method="POST" action="install.php">
+<input type="submit" value="Next >>">
+<input type="hidden" name="instPos" value=3> <!--- Going to step 3 -->
+</form>
+</td>
+<td class="install-block-right" valign="top">
+<div class="install-rightmenu">
+<span class="install-menu-entries">1. Introduction</span><br>
+<span class="install-menu-entries">2. Configuration file</span><br>
+<span class="install-menu-actual">3. Writing configuration file.</span><br>
+</div>
+</td>
+</tr>
+</table>
+<!--- END install config variable error -->
