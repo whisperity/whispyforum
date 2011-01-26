@@ -63,7 +63,7 @@
 	
 	// We generate the template (static mode)
 	echo '<hr><h3>Template <tt>' .$_POST['tname']. '</tt> static mode (without replacing)</h3><tt>';
-	$Ctemplate->useStaticTemplate($_POST['tname']);
+	$Ctemplate->useStaticTemplate($_POST['tname'], FALSE);
 	echo '</tt>';
  } else {
  	// If not, we output a form (using time() and md5() to generate token for $_POST['mode']
