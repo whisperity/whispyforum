@@ -49,7 +49,17 @@
  	case NULL:
  	case 0:
 		// Introduction
-		$Ctemplate->useStaticTemplate("install/ins_start"); // Use install introduction
+		
+		// We check this file existence now, because if we check it in general (before swich() clause)
+		// after the third step (generating config.php) the installation hangs
+		if ( file_exists("config.php") )
+		{
+			// If config.php already exists, give error message
+			$Ctemplate->useStaticTemplate("install/ins_start_already", FALSE);
+		} else {
+			// If not, give standard starting screen
+			$Ctemplate->useStaticTemplate("install/ins_start", FALSE); // Use install introduction
+		}
 		break;
 	case 1:
 		// Configuration file generator - getting data
@@ -65,10 +75,10 @@
 		} else {
 			// We output general form
 			$Ctemplate->useTemplate("install/ins_config", array(
-				'DBHOST'	=>	"localhost", // Database host
+				'DBHOST'	=>	"localhost", // Database host (default)
 				'DBUSER'	=>	"", // Database user
 				'DBPASS'	=>	"", // Database password
-				'DBNAME'	=>	"" // Database name
+				'DBNAME'	=>	"winky" // Database name (default)
 				), FALSE); // Config file generator
 		}
 		break;
@@ -133,7 +143,7 @@
 			'DBPASS'	=>	$_POST['dbpass'], // Database password
 			'DBNAME'	=>	$_POST['dbname'], // Database name
 			'UUID'	=>	generateHexToken(), // Random token
-			'GDATE'	=>	date('l jS \of F Y h:i:s A') // Generation date
+			'GDATE'	=>	date('l jS \of F Y H:i:s') // Generation date
 		), TRUE); // Generating the file from template
 		
 		// Writing file. If write error occurs, give output.
@@ -155,6 +165,21 @@
 		break;
 	case 3:
 		// Testing database connection
+		break;
+	case 4:
+		// Creating database
+		break;
+	case 5:
+		// Creating database tables
+		break;
+	case 6:
+		// Admin user form
+		break;
+	case 7:
+		// Registering admin user
+		break;
+	case 8:
+		// Finish
 		break;
  }
 ?>

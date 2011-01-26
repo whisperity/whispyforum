@@ -1,0 +1,54 @@
+<!--- BEGIN install start already existing error -->
+<!--- Usage: first install screen with introduction, giving "already installed" error due to existing config.php -->
+<table class="install-header" border="1">
+<tr>
+<td class="install-picture"><img src="themes/winky/Nuvola_apps_package_applications.png" alt="Installer wizard"></td>
+<td><h1 class="install-header" align="center">Installer - Introduction</h1></td>
+</tr>
+</table>
+
+<!--- We need to crate a new <table> because of modified sizes -->
+
+<table border="1" class="install-center">
+<tr>
+<td class="install-block-left">
+<br><br>
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/winky/Nuvola_filesystems_folder_locked.png" alt="Already installed!"></td>
+		<td class="errortitle">WhispyForum is already installed</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">It seems that WhispyForum is already installed.
+<br><br>
+Reinstalling the system can produce a lot of stability and incompatibility issues. Primarily, when the installer creates the database table entries, it can truncate/rewrite/append tables that shouldn't be accessed in such ways. On the other hand, the configuration file can get corrupted.
+<br><br>
+Before we can move on installing the system, you have to make your data safe. Create a database backup, and drop every tables from the database. After that, delete <tt>config.php</tt> from the server root directory.
+<br><br>
+<small>Existing configuration detected. Setup process terminated.</small></td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+To refresh the page, click the button.
+<!--- refresh form -->
+<form method="POST" action="install.php">
+<input type="submit" value="Refresh">
+</form>
+</td>
+<td class="install-block-right" valign="top">
+<div class="install-rightmenu">
+<span class="install-menu-actual">1. Introduction</span><br>
+<span class="install-menu-entries">2. Configuration file</span><br>
+<span class="install-menu-entries">3. Writing configuration file.</span><br>
+<span class="install-menu-entries">4. Testing database connection</span><br>
+<span class="install-menu-entries">5. Creating database</span><br>
+<span class="install-menu-entries">6. Creating table structure and content</span><br>
+<span class="install-menu-entries">7. Administrator user</span><br>
+<span class="install-menu-entries">8. Creating Administrator user</span><br>
+<span class="install-menu-entries">9. Finish</span>
+</div>
+</td>
+</tr>
+</table>
+
+<!--- END install start already existing error -->
