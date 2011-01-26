@@ -42,6 +42,25 @@ td.errorpicture {}
 td.errorbody {}
 /* Error message box template */
 
+/* Success message box template (nearly identical to errorbox) */
+table.successbox { font-weight: bold;
+        color: DarkGreen;
+        background-color: #C0FFC0;
+        border: 1px solid maroon;
+        padding: 3px;
+        line-height: 125%;
+        margin: 1em auto }
+	
+td.successtitle { font-family: MS Sans Serif;
+	font-size:14pt;
+	text-decoration:underline;
+	font-weight:bold;}
+
+td.successpicture {}
+
+td.successbody {}
+/* Success message box template (nearly identical to errorbox) */
+
 /* ************************************ */
 /* Install */
 table.install-header { width: 100% } /* Do not remove width: 100% */
