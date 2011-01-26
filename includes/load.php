@@ -38,7 +38,7 @@
 		'THEME_NAME'	=>	"winky", // Theme name
 		'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Unaviable file icon
 		'TITLE'	=>	"Configuration file not found!", // Error title
-		'BODY'	=>	"The site's configuration file is missing. It usally means that the engine wasn't installed. Without configuration, the engine cannot be used, because it can't connect to the database. ".'You can install it by clicking <a href="install.php" alt="Install WhispyForum">here</a> and running the install script.', // Error text
+		'BODY'	=>	"The site's configuration file is missing. It usally means that the engine isn't installed properly. Without configuration, the engine cannot be used, because it can't connect to the database. ".'You can install it by clicking <a href="install.php" alt="Install WhispyForum">here</a> and running the install script.', // Error text
 		'ALT'	=>	"File unaviable" // Alternate picture text
 	), FALSE ); // We output an error message
  }
