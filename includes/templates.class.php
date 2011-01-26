@@ -48,8 +48,8 @@ class class_template
 		 * Main external usable function to get, parse and output templates
 		 * 
 		 * @inputs: $templateName (default NULL) -- the template's filename (without extension)
-		 *          $replaceArray (default array NULL) -- array of template variables and values to be replaced
-					$varOutput (default FALSE) -- boolean variable of givin echo or variable (return) output
+		 * 			$replaceArray (default array NULL) -- array of template variables and values to be replaced
+					$varOutput (default FALSE) -- boolean variable of giving echo or variable (return) output
 		 * 
 		 * example:
 		 *	useTemplate("filename", array("variable" => "value", "another" => "replacement"), FALSE);
@@ -83,7 +83,7 @@ class class_template
 				// First, we need to cache output into a variable
 				$rVar = $this->output;
 				
-				$this->__resetOutput(); // We clear the output stacke
+				$this->__resetOutput(); // We clear the output stack
 				
 				// The reason of caching: after RETURN, we cannot call the clearing (becuse it exist the function)
 				// but if we call it before, it will give NULL as output
@@ -95,7 +95,7 @@ class class_template
 		}
 	}
 	
-	function useStaticTemplate($templateName = NULL)
+	function useStaticTemplate($templateName = NULL, $varOutput = FALSE)
 	{
 		/**
 		 * Main external usable function to get and output templates without any parsing
@@ -105,6 +105,7 @@ class class_template
 		 *  This function will gain meaning in the future.
 		 * 
 		 * @inputs: $templateName (default NULL) -- the template's filename (without extension)
+		 *			$varOutput (default FALSE) -- boolean variable of giving echo or variable (return) output
 		 * 
 		 * example:
 		 *	useTemplate("filename");
@@ -113,7 +114,21 @@ class class_template
 		if ( $templateName != NULL )  // If template name is specified
 		{
 			$this->__getTemplate($templateName); // We read in the template...
-			$this->__giveOutput(); // ..and give output
+			
+			if ( $varOutput == TRUE ) // If we decided to give return output
+			{
+				// First, we need to cache output into a variable
+				$rVar = $this->output;
+				
+				$this->__resetOutput(); // We clear the output stack
+				
+				// The reason of caching: after RETURN, we cannot call the clearing (becuse it exist the function)
+				// but if we call it before, it will give NULL as output
+				return $rVar; // We return cached output as a variable
+			} elseif ( $varOutput == FALSE ) // If we decided to give echo output
+			{
+				$this->__giveOutput(); // At the end, we push the script forward to give the template's output
+			}
 		}
 	}
 	
