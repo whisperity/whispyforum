@@ -78,7 +78,7 @@
 				'DBHOST'	=>	"localhost", // Database host (default)
 				'DBUSER'	=>	"", // Database user
 				'DBPASS'	=>	"", // Database password
-				'DBNAME'	=>	"winky" // Database name (default)
+				'DBNAME'	=>	"winky_db" // Database name (default)
 				), FALSE); // Config file generator
 		}
 		break;
@@ -165,6 +165,30 @@
 		break;
 	case 3:
 		// Testing database connection
+		require('config.php'); // We initialize the config array (need to do this for database connection)
+		$dbconnection = $Cmysql->TestConnection(); // We make a test database connection.
+		
+		// $dbconnection is TRUE if test connection is successful
+		// $dbconnection is FALSE if test connection is unsuccessful
+		
+		if ( $dbconnection == FALSE )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_dbtest_error", array(
+				'DBHOST'	=>	$cfg['dbhost'], // Database host
+				'DBUSER'	=>	$cfg['dbuser'], // Database user
+				'USE_PASS'	=>	( ($cfg['dbpass'] != NULL) ? 'yes' : 'no' ), // Whether there's a password set.
+			), FALSE);
+		} elseif ( $dbconnection == TRUE )
+		{
+			// Give success
+			$Ctemplate->useTemplate("install/ins_dbtest_success", array(
+				'DBHOST'	=>	$cfg['dbhost'], // Database host
+				'DBUSER'	=>	$cfg['dbuser'], // Database user
+				'USE_PASS'	=>	( ($cfg['dbpass'] != NULL) ? 'yes' : 'no' ), // Whether there's a password set.
+			), FALSE);
+		}
+		
 		break;
 	case 4:
 		// Creating database

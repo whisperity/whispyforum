@@ -1,9 +1,9 @@
-<!--- BEGIN install config write success -->
-<!--- Usage: config file writing succes, forward form -->
+<!--- BEGIN install database connection test success -->
+<!--- Usage: database connection test success box -->
 <table class="install-header" border="1">
 <tr>
-<td class="install-picture"><img src="themes/winky/Nuvola_devices_nfs_mount.png" alt="Installer wizard"></td>
-<td><h1 class="install-header" align="center">Installer - Configuration file</h1></td>
+<td class="install-picture"><img src="themes/winky/Nuvola_devices_raid.png" alt="Installer wizard"></td>
+<td><h1 class="install-header" align="center">Installer - Database</h1></td>
 </tr>
 </table>
 
@@ -14,27 +14,28 @@
 <td class="install-block-left">
 <table class="successbox"> <!--- copying the successbox template -->
 	<tr>
-		<td class="successpicture"><img src="themes/winky/Nuvola_filesystems_folder_txt.png" alt="Success!"></td>
-		<td class="successtitle"><tt>config.php</tt> created</td>
+		<td class="successpicture"><img src="themes/winky/Nuvola_devices_raid.png" alt="Success!"></td>
+		<td class="successtitle">Connection successful</td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="successbody">The configuration file was written successfully.</td>
+		<td class="successbody">Database connection to <tt>{DBHOST}</tt> (user <tt>{DBUSER}</tt>, using password: <tt>{USE_PASS}</tt>) was made successfully.</td>
 	</tr>
 </table> <!--- copying the successbox template -->
 
 You can proceed to the next step.
+<!--- refresh form -->
 <form method="POST" action="install.php">
 <input type="submit" value="Next >>">
-<input type="hidden" name="instPos" value=3> <!--- Going to step 3 -->
+<input type="hidden" name="instPos" value=4> <!--- proceeding to database creation -->
 </form>
 </td>
 <td class="install-block-right" valign="top">
 <div class="install-rightmenu">
 <span class="install-menu-entries">1. Introduction</span><br>
 <span class="install-menu-entries">2. Configuration file</span><br>
-<span class="install-menu-actual">3. Writing configuration file.</span><br>
-<span class="install-menu-entries">4. Testing database connection</span><br>
+<span class="install-menu-entries">3. Writing configuration file.</span><br>
+<span class="install-menu-actual">4. Testing database connection</span><br>
 <span class="install-menu-entries">5. Creating database</span><br>
 <span class="install-menu-entries">6. Creating table structure and content</span><br>
 <span class="install-menu-entries">7. Administrator user</span><br>
@@ -44,4 +45,4 @@ You can proceed to the next step.
 </td>
 </tr>
 </table>
-<!--- END install config variable error -->
+<!--- END install database connection test success -->
