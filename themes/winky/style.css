@@ -79,10 +79,10 @@ div.install-rightmenu { font-family: MS Sans Serif;
         font-size: 10pt;
         margin-left: 5px;
         margin-right: 5px;
-        background-color: #00BBEE;
+        background-color: #FFFFFF;
         border: 1px dashed #AB1852 }
 
-span.install-menu-actual { color: #543210 }
+span.install-menu-actual { color: #AB1852 }
 
-span.install-menu-entries { color: #5B00FF }
+span.install-menu-entries { color: #49A835 }
 /* Install */
