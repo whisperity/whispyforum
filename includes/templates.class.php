@@ -14,7 +14,7 @@
 
 class class_template
 {
-	private $output; // OUTPUT is the output which is printed at the end of the parsing
+	private $_output; // OUTPUT is the output which is printed at the end of the parsing
 	
 	private function __getTemplate($templateName = NULL)
 	{
@@ -30,11 +30,11 @@ class class_template
 			if ( file_exists("templates/" .$templateName. ".htm") ) // If the template file exists (we only need to check this here)
 			{
 				// Read in the file content and store it as output
-				$this->output = file_get_contents("templates/" .$templateName. ".htm");
+				$this->_output = file_get_contents("templates/" .$templateName. ".htm");
 			} else { // If not
-				$this->output = file_get_contents("templates/template_missing.htm"); // Read an error message template
+				$this->_output = file_get_contents("templates/template_missing.htm"); // Read an error message template
 				
-		    		$this->output=str_replace('{TNAME}',$templateName,$this->output); // Replace template name
+		    		$this->_output=str_replace('{TNAME}',$templateName,$this->_output); // Replace template name
 				
 				/* From now, parsing will continue without any replacement
 				   and proper error output will be given. */
@@ -72,7 +72,7 @@ class class_template
 			    		$replaceVariable = $rKeys[$i];
 			    		
 			    		// Then replace the output, updating it
-		    			$this->output=str_replace('{'.$replaceVariable.'}',$replaceTag,$this->output);
+		    			$this->_output=str_replace('{'.$replaceVariable.'}',$replaceTag,$this->_output);
 		    			
 		    			$i++; // Turn the counter by one
 			    	}
@@ -81,7 +81,7 @@ class class_template
 			if ( $varOutput == TRUE ) // If we decided to give return output
 			{
 				// First, we need to cache output into a variable
-				$rVar = $this->output;
+				$rVar = $this->_output;
 				
 				$this->__resetOutput(); // We clear the output stack
 				
@@ -118,7 +118,7 @@ class class_template
 			if ( $varOutput == TRUE ) // If we decided to give return output
 			{
 				// First, we need to cache output into a variable
-				$rVar = $this->output;
+				$rVar = $this->_output;
 				
 				$this->__resetOutput(); // We clear the output stack
 				
@@ -139,7 +139,7 @@ class class_template
 		 * Internal use only
 		 */
 		
-		echo $this->output; // Print the output
+		echo $this->_output; // Print the output
 		
 		$this->__resetOutput(); // Reset the output stack
 	}
@@ -150,7 +150,7 @@ class class_template
 		 * Use this function to reset the template output stack
 		 */
 		
-		$this->output = NULL; // Reset the output
+		$this->_output = NULL; // Reset the output
 	}
 }
 ?>
