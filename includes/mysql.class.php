@@ -95,5 +95,58 @@ class class_mysql
 			'ALT'	=>	"mySQL error" // Alternate picture text
 	), FALSE ); // We output an error message
 	}
+	
+	function Disconnect()
+	{
+		/**
+		 * This function closes the active database connection
+		 */
+		
+		@mysql_close($this->_link); // Close
+	}
+	
+	function Query($sQuery)
+	{
+		/**
+		 * This function processes a mySQL query.
+		 * If there is an error, it outputs an error message.
+		 * 
+		 * @inputs: $sQuery - mySQL query string
+		 */
+		
+		// The query's result is automatically put into the _resource variable
+		
+		$qerror = FALSE; // By default, there are no errors.
+		
+		$this->_resource = @mysql_query($sQuery)
+			or $qerror = TRUE; // $qerror is the error variable
+		
+		if ( $qerror == TRUE ) // Checking whether there were any erros
+		{
+			$this->__giveQueryError($sQuery); // Generating query error message
+			return FALSE; // Returnign FALSE in case any if() structure needs it
+		}
+	}
+	
+	private function __giveQueryError($sQuery)
+	{
+		/**
+		 * This function gives a query error message.
+		 * Internal use only
+		 * 
+		 * @inputs: $sQuery - mySQL query string
+		 */
+		
+		global $cfg; // We need to initialize the config array
+		$Ctemplate = new class_template; // We need to declare the templates class
+		
+		$Ctemplate->useTemplate("errormessage", array(
+			'THEME_NAME'	=>	"winky", // Theme name
+			'PICTURE_NAME'	=>	"Nuvola_devices_raid.png", // HDDs icon
+			'TITLE'	=>	"Unable to process mySQL query!", // Error title
+			'BODY'	=>	'The specified query <tt>' .$sQuery. '</tt> could not be processed.<br>The mySQL error message was <tt>' .mysql_error(). '</tt>', // Error text
+			'ALT'	=>	"mySQL query error" // Alternate picture text
+	), FALSE ); // We output an error message
+	}
 }
 ?>

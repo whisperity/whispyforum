@@ -57,6 +57,15 @@ Functions</h4>
   <li>
 <img border="0" src="../style-data/private.gif" width="15" height="15" alt="private">
 <a href="#priv_func_giveDBSelectError">__giveDBSelectError</a></li>
+  <li>
+<img border="0" src="../style-data/public.gif" width="15" height="15" alt="public">
+<a href="#pub_func_disconnect">Disconnect</a></li>
+  <li>
+<img border="0" src="../style-data/public.gif" width="15" height="15" alt="public">
+<a href="#pub_func_query">Query</a></li>
+  <li>
+<img border="0" src="../style-data/private.gif" width="15" height="15" alt="private">
+<a href="#priv_func_giveQueryError">__giveQueryError</a></li>
 </ul>
 <h3>Details</h3>
 <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber1" height="43">
@@ -127,12 +136,16 @@ Functions</h4>
   <tr>
     <td width="10%" height="10">Set by</td>
     <td width="90%" height="10"><a href="#pub_func_connect">Connect</a><br>
-    <a href="#pub_func_testConnection">TestConnection</a></td>
+    <a href="#pub_func_testConnection">TestConnection</a><br>
+    <a href="#pub_func_disconnect">Disconnect</a><br>
+    <a href="#pub_func_query">Query</a></td>
   </tr>
   <tr>
     <td width="10%" height="9">Get by</td>
     <td width="90%" height="9"><a href="#pub_func_connect">Connect</a><br>
-    <a href="#pub_func_testConnection">TestConnection</a></td>
+    <a href="#pub_func_testConnection">TestConnection</a><br>
+    <a href="#pub_func_disconnect">Disconnect</a><br>
+    <a href="#pub_func_query">Query</a></td>
   </tr>
 </table>
 
@@ -265,6 +278,97 @@ Functions</h4>
   </table>
 
 <p>&nbsp;</p>
+
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber1" height="43">
+  <tr>
+    <td width="100%" colspan="2" height="1">
+    <h4><a name="pub_func_disconnect"></a><img border="0" src="../style-data/function.gif" width="10" height="9" alt="function">
+<img border="0" src="../style-data/public.gif" width="15" height="15" alt="public"> 
+    Disconnect</h4>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%" height="19">Description</td>
+    <td width="90%" height="19"><i>Disconnect</i> is a public function in the mySQL 
+    layer.<br>
+    <i>Disconnect</i> closes the active database connection.</td>
+  </tr>
+  <tr>
+    <td width="10%" height="6">Sets</td>
+    <td width="90%" height="6"><a href="#priv_value_link">_link</a></td>
+  </tr>
+  <tr>
+    <td width="10%" height="6">Gets</td>
+    <td width="90%" height="6"><a href="../globals/cfg.htm">configuration array</a><br>
+    <a href="#priv_value_link">_link</a></td>
+  </tr>
+</table>
+
+<p>&nbsp;</p>
+
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber4" height="43">
+  <tr>
+    <td width="100%" colspan="2" height="1">
+    <h4><a name="pub_func_query"></a><img border="0" src="../style-data/function.gif" width="10" height="9" alt="function">
+<img border="0" src="../style-data/public.gif" width="15" height="15" alt="public"> 
+    Query(sQuery)</h4>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%" height="19">Description</td>
+    <td width="90%" height="19"><i>Query</i> is a public function in the mySQL 
+    layer.<br>
+    <i>Query</i> executes a mySQL query.</td>
+  </tr>
+  <tr>
+    <td width="10%" height="3">Parameters</td>
+    <td width="90%" height="3">sQuery - query string</td>
+  </tr>
+  <tr>
+    <td width="10%" height="3">Sets</td>
+    <td width="90%" height="3"><a href="#priv_value_link">_link</a></td>
+  </tr>
+  <tr>
+    <td width="10%" height="2">Gets</td>
+    <td width="90%" height="2"><a href="../globals/cfg.htm">configuration array</a><br>
+    <a href="#priv_value_link">_link</a></td>
+  </tr>
+  <tr>
+    <td width="10%" height="1">Returns</td>
+    <td width="90%" height="1">FALSE, if there were any query errors</td>
+  </tr>
+  <tr>
+    <td width="10%" height="3">Calls</td>
+    <td width="90%" height="3"><a href="#priv_func_giveQueryError">
+    __giveQueryError</a></td>
+  </tr>
+</table>
+
+<p>&nbsp;</p>
+
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber3" height="43">
+  <tr>
+    <td width="100%" colspan="2" height="1">
+    <h4><a name="priv_func_giveQueryError"></a><img border="0" src="../style-data/function.gif" width="10" height="9" alt="function">
+<img border="0" src="../style-data/private.gif" width="15" height="15" alt="private"> 
+    __giveQueryError(sQuery)</h4>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%" height="19">Description</td>
+    <td width="90%" height="19"><i>__giveQueryError</i> is a private function 
+    in the mySQL layer.<br>
+    It outputs a query error when called.</td>
+  </tr>
+  <tr>
+    <td width="10%" height="19">Gets</td>
+    <td width="90%" height="19"><a href="../globals/cfg.htm">configuration array</a></td>
+  </tr>
+  <tr>
+    <td width="10%" height="5">Called by</td>
+    <td width="90%" height="5"><a href="#pub_func_query">Query</a></td>
+  </tr>
+  </table>
 
 </body>
 
