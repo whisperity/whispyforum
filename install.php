@@ -156,7 +156,7 @@
 				'DBHOST'	=>	$_POST['dbhost'], // Database host
 				'DBUSER'	=>	$_POST['dbuser'], // Database user
 				'DBPASS'	=>	$_POST['dbpass'], // Database password
-				'DBNAME'	=>	$_POST['dbname'], // Database name
+				'DBNAME'	=>	$_POST['dbname'] // Database name
 			), FALSE); // We give error output
 		} else { // If there isn't any writing errors, 
 			$Ctemplate->useStaticTemplate("install/ins_config_write_success", FALSE);
@@ -177,7 +177,7 @@
 			$Ctemplate->useTemplate("install/ins_dbtest_error", array(
 				'DBHOST'	=>	$cfg['dbhost'], // Database host
 				'DBUSER'	=>	$cfg['dbuser'], // Database user
-				'USE_PASS'	=>	( ($cfg['dbpass'] != NULL) ? 'yes' : 'no' ), // Whether there's a password set.
+				'USE_PASS'	=>	( ($cfg['dbpass'] != NULL) ? 'yes' : 'no' ) // Whether there's a password set.
 			), FALSE);
 		} elseif ( $dbconnection == TRUE )
 		{
@@ -185,13 +185,36 @@
 			$Ctemplate->useTemplate("install/ins_dbtest_success", array(
 				'DBHOST'	=>	$cfg['dbhost'], // Database host
 				'DBUSER'	=>	$cfg['dbuser'], // Database user
-				'USE_PASS'	=>	( ($cfg['dbpass'] != NULL) ? 'yes' : 'no' ), // Whether there's a password set.
+				'USE_PASS'	=>	( ($cfg['dbpass'] != NULL) ? 'yes' : 'no' ) // Whether there's a password set.
 			), FALSE);
 		}
 		
+		$Cmysql->Disconnect(); // Close the active connection
 		break;
 	case 4:
 		// Creating database
+		require('config.php'); // We initialize the config array (need to do this for database connection)
+		$Cmysql->TestConnection(); // We do a reconnect (without DB selecting, so we use TestConnection)
+		
+		// $dbcreate is TRUE if the database was created
+		// $dbcreate is FALSE if the database creation failed
+		
+		$dbcreate = $Cmysql->Query("CREATE DATABASE IF NOT EXISTS " .$cfg['dbname']);
+		
+		if ( $dbcreate == FALSE )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_dbcreate_error", array(
+				'DBNAME'	=>	$cfg['dbname'] // Database name
+			), FALSE);
+		} elseif ( $dbcreate == TRUE )
+		{
+			// Give success and proceed
+			$Ctemplate->useTemplate("install/ins_dbcreate_success", array(
+				'DBNAME'	=>	$cfg['dbname'] // Database name
+			), FALSE);
+		}
+		
 		break;
 	case 5:
 		// Creating database tables
