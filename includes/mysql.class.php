@@ -125,6 +125,9 @@ class class_mysql
 		{
 			$this->__giveQueryError($sQuery); // Generating query error message
 			return FALSE; // Returnign FALSE in case any if() structure needs it
+		} elseif ( $qerror == FALSE ) // If there was no errors
+		{
+			return TRUE; // Return TRUE
 		}
 	}
 	
