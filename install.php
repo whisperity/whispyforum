@@ -166,7 +166,10 @@
 	case 3:
 		// Testing database connection
 		require('config.php'); // We initialize the config array (need to do this for database connection)
-		$dbconnection = $Cmysql->TestConnection(); // We make a test database connection.
+		
+		$dbconnection = FALSE; // We cannot connect to the DB host first
+		
+		$dbconnection = $Cmysql->TestConnection(); // We make a test database connection. (Will be true if we succeed)
 		
 		// $dbconnection is TRUE if test connection is successful
 		// $dbconnection is FALSE if test connection is unsuccessful
@@ -196,10 +199,12 @@
 		require('config.php'); // We initialize the config array (need to do this for database connection)
 		$Cmysql->TestConnection(); // We do a reconnect (without DB selecting, so we use TestConnection)
 		
+		$dbcreate = FALSE; // We failed creating the database first
+		
 		// $dbcreate isn't FALSE if the database was created
 		// $dbcreate is FALSE if the database creation failed
 		
-		$dbcreate = $Cmysql->Query("CREATE DATABASE IF NOT EXISTS " .$cfg['dbname']. " DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci");
+		$dbcreate = $Cmysql->Query("CREATE DATABASE IF NOT EXISTS " .$cfg['dbname']. " DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci"); // Will be true if we succeed
 		
 		if ( $dbcreate == FALSE )
 		{
@@ -222,21 +227,68 @@
 		require('config.php'); // Recall config array (it is unloaded)
 		$Cmysql->Connect(); // Now we can use the generic connect
 		
+		$Ctemplate->useStaticTemplate("install/ins_fw_dbtables_head", FALSE); // We use a more-complex templating here
+		
+		/**
+		 * Here are two variables:
+		  ** $tablecreation: true by default, becomes false if there were any errors
+		  ** $dbtables: one variable for each creation script. FALSE by default, becomes NOT FALSE after query
+		 */
+		
+		$tablecreation = TRUE; // By default, we can create the tables
+		$tablelist = ""; // Uncreated tables' name list
+		
 		/* Users table */
 		// Stores the user's data
-		$Cmysql->Query("CREATE TABLE users (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
-  `username` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'user loginname',
-  `pwd` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'user password (md5 hashed)',
-  `email` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'user e-mail address',
-  `curr_ip` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0.0.0.0' COMMENT 'current session IP address',
-  `curr_sessid` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'current session ID',
-  `regdate` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'registration date',
-  `loggedin` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1 if user is currently logged in, 0 if not',
-  `userLevel` tinyint(2) NOT NULL DEFAULT '0' COMMENT 'clearance level',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'userdata'");
+		$dbtables = FALSE; // We failed creating the tables first
+		$dbtables = $Cmysql->Query("CREATE TABLE IF NOT EXISTS users (
+			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+			`username` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'user loginname',
+			`pwd` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'user password (md5 hashed)',
+			`email` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'user e-mail address',
+			`curr_ip` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0.0.0.0' COMMENT 'current session IP address',
+			`curr_sessid` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'current session ID',
+			`regdate` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'registration date',
+			`loggedin` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1 if user is currently logged in, 0 if not',
+			`userLevel` tinyint(2) NOT NULL DEFAULT '0' COMMENT 'clearance level',
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'userdata'"); // $dbtables sets to true if we succeeded creating a table
 		
+		// We check users table creation
+		if ( $dbtables == FALSE )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
+				'TABLENAME'	=>	"users" // Table name
+			), FALSE);
+			
+			// We set the creation global error variable to false
+			$tablecreation = FALSE;
+			
+			$tablelist .= "users"; // Append users table name to fail-list
+		} elseif ( $dbtables != FALSE )
+		{
+			// Give success
+			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
+				'TABLENAME'	=>	"users" // Table name
+			), FALSE);
+		}
+		/* Users table */
+		
+		// Check global variable status
+		if ( $tablecreation == FALSE )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_dbtables_global_error", array(
+				'TABLE_LIST'	=>	$tablelist // Tables list
+			), FALSE);
+		} elseif ( $tablecreation == TRUE )
+		{
+			// Give success and proceed form
+			$Ctemplate->useStaticTemplate("install/ins_dbtables_global_success", FALSE);
+		}
+		
+		$Ctemplate->useStaticTemplate("install/ins_fw_dbtables_foot", FALSE); // Frame footer
 		break;
 	case 6:
 		// Admin user form
