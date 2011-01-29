@@ -127,7 +127,7 @@ class class_mysql
 			return FALSE; // Returnign FALSE in case any if() structure needs it
 		} elseif ( $qerror == FALSE ) // If there was no errors
 		{
-			return TRUE; // Return TRUE
+			return $this->_resource; // Return result
 		}
 	}
 	
