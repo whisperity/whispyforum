@@ -11,6 +11,7 @@
  * 
  * WhispyForum
  */
+echo "templates loaded\n<br>"; // DEV
 
 class class_template
 {

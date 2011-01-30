@@ -6,7 +6,8 @@
  * 
  * WhispyForum
  */
- 
+echo "functions loaded\n<br>"; // DEV
+
  function generateHexToken()
  {
 	/**

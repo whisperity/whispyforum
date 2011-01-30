@@ -8,6 +8,7 @@
  * 
  * WhispyForum
  */
+echo "mysql lodaded\n<br>"; // DEV
 
 class class_mysql
 {
