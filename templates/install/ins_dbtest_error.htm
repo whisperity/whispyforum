@@ -27,7 +27,7 @@ If you want to retry the connection, click retry.
 <!--- refresh form -->
 <form method="POST" action="install.php">
 <input type="submit" value="Refresh">
-<input type="hidden" name="instPos" value=3>
+<input type="hidden" name="instPos" value=3> <!--- same step -->
 </form>
 
 You can try re-entering the configuration details. Click 'Back to step 2' to re-enter these values.
@@ -35,7 +35,7 @@ You can try re-entering the configuration details. Click 'Back to step 2' to re-
 <form method="POST" action="install.php">
 <input type="submit" value="<<Back to step 2">
 <input type="hidden" name="error_goback" value="no"> <!--- this isn't true because we aren't returning config values -->
-<input type="hidden" name="instPos" value=1>
+<input type="hidden" name="instPos" value=1> <!--- back to step 2 -->
 </form>
 
 </td>
