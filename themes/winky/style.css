@@ -42,6 +42,25 @@ td.errorpicture {}
 td.errorbody {}
 /* Error message box template */
 
+/* General message box template */
+table.messagebox { font-weight: bold;
+        color: DarkOrange;
+        background-color: #FFFFC0;
+        border: 1px solid maroon;
+        padding: 3px;
+        line-height: 125%;
+        margin: 1em auto }
+	
+td.messagetitle { font-family: MS Sans Serif;
+	font-size:14pt;
+	text-decoration:underline;
+	font-weight:bold;}
+
+td.messagepicture {}
+
+td.messagebody {}
+/* General message box template */
+
 /* Success message box template (nearly identical to errorbox) */
 table.successbox { font-weight: bold;
         color: DarkGreen;
