@@ -6,7 +6,7 @@
  * 
  * WhispyForum
  */
-echo "functions loaded\n<br>"; // DEV
+echo date('l jS \of F Y H:i:s')." functions loaded\n<br>"; // DEV
 
  function generateHexToken()
  {

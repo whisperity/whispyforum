@@ -6,7 +6,7 @@
  * 
  * WhispyForum
  */
- echo "loader started\n<br>"; // DEV
+ echo date('l jS \of F Y H:i:s')." loader started\n<br>"; // DEV
  echo '<link rel="stylesheet" type="text/css" href="themes/winky/style.css">'."\n"; // We load the default stylesheet
 
  /* Libraries */

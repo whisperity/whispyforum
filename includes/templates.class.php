@@ -11,7 +11,7 @@
  * 
  * WhispyForum
  */
-echo "templates loaded\n<br>"; // DEV
+echo date('l jS \of F Y H:i:s')." templates loaded\n<br>"; // DEV
 
 class class_template
 {

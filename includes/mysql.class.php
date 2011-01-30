@@ -8,7 +8,7 @@
  * 
  * WhispyForum
  */
-echo "mysql lodaded\n<br>"; // DEV
+echo date('l jS \of F Y H:i:s')." mysql lodaded\n<br>"; // DEV
 
 class class_mysql
 {
