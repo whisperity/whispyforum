@@ -384,6 +384,7 @@
 		break;
 	case 8:
 		// Finish
+		$Ctemplate->useStaticTemplate("install/ins_finish", FALSE); // Use install finish template
 		break;
  }
 ?>
