@@ -63,7 +63,8 @@
 		break;
 	case 1:
 		// Configuration file generator - getting data
-		if ( $_POST['error_goback'] == "yes" ) // If user is redirected from step 2 because of an error
+		
+		if ( @$_POST['error_goback'] == "yes" ) // If user is redirected from step 2 because of an error
 		{
 			// We output the form with data returned (user doesn't have to enter it again)
 			$Ctemplate->useTemplate("install/ins_config", array(
@@ -135,7 +136,7 @@
 		}
 		
 		// At this point, every mandatory fields are set.
-		// Now begin writing console file.
+		// Now begin writing config file.
 		
 		$configfile = $Ctemplate->useTemplate("install/config.php", array(
 			'DBHOST'	=>	$_POST['dbhost'], // Database host
@@ -161,7 +162,6 @@
 		} else { // If there isn't any writing errors, 
 			$Ctemplate->useStaticTemplate("install/ins_config_write_success", FALSE);
 		}
-		
 		break;
 	case 3:
 		// Testing database connection
@@ -291,10 +291,96 @@
 		$Ctemplate->useStaticTemplate("install/ins_fw_dbtables_foot", FALSE); // Frame footer
 		break;
 	case 6:
-		// Admin user form
+		// Administrator user generator - getting data
+		
+		
+		
+		if ( @$_POST['error_goback'] == "yes" ) // If user is redirected from step 2 because of an error
+		{
+			// We output the form with data returned (user doesn't have to enter it again)
+			$Ctemplate->useTemplate("install/ins_adminusr", array(
+				'ROOT_NAME'	=>	$_POST['root_name'], // Root username
+				'ROOT_PASS'	=>	$_POST['root_pass'], // Password
+				'ROOT_EMAIL'	=>	$_POST['root_email']  // E-mail address
+				), FALSE);
+		} else {
+			// We output general form
+			$Ctemplate->useTemplate("install/ins_adminusr", array(
+				'ROOT_NAME'	=>	"root", // Root username (default)
+				'ROOT_PASS'	=>	"", // Root password
+				'ROOT_EMAIL'	=>	$_SERVER['SERVER_ADMIN'], // Root e-mail address (default)
+				), FALSE); // Config file generator
+		}
 		break;
 	case 7:
 		// Registering admin user
+		
+		// First, we do a check whether any of the mandatory variables are NULL
+		if ( $_POST['root_name'] == NULL ) // Database host
+		{
+			$Ctemplate->useTemplate("install/ins_adminusr_variable_error", array(
+				'VARIABLE'	=>	"Root username", // Errornous variable name
+				'ROOT_NAME'	=>	$_POST['root_name'], // Username (should be empty)
+				'ROOT_PASS'	=>	$_POST['root_pass'], // Password
+				'ROOT_EMAIL'	=>	$_POST['root_email'], // E-mail address
+				), FALSE);
+			exit; // We terminate the script
+		}
+		
+		if ( $_POST['root_pass'] == NULL ) // Database user
+		{
+			$Ctemplate->useTemplate("install/ins_adminusr_variable_error", array(
+				'VARIABLE'	=>	"Password", // Errornous variable name
+				'ROOT_NAME'	=>	$_POST['root_name'], // Username
+				'ROOT_PASS'	=>	$_POST['root_pass'], // Password (should be empty)
+				'ROOT_EMAIL'	=>	$_POST['root_email'], // E-mail address
+				), FALSE);
+			exit; // We terminate the script
+		}
+		
+		if ( $_POST['root_email'] == NULL ) // Database password
+		{
+			$Ctemplate->useTemplate("install/ins_adminusr_variable_error", array(
+				'VARIABLE'	=>	"E-mail address", // Errornous variable name
+				'ROOT_NAME'	=>	$_POST['root_name'], // Username
+				'ROOT_PASS'	=>	$_POST['root_pass'], // Password
+				'ROOT_EMAIL'	=>	$_POST['root_email'], // E-mail address (should be empty)
+				), FALSE);
+			exit; // We terminate the script
+		}
+		
+		// At this point, every mandatory fields are set.
+		// Registering admin user
+		require('config.php'); // We initialize the config array (need to do this for database connection)
+		$Cmysql->Connect(); // Now we can use the generic connect
+		
+		$adminreg = FALSE; // We failed registering the root first
+		
+		// $adminreg isn't FALSE if the admin user was registered
+		// $adminreg is FALSE if the admin user registration failed
+		
+		$adminreg = $Cmysql->Query("INSERT INTO users(username, pwd, email, regdate, userLevel) VALUES ('" .
+			$Cmysql->EscapeString($_POST['root_name']). "'," .
+			"'" .md5($Cmysql->EscapeString($_POST['root_pass'])). "'," .
+			"'" .$Cmysql->EscapeString($_POST['root_email']). "', " .time(). ", 5)"); // Will be true if we succeed
+		
+		if ( $adminreg == FALSE )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_adminusr_reg_error", array(
+				'ROOT_NAME'	=>	$_POST['root_name'], // Username
+				'ROOT_PASS'	=>	$_POST['root_pass'], // Password
+				'ROOT_EMAIL'	=>	$_POST['root_email'] // E-mail address
+			), FALSE);
+		} elseif ( $adminreg != FALSE )
+		{
+			// Give success and proceed
+			$Ctemplate->useTemplate("install/ins_adminusr_reg_success", array(
+				'ROOT_NAME'	=>	$_POST['root_name'] // Username
+			), FALSE);
+		}
+		
+		$Cmysql->Disconnect(); // Close connection
 		break;
 	case 8:
 		// Finish

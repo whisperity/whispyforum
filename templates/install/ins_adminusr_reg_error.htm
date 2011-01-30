@@ -1,0 +1,51 @@
+<!--- BEGIN install adminuser register error -->
+<!--- Usage: admin user register error box -->
+<table class="install-header" border="1">
+<tr>
+<td class="install-picture"><img src="themes/winky/Nuvola_apps_kgpg.png" alt="Installer wizard"></td>
+<td><h1 class="install-header" align="center">Installer - Administrator user</h1></td>
+</tr>
+</table>
+
+<!--- We need to crate a new <table> because of modified sizes -->
+
+<table border="1" class="install-center">
+<tr>
+<td class="install-block-left">
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/winky/Nuvola_devices_nfs_mount.png" alt="Error!"></td>
+		<td class="errortitle">Registering root user failed!</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody"></td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+
+If you want to retry the registration, click back.
+<form method="POST" action="install.php">
+<input type="hidden" name="root_name" value="{ROOT_NAME}">
+<input type="hidden" name="root_pass" value="{ROOT_PASS}">
+<input type="hidden" name="root_email" value="{ROOT_EMAIL}">
+<input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
+<input type="submit" value="<< Back">
+<input type="hidden" name="instPos" value=6> <!--- Going back to step 7 -->
+</form>
+</td>
+<td class="install-block-right" valign="top">
+<div class="install-rightmenu">
+<span class="install-menu-entries">1. Introduction</span><br>
+<span class="install-menu-entries">2. Configuration file</span><br>
+<span class="install-menu-entries">3. Writing configuration file.</span><br>
+<span class="install-menu-entries">4. Testing database connection</span><br>
+<span class="install-menu-entries">5. Creating database</span><br>
+<span class="install-menu-entries">6. Creating table structure and content</span><br>
+<span class="install-menu-entries">7. Administrator user</span><br>
+<span class="install-menu-actual">8. Creating Administrator user</span><br>
+<span class="install-menu-entries">9. Finish</span>
+</div>
+</td>
+</tr>
+</table>
+<!--- END install config variable error -->
