@@ -1,0 +1,164 @@
+<html>
+
+<head>
+<title>Functions</title>
+</head>
+
+<body>
+
+<h2 align="center">Database structure</h2>
+<p>(Generated with <a href="http://phpmyadmin.net">phpMyAdmin</a>)</p>
+<h1>Tables</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Table</th>
+      <th>Comments</th>
+    </tr>
+  </thead>
+  <tr class="odd">
+    <th>users </th>
+    <td>userdata</td>
+  </tr>
+  <tr>
+    <th align="center">1 table(s) </th>
+    <th>&nbsp;</th>
+  </tr>
+</table>
+<h2><a name="tbl_users"></a>Table 'users'</h2>
+<p><b>Table comments:</b> userdata</p>
+<h3>Fields</h3>
+<table style="width: 100%;">
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <!--<th>Attributes</th>-->
+      <th>Null</th>
+      <th>Default</th>
+      <!--<th>Extra</th>-->
+      <th>Comments</th>
+      <th>MIME</th>
+    </tr>
+  </thead>
+  <tr>
+    <td>id </td>
+    <td>int(10)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>&nbsp;</td>
+    <!--<td>auto_increment&nbsp;</td>-->
+    <td>auto increasing ID&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>username </td>
+    <td>varchar(64)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>user loginname&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>pwd </td>
+    <td>varchar(32)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>user password (md5 hashed)&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>email </td>
+    <td>varchar(128)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>user e-mail address&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>curr_ip </td>
+    <td>varchar(16)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>0.0.0.0&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>current session IP address&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>curr_sessid </td>
+    <td>varchar(32)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>current session ID&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>regdate </td>
+    <td>varchar(32)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>registration date&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>loggedin </td>
+    <td>tinyint(1)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>0&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>1 if user is currently logged in, 0 if not&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>userLevel </td>
+    <td>tinyint(2)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>0&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>clearance level&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<h3>Indexes</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Keyname</th>
+      <th>Type</th>
+      <th>Unique</th>
+      <th>Packed</th>
+      <th>Field</th>
+      <th>Cardinality</th>
+      <th>Collation</th>
+      <th>Null</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+  <tr class="odd">
+    <th rowspan="1">PRIMARY</th>
+    <td rowspan="1">BTREE</td>
+    <td rowspan="1">Yes</td>
+    <td rowspan="1">No</td>
+    <td>id</td>
+    <td>0</td>
+    <td>A</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+
+</body>
+
+</html>
