@@ -151,5 +151,40 @@ class class_mysql
 			'ALT'	=>	"mySQL query error" // Alternate picture text
 	), FALSE ); // We output an error message
 	}
+	
+	function EscapeString($sString)
+	{
+		/**
+		 * This function escapes the sql-injection-unsafe characters from a string.
+		 * 
+		 * @inputs: $sString - string to escape
+		 */
+		
+		$sSring = @mysql_real_escape_string($sString) // We escape the string with the help of the SQL server
+			or $this->__giveEscapeStringError($sString); // If we can't, give error
+		
+		return $sString; // Return the escaped string
+	}
+	
+	private function __giveEscapeStringError($sString)
+	{
+		/**
+		 * This function gives an error message about string escaping.
+		 * Internal use only
+		 * 
+		 * @inputs: $sString - string that failed to get escaped
+		 */
+		
+		global $cfg; // We need to initialize the config array
+		$Ctemplate = new class_template; // We need to declare the templates class
+		
+		$Ctemplate->useTemplate("errormessage", array(
+			'THEME_NAME'	=>	"winky", // Theme name
+			'PICTURE_NAME'	=>	"Nuvola_devices_raid.png", // HDDs icon
+			'TITLE'	=>	"String failed to escape!", // Error title
+			'BODY'	=>	'There were errors escaping string <tt>' .htmlspecialchars($sString). '</tt>.<br>The mySQL error message was <tt>' .mysql_error(). '</tt>', // Error text
+			'ALT'	=>	"mySQL query error" // Alternate picture text
+	), FALSE ); // We output an error message
+	}
 }
 ?>
