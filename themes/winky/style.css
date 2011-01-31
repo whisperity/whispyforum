@@ -100,13 +100,6 @@ td.install-block-left { width: 75% }
 
 td.install-block-right { width: 25% }
 
-div.install-rightmenu { font-family: MS Sans Serif;
-        font-size: 10pt;
-        margin-left: 5px;
-        margin-right: 5px;
-        background-color: #FFFFFF;
-        border: 1px dashed #AB1852 }
-
 span.install-menu-actual { color: #AB1852 }
 
 span.install-menu-entries { color: #49A835 }
@@ -115,7 +108,7 @@ span.install-menu-entries { color: #49A835 }
 /* Menu box */
 #menucontainer {
 	margin: auto;
-	width: 400px;
+	width: 300px;
 	border-top-width: 0px;
 	border-right-width: 1px;
 	border-bottom-width: 1px;
