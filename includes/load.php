@@ -12,6 +12,7 @@
  /* Libraries */
  // Template conductor (we load it before everything because templates are needed to get error messages)
  require("templates.class.php");
+ global $Ctemplate; // Class is global
  $Ctemplate = new class_template;
  /* Libraries */
  
@@ -51,6 +52,7 @@
  /* Libraries */
  // mySQL database layer
  require("mysql.class.php");
+ global $Cmysql; // Class is global
  $Cmysql = new class_mysql;
  
  // general functions
@@ -72,6 +74,9 @@ echo "\n<br>".date('l jS \of F Y H:i:s')." content generation started\n<br>"; //
 ?>
 
 <?php
+ /* START GENERATION */
+ $Cmysql->Connect(); // Connect to database
+
  /* FRAMEWORK */
  
  $Ctemplate->useStaticTemplate("framework/left", FALSE); // Center table and left menubar begin
@@ -82,7 +87,7 @@ echo "\n<br>".date('l jS \of F Y H:i:s')." content generation started\n<br>"; //
  
  function DoFooter()
  {
-	$Ctemplate = new class_template; // Because we're in the function space, we need to redefine the templates layer.
+	global $Ctemplate, $Cmysql; // Load classes
 	
 	$Ctemplate->useStaticTemplate("framework/right", FALSE); // Close center table and right menubar begin
 	// DO RIGHT MENUBAR
@@ -93,7 +98,11 @@ echo "\n<br>".date('l jS \of F Y H:i:s')." content generation started\n<br>"; //
 	$Ctemplate->useStaticTemplate("framework/footer_close", FALSE); // Close footer
 	
 	echo "\n<br>".date('l jS \of F Y H:i:s')." content generation ended\n<br>"; // DEV
+	
+	$Cmysql->Disconnect(); // Disconnect from database
  }
  
  /* FRAMEWORK */
+ 
+ /* END GENERATION */
 ?>

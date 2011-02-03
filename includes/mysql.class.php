@@ -66,8 +66,7 @@ class class_mysql
 		 * Internal use only
 		 */
 		
-		global $cfg; // We need to initialize the config array
-		$Ctemplate = new class_template; // We need to declare the templates class
+		global $cfg, $Ctemplate; // We need to initialize the config array and the template class
 		
 		$Ctemplate->useTemplate("errormessage", array(
 			'THEME_NAME'	=>	"winky", // Theme name
@@ -85,8 +84,7 @@ class class_mysql
 		 * Internal use only
 		 */
 		
-		global $cfg; // We need to initialize the config array
-		$Ctemplate = new class_template; // We need to declare the templates class
+		global $cfg, $Ctemplate; // We need to initialize the config array and the template class
 		
 		$Ctemplate->useTemplate("errormessage", array(
 			'THEME_NAME'	=>	"winky", // Theme name
@@ -141,8 +139,7 @@ class class_mysql
 		 * @inputs: $sQuery - mySQL query string
 		 */
 		
-		global $cfg; // We need to initialize the config array
-		$Ctemplate = new class_template; // We need to declare the templates class
+		global $cfg, $Ctemplate; // We need to initialize the config array and the template class
 		
 		$Ctemplate->useTemplate("errormessage", array(
 			'THEME_NAME'	=>	"winky", // Theme name
@@ -176,8 +173,7 @@ class class_mysql
 		 * @inputs: $sString - string that failed to get escaped
 		 */
 		
-		global $cfg; // We need to initialize the config array
-		$Ctemplate = new class_template; // We need to declare the templates class
+		global $cfg, $Ctemplate; // We need to initialize the config array and the template class
 		
 		$Ctemplate->useTemplate("errormessage", array(
 			'THEME_NAME'	=>	"winky", // Theme name
