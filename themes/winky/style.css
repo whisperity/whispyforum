@@ -17,6 +17,20 @@ body { padding-top: 30px;
 span.red-star { color: #FF0000;
 	font-weight: bold }
 
+/* Framework */
+div.headerbox { width: 100%; }
+
+div.footerbox { width: 100%; }
+
+table.centerdiv { width: 100% }
+
+td.left { width: 20% }
+
+td.center { width: 60% }
+
+td.right { width: 20% }
+/* Framework */
+
 /* Forms */
 form {}
 

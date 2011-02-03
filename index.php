@@ -11,4 +11,6 @@ $Ctemplate->useTemplate("example_template", array(
 	'WORKING_COLOR'	=>	"#49A835",	// The color of the example template's word "working"
 	'WEIGHT'	=>	"bold" // font-weight of the "working" word. (normal/bold)
 	), FALSE ); // Use the example template file
+
+DoFooter();
 ?>

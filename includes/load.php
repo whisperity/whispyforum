@@ -15,6 +15,9 @@
  $Ctemplate = new class_template;
  /* Libraries */
  
+ // Generate framework header
+ $Ctemplate->useStaticTemplate("framework/header", FALSE);
+ echo "header<br>\n";
  /* Preload checks */
  // Check whether configuration file exists
  if ( file_exists("config.php") == 1 )
@@ -61,4 +64,36 @@
  print "<h4>POST</h4>";
  print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_POST,true))."<br>"; 
  
+?>
+
+<?php
+echo date('l jS \of F Y H:i:s')." loading finished\n<br>"; // DEV
+echo "\n<br>".date('l jS \of F Y H:i:s')." content generation started\n<br>"; // DEV
+?>
+
+<?php
+ /* FRAMEWORK */
+ 
+ $Ctemplate->useStaticTemplate("framework/left", FALSE); // Center table and left menubar begin
+ // DO LEFT MENUBAR
+ echo "left";
+ $Ctemplate->useStaticTemplate("framework/center", FALSE); // Closing left menubar and opening center
+ echo "center";
+ 
+ function DoFooter()
+ {
+	$Ctemplate = new class_template; // Because we're in the function space, we need to redefine the templates layer.
+	
+	$Ctemplate->useStaticTemplate("framework/right", FALSE); // Close center table and right menubar begin
+	// DO RIGHT MENUBAR
+	echo "right";
+	$Ctemplate->useStaticTemplate("framework/footer", FALSE); // Close right menubar and generate footer
+	// DO FOOTER
+	echo "footer";
+	$Ctemplate->useStaticTemplate("framework/footer_close", FALSE); // Close footer
+	
+	echo "\n<br>".date('l jS \of F Y H:i:s')." content generation ended\n<br>"; // DEV
+ }
+ 
+ /* FRAMEWORK */
 ?>
