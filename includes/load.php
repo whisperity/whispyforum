@@ -55,6 +55,11 @@
  global $Cmysql; // Class is global
  $Cmysql = new class_mysql;
  
+ // users & session manager 
+ require("users.class.php");
+ global $Cusers; // Class is global
+ $Cusers = new class_users;
+ 
  // general functions
  require("includes/functions.php");
  /* Libraries */
@@ -65,7 +70,6 @@
  print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_GET,true))."<br>"; 
  print "<h4>POST</h4>";
  print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_POST,true))."<br>"; 
- 
 ?>
 
 <?php
@@ -76,12 +80,19 @@ echo "\n<br>".date('l jS \of F Y H:i:s')." content generation started\n<br>"; //
 <?php
  /* START GENERATION */
  $Cmysql->Connect(); // Connect to database
-
+ $Cusers->Initialize(); // We initialize the userdata
+ 
+ /* DEVELOPEMENT */
+ print "<h4>SESSION</h4>";
+ print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_SESSION,true))."<br>"; 
+ 
  /* FRAMEWORK */
  
  $Ctemplate->useStaticTemplate("framework/left", FALSE); // Center table and left menubar begin
- // DO LEFT MENUBAR
- echo "left";
+ /* Left menubar */
+	$Cusers->DoUserForm(); // Do login form or userbox
+ /* Left menubar */
+ 
  $Ctemplate->useStaticTemplate("framework/center", FALSE); // Closing left menubar and opening center
  echo "center";
  
