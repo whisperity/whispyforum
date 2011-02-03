@@ -142,4 +142,6 @@
 	<!--- End form -->
 	<?php
  }
+ 
+ DoFooter();
 ?>
