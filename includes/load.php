@@ -97,14 +97,6 @@ echo "\n<br>".date('l jS \of F Y H:i:s')." content generation started\n<br>"; //
  $Ctemplate->useStaticTemplate("framework/center", FALSE); // Closing left menubar and opening center
  echo "center";
  
- if ( $_GET['ds'] == 1 )
- {
-	$params = session_get_cookie_params();
-	setcookie(session_name(), '', time() - 42000,
-        $params["path"], $params["domain"],
-        $params["secure"], $params["httponly"]);
- }
- 
  function DoFooter()
  {
 	global $Ctemplate, $Cmysql; // Load classes
