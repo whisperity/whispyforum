@@ -1,0 +1,18 @@
+<!--- BEGIN user login error -->
+<!--- Usage: user login error box (error: wrong username/password) -->
+
+<meta HTTP-EQUIV="REFRESH" content="5; url={RETURN_TO_URL}"> <!--- redirect to last page -->
+
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/winky/Nuvola_apps_kgpg.png" alt="Login error!"></td>
+		<td class="errortitle">Login error!</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">The user you entered does not exist, or you supplied wrong login credientals.
+		<br><br>Please use the login box to login to the site. You're being redirected where you left off...<br>
+		<a href="{RETURN_TO_URL}">Click here if your browser does not redirect you or if don't want to wait...</a></td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+<!--- END user login error -->

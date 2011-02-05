@@ -1,0 +1,18 @@
+<!--- BEGIN user login error novalue -->
+<!--- Usage: user login error box (error: missing mandatory field) -->
+
+<meta HTTP-EQUIV="REFRESH" content="5; url={RETURN_TO_URL}"> <!--- redirect to last page -->
+
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/winky/Nuvola_apps_kgpg.png" alt="Login error!"></td>
+		<td class="errortitle"><tt>{VARIABLE_HEADER}</tt> is mandatory</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">You did not entere {VARIABLE_BODY}. This variable is critical to properly log you in.
+		<br><br>Please use the login box to login to the site. You're being redirected where you left off...<br>
+		<a href="{RETURN_TO_URL}">Click here if your browser does not redirect you or if don't want to wait...</a></td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+<!--- END user login error novalue -->
