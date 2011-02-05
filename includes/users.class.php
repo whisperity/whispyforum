@@ -74,7 +74,8 @@ class class_users
 		 * Internal use only!
 		 */
 		
-		global $Cmysql;
+		global $Cmysql; // We need to declare the mySQL class
+		
 		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .mysql_real_escape_string($_SESSION['username']). "' AND pwd='" .mysql_real_escape_string($_SESSION['pwd']). "'"));
 		if ( $userDBArray == FALSE )
 		{
