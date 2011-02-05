@@ -41,6 +41,8 @@ class class_users
 		$_SESSION['uid'] = "";
 		$_SESSION['curr_ip'] = $_SERVER['REMOTE_ADDR'];
 		$_SESSION['curr_sessid'] = session_id();
+		$_SESSION['log_status'] = "guest";
+		$_SESSION['log_bool'] = FALSE;
 	}
 	
 	private function __checkUserData()
@@ -51,8 +53,7 @@ class class_users
 		 */
 		
 		global $Cmysql;
-		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .mysql_real_escape_string($_SESSION['username']). "' AND pwd='" .md5(mysql_real_escape_string($_SESSION['pwd'])). "'"));
-		
+		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .mysql_real_escape_string($_SESSION['username']). "' AND pwd='" .mysql_real_escape_string($_SESSION['pwd']). "'"));
 		if ( $userDBArray == FALSE )
 		{
 			// If we cannot do the query (because it contains false data or empty session)
@@ -81,7 +82,44 @@ class class_users
 	private function __doLoginForm()
 	{
 		global $Ctemplate; // We need to declare the templates class
-		$Ctemplate->useTemplate("user/loginform");
+		
+		// We generate the return link from the HTTP REQUEST_URI (so we passthru the GET array)
+		$returnLink = substr($_SERVER['REQUEST_URI'],1); // We crop the starting / from the returnLink
+		
+		$Ctemplate->useTemplate("user/loginform", array(
+			"RETURN_TO"	=>	$returnLink
+		), FALSE);
+	}
+	
+	function Login($username, $password)
+	{
+		/**
+		 * This function makes the user logged in
+		 * 
+		 * @inputs: $username - (string) login username
+		 * 			$password - (string) login password (without encryption)
+		 */
+		
+		global $Cmysql; // We need to declare the mySQL class
+		
+		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .mysql_real_escape_string($username). "' AND pwd='" .md5(mysql_real_escape_string($password)). "'")); // We query the user's data
+		
+		if ( $userDBArray == TRUE )
+		{
+			// If the login info was correct
+			// we fill up the session
+			$_SESSION['username'] = $userDBArray['username'];
+			$_SESSION['pwd'] = $userDBArray['pwd'];
+			$_SESSION['uid'] = $userDBArray['id'];
+			$_SESSION['log_status'] = "user";
+			$_SESSION['log_bool'] = TRUE;
+			
+			return TRUE; // Then return TRUE
+		} elseif ( $userDBArray == FALSE )
+		{
+			// If there was errors during the query (wrong name/password)
+			return FALSE; // We return false
+		}
 	}
 }
 ?>
