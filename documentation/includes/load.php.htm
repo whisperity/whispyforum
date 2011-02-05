@@ -1,12 +1,12 @@
 <html>
 
 <head>
-<title>includes/load.php</title>
+<title>includes/(safe)load.php</title>
 </head>
 
 <body>
 
-<h2 align="center">includes/load.php - framework loader</h2>
+<h2 align="center">includes/<i>(safe)</i>load.php - framework and environment loader</h2>
 <h3>Usage</h3>
 <p>This script loads every required libraries and checks vital files to load the
 <a href="../general/framework.htm">framework</a>.</p>
@@ -14,7 +14,7 @@
 <!--msimagelist--><table border="0" cellpadding="0" cellspacing="0" width="100%">
   <!--msimagelist--><tr>
     <!--msimagelist--><td valign="baseline" width="42">
-    <img src="../style-data/flag.jpg" width="15" height="15" hspace="13" alt="listajel"></td>
+    <img src="../style-data/flag.jpg"></td>
     <td valign="top" width="100%">obligatory - this script is essential for the
     <a href="../general/framework.htm">framework</a><!--msimagelist--></td>
   </tr>
@@ -27,7 +27,9 @@ inclusion and checking when <tt>include()</tt>-ed.</p>
 <a href="../general/classes.htm">classes</a>.</p>
 
 <p>This script generates the framework as well and defines the
-<a href="#func_DoFooter">footer-generator function</a>.</p>
+<a href="#func_DoFooter">footer-generator function</a>.<br>
+The script can be called as <i>safeload.php</i>. If did so, it won't generate 
+the frameset, it'll only load the environment.</p>
 
 <h3>Contents</h3>
 
