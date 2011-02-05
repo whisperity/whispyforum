@@ -1,0 +1,14 @@
+<!--- BEGIN user logoutbox -->
+<!--- Usage: user logout form -->
+<div id="menucontainer">
+	<div id="header"><div id="header_left"></div>
+	<div id="header_main">Logout</div><div id="header_right"></div></div>
+    <div id="content">
+        <form method="POST" action="logout.php">
+			<input type="hidden" name="returnto" value="{RETURN_TO}">
+			<input type="hidden" name="logout" value="do_user_logout">
+			<input type="submit" value="Logout">
+		</form>
+    </div>
+</div>
+<!--- END user logoutbox -->
