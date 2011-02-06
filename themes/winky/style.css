@@ -106,6 +106,8 @@ table.install-header { width: 100% } /* Do not remove width: 100% */
 
 h1.install-header {}
 
+h2.install-header {}
+
 td.install-picture { width: 96px }
 
 table.install-center { width: 100% }

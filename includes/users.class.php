@@ -160,7 +160,10 @@ class class_users
 		// We generate the return link from the HTTP REQUEST_URI (so we passthru the GET array)
 		$returnLink = substr($_SERVER['REQUEST_URI'],1); // We crop the starting / from the returnLink
 		
-		$Ctemplate->useStaticTemplate("user/userform_head", FALSE); // Beginning divs of userbox
+		$Ctemplate->useTemplate("user/userform_head", array(
+			'USERNAME'	=>	$_SESSION['username'], // Username (from session)
+			'AVATAR_FILENAME'	=>	"" // Avatar file (requires implementation)
+		), FALSE); // Beginning divs of userbox
 		
 		$Ctemplate->useStaticTemplate("user/userform_user-cp_link", FALSE); // User control panel link
 		
