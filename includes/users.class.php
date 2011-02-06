@@ -122,7 +122,7 @@ class class_users
 	private function __doUserForm()
 	{
 		/**
-		 * This function generates the logout form
+		 * This function generates the user control/logout form
 		 * Internal use only!
 		 */
 		
@@ -131,9 +131,15 @@ class class_users
 		// We generate the return link from the HTTP REQUEST_URI (so we passthru the GET array)
 		$returnLink = substr($_SERVER['REQUEST_URI'],1); // We crop the starting / from the returnLink
 		
-		$Ctemplate->useTemplate("user/logoutform", array(
+		$Ctemplate->useStaticTemplate("user/userform_head", FALSE); // Beginning divs of userbox
+		
+		$Ctemplate->useStaticTemplate("user/userform_user-cp_link", FALSE); // User control panel link
+		
+		$Ctemplate->useTemplate("user/userform_logout", array(
 			"RETURN_TO"	=>	$returnLink
-		), FALSE);
+		), FALSE); // Logout button
+		
+		$Ctemplate->useStaticTemplate("user/userform_foot", FALSE); // Close divs
 	}
 	
 	function Login($username, $password)
@@ -191,7 +197,6 @@ class class_users
 			$this->__destroySession(); // We clear the session
 			return TRUE; // We give success
 		}
-		
 	}
 }
 ?>
