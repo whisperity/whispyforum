@@ -96,7 +96,9 @@ switch ($site)
 							$fExt = ".gif"; // Set the file extension
 						}
 						
-						$Cmysql->Query("UPDATE users SET avatar_filename='" .$fnToken.$fExt. "' WHERE id='" .$_SESSION['uid']. "'");
+						$Cmysql->Query("UPDATE users SET avatar_filename='" .$fnToken.$fExt. "' WHERE id='" .$_SESSION['uid']. "'"); // Update database
+						
+						$_SESSION['avatar_filename'] = $fnToken.$fExt; // Update session with new avatar filename (refreshing avatar does not need user relog)
 						
 						echo "uploaded successfully";
 					} else {
@@ -111,7 +113,7 @@ switch ($site)
 		}
 		
 		$Ctemplate->useTemplate("user/cp_avatar_upload", array(
-			'AVATAR_FILENAME'	=>	"", // Current avatar filename (needs implementation)
+			'AVATAR_FILENAME'	=>	$_SESSION['avatar_filename'], // Current avatar filename (needs implementation)
 		), FALSE); // We output the upload form
 		break;
 }

@@ -43,6 +43,7 @@ class class_users
 		$_SESSION['curr_sessid'] = session_id();
 		$_SESSION['log_status'] = "guest";
 		$_SESSION['log_bool'] = FALSE;
+		$_SESSION['avatar_filename'] = "";
 	}
 	
 	private function __destroySession()
@@ -162,7 +163,7 @@ class class_users
 		
 		$Ctemplate->useTemplate("user/userform_head", array(
 			'USERNAME'	=>	$_SESSION['username'], // Username (from session)
-			'AVATAR_FILENAME'	=>	"" // Avatar file (requires implementation)
+			'AVATAR_FILENAME'	=>	$_SESSION['avatar_filename'] // Avatar file (requires implementation)
 		), FALSE); // Beginning divs of userbox
 		
 		$Ctemplate->useStaticTemplate("user/userform_user-cp_link", FALSE); // User control panel link
@@ -196,6 +197,7 @@ class class_users
 			$_SESSION['uid'] = $userDBArray['id'];
 			$_SESSION['log_status'] = "user";
 			$_SESSION['log_bool'] = TRUE;
+			$_SESSION['avatar_filename'] = $userDBArray['avatar_filename'];
 			
 			$Cmysql->Query("UPDATE users SET curr_ip='" .$_SESSION['curr_ip']. "', curr_sessid='" .$_SESSION['curr_sessid']. "', loggedin=1 WHERE id='" .$userDBArray['id']. "'"); // We update the database to enter the current session data
 			return TRUE; // Then return TRUE
