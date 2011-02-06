@@ -1,5 +1,5 @@
 <?php
-/**
+ /**
  * WhispyForum script file - logout page
  * 
  * Page using the user class to do logouts
@@ -40,7 +40,7 @@ if ( $_POST['logout'] == "do_user_logout" )
 	{
 		// We output an error message
 		$Ctemplate->useTemplate("user/logout_error", array(
-			"RETURN_TO_URL"	=>	$returnURI, // Return URI
+			'RETURN_TO_URL'	=>	$returnURI, // Return URI
 		), FALSE);
 	} elseif ( $logsuccess == TRUE )
 	{

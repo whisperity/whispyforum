@@ -74,7 +74,7 @@ class class_users
 		 * Internal use only!
 		 */
 		
-		global $Cmysql; // We need to declare the mySQL class
+		global $Cmysql, $Ctemplate; // We need to declare the mySQL and template class
 		
 		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .mysql_real_escape_string($_SESSION['username']). "' AND pwd='" .mysql_real_escape_string($_SESSION['pwd']). "'"));
 		if ( $userDBArray == FALSE )
@@ -84,6 +84,30 @@ class class_users
 			
 			$_SESSION['log_status'] = "guest";
 			$_SESSION['log_bool'] = FALSE;
+		} elseif ( $userDBArray == TRUE )
+		{
+			// If the user is logged in, we check if
+			// he or she is logged into the correct session
+			// from the correct ip
+			
+			if ( ( $_SESSION['curr_ip'] != $userDBArray['curr_ip']) || ( $_SESSION['curr_sessid'] != $userDBArray['curr_sessid']) )
+			{
+				// If the current session ID or the IP address differs from
+				// the ID/IP stored in the database
+				
+				// We output an error message to the user
+				// also redirecting him/her to the homepage
+				$Ctemplate->useStaticTemplate("user/ip_id_forced_logout", FALSE);
+					
+				$this->Logout($userDBArray['username']); // We purge the user's session
+				
+				// We need to recreate a new session
+				$this->__createSession();
+				
+				// We set a specific login status
+				$_SESSION['log_status'] = "session_error";
+				$_SESSION['log_bool'] = FALSE;
+			}
 		}
 	}
 	
@@ -93,12 +117,17 @@ class class_users
 		 * This function generates a login (guest) or a userbox form (logged in)
 		 */
 		
+		global $Ctemplate; // We need to declare the template class
+		
 		if ( ( $_SESSION['log_status'] == "guest" ) && ( $_SESSION['log_bool'] == FALSE ) )
 		{
 			$this->__doLoginForm(); // We create the login form
 		} elseif ( ( $_SESSION['log_status'] == "user" ) && ( $_SESSION['log_bool'] == TRUE ) )
 		{
 			$this->__doUserForm(); // Do user form
+		} elseif ( ( $_SESSION['log_status'] == "session_error" ) && ( $_SESSION['log_bool'] == FALSE ) )
+		{
+			$Ctemplate->useStaticTemplate("user/ip_id_forced_logout_form", FAlSE); // Give a placeholder login box without fields
 		}
 	}
 	
@@ -115,7 +144,7 @@ class class_users
 		$returnLink = substr($_SERVER['REQUEST_URI'],1); // We crop the starting / from the returnLink
 		
 		$Ctemplate->useTemplate("user/loginform", array(
-			"RETURN_TO"	=>	$returnLink
+			'RETURN_TO'	=>	$returnLink
 		), FALSE);
 	}
 	
@@ -136,7 +165,7 @@ class class_users
 		$Ctemplate->useStaticTemplate("user/userform_user-cp_link", FALSE); // User control panel link
 		
 		$Ctemplate->useTemplate("user/userform_logout", array(
-			"RETURN_TO"	=>	$returnLink
+			'RETURN_TO'	=>	$returnLink
 		), FALSE); // Logout button
 		
 		$Ctemplate->useStaticTemplate("user/userform_foot", FALSE); // Close divs

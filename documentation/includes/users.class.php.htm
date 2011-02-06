@@ -156,11 +156,17 @@ Functions</h4>
   <tr>
     <td width="5%" height="19">Description</td>
     <td width="33%" height="19">The function compares the session's stored 
-    values to the database</td>
+    values to the database.<p>If the user is logged in (based on session), 
+    however, the database stores different IP address or session ID, we logout 
+    the user from each sessions.</td>
   </tr>
   <tr>
-    <td width="5%" height="19">Called by</td>
-    <td width="33%" height="19"><a href="#pub_func_inicialize">Inicialize</a></td>
+    <td width="5%" height="10">Called by</td>
+    <td width="33%" height="10"><a href="#pub_func_inicialize">Inicialize</a></td>
+  </tr>
+  <tr>
+    <td width="5%" height="9">Calls</td>
+    <td width="33%" height="9"><a href="#pub_func_logout">Logout</a></td>
   </tr>
   <tr>
     <td width="5%" height="3">Gets</td>
@@ -292,6 +298,11 @@ Functions</h4>
     <td width="5%" height="19">Parameters</td>
     <td width="33%" height="19">username - the username to be logged out</td>
   </tr>
+  <tr>
+    <td width="5%" height="11">Called by</td>
+    <td width="33%" height="11"><a href="#priv_func_checkUserData">
+    __checkUserData</a></td>
+    </tr>
   <tr>
     <td width="5%" height="11">Calls</td>
     <td width="33%" height="11"><a href="#priv_func_destroySession">

@@ -1,5 +1,5 @@
 <?php
-/**
+ /**
  * WhispyForum script file - login page
  * 
  * Page using the user class to do logins
@@ -34,9 +34,9 @@ if ( $_POST['user_loginname'] == NULL )
 	// give error message
 	
 	$Ctemplate->useTemplate("user/login_err_novalue", array(
-		"RETURN_TO_URL"	=>	$returnURI, // Return URI
-		"VARIABLE_HEADER"	=>	"Username", // Unentered variable (uppercase)
-		"VARIABLE_BODY"	=>	"username" // Unentered variable (lowercase)
+		'RETURN_TO_URL'	=>	$returnURI, // Return URI
+		'VARIABLE_HEADER'	=>	"Username", // Unentered variable (uppercase)
+		'VARIABLE_BODY'	=>	"username" // Unentered variable (lowercase)
 	), FALSE);
 	
 	exit; // We terminate the script
@@ -48,9 +48,9 @@ if ( $_POST['user_password'] == NULL )
 	// give error message
 	
 	$Ctemplate->useTemplate("user/login_err_novalue", array(
-		"RETURN_TO_URL"	=>	$returnURI, // Return URI
-		"VARIABLE_HEADER"	=>	"Password", // Unentered variable (uppercase)
-		"VARIABLE_BODY"	=>	"password" // Unentered variable (lowercase)
+		'RETURN_TO_URL'	=>	$returnURI, // Return URI
+		'VARIABLE_HEADER'	=>	"Password", // Unentered variable (uppercase)
+		'VARIABLE_BODY'	=>	"password" // Unentered variable (lowercase)
 	), FALSE);
 	
 	exit; // We terminate the script
@@ -65,13 +65,13 @@ if ( $logsuccess == FALSE )
 {
 	// We output an error message
 	$Ctemplate->useTemplate("user/login_error", array(
-		"RETURN_TO_URL"	=>	$returnURI, // Return URI
+		'RETURN_TO_URL'	=>	$returnURI, // Return URI
 	), FALSE);
 } elseif ( $logsuccess == TRUE )
 {
 	// We give success
 	$Ctemplate->useTemplate("user/login_success", array(
-		"RETURN_TO_URL"	=>	$returnURI, // Return URI
+		'RETURN_TO_URL'	=>	$returnURI, // Return URI
 	), FALSE);
 }
 
