@@ -45,7 +45,76 @@ if ( isset($_POST['site']) )
 
 // Now, the site variable is either NULL or set from HTTP POST/GET
 
-echo $site;
+switch ($site)
+{
+	case "avatar_upload":
+		if ( isset($_POST['av_upload']) ) // If there's uploading
+		{
+			if ( $_FILES['pic_file']['size'] > 2097152 )
+			{
+				// Big size (larger than 2 MBs)
+				echo "too big file";
+			} else {
+				if ( in_array($_FILES['pic_file']['type'], array("image/gif", "image/jpeg", "image/png")) )
+				{
+					if (move_uploaded_file($_FILES['pic_file']['tmp_name'], "upload/usr_avatar/" .$_SESSION['username']. ".ptmp")) // Move the file to the temp location
+					{
+						// Uploaded successfully
+						
+						$fnToken = generateHexTokenNoDC(); // Generate a filename token
+						
+						if ( $_FILES['pic_file']['type'] == "image/jpeg" )
+						{
+							// If the file is a JPEG file
+							
+							saveThumbnailJPEG("upload/usr_avatar/" .$_SESSION['username']. ".ptmp", 256, "upload/usr_avatar/".$fnToken); // Save the thumbnail
+							
+							unlink("upload/usr_avatar/" .$_SESSION['username']. ".ptmp"); // Delete the original uploaded file
+							
+							$fExt = ".jpg"; // Set the file extension
+						}
+						
+						if ( $_FILES['pic_file']['type'] == "image/png" )
+						{
+							// If the file is a PNG file
+							
+							saveThumbnailPNG("upload/usr_avatar/" .$_SESSION['username']. ".ptmp", 256, "upload/usr_avatar/".$fnToken); // Save the thumbnail
+							
+							unlink("upload/usr_avatar/" .$_SESSION['username']. ".ptmp"); // Delete the original uploaded file
+							
+							$fExt = ".png"; // Set the file extension
+						}
+						
+						if ( $_FILES['pic_file']['type'] == "image/gif" )
+						{
+							// If the file is a GIF file
+							
+							saveThumbnailGIF("upload/usr_avatar/" .$_SESSION['username']. ".ptmp", 256, "upload/usr_avatar/".$fnToken); // Save the thumbnail
+							
+							unlink("upload/usr_avatar/" .$_SESSION['username']. ".ptmp"); // Delete the original uploaded file
+							
+							$fExt = ".gif"; // Set the file extension
+						}
+						
+						$Cmysql->Query("UPDATE users SET avatar_filename='" .$fnToken.$fExt. "' WHERE id='" .$_SESSION['uid']. "'");
+						
+						echo "uploaded successfully";
+					} else {
+						// Error during upload
+						echo "upload error";
+					}
+				} else {
+					// Wrong filetype
+					echo "wrong filetype";
+				}
+			}
+		}
+		
+		$Ctemplate->useTemplate("user/cp_avatar_upload", array(
+			'AVATAR_FILENAME'	=>	"", // Current avatar filename (needs implementation)
+		), FALSE); // We output the upload form
+		break;
+}
 
 }
 $Ctemplate->useStaticTemplate("user/cp_foot", FALSE); // Footer
