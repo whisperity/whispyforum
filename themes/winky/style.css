@@ -17,6 +17,8 @@ body { padding-top: 30px;
 span.red-star { color: #FF0000;
 	font-weight: bold }
 
+font.emphasis { font-weight: bold}
+
 /* Framework */
 div.headerbox { width: 100%; }
 
