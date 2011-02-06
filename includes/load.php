@@ -95,7 +95,6 @@ echo "\n<br>".date('l jS \of F Y H:i:s')." content generation started\n<br>"; //
  /* Left menubar */
  
  $Ctemplate->useStaticTemplate("framework/center", FALSE); // Closing left menubar and opening center
- echo "center";
  
  function DoFooter()
  {
