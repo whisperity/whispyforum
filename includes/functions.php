@@ -55,8 +55,8 @@ function saveThumbnailJPEG($originalImage,$new_height,$filename)
 	
 	// Get the original geometry and calculate scales
 	list($width, $height) = getimagesize($originalImage);
-		//$new_width = round(($width * $new_height) / $height);
-		$new_width = $new_height;
+		$new_width = round(($width * $new_height) / $height);
+		//$new_width = $new_height; // Need cleanup here
 
 	// Resize the original image
 	$imageResized = imagecreatetruecolor($new_width, $new_height);
@@ -81,8 +81,8 @@ function saveThumbnailGIF($originalImage,$new_height,$filename)
 	
 	// Get the original geometry and calculate scales
 	list($width, $height) = getimagesize($originalImage);
-		//$new_width = round(($width * $new_height) / $height);
-		$new_width = $new_height;
+		$new_width = round(($width * $new_height) / $height);
+		//$new_width = $new_height; // Need cleanup here
 
 	// Resize the original image
 	$imageResized = imagecreatetruecolor($new_width, $new_height);
@@ -107,8 +107,8 @@ function saveThumbnailPNG($originalImage,$new_height,$filename)
 	
 	// Get the original geometry and calculate scales
 	list($width, $height) = getimagesize($originalImage);
-		//$new_width = round(($width * $new_height) / $height);
-		$new_width = $new_height;
+		$new_width = round(($width * $new_height) / $height);
+		//$new_width = $new_height; // Need cleanup here
 
 	// Resize the original image
 	$imageResized = imagecreatetruecolor($new_width, $new_height);

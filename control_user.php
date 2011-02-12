@@ -67,7 +67,7 @@ switch ($site)
 						{
 							// If the file is a JPEG file
 							
-							saveThumbnailJPEG("upload/usr_avatar/" .$_SESSION['username']. ".ptmp", 256, "upload/usr_avatar/".$fnToken); // Save the thumbnail
+							saveThumbnailJPEG("upload/usr_avatar/" .$_SESSION['username']. ".ptmp", 150, "upload/usr_avatar/".$fnToken); // Save the thumbnail
 							
 							unlink("upload/usr_avatar/" .$_SESSION['username']. ".ptmp"); // Delete the original uploaded file
 							
@@ -78,7 +78,7 @@ switch ($site)
 						{
 							// If the file is a PNG file
 							
-							saveThumbnailPNG("upload/usr_avatar/" .$_SESSION['username']. ".ptmp", 256, "upload/usr_avatar/".$fnToken); // Save the thumbnail
+							saveThumbnailPNG("upload/usr_avatar/" .$_SESSION['username']. ".ptmp", 150, "upload/usr_avatar/".$fnToken); // Save the thumbnail
 							
 							unlink("upload/usr_avatar/" .$_SESSION['username']. ".ptmp"); // Delete the original uploaded file
 							
@@ -89,7 +89,7 @@ switch ($site)
 						{
 							// If the file is a GIF file
 							
-							saveThumbnailGIF("upload/usr_avatar/" .$_SESSION['username']. ".ptmp", 256, "upload/usr_avatar/".$fnToken); // Save the thumbnail
+							saveThumbnailGIF("upload/usr_avatar/" .$_SESSION['username']. ".ptmp", 150, "upload/usr_avatar/".$fnToken); // Save the thumbnail
 							
 							unlink("upload/usr_avatar/" .$_SESSION['username']. ".ptmp"); // Delete the original uploaded file
 							
@@ -100,6 +100,7 @@ switch ($site)
 						
 						$_SESSION['avatar_filename'] = $fnToken.$fExt; // Update session with new avatar filename (refreshing avatar does not need user relog)
 						
+						// Successful upload
 						echo "uploaded successfully";
 					} else {
 						// Error during upload
