@@ -57,7 +57,7 @@ switch ($site)
 			} else {
 				if ( in_array($_FILES['pic_file']['type'], array("image/gif", "image/jpeg", "image/png")) )
 				{
-					if (move_uploaded_file($_FILES['pic_file']['tmp_name'], "upload/usr_avatar/" .$_SESSION['username']. ".ptmp")) // Move the file to the temp location
+					if (move_uploaded_file($_FILES['pic_file']['tmp_name'], "upload/usr_avatar/cached." .$_SESSION['username']. ".ptmp")) // Move the file to the temp location
 					{
 						// Uploaded successfully
 						
@@ -67,9 +67,9 @@ switch ($site)
 						{
 							// If the file is a JPEG file
 							
-							saveThumbnailJPEG("upload/usr_avatar/" .$_SESSION['username']. ".ptmp", 150, "upload/usr_avatar/".$fnToken); // Save the thumbnail
+							saveThumbnailJPEG("upload/usr_avatar/cached." .$_SESSION['username']. ".ptmp", 150, "upload/usr_avatar/".$fnToken); // Save the thumbnail
 							
-							unlink("upload/usr_avatar/" .$_SESSION['username']. ".ptmp"); // Delete the original uploaded file
+							unlink("upload/usr_avatar/cached." .$_SESSION['username']. ".ptmp"); // Delete the original uploaded file
 							
 							$fExt = ".jpg"; // Set the file extension
 						}
@@ -78,9 +78,9 @@ switch ($site)
 						{
 							// If the file is a PNG file
 							
-							saveThumbnailPNG("upload/usr_avatar/" .$_SESSION['username']. ".ptmp", 150, "upload/usr_avatar/".$fnToken); // Save the thumbnail
+							saveThumbnailPNG("upload/usr_avatar/cached." .$_SESSION['username']. ".ptmp", 150, "upload/usr_avatar/".$fnToken); // Save the thumbnail
 							
-							unlink("upload/usr_avatar/" .$_SESSION['username']. ".ptmp"); // Delete the original uploaded file
+							unlink("upload/usr_avatar/cached." .$_SESSION['username']. ".ptmp"); // Delete the original uploaded file
 							
 							$fExt = ".png"; // Set the file extension
 						}
@@ -89,9 +89,9 @@ switch ($site)
 						{
 							// If the file is a GIF file
 							
-							saveThumbnailGIF("upload/usr_avatar/" .$_SESSION['username']. ".ptmp", 150, "upload/usr_avatar/".$fnToken); // Save the thumbnail
+							saveThumbnailGIF("upload/usr_avatar/cached." .$_SESSION['username']. ".ptmp", 150, "upload/usr_avatar/".$fnToken); // Save the thumbnail
 							
-							unlink("upload/usr_avatar/" .$_SESSION['username']. ".ptmp"); // Delete the original uploaded file
+							unlink("upload/usr_avatar/cached." .$_SESSION['username']. ".ptmp"); // Delete the original uploaded file
 							
 							$fExt = ".gif"; // Set the file extension
 						}
