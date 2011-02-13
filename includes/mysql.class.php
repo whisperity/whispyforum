@@ -13,8 +13,8 @@ echo date('l jS \of F Y H:i:s')." mysql lodaded\n<br>"; // DEV
 class class_mysql
 {
 	// Define private variables
-	private $_connected; // boolean, TRUE if there's active connection, FALSE if there isn't
-	private $_resource; // mysql resource
+	//private $_connected; // boolean, TRUE if there's active connection, FALSE if there isn't
+	//private $_resource; // mysql resource
 	private $_link; // database link identifier
 	
 	function Connect()
