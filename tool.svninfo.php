@@ -59,7 +59,7 @@ unlink(svnInfoFN);
     <div id="content">
 	<table border="0" style="width: 630px">
 	<tr>
-		<th colspan="2"><? echo $svnInfo['URL']; ?>at revision <? echo $svnInfo['revision']; ?></th>
+		<th colspan="2"><? echo $svnInfo['URL']; ?> at revision <? echo $svnInfo['revision']; ?></th>
 	</tr>
 	
 	<tr>
