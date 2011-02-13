@@ -16,6 +16,7 @@ define('tplFN', "cached.swcr-template.php"); // Template file name
 
 file_put_contents(tplFN, '<?php' ."\r\n".
 '$svnInfo = array(' ."\r\n".
+'"title" => "$WCURL$ at revision $WCREV$",' ."\r\n".
 '"revision" => "$WCREV$",' ."\r\n".
 '"modified" => "$WCMODS?Modified:Not modified$",' ."\r\n".
 '"date"     => "$WCDATE$",' ."\r\n".
@@ -54,12 +55,11 @@ unlink(svnInfoFN);
 
 <div id="menucontainer" style="width: 640px">
 	<div id="header"><div id="header_left"></div>
-	<div id="header_main">SVN information</div><div id="header_right"></div></div>
+	<div id="header_main">Working copy (<? echo WC_PATH; ?>) subversion information</div><div id="header_right"></div></div>
     <div id="content">
 	<table border="0" style="width: 630px">
 	<tr>
-		<th><? echo $svnInfo['URL']; ?></th>
-		<th>at revision <? echo $svnInfo['revision']; ?></th>
+		<th colspan="2"><? echo $svnInfo['URL']; ?>at revision <? echo $svnInfo['revision']; ?></th>
 	</tr>
 	
 	<tr>
