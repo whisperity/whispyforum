@@ -98,6 +98,8 @@ switch ($site)
 						
 						$Cmysql->Query("UPDATE users SET avatar_filename='" .$fnToken.$fExt. "' WHERE id='" .$_SESSION['uid']. "'"); // Update database
 						
+						unlink("upload/usr_avatar/" .$_SESSION['avatar_filename']); // Remove the old avatar file
+						
 						$_SESSION['avatar_filename'] = $fnToken.$fExt; // Update session with new avatar filename (refreshing avatar does not need user relog)
 						
 						// Successful upload
