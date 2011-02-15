@@ -145,19 +145,30 @@ switch ($regPos)
 			exit;
 		}
 		
-		$regQuery = $Cmysql->Query("INSERT INTO users(");
 		// Everything is fine, we register the user.
-		/*$Ctemplate->useStaticTemplate("user/reg_userdata_reg_success", FALSE);
-		$Ctemplate->useTemplate("user/reg_userdata_reg_error", array(
+		$regQuery = $Cmysql->Query("INSERT INTO users(username, pwd, email, regdate, userLevel) VALUES ('" .
+			$Cmysql->EscapeString($_POST['username']). "'," .
+			"'" .md5($Cmysql->EscapeString($_POST['password'])). "'," .
+			"'" .$Cmysql->EscapeString($_POST['email']). "', " .time(). ", 1)"); // Will be true if we succeed
+		
+		if ( $regQuery == FALSE )
+		{
+			// If there were errors during registration
+			$Ctemplate->useTemplate("user/reg_userdata_reg_error", array(
 				'USERNAME'	=>	$_POST['username'], // Username
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
 				'EMAIL'	=>	$_POST['email'] // E-mail address
-				), FALSE);*/
+				), FALSE); // Give error message and retry form
+		} elseif ( $regQuery == TRUE )
+		{
+			// If registration completed successfully
+			$Ctemplate->useStaticTemplate("user/reg_userdata_reg_success", FALSE); // Give success
+		}
 		break;
 	case 3:
 		// Finish
-		
+		$Ctemplate->useStaticTemplate("user/reg_finish", FALSE); // Finish message
 		break;
 }
 
