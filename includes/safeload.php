@@ -91,10 +91,6 @@ print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_SESSION,t
 
 function DoFooter()
 {
-	/**
-	* Closes the center box and generates right menubar and footer.
-	*/
-	
 	global $Ctemplate, $Cmysql; // Load classes
 	
 	echo "\n<br>".date('l jS \of F Y H:i:s')." content generation ended\n<br>"; // DEV
@@ -105,19 +101,6 @@ function DoFooter()
 }
 
 /* FRAMEWORK */
-
-/* exit or die(); shutdown function */
-function winky_panic()
-{
-	/**
-	* Makes a halt timestamp output before termination
-	*/
-	
-	echo "\n<br>".date('l jS \of F Y H:i:s')." winky panic! - system halted"; // DEV
-}
-
-register_shutdown_function('winky_panic'); // Make the above function execute on halt
-/* exit or die(); shutdown function */
 
 /* END GENERATION */
 ?>

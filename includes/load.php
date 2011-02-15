@@ -99,10 +99,6 @@ $Ctemplate->useStaticTemplate("framework/center", FALSE); // Closing left menuba
 
 function DoFooter()
 {
-	/**
-	* Closes the center box and generates right menubar and footer.
-	*/
-	
 	global $Ctemplate, $Cmysql; // Load classes
 	
 	$Ctemplate->useStaticTemplate("framework/right", FALSE); // Close center table and right menubar begin
@@ -121,19 +117,6 @@ function DoFooter()
 }
 
 /* FRAMEWORK */
-
-/* exit or die(); shutdown function */
-function winky_panic()
-{
-	/**
-	* Makes a halt timestamp output before termination
-	*/
-	
-	echo "\n<br>".date('l jS \of F Y H:i:s')." winky panic! - system halted"; // DEV
-}
-
-register_shutdown_function('winky_panic'); // Make the above function execute on halt
-/* exit or die(); shutdown function */
 
 /* END GENERATION */
 ?>
