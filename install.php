@@ -9,45 +9,45 @@
  * WhispyForum
  */
  
- // We do not use the /includes/load.php load script, because 
- // it will result in errors due ot preinstallation state.
- 
- // Rather, we use copied bits from there.
- echo '<link rel="stylesheet" type="text/css" href="themes/winky/style.css">'."\n"; // We load the default stylesheet
+// We do not use the /includes/load.php load script, because 
+// it will result in errors due ot preinstallation state.
 
- /* Libraries */
- // Template conductor (we load it before everything because templates are needed to get error messages)
- require("includes/templates.class.php");
- $Ctemplate = new class_template;
- 
- // mySQL database layer
- require("includes/mysql.class.php");
- $Cmysql = new class_mysql;
- 
- // general functions
- require("includes/functions.php");
- /* Libraries */
- 
- /* DEVELOPEMENT */
- // PH, workaround: output HTTP POST and GET arrays
- print "<h4>GET</h4>";
- print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_GET,true))."<br>"; 
- print "<h4>POST</h4>";
- print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_POST,true))."<br>"; 
- echo "\n\n\n";
- // Set install poistion
- if (!isset($_POST['instPos']))
- {
- 	$instPos = 0;
- } else {
- 	$instPos = $_POST['instPos'];
- }
- 
- // Including templates based on install position
- switch ($instPos)
- {
- 	case NULL:
- 	case 0:
+// Rather, we use copied bits from there.
+echo '<link rel="stylesheet" type="text/css" href="themes/winky/style.css">'."\n"; // We load the default stylesheet
+
+/* Libraries */
+// Template conductor (we load it before everything because templates are needed to get error messages)
+require("includes/templates.class.php");
+$Ctemplate = new class_template;
+
+// mySQL database layer
+require("includes/mysql.class.php");
+$Cmysql = new class_mysql;
+
+// general functions
+require("includes/functions.php");
+/* Libraries */
+
+/* DEVELOPEMENT */
+// PH, workaround: output HTTP POST and GET arrays
+print "<h4>GET</h4>";
+print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_GET,true))."<br>"; 
+print "<h4>POST</h4>";
+print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_POST,true))."<br>"; 
+echo "\n\n\n";
+// Set install poistion
+if (!isset($_POST['instPos']))
+{
+	$instPos = 0;
+} else {
+	$instPos = $_POST['instPos'];
+}
+
+// Including templates based on install position
+switch ($instPos)
+{
+	case NULL:
+	case 0:
 		// Introduction
 		
 		// We check this file existence now, because if we check it in general (before swich() clause)
