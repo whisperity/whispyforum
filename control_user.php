@@ -53,11 +53,13 @@ switch ($site)
 			if ( $_FILES['pic_file']['size'] > 2097152 )
 			{
 				// Big size (larger than 2 MBs)
-				echo "too big file";
+				$Ctemplate->useTemplate("user/cp_avatar_upload_toobigfile_error", array(
+					"FILE_SIZE"	=>	DecodeSize($_FILES['pic_file']['size'])
+				), FALSE); // Give error
 			} else {
 				if ( in_array($_FILES['pic_file']['type'], array("image/gif", "image/jpeg", "image/png")) )
 				{
-					if (move_uploaded_file($_FILES['pic_file']['tmp_name'], "upload/usr_avatar/cached." .$_SESSION['username']. ".ptmp")) // Move the file to the temp location
+					if ( @move_uploaded_file($_FILES['pic_file']['tmp_name'], "upload/usr_avatar/cached." .$_SESSION['username']. ".ptmp") ) // Move the file to the temp location
 					{
 						// Uploaded successfully
 						
@@ -98,26 +100,31 @@ switch ($site)
 						
 						$Cmysql->Query("UPDATE users SET avatar_filename='" .$fnToken.$fExt. "' WHERE id='" .$_SESSION['uid']. "'"); // Update database
 						
-						unlink("upload/usr_avatar/" .$_SESSION['avatar_filename']); // Remove the old avatar file
+						@unlink("upload/usr_avatar/" .$_SESSION['avatar_filename']); // Remove the old avatar file
 						
 						$_SESSION['avatar_filename'] = $fnToken.$fExt; // Update session with new avatar filename (refreshing avatar does not need user relog)
 						
 						// Successful upload
-						echo "uploaded successfully";
+						$Ctemplate->useTemplate("user/cp_avatar_upload_success", array(
+							"AVATAR_FILENAME"	=>	$fnToken.$fExt
+						), FALSE); // Give success
 					} else {
 						// Error during upload
-						echo "upload error";
+						$Ctemplate->useStaticTemplate("user/cp_avatar_upload_error", FALSE); // Give error
 					}
 				} else {
 					// Wrong filetype
-					echo "wrong filetype";
+					$Ctemplate->useTemplate("user/cp_avatar_upload_filetype_error", array(
+					"FILE_TYPE"	=>	$_FILES['pic_file']['type']
+				), FALSE); // Give error
 				}
 			}
+		} else {
+			// If there's no upload request
+			$Ctemplate->useTemplate("user/cp_avatar_upload", array(
+				'AVATAR_FILENAME'	=>	$_SESSION['avatar_filename'], // Current avatar filename (needs implementation)
+			), FALSE); // We output the upload form
 		}
-		
-		$Ctemplate->useTemplate("user/cp_avatar_upload", array(
-			'AVATAR_FILENAME'	=>	$_SESSION['avatar_filename'], // Current avatar filename (needs implementation)
-		), FALSE); // We output the upload form
 		break;
 }
 
