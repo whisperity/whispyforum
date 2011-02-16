@@ -240,8 +240,8 @@ switch ($instPos)
 		
 		/* Users table */
 		// Stores the user's data
-		$dbtables = FALSE; // We failed creating the tables first
-		$dbtables = $Cmysql->Query("CREATE TABLE IF NOT EXISTS users (
+		$dbtables_user = FALSE; // We failed creating the tables first
+		$dbtables_user = $Cmysql->Query("CREATE TABLE IF NOT EXISTS users (
 			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
 			`username` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'user loginname',
 			`pwd` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'user password (md5 hashed)',
@@ -253,10 +253,10 @@ switch ($instPos)
 			`userLevel` tinyint(2) NOT NULL DEFAULT '0' COMMENT 'clearance level',
 			`avatar_filename` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'avatar picture filename',
 			PRIMARY KEY (`id`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'userdata'"); // $dbtables sets to true if we succeeded creating a table
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'userdata'"); // $dbtables_user sets to true if we succeeded creating a table
 		
 		// We check users table creation
-		if ( $dbtables == FALSE )
+		if ( $dbtables_user == FALSE )
 		{
 			// Give error
 			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
@@ -267,7 +267,7 @@ switch ($instPos)
 			$tablecreation = FALSE;
 			
 			$tablelist .= "users"; // Append users table name to fail-list
-		} elseif ( $dbtables != FALSE )
+		} elseif ( $dbtables_user != FALSE )
 		{
 			// Give success
 			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
@@ -275,6 +275,72 @@ switch ($instPos)
 			), FALSE);
 		}
 		/* Users table */
+		
+		/* UNTESTED!!!! */
+		/* Menus table */
+		// Stores the menu's data
+		$dbtables_menu = FALSE; // We failed creating the tables first
+		$dbtables_menu = $Cmysql->Query("CREATE TABLE IF NOT EXISTS menus (
+			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+			`header` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'menu header',
+			`align` tinyint(2) NOT NULL DEFAULT '0' COMMENT 'sidebar vertical align',
+			`side` ENUM('left', 'right') NOT NULL DEFAULT 'left' COMMENT 'sidebar choice',
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'menu information'"); // $dbtables_menu sets to true if we succeeded creating a table
+		
+		// We check menus table creation
+		if ( $dbtables_menu == FALSE )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
+				'TABLENAME'	=>	"menu" // Table name
+			), FALSE);
+			
+			// We set the creation global error variable to false
+			$tablecreation = FALSE;
+			
+			$tablelist .= ", menu"; // Append menu table name to fail-list
+		} elseif ( $dbtables_menu != FALSE )
+		{
+			// Give success
+			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
+				'TABLENAME'	=>	"menus" // Table name
+			), FALSE);
+		}
+		/* Menus table */
+		
+		/* Menu entries table */
+		// Stores the menu entries' data
+		$dbtables_menuEntries = FALSE; // We failed creating the tables first
+		$dbtables_menuEntries = $Cmysql->Query("CREATE TABLE IF NOT EXISTS menu_entries (
+			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+			`menu_id` int(10) NOT NULL COMMENT 'menu id (menus.id)',
+			`label` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'text to show',
+			`href` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'link data',
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'menu entry information'"); // $dbtables_menuEntries sets to true if we succeeded creating a table
+		
+		// We check menu entries table creation
+		if ( $dbtables_menuEntries == FALSE )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
+				'TABLENAME'	=>	"menu_entries" // Table name
+			), FALSE);
+			
+			// We set the creation global error variable to false
+			$tablecreation = FALSE;
+			
+			$tablelist .= ", menu_entries"; // Append menu table name to fail-list
+		} elseif ( $dbtables_menuEntries != FALSE )
+		{
+			// Give success
+			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
+				'TABLENAME'	=>	"menu_entries" // Table name
+			), FALSE);
+		}
+		/* Menu entries table */
+		/* UNTESTED */
 		
 		// Check global variable status
 		if ( $tablecreation == FALSE )
