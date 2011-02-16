@@ -68,9 +68,11 @@ require("includes/functions.php");
 /* DEVELOPEMENT */
 // PH, workaround: output HTTP POST and GET arrays
 print "<h4>GET</h4>";
-print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_GET,true))."<br>"; 
+print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_GET,true))."<br>";
 print "<h4>POST</h4>";
-print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_POST,true))."<br>"; 
+print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_POST,true))."<br>";
+print "<h4>FILES</h4>";
+print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_FILES,true))."<br>";
 ?>
 
 <?php

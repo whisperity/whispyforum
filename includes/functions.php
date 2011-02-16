@@ -116,4 +116,19 @@ function saveThumbnailPNG($originalImage,$new_height,$filename)
 	imagepng($imageResized, $filename.".png", 0);
 	imageDestroy($imageResized);
 }
+
+function DecodeSize( $bytes )
+{
+	/**
+	* This function generates a more human-readable format
+	* of a given file size value.
+	* 
+	* @inputs: $bytes - file size in bytes
+	* @outputs: the file size in KB, MB, GB, etc. based on the rounded size
+	*/
+	
+	$types = array( 'B', 'KB', 'MB', 'GB', 'TB' );
+	for( $i = 0; $bytes >= 1024 && $i < ( count( $types ) -1 ); $bytes /= 1024, $i++ );
+	return( round( $bytes, 2 ) . " " . $types[$i] );
+} 
 ?>
