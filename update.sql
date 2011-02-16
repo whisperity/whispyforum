@@ -18,3 +18,6 @@
 
 # Revision 460 (adding avatar support)
 ALTER TABLE `users` ADD `avatar_filename` VARCHAR( 36 ) NOT NULL COMMENT 'avatar picture filename';
+
+# Revision 491 (making root user's userlevel 4 instead of 5)
+UPDATE `users` SET `userLevel` = 4 WHERE `userLevel` = 5;
