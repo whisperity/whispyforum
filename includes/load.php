@@ -6,8 +6,10 @@
  * 
  * WhispyForum
  */
-echo date('l jS \of F Y H:i:s')." global system startup\n<br>"; // DEV
+echo "memory usage: " .memory_get_usage(); // DEV
+echo "\n<br>".date('l jS \of F Y H:i:s')." global system startup\n<br>"; // DEV
 echo "\n<br>".date('l jS \of F Y H:i:s')." loader started\n<br>"; // DEV
+echo "memory usage: " .memory_get_usage()."\n<br>"; // DEV
 echo '<link rel="stylesheet" type="text/css" href="themes/winky/style.css">'."\n"; // We load the default stylesheet
 
 /* Libraries */
@@ -78,6 +80,7 @@ print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_FILES,tru
 
 <?php
 echo date('l jS \of F Y H:i:s')." loading finished\n<br>"; // DEV
+echo "memory usage: " .memory_get_usage(); // DEV
 echo "\n<br>".date('l jS \of F Y H:i:s')." content generation started\n<br>"; // DEV
 ?>
 
@@ -95,6 +98,7 @@ print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_SESSION,t
 $Ctemplate->useStaticTemplate("framework/left", FALSE); // Center table and left menubar begin
 /* Left menubar */
 	$Cusers->DoUserForm(); // Do login form or userbox
+	$Ctemplate->DoMenuBars('LEFT'); // Do right menubar
 /* Left menubar */
 
 $Ctemplate->useStaticTemplate("framework/center", FALSE); // Closing left menubar and opening center
@@ -104,18 +108,22 @@ function DoFooter()
 	global $Ctemplate, $Cmysql; // Load classes
 	
 	$Ctemplate->useStaticTemplate("framework/right", FALSE); // Close center table and right menubar begin
-	// DO RIGHT MENUBAR
-	echo "right";
+		$Ctemplate->DoMenuBars('RIGHT'); // Do right menubar
 	$Ctemplate->useStaticTemplate("framework/footer", FALSE); // Close right menubar and generate footer
 	// DO FOOTER
 	echo "footer";
 	$Ctemplate->useStaticTemplate("framework/footer_close", FALSE); // Close footer
 	
 	echo "\n<br>".date('l jS \of F Y H:i:s')." content generation ended\n<br>"; // DEV
+	echo "memory usage: " .memory_get_usage(); // DEV
 	
 	$Cmysql->Disconnect(); // Disconnect from database
 	
 	echo "\n<br>".date('l jS \of F Y H:i:s')." global system halt\n<br>"; // DEV
+	echo "memory usage: " .memory_get_usage(); // DEV
+	
+	echo "\n<br>\n<br>memory <b>peak</b> usage: " .memory_get_peak_usage(); // DEV
+	
 }
 
 /* FRAMEWORK */

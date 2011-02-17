@@ -36,14 +36,15 @@ class class_users
 		 * Internal use only!
 		 */
 		
-		$_SESSION['username'] = "";
-		$_SESSION['pwd'] = "";
-		$_SESSION['uid'] = "";
-		$_SESSION['curr_ip'] = $_SERVER['REMOTE_ADDR'];
-		$_SESSION['curr_sessid'] = session_id();
-		$_SESSION['log_status'] = "guest";
-		$_SESSION['log_bool'] = FALSE;
-		$_SESSION['avatar_filename'] = "";
+		$_SESSION['username'] = ""; // Empty username
+		$_SESSION['pwd'] = ""; // Empty password
+		$_SESSION['uid'] = ""; // Empty user id
+		$_SESSION['curr_ip'] = $_SERVER['REMOTE_ADDR']; // IP address
+		$_SESSION['curr_sessid'] = session_id(); // Session id
+		$_SESSION['log_status'] = "guest"; // Guest login
+		$_SESSION['log_bool'] = FALSE; // Logged out
+		$_SESSION['avatar_filename'] = ""; // Guests does not have avatars
+		$_SESSION['theme_name'] = "winky"; // Default theme name
 	}
 	
 	private function __destroySession()
@@ -77,7 +78,7 @@ class class_users
 		
 		global $Cmysql, $Ctemplate; // We need to declare the mySQL and template class
 		
-		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .mysql_real_escape_string($_SESSION['username']). "' AND pwd='" .mysql_real_escape_string($_SESSION['pwd']). "'"));
+		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'"));
 		if ( $userDBArray == FALSE )
 		{
 			// If we cannot do the query (because it contains false data or empty session)
@@ -186,7 +187,7 @@ class class_users
 		
 		global $Cmysql; // We need to declare the mySQL class
 		
-		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .mysql_real_escape_string($username). "' AND pwd='" .md5(mysql_real_escape_string($password)). "'")); // We query the user's data
+		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .$Cmysql->EscapeString($username). "' AND pwd='" .md5($Cmysql->EscapeString($password)). "'")); // We query the user's data
 		
 		if ( $userDBArray == TRUE )
 		{

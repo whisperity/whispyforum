@@ -142,7 +142,7 @@ class class_mysql
 		global $cfg, $Ctemplate; // We need to initialize the config array and the template class
 		
 		$Ctemplate->useTemplate("errormessage", array(
-			'THEME_NAME'	=>	"winky", // Theme name
+			'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 			'PICTURE_NAME'	=>	"Nuvola_devices_raid.png", // HDDs icon
 			'TITLE'	=>	"Unable to process mySQL query!", // Error title
 			'BODY'	=>	'The specified query <tt>' .$sQuery. '</tt> could not be processed.<br>The mySQL error message was <tt>' .mysql_error(). '</tt>', // Error text
@@ -155,13 +155,23 @@ class class_mysql
 		/**
 		 * This function escapes the sql-injection-unsafe characters from a string.
 		 * 
-		 * @inputs: $sString - string to escape
+		 * @inputs: $sString - string to escape (default is "NOTHING")
 		 */
 		
-		$sSring = @mysql_real_escape_string($sString) // We escape the string with the help of the SQL server
-			or $this->__giveEscapeStringError($sString); // If we can't, give error
-		
-		return $sString; // Return the escaped string
+		if ( $sString != NULL )
+		{
+			// If we passed the string parameter
+			/**
+			 * Generating session data from user table
+			 * (in the session manager class)
+			 * using this escape function gives errors.
+			*/
+			
+			$sSring = @mysql_real_escape_string($sString) // We escape the string with the help of the SQL server
+				or $this->__giveEscapeStringError($sString); // If we can't, give error
+			
+			return $sString; // Return the escaped string
+		}
 	}
 	
 	private function __giveEscapeStringError($sString)
@@ -176,7 +186,7 @@ class class_mysql
 		global $cfg, $Ctemplate; // We need to initialize the config array and the template class
 		
 		$Ctemplate->useTemplate("errormessage", array(
-			'THEME_NAME'	=>	"winky", // Theme name
+			'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 			'PICTURE_NAME'	=>	"Nuvola_devices_raid.png", // HDDs icon
 			'TITLE'	=>	"String failed to escape!", // Error title
 			'BODY'	=>	'There were errors escaping string <tt>' .htmlspecialchars($sString). '</tt>.<br>The mySQL error message was <tt>' .mysql_error(). '</tt>', // Error text
