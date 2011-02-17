@@ -157,7 +157,7 @@ class class_users
 		 * Internal use only!
 		 */
 		
-		global $Ctemplate; // We need to declare the templates class
+		global $Ctemplate, $Cmysql; // We need to declare the templates and mySQL class
 		
 		// We generate the return link from the HTTP REQUEST_URI (so we passthru the GET array)
 		$returnLink = substr($_SERVER['REQUEST_URI'],1); // We crop the starting / from the returnLink
@@ -168,6 +168,14 @@ class class_users
 		), FALSE); // Beginning divs of userbox
 		
 		$Ctemplate->useStaticTemplate("user/userform_user-cp_link", FALSE); // User control panel link
+		
+		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'")); // We query the user's data
+		
+		// If the user has Admin (3) or higher levels, output link to administrator panel
+		if ( $userDBArray['userLevel'] >= 3 )
+		{
+			$Ctemplate->useStaticTemplate("user/userform_user-ap_link", FALSE); // Output link
+		}
 		
 		$Ctemplate->useTemplate("user/userform_logout", array(
 			'RETURN_TO'	=>	$returnLink

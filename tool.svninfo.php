@@ -213,10 +213,9 @@ include(svnInfoFN_S);
 </html>
 
 <?php
-/* Unlink all files
+// Unlink all files
 unlink(tplFN);
 unlink(tplFN_S);
 unlink(svnInfoFN);
 unlink(svnInfoFN_S);
-*/
 ?>
