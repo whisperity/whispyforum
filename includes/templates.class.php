@@ -153,5 +153,84 @@ class class_template
 		
 		$this->_output = NULL; // Reset the output
 	}
+	
+	function DoMenuBars($mSide)
+	{
+		/**
+		* This function generates the left and right menubars (based on parameter)
+		* 
+		* @inputs: $mSide - menu side ('LEFT' or 'RIGHT')
+		*/
+		
+		global $Cmysql; // We need to declare the sql layer
+		
+		// Define the value of the side (to fit SQL structrue)
+		switch ($mSide)
+		{
+			case 'LEFT':
+				$mSideLC = 'left';
+				break;
+			case 'RIGHT':
+				$mSideLC = 'right';
+				break;
+		}
+		
+		$menudata = $Cmysql->Query("SELECT * FROM menus WHERE side='" .$mSideLC. "' ORDER BY align ASC"); // Do a query to select menus on the set side (ordered by align)
+		
+		while ( $row = mysql_fetch_assoc($menudata) )
+		{
+			// We generate every menu
+			
+			// First, get menu entries
+			$menuentries = $Cmysql->Query("SELECT * FROM menu_entries WHERE menu_id=" .$Cmysql->EscapeString($row['id']));
+			
+			$menuContent = "<ul>"; // Menu content is an opening list
+			
+			while ( $entryrow = mysql_fetch_assoc($menuentries) )
+			{
+				// First, we explode the href by the / characters
+				$hrExploded = explode('/', $entryrow['href']);
+				
+				// Define whether the link is internal or external
+				$hrefType = 'INTERNAL'; // The link is internal by default
+				
+				// Check for HTTP links
+				if ( in_array('http:', $hrExploded) )
+				{
+					$hrefType = 'EXTERNAL'; // If it has HTTP in it, the link is external
+				}
+				
+				// Add current entry to $menuContent variable;
+				$menuContent .= "<li><a href='" .$entryrow['href']. "' alt='" .$entryrow['label']. "'"; // List item open, link href and alt
+				
+				// If the link is external, append external window target
+				if ( $hrefType == "EXTERNAL" )
+				{
+					$menuContent .= " target='_blank'"; // External window
+				}
+				
+				$menuContent .= "'>" .$entryrow['label']. "</a>"; // Link close and text
+				
+				// If the link is external, append external image
+				if ( $hrefType == "EXTERNAL" )
+				{
+					$menuContent .= "&nbsp;<img src='themes/" .$_SESSION['theme_name']. "/link.png' alt='External link: opens in new window'>";
+				}
+				
+				$menuContent .="</li>\n"; // Add list item closing tag
+			}
+			
+			// End entry list
+			$menuContent .= "</ul>"; // Append closing tag
+			
+			// Do menubox
+			$this->UseTemplate("menubox", array(
+				"HEADER"	=>	$row['header'], // Menu header
+				"CONTENT"	=>	$menuContent
+			), FALSE);
+			
+			$menuContent = NULL; // Menu content is nothing
+		}
+	}
 }
 ?>
