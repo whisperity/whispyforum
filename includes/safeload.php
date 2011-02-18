@@ -9,10 +9,6 @@
  * 
  * WhispyForum
  */
-echo "memory usage: " .memory_get_usage(); // DEV
-echo date('l jS \of F Y H:i:s')." global system startup\n<br>"; // DEV
-echo "\n<br>".date('l jS \of F Y H:i:s')." loader started\n<br>"; // DEV
-echo "memory usage: " .memory_get_usage()."\n<br>"; // DEV
 echo '<link rel="stylesheet" type="text/css" href="themes/winky/style.css">'."\n"; // We load the default stylesheet
 
 /* Libraries */
@@ -75,15 +71,7 @@ print "<h4>POST</h4>";
 print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_POST,true))."<br>";
 print "<h4>FILES</h4>";
 print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_FILES,true))."<br>";
-?>
 
-<?php
-echo date('l jS \of F Y H:i:s')." loading finished\n<br>"; // DEV
-echo "memory usage: " .memory_get_usage(); // DEV
-echo "\n<br>".date('l jS \of F Y H:i:s')." content generation started\n<br>"; // DEV
-?>
-
-<?php
 /* START GENERATION */
 $Cmysql->Connect(); // Connect to database
 $Cusers->Initialize(); // We initialize the userdata
@@ -96,16 +84,9 @@ print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_SESSION,t
 
 function DoFooter()
 {
-	global $Ctemplate, $Cmysql; // Load classes
+	global $Cmysql; // Load classes
 	
-	echo "\n<br>".date('l jS \of F Y H:i:s')." content generation ended\n<br>"; // DEV
-	echo "memory usage: " .memory_get_usage(); // DEV
 	$Cmysql->Disconnect(); // Disconnect from database
-	
-	echo "\n<br>".date('l jS \of F Y H:i:s')." global system halt\n<br>"; // DEV
-	echo "memory usage: " .memory_get_usage(); // DEV
-	
-	echo "\n<br>\n<br>memory <b>peak</b> usage: " .memory_get_peak_usage(); // DEV
 }
 
 /* FRAMEWORK */

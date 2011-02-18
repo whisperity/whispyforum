@@ -8,8 +8,6 @@
  * 
  * WhispyForum
  */
-echo date('l jS \of F Y H:i:s')." users lodaded\n<br>"; // DEV
-
 class class_users
 {
 	function Initialize()

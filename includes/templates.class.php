@@ -11,8 +11,6 @@
  * 
  * WhispyForum
  */
-echo date('l jS \of F Y H:i:s')." templates loaded\n<br>"; // DEV
-
 class class_template
 {
 	private $_output; // OUTPUT is the output which is printed at the end of the parsing
