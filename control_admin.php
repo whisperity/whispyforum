@@ -19,7 +19,13 @@ $uDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT userLevel FROM users WHERE 
 if ( $uDBArray['userLevel'] < 3 )
 {
 	// If the user does not have rights to see the admin panel
-	$Ctemplate->useStaticTemplate("admin/insufficient_rights", FALSE); // We give an unaviable error
+	$Ctemplate->useTemplate("errormessage", array(
+		'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
+		'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
+		'TITLE'	=>	"Insufficient rights", // Error title
+		'BODY'	=>	"This page requires you to have Administrator or higher rights.", // Error text
+		'ALT'	=>	"User permissions error" // Alternate picture text
+	), FALSE ); // We give an unaviable error // We give an unaviable error
 } elseif ( $uDBArray['userLevel'] >= 3 )
 {
 // If user has the rights, the panel is accessible

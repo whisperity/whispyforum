@@ -16,7 +16,13 @@ $site = "";
 if ( $_SESSION['log_bool'] == FALSE )
 {
 	// If the user is a guest
-	$Ctemplate->useStaticTemplate("user/unaviable_guest", FALSE); // We give an unaviable error
+	$Ctemplate->useTemplate("errormessage", array(
+		'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
+		'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
+		'TITLE'	=>	"This page is unaviable for guests!", // Error title
+		'BODY'	=>	"This page requires you to log in to view it's contents.<br><br>Please use the login box to log in to the site. After that, you can view this page.", // Error text
+		'ALT'	=>	"User permissions error" // Alternate picture text
+	), FALSE ); // We give an unaviable error
 } elseif ( $_SESSION['log_bool'] == TRUE)
 {
 // If user is logged in, the control panel is accessible
@@ -54,7 +60,7 @@ switch ($site)
 			{
 				// Big size (larger than 2 MBs)
 				$Ctemplate->useTemplate("user/cp_avatar_upload_toobigfile_error", array(
-					"FILE_SIZE"	=>	DecodeSize($_FILES['pic_file']['size'])
+					'FILE_SIZE'	=>	DecodeSize($_FILES['pic_file']['size'])
 				), FALSE); // Give error
 			} else {
 				if ( in_array($_FILES['pic_file']['type'], array("image/gif", "image/jpeg", "image/png")) )
@@ -106,7 +112,7 @@ switch ($site)
 						
 						// Successful upload
 						$Ctemplate->useTemplate("user/cp_avatar_upload_success", array(
-							"AVATAR_FILENAME"	=>	$fnToken.$fExt
+							'AVATAR_FILENAME'	=>	$fnToken.$fExt
 						), FALSE); // Give success
 					} else {
 						// Error during upload
@@ -115,8 +121,8 @@ switch ($site)
 				} else {
 					// Wrong filetype
 					$Ctemplate->useTemplate("user/cp_avatar_upload_filetype_error", array(
-					"FILE_TYPE"	=>	$_FILES['pic_file']['type']
-				), FALSE); // Give error
+						'FILE_TYPE'	=>	$_FILES['pic_file']['type']
+					), FALSE); // Give error
 				}
 			}
 		} else {
