@@ -1,0 +1,36 @@
+<!--- BEGIN admin menus delmenu confirm -->
+<!--- Usage: administrator control panel module 'menus' menu deletion confirmation template -->
+
+<table class="messagebox"> <!--- copying the messagebox template -->
+<tr>
+<td class="messagepicture"><img src="themes/{THEME_NAME}/Nuvola_apps_kgpg.png" alt="Please confirm!"></td>
+<td class="messagetitle">Please confirm deletion of menu '<tt>{M_NAME}</tt>'</td>
+</tr>
+<tr>
+<td style="width: 1"></td>
+<td class="messagebody"><font class="emphasis">Deleting this menu will also permanently destroy every items linked to this menu!</font>
+<table style="width: 100%"> <!--- Response forms table -->
+<tr>
+<td align="center">
+<!--- Deletion -->
+<form method="POST" action="control_admin.php">
+<input type="hidden" name="site" value="menus">
+<input type="hidden" name="m_subsite" value="delete_menu_confirmed">
+<input type="hidden" name="menu_id" value="{MENU_ID}">
+<input type="submit" value="Delete this menu!">
+</form>
+</td>
+<td align="center">
+<!--- Cancel -->
+<form method="POST" action="control_admin.php">
+<input type="hidden" name="site" value="menus">
+<input type="submit" value="No, I've changed my mind!">
+</form>
+</td>
+</tr>
+</table>
+
+</td>
+</tr>
+</table> <!--- copying the messagebox template -->
+<!--- END admin menus delmenu confirm -->

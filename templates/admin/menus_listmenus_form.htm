@@ -1,0 +1,32 @@
+<!--- BEGIN admin menus listmenus form -->
+<!--- Usage: administrator control panel module 'menus' menu listing form of a menu -->
+<table border="1" style="width: 100%">
+<tr>
+<th colspan="2">{M_HEADER}</th>
+</tr>
+<tr>
+<td>Number of items</td>
+<td>{M_NUM_ITEMS}</td>
+</tr>
+<tr>
+<td>
+<!--- Delete menu form -->
+<form method="POST" action="control_admin.php">
+<input type="hidden" name="site" value="menus">
+<input type="hidden" name="m_subsite" value="delete_menu">
+<input type="hidden" name="menu_id" value="{M_ID}">
+<input type="submit" value="Delete">
+</form>
+<!--- Delete menu form -->
+</td>
+<td>
+<!--- List items form -->
+<form method="POST" action="control_admin.php">
+<input type="hidden" name="site" value="menus">
+<input type="submit" value="List items">
+</form>
+<!--- List items form -->
+</td>
+</tr>
+</table>
+<!--- END admin menus listmenus form -->
