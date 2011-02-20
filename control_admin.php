@@ -293,7 +293,6 @@ switch ($site) // Outputs and scripts are based on the site variable
 				{
 					// Failed to create the menu
 					$Ctemplate->useTemplate("admin/menus_create_error", array(
-						'VARIABLE'	=>	"Align position", // Errornous variable name
 						'TITLE'	=>	$_POST['title'], // Header
 						'ALIGN_POS'	=>	$_POST['align_pos'], // Align position
 						'SIDE'	=>	$_POST['side'] // Menu side
@@ -307,6 +306,135 @@ switch ($site) // Outputs and scripts are based on the site variable
 				}
 				break;
 			/* MENU CREATION */
+			/* ------------------- */
+			/* MENU EDITION */
+			case "edit_menu":
+				// Menu edition (giving form)
+				
+				// First, we check if there's a present menu ID variable
+				if ( isset($_POST['menu_id']) )
+				{
+					// Do forms
+					
+					$menuProperties = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM menus WHERE id=" .
+						$Cmysql->EscapeString($_POST['menu_id']))); // Query down menu properties
+					
+					$m_NumOfItems = mysql_fetch_row($Cmysql->Query("SELECT COUNT(*) FROM menu_entries WHERE menu_id=" .$menuProperties['id'])); // Count menu items
+					
+					if ( @$_POST['error_goback'] == "yes" ) // If user is redirected because of an error
+					{
+						// We output the form with data returned (user doesn't have to enter it again)
+						$Ctemplate->useTemplate("admin/menus_edit_form", array(
+							'MENU_ID'	=>	$_POST['menu_id'], // Menu ID
+							'TITLE'	=>	$_POST['title'], // Menu header
+							'ALIGN_POS'	=>	$_POST['align_pos'], // Vertical align position
+							'LEFT_SIDE'	=>	($_POST['side']=="left" ? " checked" : NULL), // Check left side if we were set to left side, otherwise send NULL
+							'RIGHT_SIDE'	=>	($_POST['side']=="right" ? " checked" : NULL), // Check right side if we were set to right side, otherwise send NULL
+							'M_NUM_ITEMS'	=>	$m_NumOfItems[0] // Number of items
+						), FALSE);
+					} else {
+						// We output general form
+						$Ctemplate->useTemplate("admin/menus_edit_form", array(
+							'MENU_ID'	=>	$menuProperties['id'], // Menu ID
+							'TITLE'	=>	$menuProperties['header'], // Menu header
+							'ALIGN_POS'	=>	$menuProperties['align'], // Vertical align position
+							'LEFT_SIDE'	=>	($menuProperties['side']=="left" ? " checked" : NULL), // Check left side if menu was set to left side, otherwise send NULL
+							'RIGHT_SIDE'	=>	($menuProperties['side']=="right" ? " checked" : NULL), // Check right side if menu was set to right side, otherwise send NULL
+							'M_NUM_ITEMS'	=>	$m_NumOfItems[0] // Number of items
+						), FALSE);
+					}
+				} else {
+					// Give error
+					$Ctemplate->useTemplate("errormessage", array(
+						'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
+						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
+						'TITLE'	=>	"Missing parameters", // Error title
+						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
+						'ALT'	=>	"Missing parameters" // Alternate picture text
+					), FALSE ); // We give an unaviable error
+				}
+				break;
+			case "edit_menu_do":
+				// Do menu edition (SQL)
+				
+				// Check if we passed the menu ID
+				if ( isset($_POST['menu_id']) )
+				{
+					// Check whether every required variables were entered (and wasn't deleted while editing)
+					if ( $_POST['title'] == NULL ) // Menu header
+					{
+						$Ctemplate->useTemplate("admin/menus_edit_variable_error", array(
+							'MENU_ID'	=>	$_POST['menu_id'], // Menu ID
+							'VARIABLE'	=>	"Title", // Errornous variable name
+							'TITLE'	=>	$_POST['title'], // Header (should be empty)
+							'ALIGN_POS'	=>	$_POST['align_pos'], // Align position
+							'SIDE'	=>	$_POST['side'], // Menu side
+						), FALSE);
+						
+						// We terminate the script
+						$Ctemplate->useStaticTemplate("admin/admin_foot", FALSE); // Footer
+						DoFooter();
+						exit;
+					}
+					
+					if ( $_POST['align_pos'] == NULL ) // Align position
+					{
+						$Ctemplate->useTemplate("admin/menus_edit_variable_error", array(
+							'MENU_ID'	=>	$_POST['menu_id'], // Menu ID
+							'VARIABLE'	=>	"Align position", // Errornous variable name
+							'TITLE'	=>	$_POST['title'], // Header
+							'ALIGN_POS'	=>	$_POST['align_pos'], // Align position (should be empty)
+							'SIDE'	=>	$_POST['side'] // Menu side
+						), FALSE);
+						
+						// We terminate the script
+						$Ctemplate->useStaticTemplate("admin/admin_foot", FALSE); // Footer
+						DoFooter();
+						exit;
+					}
+					
+					// We don't have to check the side variable.
+					// Left side is automatically checked on loading the form
+					// and $_POST hacker admins deserve what they did...
+					
+					// Every variable has value, do the SQL query.
+					$mEdit = $Cmysql->Query("UPDATE menus SET header='" .
+						$Cmysql->EscapeString($_POST['title'])."', align='".
+						$Cmysql->EscapeString($_POST['align_pos'])."', side='".
+						$Cmysql->EscapeString($_POST['side']). "' WHERE id='" .
+						$Cmysql->EscapeString($_POST['menu_id']). "'");
+					
+					// $mEdit is TRUE if we succeeded
+					// $mEdit is FALSE if we failed
+					
+					if ( $mEdit == FALSE )
+					{
+						// Failed to create the menu
+						$Ctemplate->useTemplate("admin/menus_edit_error", array(
+							'MENU_ID'	=>	$_POST['menu_id'], // Menu ID
+							'TITLE'	=>	$_POST['title'], // Header
+							'ALIGN_POS'	=>	$_POST['align_pos'], // Align position
+							'SIDE'	=>	$_POST['side'] // Menu side
+						), FALSE); // Output a retry form
+					} elseif ( $mEdit == TRUE )
+					{
+						// Created the menu
+						$Ctemplate->useTemplate("admin/menus_edit_success", array(
+							'TITLE'	=>	$_POST['title'] // Menu title
+						), FALSE); // Output a success form
+					}
+				} else {
+					// Give error
+					$Ctemplate->useTemplate("errormessage", array(
+						'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
+						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
+						'TITLE'	=>	"Missing parameters", // Error title
+						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
+						'ALT'	=>	"Missing parameters" // Alternate picture text
+					), FALSE ); // We give an unaviable error
+				}
+				break;
+			/* MENU EDITION */
 			/* ------------------- */
 			/* MENU SOMETHING */
 		}

@@ -1,22 +1,25 @@
-<!--- BEGIN admin menus create variable error -->
-<!--- Usage: administrator control panel module 'menus' menu creation variable error box -->
+<!--- BEGIN admin menus edit error -->
+<!--- Usage: administrator control panel module 'menus' menu edition error (sql error) -->
 <table class="errorbox"> <!--- copying the errorbox template -->
 	<tr>
-		<td class="errorpicture"><img src="themes/winky/Nuvola_filesystems_folder_txt.png" alt="Error!"></td>
+		<td class="errorpicture"><img src="themes/winky/Nuvola_filesystems_folder_locked.png" alt="Error!"></td>
 		<td class="errortitle">Error!</td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="errorbody">You didn't entered one of the required variables, {VARIABLE} cannot be empty. The menu creation cannot be done until every required variable is entered.</td>
+		<td class="errorbody">There were errors executing the SQL query to edit the new menu. The menu wasn't modified.</td>
 	</tr>
 </table> <!--- copying the errorbox template -->
+
+If you want to retry, click back.
 <form method="POST" action="control_admin.php">
+<input type="hidden" name="menu_id" value="{MENU_ID}">
 <input type="hidden" name="title" value="{TITLE}">
 <input type="hidden" name="align_pos" value="{ALIGN_POS}">
 <input type="hidden" name="side" value="{SIDE}">
 <input type="hidden" name="site" value="menus">
-<input type="hidden" name="m_subsite" value="create_menu">
+<input type="hidden" name="m_subsite" value="edit_menu">
 <input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
 <input type="submit" value="<< Back">
 </form>
-<!--- END admin menus create error -->
+<!--- END admin menus edit error -->
