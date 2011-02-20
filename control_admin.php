@@ -118,8 +118,11 @@ switch ($site) // Outputs and scripts are based on the site variable
 				$Ctemplate->useTemplate("admin/menus_listmenus", array(
 					'LEFT_MENUS'	=>	$left_menus, // Left menubar contents
 					'RIGHT_MENUS'	=>	$right_menus // Right menubar contents
-				), FALSE);
+				), FALSE); // List out the menus (using the two created stack variables)
+				
+				$Ctemplate->useStaticTemplate("admin/menus_listmenus_create", FALSE); // Create new menu button
 				break;
+			/* MENU DELETION */
 			case "delete_menu":
 				// Menu deletion
 				
@@ -214,7 +217,98 @@ switch ($site) // Outputs and scripts are based on the site variable
 					), FALSE ); // We give an unaviable error
 				}
 				break;
-			// case
+			/* MENU DELETION */
+			/* ------------------- */
+			/* MENU CREATION */
+			case "create_menu":
+				// Menu creation (giving form)
+				
+				if ( @$_POST['error_goback'] == "yes" ) // If user is redirected because of an error
+				{
+					// We output the form with data returned (user doesn't have to enter it again)
+					$Ctemplate->useTemplate("admin/menus_create_form", array(
+						'TITLE'	=>	$_POST['title'], // Menu header
+						'ALIGN_POS'	=>	$_POST['align_pos'], // Vertical align position
+						'LEFT_SIDE'	=>	($_POST['side']=="left" ? " checked" : NULL), // Check left side if we were set to left side, otherwise send NULL
+						'RIGHT_SIDE'	=>	($_POST['side']=="right" ? " checked" : NULL) // Check right side if we were set to right side, otherwise send NULL
+					), FALSE);
+				} else {
+					// We output general form
+					$Ctemplate->useTemplate("admin/menus_create_form", array(
+						'TITLE'	=>	"", // Menu header
+						'ALIGN_POS'	=>	"", // Vertical align position
+						'LEFT_SIDE'	=>	" checked", // Left side radio button (checked)
+						'RIGHT_SIDE'	=>	"" // Right side radio button (unchecked)
+					), FALSE);
+				}
+				break;
+			case "create_menu_do":
+				// Create the new menu (SQL)
+				
+				// First, we check whether every required variables were entered
+				if ( $_POST['title'] == NULL ) // Menu header
+				{
+					$Ctemplate->useTemplate("admin/menus_create_variable_error", array(
+						'VARIABLE'	=>	"Title", // Errornous variable name
+						'TITLE'	=>	$_POST['title'], // Header (should be empty)
+						'ALIGN_POS'	=>	$_POST['align_pos'], // Align position
+						'SIDE'	=>	$_POST['side'], // Menu side
+					), FALSE);
+					
+					// We terminate the script
+					$Ctemplate->useStaticTemplate("admin/admin_foot", FALSE); // Footer
+					DoFooter();
+					exit;
+				}
+				
+				if ( $_POST['align_pos'] == NULL ) // Align position
+				{
+					$Ctemplate->useTemplate("admin/menus_create_variable_error", array(
+						'VARIABLE'	=>	"Align position", // Errornous variable name
+						'TITLE'	=>	$_POST['title'], // Header
+						'ALIGN_POS'	=>	$_POST['align_pos'], // Align position (should be empty)
+						'SIDE'	=>	$_POST['side'] // Menu side
+					), FALSE);
+					
+					// We terminate the script
+					$Ctemplate->useStaticTemplate("admin/admin_foot", FALSE); // Footer
+					DoFooter();
+					exit;
+				}
+				
+				// We don't have to check the side variable.
+				// Left side is automatically checked on loading the form
+				// and $_POST hacker admins deserve what they did...
+				
+				// Every variable has value, do the SQL query.
+				$mCreate = $Cmysql->Query("INSERT INTO menus(header, align, side) VALUES('" .
+					$Cmysql->EscapeString($_POST['title'])."', '".
+					$Cmysql->EscapeString($_POST['align_pos'])."', '".
+					$Cmysql->EscapeString($_POST['side']). "')");
+				
+				// $mCreate is TRUE if we succeeded
+				// $mCreate is FALSE if we failed
+				
+				if ( $mCreate == FALSE )
+				{
+					// Failed to create the menu
+					$Ctemplate->useTemplate("admin/menus_create_error", array(
+						'VARIABLE'	=>	"Align position", // Errornous variable name
+						'TITLE'	=>	$_POST['title'], // Header
+						'ALIGN_POS'	=>	$_POST['align_pos'], // Align position
+						'SIDE'	=>	$_POST['side'] // Menu side
+					), FALSE); // Output a retry form
+				} elseif ( $mCreate == TRUE )
+				{
+					// Created the menu
+					$Ctemplate->useTemplate("admin/menus_create_success", array(
+						'TITLE'	=>	$_POST['title'] // Menu title
+					), FALSE); // Output a success form
+				}
+				break;
+			/* MENU CREATION */
+			/* ------------------- */
+			/* MENU SOMETHING */
 		}
 		break;
 }
