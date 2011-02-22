@@ -134,11 +134,51 @@ switch ($site) // Outputs and scripts are based on the site variable
 					
 					$menuName = mysql_fetch_row($Cmysql->Query("SELECT header FROM menus WHERE id=" .$Cmysql->EscapeString($_POST['menu_id']))); // Query the menu's name
 					
-					$Ctemplate->useTemplate("admin/menus_delmenu_confirm", array(
-						'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
-						'M_NAME'	=>	$menuName[0], // Name of the menu
-						'MENU_ID'	=>	$_POST['menu_id'] // Menu ID
-					), FALSE);
+					// Query the number of menu entries in the menu
+					$m_NumOfItems = mysql_fetch_row($Cmysql->Query("SELECT COUNT(*) FROM menu_entries WHERE menu_id=" .$Cmysql->EscapeString($_POST['menu_id'])));
+					
+					if ( $m_NumOfItems[0] == 0 )
+					{
+						// If there isn't any menu entries
+						
+						// We delete the menu immediately (don't need confirmation)
+						$deleteMenu = $Cmysql->Query("DELETE FROM menus WHERE id=" .$Cmysql->EscapeString($_POST['menu_id'])); // $deleteMenu is TRUE if the query was executed, FALSE if there were errors
+						
+						if ( $deleteMenu == FALSE )
+						{
+							// If there were errors deleting the menu
+							$Ctemplate->useTemplate("errormessage", array(
+								'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
+								'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
+								'TITLE'	=>	"The menu could not be deleted", // Error title
+								'BODY'	=>	"", // Error text
+								'ALT'	=>	"Query execution error" // Alternate picture text
+							), FALSE ); // We give an error
+						} elseif ( $deleteMenu == TRUE )
+						{
+							// If we succeeded deleting the menu
+							$Ctemplate->useTemplate("successbox", array(
+								'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
+								'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_txt.png", // Text folder icon
+								'TITLE'	=>	"Menu deleted", // Success title
+								'BODY'	=>	"The menu was deleted successfully.", // Success text
+								'ALT'	=>	"Query execution success" // Alternate picture text
+							), FALSE ); // We give a success message
+							
+							// Back form
+							$Ctemplate->useStaticTemplate("admin/menus_delmenu_goback", FALSE);
+						}
+					} elseif ( $m_NumOfItems[0] > 0 )
+					{
+						// If there is at least one menu entry,
+						// we prompt for confirmation
+						
+						$Ctemplate->useTemplate("admin/menus_delmenu_confirm", array(
+							'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
+							'M_NAME'	=>	$menuName[0], // Name of the menu
+							'MENU_ID'	=>	$_POST['menu_id'] // Menu ID
+						), FALSE);
+					}
 				} else {
 					// Give error
 					$Ctemplate->useTemplate("errormessage", array(
