@@ -357,7 +357,7 @@ switch ($site) // Outputs and scripts are based on the site variable
 			case "edit_menu_do":
 				// Do menu edition (SQL)
 				
-				// Check if we passed the menu ID
+				// Check if we were passed with the menu ID
 				if ( isset($_POST['menu_id']) )
 				{
 					// Check whether every required variables were entered (and wasn't deleted while editing)
@@ -436,7 +436,71 @@ switch ($site) // Outputs and scripts are based on the site variable
 				break;
 			/* MENU EDITION */
 			/* ------------------- */
-			/* MENU SOMETHING */
+			/* ITEM LISIING */
+			case "list_items":
+				// List items of a selected menu
+				
+				// Check if we were passed with the menu ID
+				if ( isset($_POST['menu_id']) )
+				{
+					// Query down the menus (we're not fetching here)
+					$menuEntries = $Cmysql->Query("SELECT * FROM menu_entries WHERE menu_id=" .
+						$Cmysql->EscapeString($_POST['menu_id']));
+					
+					// Query the title of the menu
+					$menuData = mysql_fetch_assoc($Cmysql->Query("SELECT header FROM menus WHERE id=" .
+						$Cmysql->EscapeString($_POST['menu_id'])));
+					
+					// Count menu items
+					$m_NumOfItems = mysql_fetch_row($Cmysql->Query("SELECT COUNT(*) FROM menu_entries WHERE menu_id=" . $Cmysql->EscapeString($_POST['menu_id'])));
+					
+					$Ctemplate->useTemplate("admin/menus_listentries_header", array(
+						'M_HEADER'	=>	$menuData['header'], // Menu title
+						'M_NUM_ITEMS'	=>	$m_NumOfItems[0] // Number of entries
+					), FALSE); // Header
+					
+					while ( $eRow = mysql_fetch_assoc($menuEntries) )
+					{
+						// We output every menu entry
+						
+						// Declare whether the link is external or internal
+						// First, we explode the href by the / characters
+						$hrExploded = explode('/', $eRow['href']);
+						
+						// Define whether the link is internal or external
+						$hrefType = 'INTERNAL'; // The link is internal by default
+						
+						// Check for HTTP links
+						if ( in_array('http:', $hrExploded) )
+						{
+							$hrefType = 'EXTERNAL'; // If it has HTTP in it, the link is external
+						}
+						
+						// Now, $hrefType is 'INTERNAL' or 'EXTERNAL'
+						
+						$Ctemplate->useTemplate("admin/menus_listentries_entry", array(
+							'E_LABEL'	=>	$eRow['label'], // Entry label
+							'E_HREF'	=>	$eRow['href'], // Entry link target
+							'E_LINK_TYPE'	=>	ucfirst(strtolower($hrefType)), // Type of the link (formatted to be 'Internal' or 'External')
+							'E_ID'	=>	$eRow['id'] // ID of menu entry
+						), FALSE); // Generate table row of one entry
+					}
+					
+					$Ctemplate->useStaticTemplate("admin/menus_listentries_footer", FALSE); // Footer
+				} else {
+					// Give error
+					$Ctemplate->useTemplate("errormessage", array(
+						'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
+						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
+						'TITLE'	=>	"Missing parameters", // Error title
+						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
+						'ALT'	=>	"Missing parameters" // Alternate picture text
+					), FALSE ); // We give an unaviable error
+				}
+				break;
+			/* ITEM LISTING */
+			/* ------------------- */
+			/* ITEM SOMETHING (probably deletion first) */
 		}
 		break;
 }
