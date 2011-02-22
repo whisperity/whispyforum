@@ -176,8 +176,8 @@ switch ($site) // Outputs and scripts are based on the site variable
 						$Ctemplate->useTemplate("successbox", array(
 							'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 							'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_txt.png", // Text folder icon
-							'TITLE'	=>	"Menu deleted", // Error title
-							'BODY'	=>	"The menu was deleted successfully.", // Error text
+							'TITLE'	=>	"Menu deleted", // Success title
+							'BODY'	=>	"The menu was deleted successfully.", // Success text
 							'ALT'	=>	"Query execution success" // Alternate picture text
 						), FALSE ); // We give a success message
 						
@@ -197,8 +197,8 @@ switch ($site) // Outputs and scripts are based on the site variable
 							$Ctemplate->useTemplate("successbox", array(
 								'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 								'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_txt.png", // Text folder icon
-								'TITLE'	=>	"Menu items deleted", // Error title
-								'BODY'	=>	"The menu's items were deleted successfully.", // Error text
+								'TITLE'	=>	"Menu items deleted", // Success title
+								'BODY'	=>	"The menu's items were deleted successfully.", // Success text
 								'ALT'	=>	"Query execution success" // Alternate picture text
 							), FALSE ); // We give a success message
 						}
@@ -500,7 +500,58 @@ switch ($site) // Outputs and scripts are based on the site variable
 				break;
 			/* ITEM LISTING */
 			/* ------------------- */
-			/* ITEM SOMETHING (probably deletion first) */
+			/* ITEM DELETION */
+			case "delete_entry":
+				// Delete entry
+				
+				// First, we check if there's a present entry ID variable
+				if ( isset($_POST['entry_id']) )
+				{
+					// Query menu id
+					$menuID = mysql_fetch_assoc($Cmysql->Query("SELECT menu_id FROM menu_entries WHERE id=" .$Cmysql->EscapeString($_POST['entry_id'])));
+					
+					// Delete the entry
+					$deleteEntry = $Cmysql->Query("DELETE FROM menu_entries WHERE id=" .$Cmysql->EscapeString($_POST['entry_id'])); // $deleteEntry is TRUE if the query was executed, FALSE if there were errors
+					
+					if ( $deleteEntry == FALSE )
+					{
+						// If there were errors deleting the menu
+						$Ctemplate->useTemplate("errormessage", array(
+							'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
+							'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
+							'TITLE'	=>	"The entry could not be deleted", // Error title
+							'BODY'	=>	"", // Error text
+							'ALT'	=>	"Query execution error" // Alternate picture text
+						), FALSE ); // We give an error
+					} elseif ( $deleteEntry == TRUE )
+					{
+						$Ctemplate->useTemplate("successbox", array(
+							'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
+							'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_txt.png", // Text folder icon
+							'TITLE'	=>	"Entry deleted", // Success title
+							'BODY'	=>	"The entry was deleted successfully.", // Success text
+							'ALT'	=>	"Query execution success" // Alternate picture text
+						), FALSE ); // We give a success message
+						
+						// Back form
+						$Ctemplate->useTemplate("admin/menus_delentry_goback", array(
+							'MENU_ID'	=>	$menuID['menu_id'] // Menu ID
+						), FALSE);
+					}
+				} else {
+					// Give error
+					$Ctemplate->useTemplate("errormessage", array(
+						'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
+						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
+						'TITLE'	=>	"Missing parameters", // Error title
+						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
+						'ALT'	=>	"Missing parameters" // Alternate picture text
+					), FALSE ); // We give an unaviable error
+				}
+				break;
+			/* ITEM DELETION */
+			/* ------------------- */
+			/* ITEM SOMETHING */
 		}
 		break;
 }
