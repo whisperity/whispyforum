@@ -276,7 +276,6 @@ switch ($instPos)
 		}
 		/* Users table */
 		
-		/* UNTESTED!!!! */
 		/* Menus table */
 		// Stores the menu's data
 		$dbtables_menu = FALSE; // We failed creating the tables first
@@ -288,8 +287,11 @@ switch ($instPos)
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'menu information'"); // $dbtables_menu sets to true if we succeeded creating a table
 		
+		$dbtables_menu_data = FALSE; // We failed adding the default data first
+		$dbtables_menu_data = $Cmysql->Query("INSERT INTO menus(header, align, side) VALUES ('Main menu', 0, 'left')"); // $dbtables_menu_data sets to true if we succeeded adding default data
+		
 		// We check menus table creation
-		if ( $dbtables_menu == FALSE )
+		if ( ( $dbtables_menu == FALSE) || ( $dbtables_menu_data == FALSE ) )
 		{
 			// Give error
 			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
@@ -300,7 +302,7 @@ switch ($instPos)
 			$tablecreation = FALSE;
 			
 			$tablelist .= ", menu"; // Append menu table name to fail-list
-		} elseif ( $dbtables_menu != FALSE )
+		} elseif ( ( $dbtables_menu != FALSE )  && ( $dbtables_menu_data != FALSE ) )
 		{
 			// Give success
 			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
@@ -320,8 +322,11 @@ switch ($instPos)
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'menu entry information'"); // $dbtables_menuEntries sets to true if we succeeded creating a table
 		
+		$dbtables_menuEntries_data = FALSE; // We failed adding the default data first
+		$dbtables_menuEntries_data = $Cmysql->Query("INSERT INTO menu_entries(menu_id, label, href) VALUES (1, 'Homepage', 'index.php')"); // $dbtables_menuEntries_data sets to true if we succeeded adding default data
+		
 		// We check menu entries table creation
-		if ( $dbtables_menuEntries == FALSE )
+		if ( ( $dbtables_menuEntries == FALSE) || ( $dbtables_menuEntries_data == FALSE ) )
 		{
 			// Give error
 			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
@@ -332,7 +337,7 @@ switch ($instPos)
 			$tablecreation = FALSE;
 			
 			$tablelist .= ", menu_entries"; // Append menu table name to fail-list
-		} elseif ( $dbtables_menuEntries != FALSE )
+		} elseif ( ( $dbtables_menuEntries != FALSE ) && ( $dbtables_menuEntries_data != FALSE ) )
 		{
 			// Give success
 			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
@@ -340,7 +345,6 @@ switch ($instPos)
 			), FALSE);
 		}
 		/* Menu entries table */
-		/* UNTESTED */
 		
 		// Check global variable status
 		if ( $tablecreation == FALSE )

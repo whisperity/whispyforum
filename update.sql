@@ -10,11 +10,20 @@
 # 
 # EXAMPLE:
 # 
-# If you have a databse installed with
+# If you have a database installed with
 # revision 98, and your current files requir
 # revision 250, you must apply every update query
 # like revision 105, revision 140, revision 180
 # revision 198, revision 202, etc.
+#
+# EXAMPLE 2:
+# 
+# If yo have a database installed with
+# using a revision 421 system, you have
+# the users table.
+# However, to use the menu system, you need to 
+# apply the changes of 
+# revisions: 460, 491, 497 and 518.
 
 #
 # Revision 419 (creating database)
@@ -66,3 +75,10 @@ CREATE TABLE IF NOT EXISTS menu_entries (
 	`href` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'link data',
 	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'menu entry information';
+
+#
+# Revision 518 (finished implementing menu system so we can add default menu data to install script)
+#
+INSERT INTO menus(header, align, side) VALUES ('Main menu', 0, 'left');
+
+INSERT INTO menu_entries(menu_id, label, href) VALUES (1, 'Homepage', 'index.php');
