@@ -448,13 +448,14 @@ switch ($site) // Outputs and scripts are based on the site variable
 						$Cmysql->EscapeString($_POST['menu_id']));
 					
 					// Query the title of the menu
-					$menuData = mysql_fetch_assoc($Cmysql->Query("SELECT header FROM menus WHERE id=" .
+					$menuData = mysql_fetch_assoc($Cmysql->Query("SELECT id, header FROM menus WHERE id=" .
 						$Cmysql->EscapeString($_POST['menu_id'])));
 					
 					// Count menu items
 					$m_NumOfItems = mysql_fetch_row($Cmysql->Query("SELECT COUNT(*) FROM menu_entries WHERE menu_id=" . $Cmysql->EscapeString($_POST['menu_id'])));
 					
 					$Ctemplate->useTemplate("admin/menus_listentries_header", array(
+						'M_ID'	=>	$menuData['id'], // Menu ID
 						'M_HEADER'	=>	$menuData['header'], // Menu title
 						'M_NUM_ITEMS'	=>	$m_NumOfItems[0] // Number of entries
 					), FALSE); // Header
@@ -551,7 +552,108 @@ switch ($site) // Outputs and scripts are based on the site variable
 				break;
 			/* ITEM DELETION */
 			/* ------------------- */
-			/* ITEM SOMETHING */
+			/* ITEM CREATION */
+			case "create_entry":
+				// Entry creation (giving form)
+				
+				if ( isset($_POST['menu_id']) )
+				{
+					$menuHeader = mysql_fetch_row($Cmysql->Query("SELECT header FROM menus WHERE id=" .
+						$Cmysql->EscapeString($_POST['menu_id'])));
+					
+					if ( @$_POST['error_goback'] == "yes" ) // If user is redirected because of an error
+					{
+						// We output the form with data returned (user doesn't have to enter it again)
+						$Ctemplate->useTemplate("admin/menus_createentry_form", array(
+							'LABEL'	=>	$_POST['label'], // Entry label
+							'HREF'	=>	$_POST['href'], // Link target
+							'M_HEADER'	=>	$menuHeader[0], // Menu header
+							'MENU_ID'	=>	$_POST['menu_id'] // Menu ID
+						), FALSE);
+					} else {
+						// We output general form
+						$Ctemplate->useTemplate("admin/menus_createentry_form", array(
+							'LABEL'	=>	"", // Entry label
+							'HREF'	=>	"", // Link target
+							'M_HEADER'	=>	$menuHeader[0], // Menu header
+							'MENU_ID'	=>	$_POST['menu_id'] // Menu ID
+						), FALSE);
+					}
+				} else {
+					// Give error
+					$Ctemplate->useTemplate("errormessage", array(
+						'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
+						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
+						'TITLE'	=>	"Missing parameters", // Error title
+						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
+						'ALT'	=>	"Missing parameters" // Alternate picture text
+					), FALSE ); // We give an unaviable error
+				}
+				
+				break;
+			case "create_entry_do":
+				// Create the new entry (SQL)
+				
+				// First, we check whether every required variables were entered
+				if ( $_POST['label'] == NULL ) // Menu header
+				{
+					$Ctemplate->useTemplate("admin/menus_createentry_variable_error", array(
+						'VARIABLE'	=>	"Label", // Missing variable's name
+						'LABEL'	=>	$_POST['label'], // Entry label (should be empty)
+						'HREF'	=>	$_POST['href'], // Link target
+						'MENU_ID'	=>	$_POST['menu_id'] // Menu ID
+					), FALSE);
+					
+					// We terminate the script
+					$Ctemplate->useStaticTemplate("admin/admin_foot", FALSE); // Footer
+					DoFooter();
+					exit;
+				}
+				
+				if ( $_POST['href'] == NULL ) // Align position
+				{
+					$Ctemplate->useTemplate("admin/menus_createentry_variable_error", array(
+						'VARIABLE'	=>	"URL", // Missing variable's name
+						'LABEL'	=>	$_POST['label'], // Entry label
+						'HREF'	=>	$_POST['href'], // Link target (should be empty)
+						'MENU_ID'	=>	$_POST['menu_id'] // Menu ID
+					), FALSE);
+					
+					// We terminate the script
+					$Ctemplate->useStaticTemplate("admin/admin_foot", FALSE); // Footer
+					DoFooter();
+					exit;
+				}
+				
+				// Every variable has value, do the SQL query.
+				$eCreate = $Cmysql->Query("INSERT INTO menu_entries(menu_id, label, href) VALUES('" .
+					$Cmysql->EscapeString($_POST['menu_id'])."', '".
+					$Cmysql->EscapeString($_POST['label'])."', '".
+					$Cmysql->EscapeString($_POST['href']). "')");
+				
+				// $eCreate is TRUE if we succeeded
+				// $eCreate is FALSE if we failed
+				
+				if ( $eCreate == FALSE )
+				{
+					// Failed to create the menu
+					$Ctemplate->useTemplate("admin/menus_createentry_error", array(
+						'LABEL'	=>	$_POST['label'], // Entry label
+						'HREF'	=>	$_POST['href'], // Link target
+						'MENU_ID'	=>	$_POST['menu_id'] // Menu ID
+					), FALSE); // Output a retry form
+				} elseif ( $eCreate == TRUE )
+				{
+					// Created the menu
+					$Ctemplate->useTemplate("admin/menus_createentry_success", array(
+						'LABEL'	=>	$_POST['label'], // Entry label
+						'M_ID'	=>	$_POST['menu_id'] // Menu ID
+					), FALSE); // Output a success form
+				}
+				break;
+			/* ITEM CREATION */
+			/* ------------------- */
+			/* ITEM SOMETHING (probably edit) */
 		}
 		break;
 }

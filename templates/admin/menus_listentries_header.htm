@@ -2,8 +2,18 @@
 <!--- Usage: administrator control panel module 'menus' menu listing form of entries -- header -->
 <table border="1" style="width: 100%">
 <tr>
-<th colspan="2">{M_HEADER}</th>
-<td colspan="3">Number of items: {M_NUM_ITEMS}</td>
+<th>{M_HEADER}</th>
+<td colspan="2">Number of items: {M_NUM_ITEMS}</td>
+<td colspan="2">
+<!--- New entry form -->
+<form method="POST" action="control_admin.php">
+<input type="hidden" name="site" value="menus">
+<input type="hidden" name="m_subsite" value="create_entry">
+<input type="hidden" name="menu_id" value="{M_ID}">
+<input type="submit" value="Add new entry">
+</form>
+<!--- New entry form -->
+</td>
 </tr>
 <tr>
 <th>Label</th>
