@@ -56,6 +56,7 @@ if ( isset($_POST['site']) )
 
 switch ($site) // Outputs and scripts are based on the site variable
 {
+	/* * MENU MANAGING * */
 	case "menus":
 		// Menu and menu item editor
 		
@@ -409,7 +410,7 @@ switch ($site) // Outputs and scripts are based on the site variable
 					
 					if ( $mEdit == FALSE )
 					{
-						// Failed to create the menu
+						// Failed to edit the menu
 						$Ctemplate->useTemplate("admin/menus_edit_error", array(
 							'MENU_ID'	=>	$_POST['menu_id'], // Menu ID
 							'TITLE'	=>	$_POST['title'], // Header
@@ -418,7 +419,7 @@ switch ($site) // Outputs and scripts are based on the site variable
 						), FALSE); // Output a retry form
 					} elseif ( $mEdit == TRUE )
 					{
-						// Created the menu
+						// Edited the menu
 						$Ctemplate->useTemplate("admin/menus_edit_success", array(
 							'TITLE'	=>	$_POST['title'] // Menu title
 						), FALSE); // Output a success form
@@ -595,7 +596,7 @@ switch ($site) // Outputs and scripts are based on the site variable
 				// Create the new entry (SQL)
 				
 				// First, we check whether every required variables were entered
-				if ( $_POST['label'] == NULL ) // Menu header
+				if ( $_POST['label'] == NULL ) // Entry label
 				{
 					$Ctemplate->useTemplate("admin/menus_createentry_variable_error", array(
 						'VARIABLE'	=>	"Label", // Missing variable's name
@@ -610,7 +611,7 @@ switch ($site) // Outputs and scripts are based on the site variable
 					exit;
 				}
 				
-				if ( $_POST['href'] == NULL ) // Align position
+				if ( $_POST['href'] == NULL ) // URL
 				{
 					$Ctemplate->useTemplate("admin/menus_createentry_variable_error", array(
 						'VARIABLE'	=>	"URL", // Missing variable's name
@@ -636,7 +637,7 @@ switch ($site) // Outputs and scripts are based on the site variable
 				
 				if ( $eCreate == FALSE )
 				{
-					// Failed to create the menu
+					// Failed to create the entry
 					$Ctemplate->useTemplate("admin/menus_createentry_error", array(
 						'LABEL'	=>	$_POST['label'], // Entry label
 						'HREF'	=>	$_POST['href'], // Link target
@@ -644,7 +645,7 @@ switch ($site) // Outputs and scripts are based on the site variable
 					), FALSE); // Output a retry form
 				} elseif ( $eCreate == TRUE )
 				{
-					// Created the menu
+					// Created the entry
 					$Ctemplate->useTemplate("admin/menus_createentry_success", array(
 						'LABEL'	=>	$_POST['label'], // Entry label
 						'M_ID'	=>	$_POST['menu_id'] // Menu ID
@@ -653,9 +654,130 @@ switch ($site) // Outputs and scripts are based on the site variable
 				break;
 			/* ITEM CREATION */
 			/* ------------------- */
-			/* ITEM SOMETHING (probably edit) */
+			/* ITEM EDITION */
+			case "edit_entry":
+				// Entry edition (giving form)
+				
+				// First, we check if there's a present menu ID variable
+				if ( isset($_POST['entry_id']) )
+				{
+					// Do forms
+					$entryProperties = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM menu_entries WHERE id=" .$Cmysql->EscapeString($_POST['entry_id'])));
+					
+					$menuHeader = mysql_fetch_row($Cmysql->Query("SELECT header FROM menus WHERE id=" .
+						$Cmysql->EscapeString($entryProperties['menu_id'])));
+					
+					if ( @$_POST['error_goback'] == "yes" ) // If user is redirected because of an error
+					{
+						// We output the form with data returned (user doesn't have to enter it again)
+						$Ctemplate->useTemplate("admin/menus_editentry_form", array(
+							'M_HEADER'	=>	$menuHeader[0], // Menu header
+							'ENTRY_ID'	=>	$_POST['entry_id'], // Entry ID
+							'LABEL'	=>	$_POST['label'], // Entry label
+							'HREF'	=>	$_POST['href'] // Link target
+						), FALSE);
+					} else {
+						// We output general form
+						$Ctemplate->useTemplate("admin/menus_editentry_form", array(
+							'M_HEADER'	=>	$menuHeader[0], // Menu header
+							'ENTRY_ID'	=>	$_POST['entry_id'], // Entry ID
+							'LABEL'	=>	$entryProperties['label'], // Entry label
+							'HREF'	=>	$entryProperties['href'] // URL
+						), FALSE);
+					}
+				} else {
+					// Give error
+					$Ctemplate->useTemplate("errormessage", array(
+						'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
+						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
+						'TITLE'	=>	"Missing parameters", // Error title
+						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
+						'ALT'	=>	"Missing parameters" // Alternate picture text
+					), FALSE ); // We give an unaviable error
+				}
+				break;
+			case "edit_entry_do":
+				// Do entry edition (SQL)
+				
+				// Check if we were passed with the menu ID
+				if ( isset($_POST['entry_id']) )
+				{
+					// Check whether every required variables were entered (and wasn't deleted while editing)
+					if ( $_POST['label'] == NULL ) // Entry label
+					{
+						$Ctemplate->useTemplate("admin/menus_editentry_variable_error", array(
+							'VARIABLE'	=>	"Label", // Missing variable's name
+							'LABEL'	=>	$_POST['label'], // Entry label (should be empty)
+							'HREF'	=>	$_POST['href'], // Link target
+							'ENTRY_ID'	=>	$_POST['entry_id'] // Entry ID
+						), FALSE);
+						
+						// We terminate the script
+						$Ctemplate->useStaticTemplate("admin/admin_foot", FALSE); // Footer
+						DoFooter();
+						exit;
+					}
+					
+					if ( $_POST['href'] == NULL ) // URL
+					{
+						$Ctemplate->useTemplate("admin/menus_editentry_variable_error", array(
+							'VARIABLE'	=>	"URL", // Missing variable's name
+							'LABEL'	=>	$_POST['label'], // Entry label
+							'HREF'	=>	$_POST['href'], // Link target (should be empty)
+							'ENTRY_ID'	=>	$_POST['entry_id'] // Entry ID
+						), FALSE);
+						
+						// We terminate the script
+						$Ctemplate->useStaticTemplate("admin/admin_foot", FALSE); // Footer
+						DoFooter();
+						exit;
+					}
+					
+					
+					// Every variable has value, do the SQL query.
+					$eEdit = $Cmysql->Query("UPDATE menu_entries SET label='" .
+						$Cmysql->EscapeString($_POST['label'])."', href='".
+						$Cmysql->EscapeString($_POST['href'])."' WHERE id='" .
+						$Cmysql->EscapeString($_POST['entry_id']). "'");
+					
+					// $eEdit is TRUE if we succeeded
+					// $eEdit is FALSE if we failed
+					$eEdit = TRUE;
+					if ( $eEdit == FALSE )
+					{
+						// Failed to modify the entry
+						$Ctemplate->useTemplate("admin/menus_editentry_error", array(
+							'LABEL'	=>	$_POST['label'], // Entry label
+							'HREF'	=>	$_POST['href'], // Link target
+							'ENTRY_ID'	=>	$_POST['entry_id'] // Entry ID
+						), FALSE); // Output a retry form
+					} elseif ( $eEdit == TRUE )
+					{
+						// Get the menu's ID
+						$menuID = mysql_fetch_row($Cmysql->Query("SELECT menu_id FROM menu_entries WHERE id=" .$Cmysql->EscapeString($_POST['entry_id'])));
+						
+						// Modified the entry
+						$Ctemplate->useTemplate("admin/menus_editentry_success", array(
+							'LABEL'	=>	$_POST['label'], // Entry label
+							'MENU_ID'	=>	$menuID[0] // Menu ID
+						), FALSE); // Output a success form
+					}
+				} else {
+					// Give error
+					$Ctemplate->useTemplate("errormessage", array(
+						'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
+						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
+						'TITLE'	=>	"Missing parameters", // Error title
+						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
+						'ALT'	=>	"Missing parameters" // Alternate picture text
+					), FALSE ); // We give an unaviable error
+				}
+				break;
+			/* ITEM EDITION */
 		}
 		break;
+	/* * MENU MANAGING * */
+	/* --------------------------- */
 }
 }
 $Ctemplate->useStaticTemplate("admin/admin_foot", FALSE); // Footer
