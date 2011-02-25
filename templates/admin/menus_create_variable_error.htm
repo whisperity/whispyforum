@@ -1,0 +1,22 @@
+<!--- BEGIN admin menus create variable error -->
+<!--- Usage: administrator control panel module 'menus' menu creation variable error box -->
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/winky/Nuvola_filesystems_folder_txt.png" alt="Error!"></td>
+		<td class="errortitle">Error!</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">You didn't entered one of the required variables, {VARIABLE} cannot be empty. The menu creation cannot be done until every required variable is entered.</td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+<form method="POST" action="control_admin.php">
+<input type="hidden" name="title" value="{TITLE}">
+<input type="hidden" name="align_pos" value="{ALIGN_POS}">
+<input type="hidden" name="side" value="{SIDE}">
+<input type="hidden" name="site" value="menus">
+<input type="hidden" name="m_subsite" value="create_menu">
+<input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
+<input type="submit" value="<< Back">
+</form>
+<!--- END admin menus create error -->

@@ -1,0 +1,24 @@
+<!--- BEGIN admin menus editentry error -->
+<!--- Usage: administrator control panel module 'menus' entry edition error (sql error) -->
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/winky/Nuvola_filesystems_folder_locked.png" alt="Error!"></td>
+		<td class="errortitle">Error!</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">There were errors executing the SQL query to edit the entry. The entry wasn't modified.</td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+
+If you want to retry, click back.
+<form method="POST" action="control_admin.php">
+<input type="hidden" name="entry_id" value="{ENTRY_ID}">
+<input type="hidden" name="label" value="{LABEL}">
+<input type="hidden" name="href" value="{HREF}">
+<input type="hidden" name="site" value="menus">
+<input type="hidden" name="m_subsite" value="edit_entry">
+<input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
+<input type="submit" value="<< Back">
+</form>
+<!--- END admin menus editentry error -->

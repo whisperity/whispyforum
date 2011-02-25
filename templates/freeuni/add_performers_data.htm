@@ -1,0 +1,16 @@
+<!--- BEGIN freeuniversity add performers data -->
+<!--- Usage: performers adding performer data -->
+Az új előadó felvételéhez kérlek add meg az adatait.<br>
+<font class="emphasis">A vörös csillaggal (<span class="red-star">*</span>) jelölt mezőket kötelezően ki kell tölteni.<br>A kék csillaggal (<span class="blue-star">*</span>) jelölt mezőkből legalább egyet kötelezően ki kell tölteni.</font>
+<br><br>
+<form method="POST" action="freeuni_add_performer.php">
+<span class="form-header">Új előadó adatai</span><br>
+Előadó neve<span class="red-star">*</span>: <input type="text" name="pname" value="{PNAME}" size=35><br>
+E-mail cím<span class="blue-star">*</span>: <input type="text" name="email" value="{EMAIL}" size=35><br>
+Telefonszám<span class="blue-star">*</span>: <input type="text" name="telephone" value="{TELEPHONE}" size=35><br>
+Megjegyzés:<br><textarea name="comments" rows="8" cols="30">{COMMENTS}</textarea><br>
+<input type="submit" value="Tovább >>">
+<input type="hidden" name="addPos" value=1>
+</form>
+<font class="emphasis">A továbblépéshez kattints a gombra.</font>
+<!--- END freeuniversity add performers data -->

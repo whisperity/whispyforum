@@ -1,0 +1,22 @@
+<!--- BEGIN registration userdata variable error -->
+<!--- Usage: user registration empty variable error box -->
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/winky/Nuvola_filesystems_folder_txt.png" alt="Error!"></td>
+		<td class="errortitle">Error!</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">You didn't entered one of the required variables, {VARIABLE} cannot be empty. The registration cannot continue until every required variable is entered.</td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+<form method="POST" action="registration.php">
+<input type="hidden" name="username" value="{USERNAME}">
+<input type="hidden" name="password" value="{PASSWORD}">
+<input type="hidden" name="password_again" value="{PASSWORD_AGAIN}">
+<input type="hidden" name="email" value="{EMAIL}">
+<input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
+<input type="submit" value="<< Back">
+<input type="hidden" name="regPos" value=1> <!--- Going back to step 2 -->
+</form>
+<!--- END registration userdata variable error -->

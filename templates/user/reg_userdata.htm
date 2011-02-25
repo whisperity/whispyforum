@@ -1,0 +1,16 @@
+<!--- BEGIN registration userdata -->
+<!--- Usage: user registration information form -->
+Az új felhasználó regisztrálásához írd be a belépesi adatait. Tovébbi felhasználói adatok (mint például aláírás vagy avatar) a felhasználói vezérlőpultban lesz beállítható belépés után.<br>
+<font class="emphasis">A vörös csillaggal (<span class="red-star">*</span>) jelölt mezőket kötelezően ki kell tölteni.</font>
+<br><br>
+<form method="POST" action="registration.php">
+<span class="form-header">Új felhasználó belépési adatai</span><br>
+Név<span class="red-star">*</span>: <input type="text" name="username" value="{USERNAME}" size=35><br>
+Jelszó<span class="red-star">*</span>: <input type="password" name="password" value="{PASSWORD}" size=35><br>
+Jelszó (újra)<span class="red-star">*</span>: <input type="password" name="password_again" value="{PASSWORD_AGAIN}" size=35><br>
+E-mail cím<span class="red-star">*</span>: <input type="text" name="email" value="{EMAIL}" size=35><br>
+<input type="submit" value="Tovább >>">
+<input type="hidden" name="regPos" value=2> <!--- Proceeding to step 3 -->
+</form>
+<font class="emphasis">A továbblépéshez kattints a gombra.</font>
+<!--- END registration userdata -->

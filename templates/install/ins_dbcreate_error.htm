@@ -1,0 +1,67 @@
+<!--- BEGIN install database creation error -->
+<!--- Usage: database creation error box -->
+<html>
+
+<head>
+<title>Installer - Database</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
+<body>
+
+<table class="install-header" border="0">
+<tr>
+<td class="install-picture"><img src="themes/winky/Nuvola_devices_raid.png" alt="Installer wizard"></td>
+<td><h1 class="install-header" align="center">Installer - Database</h1></td>
+</tr>
+</table>
+
+<!--- We need to crate a new <table> because of modified sizes -->
+
+<table border="0" class="install-center">
+<tr>
+<td class="install-block-left">
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/winky/Nuvola_devices_raid.png" alt="Connection error!"></td>
+		<td class="errortitle">Unable to create database!</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">The database {DBNAME} cannot be created. You can see the corresponding database error box on the page.</td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+
+If you want to retry the database creation, click retry.
+<!--- refresh form -->
+<form method="POST" action="install.php">
+<input type="submit" value="Refresh">
+<input type="hidden" name="instPos" value=4> <!--- same step -->
+</form>
+
+</td>
+<td class="install-block-right" valign="top">
+<!--- menubox -->
+<div id="menucontainer">
+	<div id="header"><div id="header_left"></div>
+	<div id="header_main">Install menu</div><div id="header_right"></div></div>
+    <div id="content">
+        <span class="install-menu-entries">1. Introduction</span><br>
+		<span class="install-menu-entries">2. Configuration file</span><br>
+		<span class="install-menu-entries">3. Writing configuration file.</span><br>
+		<span class="install-menu-entries">4. Testing database connection</span><br>
+		<span class="install-menu-actual">5. Creating database</span><br>
+		<span class="install-menu-entries">6. Creating table structure and content</span><br>
+		<span class="install-menu-entries">7. Administrator user</span><br>
+		<span class="install-menu-entries">8. Creating Administrator user</span><br>
+		<span class="install-menu-entries">9. Finish</span>
+    </div>
+</div>
+<!--- menubox -->
+</td>
+</tr>
+</table>
+
+</body>
+</html>
+<!--- END install database creation error -->

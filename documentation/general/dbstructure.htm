@@ -1,0 +1,372 @@
+<html>
+
+<head>
+<title>Database structure</title>
+</head>
+
+<body>
+
+<h2 align="center">Database structure</h2>
+<p>(Generated with <a href="http://phpmyadmin.net">phpMyAdmin</a>)</p>
+<h1>Tables</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Table</th>
+      <th>Comments</th>
+    </tr>
+  </thead>
+  <tr class="odd">
+    <th><a href="#tbl_menus">menus</a></th>
+    <td>menu information</td>
+  </tr>
+  <tr>
+    <th><a href="#tbl_menu_entries">menu_entries</a></th>
+    <td>menu entry information</td>
+  </tr>
+  <tr>
+    <th><a href="#tbl_users">users</a> </th>
+    <td>userdata</td>
+  </tr>
+  <tr>
+    <th align="center">3 table(s) </th>
+    <th>&nbsp;</th>
+  </tr>
+</table>
+<h1><a name="tbl_menus"></a>menus</h1>
+<p><b>Table comments:</b> menu information</p>
+<h3>Fields</h3>
+<table style="width: 100%;">
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Types</th>
+      <th>Null</th>
+      <th>Default</th>
+      <th>Comments</th>
+      <th>MIME</th>
+      <th>&nbsp;</th>
+    </tr>
+    <tr>
+      <!--<th>Tulajdonságok</th>-->
+      <!--<th>Extra</th>-->
+    </tr>
+  </thead>
+  <tr>
+    <td><a name="menus_id"></a>id </td>
+    <td>int(10)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>&nbsp;</td>
+    <!--<td>auto_increment&nbsp;</td>-->
+    <td>auto increasing ID&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>header </td>
+    <td>varchar(64)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>menu header&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>align </td>
+    <td>tinyint(2)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>0&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>sidebar vertical align&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>side </td>
+    <td>enum('left', 'right')</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>left&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>sidebar choice&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<h3>Indexes</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Keyname</th>
+      <th>Type</th>
+      <th>Unique</th>
+      <th>Packed</th>
+      <th>Field</th>
+      <th>Cardinality</th>
+      <th>Collation</th>
+      <th>Null</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+  <tr class="odd">
+    <th rowspan="1">PRIMARY</th>
+    <td rowspan="1">BTREE</td>
+    <td rowspan="1">Igen</td>
+    <td rowspan="1">No</td>
+    <td>id</td>
+    <td>0</td>
+    <td>A</td>
+    <td>&nbsp;</td>
+    <td rowspan="1">&nbsp;</td>
+  </tr>
+</table>
+<h1><a name="tbl_menu_entries"></a>menu_entries</h1>
+<p><b>Table comments: </b>menu entry information</p>
+<h3>Fields</h3>
+<table style="width: 100%;">
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Types</th>
+      <!--<th>Tulajdonságok</th>-->
+      <th>Null</th>
+      <th>Default</th>
+      <!--<th>Extra</th>-->
+      <th>Comments</th>
+      <th>MIME</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tr>
+    <td>id </td>
+    <td>int(10)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>&nbsp;</td>
+    <!--<td>auto_increment&nbsp;</td>-->
+    <td>auto increasing ID&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>menu_id </td>
+    <td>int(10)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>menu id (<a href="#menus_id">menus.id</a>)&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>label </td>
+    <td>varchar(64)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>text to show&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>href </td>
+    <td>varchar(255)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>link data&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<h3>Indexes</h3>
+<table height="42">
+  <thead>
+    <tr>
+      <th height="15">Keyname</th>
+      <th height="15">Type</th>
+      <th height="15">Unique</th>
+      <th height="15">Packed</th>
+      <th height="15">Field</th>
+      <th height="15">Cardinality</th>
+      <th height="15">Collation</th>
+      <th height="15">Null</th>
+      <th height="15">Comment</th>
+    </tr>
+  </thead>
+  <tr class="odd">
+    <th rowspan="1" height="19">PRIMARY</th>
+    <td rowspan="1" height="19">BTREE</td>
+    <td rowspan="1" height="19">Igen</td>
+    <td rowspan="1" height="19">No</td>
+    <td height="19">id</td>
+    <td height="19">0</td>
+    <td height="19">A</td>
+    <td height="19">&nbsp;</td>
+    <td rowspan="1" height="19">&nbsp;</td>
+  </tr>
+</table>
+<h2><a name="tbl_users"></a>Table 'users'</h2>
+<p><b>Table comments:</b> userdata</p>
+<h3>Fields</h3>
+<table style="width: 100%;">
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <!--<th>Attributes</th>-->
+      <th>Null</th>
+      <th>Default</th>
+      <!--<th>Extra</th>-->
+      <th>Comments</th>
+      <th>MIME</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tr>
+    <td><a name="users_id"></a>id </td>
+    <td>int(10)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>&nbsp;</td>
+    <!--<td>auto_increment&nbsp;</td>-->
+    <td>auto increasing ID&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a name="users_username"></a>username </td>
+    <td>varchar(64)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>user loginname&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a name="users_pwd"></a>pwd </td>
+    <td>varchar(32)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>user password (md5 hashed)&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>email </td>
+    <td>varchar(128)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>user e-mail address&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a name="users_curr_ip"></a>curr_ip </td>
+    <td>varchar(16)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>0.0.0.0&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>current session IP address&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a name="users_curr_sessid"></a>curr_sessid </td>
+    <td>varchar(32)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>current session ID&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>regdate </td>
+    <td>varchar(32)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>registration date&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a name="users_loggedin"></a>loggedin </td>
+    <td>tinyint(1)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>0&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>1 if user is currently logged in, 0 if not&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a name="users_userLevel"></a>userLevel </td>
+    <td>tinyint(2)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No&nbsp;</td>
+    <td>0&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>clearance level&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><a href="user-levels.htm">Related info</a></td>
+  </tr>
+  <tr>
+    <td><a name="users_avatar_filename"></a>avatar_filename</td>
+    <td>varchar(36)</td>
+    <td>No</td>
+    <td>&nbsp;</td>
+    <td>avatar picture filename</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<h3>Indexes</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Keyname</th>
+      <th>Type</th>
+      <th>Unique</th>
+      <th>Packed</th>
+      <th>Field</th>
+      <th>Cardinality</th>
+      <th>Collation</th>
+      <th>Null</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+  <tr class="odd">
+    <th rowspan="1">PRIMARY</th>
+    <td rowspan="1">BTREE</td>
+    <td rowspan="1">Yes</td>
+    <td rowspan="1">No</td>
+    <td>id</td>
+    <td>0</td>
+    <td>A</td>
+    <td>&nbsp;</td>
+    <td></td>
+  </tr>
+</table>
+
+</body>
+
+</html>

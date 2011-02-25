@@ -1,0 +1,222 @@
+/**
+ * WhispyForum stylesheet - style.css
+ * 
+ * CSS stylesheet used to define the look of the site
+ * 
+ * Theme name: winky
+ * 
+ * WhispyForum
+ */
+
+/* ************************************ */
+/* General */
+
+body { padding-top: 30px;
+	background-color: #CCCCCC }
+
+span.red-star { color: #FF0000;
+	font-weight: bold }
+	
+span.blue-star { color: #000BCC;
+	font-weight: bold }
+
+font.emphasis { font-weight: bold}
+
+/* Framework */
+div.headerbox { width: 100%; }
+
+div.footerbox { width: 100%; }
+
+table.centerdiv { width: 100% }
+
+td.left { width: 20% }
+
+td.center { width: 60% }
+
+td.right { width: 20% }
+/* Framework */
+
+/* Forms */
+form {}
+
+input {}
+
+span.form-header {}
+
+/* Forms */
+
+/* General */
+
+/* ************************************ */
+/* Error message box template */
+table.errorbox { font-weight: bold;
+        color: Maroon;
+        background-color: #FFC0C0;
+        border: 1px solid maroon;
+        padding: 3px;
+        line-height: 125%;
+        margin: 1em auto }
+	
+td.errortitle { font-family: MS Sans Serif;
+	font-size:14pt;
+	text-decoration:underline;
+	font-weight:bold;}
+
+td.errorpicture {}
+
+td.errorbody {}
+/* Error message box template */
+
+/* General message box template */
+table.messagebox { font-weight: bold;
+        color: DarkOrange;
+        background-color: #FFFFC0;
+        border: 1px solid orange;
+        padding: 3px;
+        line-height: 125%;
+        margin: 1em auto }
+	
+td.messagetitle { font-family: MS Sans Serif;
+	font-size:14pt;
+	text-decoration:underline;
+	font-weight:bold;}
+
+td.messagepicture {}
+
+td.messagebody {}
+/* General message box template */
+
+/* Success message box template (nearly identical to errorbox) */
+table.successbox { font-weight: bold;
+        color: DarkGreen;
+        background-color: #C0FFC0;
+        border: 1px solid darkgreen;
+        padding: 3px;
+        line-height: 125%;
+        margin: 1em auto }
+	
+td.successtitle { font-family: MS Sans Serif;
+	font-size:14pt;
+	text-decoration:underline;
+	font-weight:bold;}
+
+td.successpicture {}
+
+td.successbody {}
+/* Success message box template (nearly identical to errorbox) */
+
+/* ************************************ */
+/* Install */
+table.install-header { width: 100% } /* Do not remove width: 100% */
+
+h1.install-header {}
+
+h2.install-header {}
+
+td.install-picture { width: 96px }
+
+table.install-center { width: 100% }
+
+td.install-block-left { width: 75% }
+
+td.install-block-right { width: 25% }
+
+span.install-menu-actual { color: #AB1852 }
+
+span.install-menu-entries { color: #49A835 }
+/* Install */
+
+/* Menu box */
+#menucontainer {
+	margin: auto;
+	width: 300px;
+	border-top-width: 0px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #000033;
+	border-right-color: #000033;
+	border-bottom-color: #000033;
+	border-left-color: #000033;
+	background-color: #FFFFFF;
+}
+
+#menucontainer #header #header_left {
+	float: left;
+	background-image: url(header_left.gif);
+	background-repeat: no-repeat;
+	height: 42px;
+	width: 45px;
+}
+
+#menucontainer #header #header_right {
+	background-image: url(header_right.gif);
+	background-repeat: no-repeat;
+	height: 42px;
+	width: 6px;
+	float: right;
+}
+
+#menucontainer #content {
+	padding: 5px;
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	color: #666666;
+}
+
+#menucontainer #footer {
+	clear:both;
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #999999;
+	text-align: right;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-top-color: #999999;
+	border-right-color: #000033;
+	border-bottom-color: #000033;
+	border-left-color: #000033;
+	padding-top: 5px;
+	padding-right: 10px;
+	padding-bottom: 5px;
+	padding-left: 5px;
+}
+#menucontainer #footer a {
+	color: #999999;
+	text-decoration: none;
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+}
+
+#menucontainer #header #header_main {
+	float: left;
+	padding: 5px;
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #FFFFFF;
+	margin-top: 5px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+}
+
+#menucontainer #header {
+	padding: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	background-image: url(header_bg.gif);
+	background-repeat: repeat-x;
+	height: 42px;
+}
+/* Menu box */

@@ -1,0 +1,28 @@
+<!--- BEGIN admin menus listentries entry -->
+<!--- Usage: administrator control panel module 'menus' menu listing form of entries -- entry details -->
+<tr>
+<td>{E_LABEL}</td>
+<td>{E_HREF}</td>
+<td>{E_LINK_TYPE}</td>
+<td>
+<!--- Edit entry -->
+<form method="POST" action="control_admin.php">
+<input type="hidden" name="site" value="menus">
+<input type="hidden" name="m_subsite" value="edit_entry">
+<input type="hidden" name="entry_id" value="{E_ID}">
+<input type="submit" value="Edit">
+</form>
+<!--- Edit entry -->
+</td>
+<td>
+<!--- Delete entry -->
+<form method="POST" action="control_admin.php">
+<input type="hidden" name="site" value="menus">
+<input type="hidden" name="m_subsite" value="delete_entry">
+<input type="hidden" name="entry_id" value="{E_ID}">
+<input type="submit" value="Delete">
+</form>
+<!--- Delete entry -->
+</td>
+</tr>
+<!--- END admin menus listentries entry -->

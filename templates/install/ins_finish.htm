@@ -1,0 +1,71 @@
+<!--- BEGIN install finish -->
+<!--- Usage: last install screen -->
+<html>
+
+<head>
+<title>Installer - Finish</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
+<body>
+
+<table class="install-header" border="0">
+<tr>
+<td class="install-picture"><img src="themes/winky/Nuvola_apps_package_settings.png" alt="Installer wizard"></td>
+<td><h1 class="install-header" align="center">Installer - Finish</h1></td>
+</tr>
+</table>
+
+<!--- We need to crate a new <table> because of modified sizes -->
+
+<table border="0" class="install-center">
+<tr>
+<td class="install-block-left">
+The installation process have finished!
+<!--- last steps -->
+<table class="messagebox"> <!--- copying the messagebox template -->
+	<tr>
+		<td class="messagepicture"><img src="themes/winky/Nuvola_filesystems_folder_txt.png" alt="A few steps remained"></td>
+		<td class="messagetitle">Just a few steps...</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="messagebody">The installer done everything it could. It made a config file, installed the database and tables, and registered your root user. However, there are a few optional but recommended steps to ensure your safety.<br><br>
+		To make sure externals cannot corrupt your configuration, first, make your configuration file (<tt>/config.php</tt>) read-only. The normal usage of the engine does not require the writing rights.<br><br>
+		Secondly, remove the <tt>install.php</tt> file from the root (/) directory. If you do so, entering the install file's path into the browser give a 404 error.</td>
+	</tr>
+</table> <!--- copying the message template -->
+<!--- last steps -->
+This is the end of the installation. Have a nice upcoming year or more with engine.<br>
+<font class="emphasis">To return to the homepage, please click the button below.</font>
+
+<!--- proceed form -->
+<form method="POST" action="index.php">
+<input type="submit" value="Homepage >>">
+</form>
+</td>
+<td class="install-block-right" valign="top">
+<!--- menubox -->
+<div id="menucontainer">
+	<div id="header"><div id="header_left"></div>
+	<div id="header_main">Install menu</div><div id="header_right"></div></div>
+    <div id="content">
+        <span class="install-menu-entries">1. Introduction</span><br>
+		<span class="install-menu-entries">2. Configuration file</span><br>
+		<span class="install-menu-entries">3. Writing configuration file.</span><br>
+		<span class="install-menu-entries">4. Testing database connection</span><br>
+		<span class="install-menu-entries">5. Creating database</span><br>
+		<span class="install-menu-entries">6. Creating table structure and content</span><br>
+		<span class="install-menu-entries">7. Administrator user</span><br>
+		<span class="install-menu-entries">8. Creating Administrator user</span><br>
+		<span class="install-menu-actual">9. Finish</span>
+    </div>
+</div>
+<!--- menubox -->
+</td>
+</tr>
+</table>
+
+</body>
+</html>
+<!--- END install finish -->

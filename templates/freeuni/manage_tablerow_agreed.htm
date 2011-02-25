@@ -1,0 +1,30 @@
+<!--- BEGIN freeuniversity manage performers tablerow agreed -->
+<!--- Usage: performers managing list table row for performers who will come -->
+<tr style="background-color: #83A90A">
+<td>{PERFORMER_NAME}</td>
+<td>{EMAIL}<br>{TELEPHONE}</td>
+<td>{COMMENTS}</td>
+<td>
+<form method="POST" action="freeuni_manage.php">
+<input type="hidden" name="performer_id" value="{PERFORMER_ID}">
+<input type="hidden" name="new_status" value="pending">
+<input type="submit" value="Függőben">
+</form>
+</td>
+<td><!--- agreed --></td>
+<td>
+<form method="POST" action="freeuni_manage.php">
+<input type="hidden" name="performer_id" value="{PERFORMER_ID}">
+<input type="hidden" name="new_status" value="refused">
+<input type="submit" value="Nem vállalja">
+</form>
+</td>
+<td>
+<form method="POST" action="freeuni_manage.php">
+<input type="hidden" name="performer_id" value="{PERFORMER_ID}">
+<input type="hidden" name="new_status" value="deallocate">
+<input type="submit" value="Előadó lemondása">
+</form>
+</td>
+</tr>
+<!--- END freeuniversity manage performers tablerow agreed -->

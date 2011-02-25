@@ -1,0 +1,80 @@
+<!--- BEGIN install start -->
+<!--- Usage: first install screen with introduction -->
+<html>
+
+<head>
+<title>Installer - Introduction</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
+<body>
+
+<table class="install-header" border="0">
+<tr>
+<td class="install-picture"><img src="themes/winky/Nuvola_apps_package_applications.png" alt="Installer wizard"></td>
+<td><h1 class="install-header" align="center">Installer - Introduction</h1></td>
+</tr>
+</table>
+
+<!--- We need to crate a new <table> because of modified sizes -->
+
+<table border="0" class="install-center">
+<tr>
+<td class="install-block-left">
+<h3>Hello! <img src="themes/winky/wave.gif" alt="Hello!"></h3>
+
+Thank you for choosing WhispyForum. This version is the successor of the first WhispyForum, a PHP based portal/forum engine. We think you and your users will delight in the use of this system.
+<br><br>
+<!--- dev state -->
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/winky/Stop_hand.png" alt="Alert!"></td>
+		<td class="errortitle">Disclaimer!</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">This system is in-developement state, hence there are no stable release. There can be unexpected, unforseen and imminent data losses, which can lead to system instability.
+<br><br>
+While using the system, you're well advised to create data backups regurarly, in case if you (unfortunately) have to restore.
+<br><br>
+This package is provided as is. By using this package, you hereby accept our disclaimer. Until we push a stable release, we cannot garantuee that you won't experience any data loss.
+<br><br>
+<small>You've been warned...</small></td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+<!--- dev state -->
+This step is the installation, where you specify the database login, create tables and set up an administrator user.<br>
+<br>
+<font class="emphasis">To proceed, please click the button below.</font>
+
+<!--- proceed form -->
+<form method="POST" action="install.php">
+<input type="submit" value="Next >>">
+<input type="hidden" name="instPos" value=1> <!--- Proceeding to step 2 -->
+</form>
+</td>
+<td class="install-block-right" valign="top">
+<!--- menubox -->
+<div id="menucontainer">
+	<div id="header"><div id="header_left"></div>
+	<div id="header_main">Install menu</div><div id="header_right"></div></div>
+    <div id="content">
+        <span class="install-menu-actual">1. Introduction</span><br>
+		<span class="install-menu-entries">2. Configuration file</span><br>
+		<span class="install-menu-entries">3. Writing configuration file.</span><br>
+		<span class="install-menu-entries">4. Testing database connection</span><br>
+		<span class="install-menu-entries">5. Creating database</span><br>
+		<span class="install-menu-entries">6. Creating table structure and content</span><br>
+		<span class="install-menu-entries">7. Administrator user</span><br>
+		<span class="install-menu-entries">8. Creating Administrator user</span><br>
+		<span class="install-menu-entries">9. Finish</span>
+    </div>
+</div>
+<!--- menubox -->
+</td>
+</tr>
+</table>
+
+</body>
+</html>
+<!--- END install start -->

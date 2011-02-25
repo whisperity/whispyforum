@@ -1,0 +1,90 @@
+<html>
+
+<head>
+<title>User levels</title>
+</head>
+
+<body>
+
+<h2 align="center">User levels</h2>
+
+<h3>Usage</h3>
+<p>User levels define the clearance of the user, what he/she can and cannot do.</p>
+<h3>Set in</h3>
+<p>Database (<a href="dbstructure.htm#users_userLevel">users.userLevel</a>)</p>
+<h3>User levels</h3>
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%">
+  <tr>
+    <th width="16%">Level</th>
+    <th width="16%">Name</th>
+    <th width="17%">Register</th>
+    <th width="17%">Login</th>
+    <th width="17%">Access user control panel (and subsystems)</th>
+    <th width="17%">Access administrator control panel (and subsystems)</th>
+  </tr>
+  <tr>
+    <td width="16%">0</td>
+    <td width="16%">Guest</td>
+    <td width="17%">
+    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
+    <td width="17%">
+    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
+    <td width="17%">
+    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
+    <td width="17%">
+    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
+  </tr>
+  <tr>
+    <td width="16%">1</td>
+    <td width="16%">Normal user</td>
+    <td width="17%">
+    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
+    <td width="17%">
+    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
+    <td width="17%">
+    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
+    <td width="17%">
+    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
+  </tr>
+  <!--- <tr>
+    <td width="16%">2</td>
+    <td width="16%">Moderator</td>
+    <td width="17%">
+    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
+    <td width="17%">
+    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
+    <td width="17%">
+    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
+    <td width="17%">
+    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
+  </tr>
+  <tr>
+    <td width="16%">3</td>
+    <td width="16%">Administrator</td>
+    <td width="17%">
+    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
+    <td width="17%">
+    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
+    <td width="17%">
+    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
+    <td width="17%">
+    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
+  </tr> -->
+  <tr>
+    <td width="16%">4</td>
+    <td width="16%">Root user (only the <a href="dbstructure.htm#users_id">user 
+    ID</a> #1 user have these right, who is registered when installing)</td>
+    <td width="17%">
+    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
+    <td width="17%">
+    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
+    <td width="17%">
+    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
+    <td width="17%">
+    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
+  </tr>
+</table>
+
+</body>
+
+</html>

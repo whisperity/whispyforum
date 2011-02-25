@@ -1,0 +1,129 @@
+<html>
+
+<head>
+<title>/tool.template-test.php</title>
+</head>
+
+<body>
+
+<h2 align="center">/tool.svninfo.php - svn information tool</h2>
+<h3>Usage</h3>
+<p>This is a tool for developers. It outptus an SVN information.</p>
+<h3>Flags</h3>
+<!--msimagelist--><table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <!--msimagelist--><tr>
+    <!--msimagelist--><td valign="baseline" width="42">
+    <img src="style-data/flag.jpg" width="15" height="15" hspace="13" alt="listajel"></td>
+    <td valign="top" width="100%">tool - this script is an extension: it isn't 
+    used by the <a href="general/framework.htm">engine</a>, however, it can require the
+    <a href="general/framework.htm">framework</a><!--msimagelist--></td>
+  </tr>
+  <!--msimagelist--></table>
+<h3>Dependencies</h3>
+<p>
+<a title="TortoiseSVN homepage" target="_blank" href="http://tortoisesvn.tigris.org">
+TortoiseSVN</a> Windows SVN shell extension clients</p>
+<h3>Configuration</h3>
+<p>You can and sometimes have to modify the four DEFINE constants of the file. 
+It stores the working copy's path, the TortoiseSVN root path and the two 
+filenames.</p>
+<p>Output</p>
+<p>The script outputs repository information in a fancy box. The template and 
+parsed information file is generated while executing, and those files are 
+deleted at the end of execution.</p>
+<h3>Contents</h3>
+<h4>
+<img border="0" src="style-data/constant.gif" width="10" height="9" alt="constant"> 
+Constants (defines)</h4>
+<ul>
+  <li><a href="#cons_WC_PATH">WC_PATH</a></li>
+  <li><a href="#cons_svnInfoFN">svnInfoFN</a></li>
+  <li><a href="#cons_TSVNpath">TSVNpath</a></li>
+  <li><a href="#cons_tplFN">tplFN</a></li>
+</ul>
+<h4>Details</h4>
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber1" height="43">
+  <tr>
+    <td width="100%" colspan="2" height="1">
+    <h4><a name="cons_WC_PATH"></a>
+<img border="0" src="style-data/constant.gif" width="10" height="9" alt="constant"> 
+    WC_PATH</h4>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%" height="57">Description</td>
+    <td width="90%" height="57">This is the path of the working copy. (You need 
+    to use <i>chr(92)</i> instead of <i>\</i> characters to prevent unused 
+    string escaping)<p>Ending slash (\) must be omitted.</td>
+  </tr>
+  <tr>
+    <td width="10%" height="4">Example value</td>
+    <td width="90%" height="4">&quot;D:&quot; .chr(92). &quot;xampp&quot; .chr(92). &quot;htdocs&quot;<p>which 
+    is really &quot;D:\xampp\htdocs&quot;</td>
+  </tr>
+</table>
+
+<p>&nbsp;</p>
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber2" height="43">
+  <tr>
+    <td width="100%" colspan="2" height="1">
+    <h4><a name="cons_svnInfoFN"></a>
+<img border="0" src="style-data/constant.gif" width="10" height="9" alt="constant"> 
+    svnInfoFN</h4>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%" height="57">Description</td>
+    <td width="90%" height="57">The name of the svn info filename (this file 
+    stores the generated output)</td>
+  </tr>
+  <tr>
+    <td width="10%" height="4">Example value</td>
+    <td width="90%" height="4">cached.swcr-info.php</td>
+  </tr>
+</table>
+
+<p>&nbsp;</p>
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber3" height="43">
+  <tr>
+    <td width="100%" colspan="2" height="1">
+    <h4><a name="cons_TSVNpath"></a>
+<img border="0" src="style-data/constant.gif" width="10" height="9" alt="constant"> 
+    TSVNpath</h4>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%" height="57">Description</td>
+    <td width="90%" height="57">The path of TortoiseSVN's main directory. (You 
+    need to use <i>chr(92)</i> instead of <i>\</i> characters to prevent unused 
+    string escaping)<p>Ending slash (\) must be omitted.</td>
+  </tr>
+  <tr>
+    <td width="10%" height="4">Example value</td>
+    <td width="90%" height="4">&quot;C:&quot; .chr(92). &quot;Program Files&quot; .chr(92). &quot;TortoiseSVN&quot;<p>
+    which is really &quot;C:\Program Files\TortoiseSVN&quot;</td>
+  </tr>
+</table>
+
+<p>&nbsp;</p>
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber4" height="43">
+  <tr>
+    <td width="100%" colspan="2" height="1">
+    <h4><a name="cons_tplFN"></a>
+<img border="0" src="style-data/constant.gif" width="10" height="9" alt="constant"> 
+    tplFN</h4>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%" height="57">Description</td>
+    <td width="90%" height="57">The name of the template file.</td>
+  </tr>
+  <tr>
+    <td width="10%" height="4">Example value</td>
+    <td width="90%" height="4">cached.swcr-template.php</td>
+  </tr>
+</table>
+
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+<!--- BEGIN freeuniversity add performers variable error -->
+<!--- Usage: performers adding performer variable error box -->
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/winky/Nuvola_filesystems_folder_txt.png" alt="Hiba!"></td>
+		<td class="errortitle">Hiba!</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">Nem töltöttél ki egy kötelező mezőt. A {VARIABLE} mező értéke nem lehet üres. A hozzáadás nem folytatódhat amíg minden kötelező mező ki nem lesz töltve.</td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+<form method="POST" action="freeuni_add_performer.php">
+<input type="hidden" name="pname" value="{PNAME}">
+<input type="hidden" name="email" value="{EMAIL}">
+<input type="hidden" name="telephone" value="{TELEPHONE}">
+<input type="hidden" name="comments" value="{COMMENTS}">
+<input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
+<input type="submit" value="<< Vissza">
+<input type="hidden" name="addPos" value=0>
+</form>
+<!--- END freeuniversity add performers data variable error -->

@@ -1,0 +1,164 @@
+<html>
+
+<head>
+<title>includes/functions.php</title>
+</head>
+
+<body>
+
+<h2 align="center">includes/functions.php - library</h2>
+<h3>Usage</h3>
+<p>This library contains all uncategorized functions of the
+<a href="../general/framework.htm">framework</a>.</p>
+<h3>Flags</h3>
+<p>obligatory - this script is essential for the
+<a href="../general/framework.htm">framework</a></p>
+<!--msimagelist--><table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <!--msimagelist--><tr>
+    <!--msimagelist--><td valign="baseline" width="42">
+    <img src="../style-data/flag.jpg" width="15" height="15" hspace="13" alt="listajel"></td>
+    <td valign="top" width="100%">autoload - this script is automatically loaded by
+    <a href="load.php.htm">loader</a><!--msimagelist--></td>
+  </tr>
+  <!--msimagelist--><tr>
+    <!--msimagelist--><td valign="baseline" width="42">
+    <img src="../style-data/flag.jpg" width="15" height="15" hspace="13" alt="listajel"></td>
+    <td valign="top" width="100%">library - loading this script does not give direct output, it only 
+  registers <a href="../general/classes.htm">classes</a>/<a href="../general/functions.htm">functions</a><!--msimagelist--></td>
+  </tr>
+  <!--msimagelist--></table>
+<h3>Contents</h3>
+<h4>
+<img border="0" src="../style-data/function.gif" width="10" height="9" alt="function"> 
+Functions</h4>
+<ul>
+  <li>
+<img border="0" src="../style-data/public.gif" width="15" height="15" alt="public">
+<a href="#generateToken">generateHexToken</a></li>
+  <li>
+<img border="0" src="../style-data/public.gif" width="15" height="15" alt="public">
+<a href="#generateHexTokenNoDC">generateHexTokenNoDC</a></li>
+  <li>
+<img border="0" src="../style-data/public.gif" width="15" height="15" alt="public">
+<a href="#saveThumbnail">saveThumbnailJPEG</a></li>
+  <li>
+<img border="0" src="../style-data/public.gif" width="15" height="15" alt="public">
+<a href="#saveThumbnail">saveThumbnailGIF</a></li>
+  <li>
+<img border="0" src="../style-data/public.gif" width="15" height="15" alt="public">
+<a href="#saveThumbnail">saveThumbnailPNG</a></li>
+  <li>
+<img border="0" src="../style-data/public.gif" width="15" height="15" alt="public">
+<a href="#decodeSize">DecodeSize</a></li>
+</ul>
+<h3>Details</h3>
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber1" height="43">
+  <tr>
+    <td width="100%" colspan="2" height="1">
+    <h4><a name="generateToken"></a>
+<img border="0" src="../style-data/function.gif" width="10" height="9" alt="function">
+<img border="0" src="../style-data/public.gif" width="15" height="15" alt="public"> 
+    generateHexToken</h4>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%" height="57">Description</td>
+    <td width="90%" height="57"><i>generateHexToken</i> generates a random 
+    hexadecimal token in this format: <b>
+    3c43:a968:3f69:3480:32fe:1206:d835</b> and returns it as a variable.<p>This 
+    function is nearly-identical to <a href="#generateHexTokenNoDC">
+    generateHexTokenNoDC</a>, but this does group the string in 4 char blocks 
+    seperated with a double colon.</td>
+  </tr>
+  </table>
+
+<p>&nbsp;</p>
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber3" height="43">
+  <tr>
+    <td width="100%" colspan="2" height="1">
+    <h4><a name="generateHexTokenNoDC"></a>
+<img border="0" src="../style-data/function.gif" width="10" height="9" alt="function">
+<img border="0" src="../style-data/public.gif" width="15" height="15" alt="public"> 
+    generateHexTokenNoDC</h4>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%" height="15">Description</td>
+    <td width="90%" height="15"><i>generateHexTokenNoDC</i> generates a random 
+    hexadecimal token in this format: <b>
+    3c43a9683f69348032fe1206d835</b> and returns it as a variable.<p>This 
+    function is nearly-identical to <a href="#generateToken">generateHexToken</a>, 
+    but this does not group the string in 4 char blocks seperated with a double 
+    colon (NoDC).</td>
+  </tr>
+  </table>
+
+<p>&nbsp;</p>
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber2" height="43">
+  <tr>
+    <td width="100%" colspan="2" height="1">
+    <h4><a name="saveThumbnail"></a>
+<img border="0" src="../style-data/function.gif" width="10" height="9" alt="function">
+<img border="0" src="../style-data/public.gif" width="15" height="15" alt="public"> 
+    saveThumbnail functions (originalImage, new_height, filename)</h4>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%" height="15">Description</td>
+    <td width="90%" height="15">The saveThumbnail functions generates a 
+    thumbnail with a set height from an image file and saves it as a file. The 
+    input and output files' extension remain the same.<p>There are three 
+    function using the same code. They only differ in image types:</p>
+    <ul>
+      <li>saveThumbnail<b>JPEG</b> - to use with JPEG files</li>
+      <li>saveThumbnail<b>GIF</b> - to use with GIF files</li>
+      <li>saveThumbnail<b>PNG</b> - to us with PNG files</li>
+    </ul>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%" height="14">Parameters</td>
+    <td width="90%" height="14">originalImage - original image file's path and 
+    name<br>
+    new_height - thumbnail's height in pixels<br>
+    filename - output file path and name (without extension)</td>
+  </tr>
+  <tr>
+    <td width="10%" height="14">Return value</td>
+    <td width="90%" height="14">Image file with set <i>filename</i>.</td>
+  </tr>
+  <tr>
+    <td width="10%" height="14">Uses</td>
+    <td width="90%" height="14">
+    <a href="http://www.php.net/manual/en/book.image.php">GD / GD2 image library</a></td>
+  </tr>
+  </table>
+
+<p>&nbsp;</p>
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber2" height="43">
+  <tr>
+    <td width="100%" colspan="2" height="1">
+    <h4><a name="decodeSize"></a>
+<img border="0" src="../style-data/function.gif" width="10" height="9" alt="function">
+<img border="0" src="../style-data/public.gif" width="15" height="15" alt="public"> 
+    DecodeSize(bytes)</h4>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%" height="15">Description</td>
+    <td width="90%" height="15">This function generates a more human-readable 
+    format of a given file size value.</td>
+  </tr>
+  <tr>
+    <td width="10%" height="14">Parameters</td>
+    <td width="90%" height="14">bytes - file size in bytes</td>
+  </tr>
+  <tr>
+    <td width="10%" height="14">Return value</td>
+    <td width="90%" height="14">rounded file size in KB, MB, GB or TB</td>
+  </tr>
+  </table>
+
+</body>
+
+</html>

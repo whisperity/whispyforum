@@ -1,0 +1,27 @@
+<!--
+	Template files are used by the /classes/template.class.php class
+	
+	The templates are basically static HTML files with added
+	replaceable variables in {VARIABLE_NAME} format.
+	
+	These variables are being replaced runtime when parsing the output.
+	
+	Please refer to the /classes/template.class.php for further information.
+-->
+<!--- BEGIN example_template -->
+<!--- Usage: template is used by the template tester tool for testing purposes -->
+<html>
+
+<head>
+<title>{TITLE}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
+<body>
+<h1 align="center">{TITLE}</h1>
+
+Welcome on the {SITENAME} site. If you see the variables you specified, the template system is <font style="color: {WORKING_COLOR}; font-weight: {WEIGHT}">working</font>.
+</body>
+
+</html>
+<!--- END example_template -->

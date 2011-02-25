@@ -1,0 +1,24 @@
+<!--- BEGIN admin menus createentry error -->
+<!--- Usage: administrator control panel module 'menus' entry creation error (sql error) -->
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/winky/Nuvola_filesystems_folder_locked.png" alt="Error!"></td>
+		<td class="errortitle">Error!</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">There were errors executing the SQL query to create the new entry. No new entry was created.</td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+
+If you want to retry, click back.
+<form method="POST" action="control_admin.php">
+<input type="hidden" name="label" value="{LABEL}">
+<input type="hidden" name="href" value="{HREF}">
+<input type="hidden" name="menu_id" value="{MENU_ID}">
+<input type="hidden" name="site" value="menus">
+<input type="hidden" name="m_subsite" value="create_entry">
+<input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
+<input type="submit" value="<< Back">
+</form>
+<!--- END admin menus createentry error -->

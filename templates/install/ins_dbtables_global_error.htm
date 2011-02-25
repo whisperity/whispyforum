@@ -1,0 +1,19 @@
+<!--- BEGIN install database tables creator error -->
+<!--- Usage: database tables creator error box -->
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/winky/Nuvola_devices_raid.png" alt="Database table creation"></td>
+		<td class="errortitle">One or more of the tables could not be created</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">There were errors creating tables <tt>{TABLE_LIST}</tt>. You cannot proceed to the next step.</td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+<!--- retry form -->
+If you want to retry, click the button below.
+<form method="POST" action="install.php">
+<input type="submit" value="Retry">
+<input type="hidden" name="instPos" value=5> <!--- same step -->
+</form>
+<!--- END install database tables creator error -->

@@ -1,0 +1,36 @@
+<!--- BEGIN freeuniversity homepage statictics -->
+<!--- Usage: freeuniversity global statistics (to be showed on the homepage) -->
+<div id="menucontainer" style="width: {WIDTH}">
+	<div id="header"><div id="header_left"></div>
+	<div id="header_main">Globális statisztika</div><div id="header_right"></div></div>
+    <div id="content">
+    
+<table border="1" style="width:100%">
+<tr>
+<th colspan="2">Diákok száma</th>
+<td colspan="2">{NUM_STUDENTS}</td>
+</tr>
+<tr>
+<th colspan="2">Előadók száma</th>
+<td colspan="2">{NUM_PERFORMERS}</td>
+</tr>
+<tr>
+<th colspan="3" style="color: #B8B8B8">Lefoglalt előadók</th>
+<th rowspan="2" style="color: #B4CDEC">Szabad előadók</th>
+</tr>
+<tr>
+<th style="color: #417FCC">Függőben</th>
+<th style="color: #83A90A">Vállalja</th>
+<th style="color: #E58800">Nem vállalja</th>
+</tr>
+<tr>
+<td>{PENDING}</td>
+<td>{WILL_COME}</td>
+<td>{WONT_COME}</td>
+<td>{UNALLOCATED}</td>
+</tr>
+</table>
+
+</div>
+</div>
+<!--- END freeuniversity homepage statictics -->
