@@ -21,9 +21,9 @@ if ( $uDBArray['userLevel'] < 3 )
 	// If the user does not have rights to see the admin panel
 	$Ctemplate->useTemplate("errormessage", array(
 		'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
-		'TITLE'	=>	"Insufficient rights", // Error title
-		'BODY'	=>	"This page requires you to have Administrator or higher rights.", // Error text
-		'ALT'	=>	"User permissions error" // Alternate picture text
+		'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
+		'BODY'	=>	"{LANG_REQUIRED_ADMIN}", // Error text
+		'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
 	), FALSE ); // We give an unaviable error
 } elseif ( $uDBArray['userLevel'] >= 3 )
 {

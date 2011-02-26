@@ -20,8 +20,13 @@ $wf_lang = array(
 	'{LANG_PLEASE_CONFIRM_EXCLAMATION}'	=>	"Please confirm!",
 	'{LANG_LEFT}'	=>	"Left",
 	'{LANG_RIGHT}'	=>	"Right",
+	'{LANG_YES}'	=>	"Yes",
+	'{LANG_NO}'	=>	"No",
+	'{LANG_USING_LOWERCASE}'	=>	"using",
 	'{LANG_USERNAME}'	=>	"Username",
+	'{LANG_USERNAME_LOWERCASE}'	=>	"username",
 	'{LANG_PASSWORD}'	=>	"Password",
+	'{LANG_PASSWORD_LOWERCASE}'	=>	"password",
 	'{LANG_PASSWORD_AGAIN}'	=>	"Password (again)",
 	'{LANG_EMAIL}'	=>	"E-mail",
 	'{LANG_PROCEED_CLICK_BUTTON_BELOW}'	=>	"To proceed, please click the button below.",
@@ -45,19 +50,43 @@ $wf_lang = array(
 	'{LANG_FILE}'	=>	"file",
 	'{LANG_TEMPLATE}'	=>	"Template",
 	'{LANG_DOES_NOT_EXIST}'	=>	"does not exist",
+	'{LANG_FILE_UNAVIABLE}'	=>	"File unaviable",
+	'{LANG_COULD_NOT_BE_MADE}'	=>	"could not be made.",
 	'{LANG_UPLOAD}'	=>	"Upload",
 	'{LANG_OR}'	=>	"or",
 	'{LANG_PIXELS}'	=>	"pixels",
 	'{LANG_PLEASE_TRY_AGAIN}'	=>	"Please try again.",
 	'{LANG_UPLOADED_SUCCESSFULLY}'	=>	"Uploaded successfully!",
-	'{LANG_EXECUTED_SUCCESSFULLY}'	=>	"executed successfully.",
 	'{LANG_ACTIONS}'	=>	"Actions",
 	'{LANG_EDIT}'	=>	"Edit",
 	'{LANG_DELETE}'	=>	"Delete",
-	'{LANG_SQL_EXEC_ERROR}'	=>	"Query execution error",
-	'{LANG_SQL_EXEC_SUCCESS}'	=>	"Query execution success",
 	'{LANG_MISSING_PARAMETERS}'	=>	"Missing parameters",
 	'{LANG_MISSING_PARAMETERS_BODY}'	=>	"One or more of the required parameters hadn't been passed.",
+	
+	/* SQL */
+	'{LANG_SQL_ERROR}'	=>	"mySQL error",
+	'{LANG_SQL_EXEC_ERROR}'	=>	"Query execution error",
+	'{LANG_SQL_THEQUERY}'	=>	"The specified query",
+	'{LANG_SQL_EXEC_SUCCESS}'	=>	"Query execution success",
+	'{LANG_EXECUTED_SUCCESSFULLY}'	=>	"executed successfully.",
+	'{LANG_SQL_NOCONNECTION}'	=>	"Unable to connect!",
+	'{LANG_SQL_DBCONN_TO}'	=>	"Database connection to",
+	'{LANG_SQL_DBSELECT_ERROR}'	=>	"Unable to select database!",
+	'{LANG_SQL_THEDATABASE}'	=>	"The specified database",
+	'{LANG_SQL_COULD_NOT_BE_SELECTED}'	=>	"could not be selected.",
+	'{LANG_SQL_COULD_NOT_BE_PROCESSED}'	=>	"could not be processed.",
+	'{LANG_SQL_ERROR_MSG_WAS}'	=>	"The mySQL error message was",
+	
+	/* Loader script */
+	'{LANG_LOAD_CORRUPTION}'	=>	"Corruption!",
+	'{LANG_LOAD_CORRUPTION_BODY}'	=>	"WhispyForum appears to be installed, however, the configuration file lacks some important variables. It's advised to reinstall the system. ".'You can install it by clicking <a href="install.php" alt="Install WhispyForum">here</a> and running the install script.',
+	'{LANG_LOAD_CORRUPTION_ALT}'	=>	"Corrupt configuration",
+	'{LANG_LOAD_NOCFG}'	=>	"Configuration file not found!",
+	'{LANG_LOAD_NOCFG_BODY}'	=>	"The site's configuration file is missing. It usally means that the engine isn't installed properly. Without configuration, the engine cannot be used, because it can't connect to the database. ".'You can install it by clicking <a href="install.php" alt="Install WhispyForum">here</a> and running the install script.',
+	
+	/* Template system */
+	'{LANG_TEMPLATESYS_TEMP_MISSING}'	=>	"Template missing",
+	'{LANG_TEMPLATESYS_TEMP_MISSING_BODY}'	=>	"The specified template file does not exist. This template cannot be displayed.",
 	
 	/* Login */
 	'{LANG_LOGIN}'	=>	"Login",
@@ -103,6 +132,13 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_REG_DATA_FORM_HEADER}'	=>	"New user's login information",
 	
 	/* User levels */
+	'{LANG_INSUFFICIENT_RIGHTS}'	=>	"Insufficient rights",
+	'{LANG_PERMISSIONS_ERROR}'	=>	"User permissions error",
+	'{LANG_REQUIRED_ADMIN}'	=>	"This page requires you to have Administrator or higher rights.",
+	'{LANG_NO_GUESTS}'	=>	"This page is unaviable for guests",
+	'{LANG_REQUIRES_LOGGEDIN}'	=>	"This page requires you to log in to view it's contents.<br><br>Please use the login box to log in to the site. After that, you can view this page."
+	'{LANG_NO_LOGGEDINS}'	=>	"This page is unaviable for registered users",
+	'{LANG_REQUIRES_GUEST}'	=>	"This page requires you to be a guest to view it's contents.<br><br>Please use the control box to log out from the site. After that, you can view this page.",
 	'{LANG_ADMINISTRATOR}'	=>	"Administrator",
 	
 	/* Control panel */
@@ -131,14 +167,12 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_AVATAR_TOOBIG_2}'	=>	"MB, but you wanted to upload a big,",
 	'{LANG_AVATAR_TOOBIG_3}'	=>	"sized file.",
 	
-	
 	/* Administrator control panel */
 	'{LANG_ACP_TOOLTIP}'	=>	"Administrator control panel",
 	
 	/* Menu managing */
 	'{LANG_MENUS}'	=>	"Menus",
 	'{LANG_MENUS_TOOLTIP}'	=>	"Edit menus and menu items",
-	
 	'{LANG_MENUS_TITLE}'	=>	"Title",
 	'{LANG_MENUS_ALIGN_POSITION}'	=>	"Align position",
 	'{LANG_MENUS_SIDE}'	=>	"Side",
@@ -152,16 +186,13 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_MENUS_INTERNAL}'	=>	"Internal",
 	'{LANG_MENUS_EXTERNAL}'	=>	"External",
 	'{LANG_MENUS_BACKTOLIST}'	=>	"<< Back to menu list",
-	
 	'{LANG_MENUS_REDIRECT_MENULIST}'	=>	"You're being redirected to the menu list.",
-	
 	'{LANG_MENUS_MENU_CREATE_HEADER}'	=>	"Create new menu",
 	'{LANG_MENUS_MENU_CREATE_BUTTON}'	=>	"Create new menu",
 	'{LANG_MENUS_MENU_CREATE_SQL_ERROR}'	=>	"There were errors executing the SQL query to create the new menu. No new menu was created.",
 	'{LANG_MENUS_MENU_CREATE_VAR_ERROR}'	=>	"The menu creation cannot be done until every required variable is entered.",
 	'{LANG_MENUS_MENU_CREATE_SUCCESS_HEAD}'	=>	"Created the menu",
 	'{LANG_MENUS_MENU_CREATE_SUCCESS_1}'	=>	"Creation of menu",
-	
 	'{LANG_MENUS_MENU_DELETE_CONFIRM_HEAD}'	=>	"Please confirm deletion of menu",
 	'{LANG_MENUS_MENU_DELETE_CONFIRM_1}'	=>	"Deleting this menu will also permanently destroy every items linked to this menu!",
 	'{LANG_MENUS_MENU_DELETE_CONFIRM_BUTTON}'	=>	"Delete this menu!",
@@ -173,36 +204,27 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_MENUS_MENU_DELETE_ITEMSDELETED_BODY}'	=>	"The menu's items were deleted successfully.",
 	'{LANG_MENUS_MENU_DELETE_ITEMSNOTDELETED}'	=>	"The menu items could not be deleted",
 	'{LANG_MENUS_MENU_DELETE_ITEMSNOTDELETED_BODY}'	=>	"The menu was deleted, but the items failed to do so. This isn't really an issue, becuase when cleanupping, these orphan entries will be cleaned up.",
-	
 	'{LANG_MENUS_MENU_MODIFY_BUTTON}'	=>	"Edit menu",
 	'{LANG_MENUS_MENU_MODIFY_SQL_ERROR}'	=>	"There were errors executing the SQL query to edit the menu. The menu wasn't modified.",
 	'{LANG_MENUS_MENU_MODIFY_VAR_ERROR}'	=>	"The menu edition cannot be done until every required variable is entered.",
 	'{LANG_MENUS_MENU_MODIFY_SUCCESS_HEAD}'	=>	"Edited the menu",
 	'{LANG_MENUS_MENU_MODIFY_SUCCESS_1}'	=>	"Edition of menu",
-	
 	'{LANG_MENUS_ENTRY_CREATE_SUCCESS_1}' =>	"Creation of entry",
 	'{LANG_MENUS_ENTRY_CREATE_BUTTON}'	=>	"Add new entry",
 	'{LANG_MENUS_ENTRY_CREATE_SQL_ERROR}'	=>	"There were errors executing the SQL query to create the new entry. No new entry was created.",
 	'{LANG_MENUS_ENTRY_CREATE_VAR_ERROR}'	=>	"The entry creation cannot be done until every required variable is entered.",
 	'{LANG_MENUS_ENTRY_MODIFY_SUCCESS_HEAD}'	=>	"Edited the entry",
 	'{LANG_MENUS_ENTRY_MODIFY_SUCCESS_1}'	=>	"Edition of entry",
-	
 	'{LANG_MENUS_ENTRY_MODIFY_BUTTON}'	=>	"Edit entry",
 	'{LANG_MENUS_ENTRY_MODIFY_SQL_ERROR}'	=>	"There were errors executing the SQL query to edit the entry. The entry wasn't modified.",
 	'{LANG_MENUS_ENTRY_MODIFY_VAR_ERROR}'	=>	"The entry edition cannot be done until every required variable is entered.",
-	
 	'{LANG_MENUS_ENTRY_DELETE_ERROR}'	=>	"The entry could not be deleted",
 	'{LANG_MENUS_ENTRY_DELETE_SUCESS}'	=>	"Entry deleted",
 	'{LANG_MENUS_ENTRY_DELETE_1}'	=>	"The entry was deleted successfully.",
-	
 	'{LANG_MENUS_BACKTO_ENTRY_LIST}'	=>	"<< Return to entry list",
 	
 	/* Variable error boxes */
 	'{LANG_VAR_REQ_NOT_ENTERED}'	=>	"You didn't entered one of the required variables,",
-	'{LANG_VAR_REQ_CANT_BE_EMPTY}'	=>	"cannot be empty.",
-	
-	/* Template system */
-	'{LANG_TEMPLATESYS_TEMP_MISSING}'	=>	"Template missing",
-	'{LANG_TEMPLATESYS_TEMP_MISSING_BODY}'	=>	"The specified template file does not exist. This template cannot be displayed.",
+	'{LANG_VAR_REQ_CANT_BE_EMPTY}'	=>	"cannot be empty."
 );
 ?>

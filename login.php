@@ -35,8 +35,8 @@ if ( $_POST['user_loginname'] == NULL )
 	
 	$Ctemplate->useTemplate("user/login_err_novalue", array(
 		'RETURN_TO_URL'	=>	$returnURI, // Return URI
-		'VARIABLE_HEADER'	=>	"Username", // Unentered variable (uppercase)
-		'VARIABLE_BODY'	=>	"username" // Unentered variable (lowercase)
+		'VARIABLE_HEADER'	=>	"{LANG_USERNAME}", // Unentered variable (uppercase)
+		'VARIABLE_BODY'	=>	"{LANG_USERNAME_LOWERCASE}" // Unentered variable (lowercase)
 	), FALSE);
 	
 	exit; // We terminate the script
@@ -49,8 +49,8 @@ if ( $_POST['user_password'] == NULL )
 	
 	$Ctemplate->useTemplate("user/login_err_novalue", array(
 		'RETURN_TO_URL'	=>	$returnURI, // Return URI
-		'VARIABLE_HEADER'	=>	"Password", // Unentered variable (uppercase)
-		'VARIABLE_BODY'	=>	"password" // Unentered variable (lowercase)
+		'VARIABLE_HEADER'	=>	"{LANG_PASSWORD}", // Unentered variable (uppercase)
+		'VARIABLE_BODY'	=>	"{LANG_PASSWORD_LOWERCASE}" // Unentered variable (lowercase)
 	), FALSE);
 	
 	exit; // We terminate the script

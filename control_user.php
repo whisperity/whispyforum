@@ -18,9 +18,9 @@ if ( $_SESSION['log_bool'] == FALSE )
 	// If the user is a guest
 	$Ctemplate->useTemplate("errormessage", array(
 		'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
-		'TITLE'	=>	"This page is unaviable for guests!", // Error title
-		'BODY'	=>	"This page requires you to log in to view it's contents.<br><br>Please use the login box to log in to the site. After that, you can view this page.", // Error text
-		'ALT'	=>	"User permissions error" // Alternate picture text
+		'TITLE'	=>	"{LANG_NO_GUESTS}", // Error title
+		'BODY'	=>	"{LANG_REQUIRES_LOGGEDIN}", // Error text
+		'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
 	), FALSE ); // We give an unaviable error
 } elseif ( $_SESSION['log_bool'] == TRUE)
 {

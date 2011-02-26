@@ -26,7 +26,15 @@ class class_users
 			$this->__checkUserData(); // We check the login status if there's active session
 		}
 		
-		require('language/' .$_SESSION['usr_language']. '.php'); // Load language file
+		if ( isset($_SESSION['usr_language']) )
+		{
+			// If the session stores the user's language preference
+			include('language/' .$_SESSION['usr_language']. '.php'); // Load set language file
+		} elseif ( !isset($_SESSION['usr_language']) )
+		{
+			// If the index isn't defined,
+			include('language/english.php'); // Load English language file
+		}
 	}
 	
 	private function __createSession()
