@@ -136,7 +136,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_PERMISSIONS_ERROR}'	=>	"User permissions error",
 	'{LANG_REQUIRED_ADMIN}'	=>	"This page requires you to have Administrator or higher rights.",
 	'{LANG_NO_GUESTS}'	=>	"This page is unaviable for guests",
-	'{LANG_REQUIRES_LOGGEDIN}'	=>	"This page requires you to log in to view it's contents.<br><br>Please use the login box to log in to the site. After that, you can view this page."
+	'{LANG_REQUIRES_LOGGEDIN}'	=>	"This page requires you to log in to view it's contents.<br><br>Please use the login box to log in to the site. After that, you can view this page.",
 	'{LANG_NO_LOGGEDINS}'	=>	"This page is unaviable for registered users",
 	'{LANG_REQUIRES_GUEST}'	=>	"This page requires you to be a guest to view it's contents.<br><br>Please use the control box to log out from the site. After that, you can view this page.",
 	'{LANG_ADMINISTRATOR}'	=>	"Administrator",
