@@ -20,7 +20,6 @@ if ( $uDBArray['userLevel'] < 3 )
 {
 	// If the user does not have rights to see the admin panel
 	$Ctemplate->useTemplate("errormessage", array(
-		'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 		'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
 		'TITLE'	=>	"Insufficient rights", // Error title
 		'BODY'	=>	"This page requires you to have Administrator or higher rights.", // Error text
@@ -148,7 +147,6 @@ switch ($site) // Outputs and scripts are based on the site variable
 						{
 							// If there were errors deleting the menu
 							$Ctemplate->useTemplate("errormessage", array(
-								'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 								'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
 								'TITLE'	=>	"The menu could not be deleted", // Error title
 								'BODY'	=>	"", // Error text
@@ -158,7 +156,6 @@ switch ($site) // Outputs and scripts are based on the site variable
 						{
 							// If we succeeded deleting the menu
 							$Ctemplate->useTemplate("successbox", array(
-								'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 								'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_txt.png", // Text folder icon
 								'TITLE'	=>	"Menu deleted", // Success title
 								'BODY'	=>	"The menu was deleted successfully.", // Success text
@@ -174,7 +171,6 @@ switch ($site) // Outputs and scripts are based on the site variable
 						// we prompt for confirmation
 						
 						$Ctemplate->useTemplate("admin/menus_delmenu_confirm", array(
-							'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 							'M_NAME'	=>	$menuName[0], // Name of the menu
 							'MENU_ID'	=>	$_POST['menu_id'] // Menu ID
 						), FALSE);
@@ -182,7 +178,6 @@ switch ($site) // Outputs and scripts are based on the site variable
 				} else {
 					// Give error
 					$Ctemplate->useTemplate("errormessage", array(
-						'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
 						'TITLE'	=>	"Missing parameters", // Error title
 						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
@@ -203,7 +198,6 @@ switch ($site) // Outputs and scripts are based on the site variable
 					{
 						// If there were errors deleting the menu
 						$Ctemplate->useTemplate("errormessage", array(
-							'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 							'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
 							'TITLE'	=>	"The menu could not be deleted", // Error title
 							'BODY'	=>	"", // Error text
@@ -215,7 +209,6 @@ switch ($site) // Outputs and scripts are based on the site variable
 						$deleteItems = $Cmysql->Query("DELETE FROM menu_entries WHERE menu_id=" .$Cmysql->EscapeString($_POST['menu_id'])); // $deleteItems is TRUE if the query was executed, FALSE if there were errors
 						
 						$Ctemplate->useTemplate("successbox", array(
-							'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 							'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_txt.png", // Text folder icon
 							'TITLE'	=>	"Menu deleted", // Success title
 							'BODY'	=>	"The menu was deleted successfully.", // Success text
@@ -226,7 +219,6 @@ switch ($site) // Outputs and scripts are based on the site variable
 						{
 							// If we failed to delete the items
 							$Ctemplate->useTemplate("messagebox", array(
-								'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 								'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
 								'TITLE'	=>	"The menu items could not be deleted", // Error title
 								'BODY'	=>	"The menu was deleted, but the items failed to do so. This isn't really an issue, becuase when cleanupping, these orphan entries will be cleaned up.", // Error text
@@ -236,7 +228,6 @@ switch ($site) // Outputs and scripts are based on the site variable
 						{
 							// If we succeeded deleting the items
 							$Ctemplate->useTemplate("successbox", array(
-								'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 								'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_txt.png", // Text folder icon
 								'TITLE'	=>	"Menu items deleted", // Success title
 								'BODY'	=>	"The menu's items were deleted successfully.", // Success text
@@ -250,7 +241,6 @@ switch ($site) // Outputs and scripts are based on the site variable
 				} else {
 					// Give error
 					$Ctemplate->useTemplate("errormessage", array(
-						'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
 						'TITLE'	=>	"Missing parameters", // Error title
 						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
@@ -387,7 +377,6 @@ switch ($site) // Outputs and scripts are based on the site variable
 				} else {
 					// Give error
 					$Ctemplate->useTemplate("errormessage", array(
-						'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
 						'TITLE'	=>	"Missing parameters", // Error title
 						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
@@ -467,7 +456,6 @@ switch ($site) // Outputs and scripts are based on the site variable
 				} else {
 					// Give error
 					$Ctemplate->useTemplate("errormessage", array(
-						'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
 						'TITLE'	=>	"Missing parameters", // Error title
 						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
@@ -532,7 +520,6 @@ switch ($site) // Outputs and scripts are based on the site variable
 				} else {
 					// Give error
 					$Ctemplate->useTemplate("errormessage", array(
-						'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
 						'TITLE'	=>	"Missing parameters", // Error title
 						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
@@ -559,7 +546,6 @@ switch ($site) // Outputs and scripts are based on the site variable
 					{
 						// If there were errors deleting the menu
 						$Ctemplate->useTemplate("errormessage", array(
-							'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 							'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
 							'TITLE'	=>	"The entry could not be deleted", // Error title
 							'BODY'	=>	"", // Error text
@@ -568,7 +554,6 @@ switch ($site) // Outputs and scripts are based on the site variable
 					} elseif ( $deleteEntry == TRUE )
 					{
 						$Ctemplate->useTemplate("successbox", array(
-							'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 							'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_txt.png", // Text folder icon
 							'TITLE'	=>	"Entry deleted", // Success title
 							'BODY'	=>	"The entry was deleted successfully.", // Success text
@@ -583,7 +568,6 @@ switch ($site) // Outputs and scripts are based on the site variable
 				} else {
 					// Give error
 					$Ctemplate->useTemplate("errormessage", array(
-						'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
 						'TITLE'	=>	"Missing parameters", // Error title
 						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
@@ -623,7 +607,6 @@ switch ($site) // Outputs and scripts are based on the site variable
 				} else {
 					// Give error
 					$Ctemplate->useTemplate("errormessage", array(
-						'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
 						'TITLE'	=>	"Missing parameters", // Error title
 						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
@@ -728,7 +711,6 @@ switch ($site) // Outputs and scripts are based on the site variable
 				} else {
 					// Give error
 					$Ctemplate->useTemplate("errormessage", array(
-						'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
 						'TITLE'	=>	"Missing parameters", // Error title
 						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
@@ -805,7 +787,6 @@ switch ($site) // Outputs and scripts are based on the site variable
 				} else {
 					// Give error
 					$Ctemplate->useTemplate("errormessage", array(
-						'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
 						'TITLE'	=>	"Missing parameters", // Error title
 						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text

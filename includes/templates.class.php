@@ -94,6 +94,17 @@ class class_template
 					}
 			}
 			
+			if ( !isset($_SESSION['theme_name']) )
+			{
+				// If there isn't session data (for example while logging in or out)
+				// Replace the theme name for the default theme (winky)
+				$this->_output=str_replace('{THEME_NAME}','winky',$this->_output);
+			} else {
+				// If there is
+				// Replace the theme name for the user's preference
+				$this->_output=str_replace('{THEME_NAME}',$_SESSION['theme_name'],$this->_output);
+			}
+			
 			if ( $varOutput == TRUE ) // If we decided to give return output
 			{
 				// First, we need to cache output into a variable
@@ -130,6 +141,17 @@ class class_template
 		if ( $templateName != NULL )  // If template name is specified
 		{
 			$this->__getTemplate($templateName); // We read in the template...
+			
+			if ( !isset($_SESSION['theme_name']) )
+			{
+				// If there isn't session data (for example while logging in or out)
+				// Replace the theme name for the default theme (winky)
+				$this->_output=str_replace('{THEME_NAME}','winky',$this->_output);
+			} else {
+				// If there is
+				// Replace the theme name for the user's preference
+				$this->_output=str_replace('{THEME_NAME}',$_SESSION['theme_name'],$this->_output);
+			}
 			
 			if ( $varOutput == TRUE ) // If we decided to give return output
 			{

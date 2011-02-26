@@ -67,7 +67,6 @@ class class_mysql
 		global $cfg, $Ctemplate; // We need to initialize the config array and the template class
 		
 		$Ctemplate->useTemplate("errormessage", array(
-			'THEME_NAME'	=>	"winky", // Theme name
 			'PICTURE_NAME'	=>	"Nuvola_devices_raid.png", // HDDs icon
 			'TITLE'	=>	"Unable to connect!", // Error title
 			'BODY'	=>	'Database connection to <tt>' .$cfg['dbhost']. '</tt> (user <tt>' .$cfg['dbuser']. '</tt>, using password: <tt>'. ( ($cfg['dbpass'] != NULL) ? 'yes' : 'no' ) .'</tt>) could not be made.', // Error text
@@ -85,7 +84,6 @@ class class_mysql
 		global $cfg, $Ctemplate; // We need to initialize the config array and the template class
 		
 		$Ctemplate->useTemplate("errormessage", array(
-			'THEME_NAME'	=>	"winky", // Theme name
 			'PICTURE_NAME'	=>	"Nuvola_devices_raid.png", // HDDs icon
 			'TITLE'	=>	"Unable to select database!", // Error title
 			'BODY'	=>	'The specified database <tt>' .$cfg['dbname']. '</tt> could not be selected.', // Error text
@@ -140,7 +138,6 @@ class class_mysql
 		global $cfg, $Ctemplate; // We need to initialize the config array and the template class
 		
 		$Ctemplate->useTemplate("errormessage", array(
-			'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 			'PICTURE_NAME'	=>	"Nuvola_devices_raid.png", // HDDs icon
 			'TITLE'	=>	"Unable to process mySQL query!", // Error title
 			'BODY'	=>	'The specified query <tt>' .$sQuery. '</tt> could not be processed.<br>The mySQL error message was <tt>' .mysql_error(). '</tt>', // Error text
@@ -184,7 +181,6 @@ class class_mysql
 		global $cfg, $Ctemplate; // We need to initialize the config array and the template class
 		
 		$Ctemplate->useTemplate("errormessage", array(
-			'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 			'PICTURE_NAME'	=>	"Nuvola_devices_raid.png", // HDDs icon
 			'TITLE'	=>	"String failed to escape!", // Error title
 			'BODY'	=>	'There were errors escaping string <tt>' .htmlspecialchars($sString). '</tt>.<br>The mySQL error message was <tt>' .mysql_error(). '</tt>', // Error text

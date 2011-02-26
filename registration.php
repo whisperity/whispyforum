@@ -17,7 +17,6 @@ if ( $_SESSION['log_bool'] == TRUE )
 {
 	// If the user is logged in
 	$Ctemplate->useTemplate("errormessage", array(
-		'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 		'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
 		'TITLE'	=>	"This page is unaviable for registered users!", // Error title
 		'BODY'	=>	"This page requires you to be a guest to view it's contents.<br><br>Please use the control box to log out from the site. After that, you can view this page.", // Error text

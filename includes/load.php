@@ -25,7 +25,6 @@ if ( file_exists("config.php") == 1 )
 	if ( !defined('WHISPYFORUM') ) // There is a "DEFINE()" constant in config.php which is a random UUID generated on install
 	{
 		$Ctemplate->useTemplate("errormessage", array(
-			'THEME_NAME'	=>	"winky", // Theme name
 			'PICTURE_NAME'	=>	"Nuvola_apps_package_settings.png", // Text file icon
 			'TITLE'	=>	"Corruption!", // Error title
 			'BODY'	=>	"WhispyForum appears to be installed, however, the configuration file lacks some important variables. It's advised to reinstall the system. ".'You can install it by clicking <a href="install.php" alt="Install WhispyForum">here</a> and running the install script.', // Error text
@@ -36,7 +35,6 @@ if ( file_exists("config.php") == 1 )
 } elseif ( file_exists("config.php") == 0 ) // If not
 {
 	$Ctemplate->useTemplate("errormessage", array(
-		'THEME_NAME'	=>	"winky", // Theme name
 		'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Unaviable file icon
 		'TITLE'	=>	"Configuration file not found!", // Error title
 		'BODY'	=>	"The site's configuration file is missing. It usally means that the engine isn't installed properly. Without configuration, the engine cannot be used, because it can't connect to the database. ".'You can install it by clicking <a href="install.php" alt="Install WhispyForum">here</a> and running the install script.', // Error text
