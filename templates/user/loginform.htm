@@ -2,14 +2,14 @@
 <!--- Usage: user login form -->
 <div id="menucontainer">
 	<div id="header"><div id="header_left"></div>
-	<div id="header_main">Login</div><div id="header_right"></div></div>
+	<div id="header_main">{LANG_LOGIN}</div><div id="header_right"></div></div>
     <div id="content">
         <form method="POST" action="login.php">
-			Username: <input type="text" name="user_loginname" size="25"><br>
-			Password: <input type="password" name="user_password" size="25"><br>
-			<a href="registration.php" alt="Register new user">Register</a><br>
+			{LANG_USERNAME}: <input type="text" name="user_loginname" size="25"><br>
+			{LANG_PASSWORD}: <input type="password" name="user_password" size="25"><br>
+			<a href="registration.php" alt="{LANG_REGISTER_TOOLTIP}">{LANG_REGISTER}</a><br>
 			<input type="hidden" name="returnto" value="{RETURN_TO}">
-			<input type="submit" value="Login">
+			<input type="submit" value="{LANG_LOGIN}">
 		</form>
     </div>
 </div>

@@ -2,12 +2,12 @@
 <!--- Usage: registration error box (sql error) -->
 <table class="errorbox"> <!--- copying the errorbox template -->
 	<tr>
-		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_apps_kgpg.png" alt="Error!"></td>
-		<td class="errortitle">Error!</td>
+		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_apps_kgpg.png" alt={LANG_ERROR_EXCLAMATION}"></td>
+		<td class="errortitle">{LANG_ERROR_EXCLAMATION}</td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="errorbody">There were errors executing the SQL query to register you. Your new user isn't registered.</td>
+		<td class="errorbody">{LANG_REG_SQL_ERROR}</td>
 	</tr>
 </table> <!--- copying the errorbox template -->
 
@@ -18,7 +18,7 @@ If you want to retry the registraion, click back.
 <input type="hidden" name="password_again" value="{PASSWORD_AGAIN}">
 <input type="hidden" name="email" value="{EMAIL}">
 <input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
-<input type="submit" value="<< Back">
+<input type="submit" value="{LANG_BB_BACK}">
 <input type="hidden" name="regPos" value=1> <!--- Going back to step 2 -->
 </form>
 <!--- END registration userdata register error -->

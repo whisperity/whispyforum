@@ -5,15 +5,13 @@
 
 <table class="errorbox"> <!--- copying the errorbox template -->
 	<tr>
-		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_apps_kuser.png" alt="Multiple logins"></td>
-		<td class="errortitle">Multiple logins aren't supported</td>
+		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_apps_kuser.png" alt="{LANG_MULTIPLE_LOGINS}"></td>
+		<td class="errortitle">{LANG_MULTIPLE_LOGINS_NOSUPPORT}</td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="errorbody">Your IP address or session differs from the ones stored in the database.<br>It usally means that you're logged in elsewhere while you want to login here.<br>(It can mean that your account is hijacked as well...)
-		<br><br>Your session data has been purged form the database. All of your other login isntances will get this error.
-		<br><br>Please use the login box again to login to your user.<!--- You're being redirected to the homepage...<br>
-		<a href="index.php">Click here if your browser does not redirect you or if don't want to wait...</a>--> <a href="index.php">Go to the homepage.</a></td>
+		<td class="errorbody">{LANG_MULTIPLE_LOGIN_BODY}<!--- You're being redirected to the homepage...<br>
+		<a href="index.php">{LANG_REDIRECT_RETURN_LINK}</a>--> <a href="index.php">{LANG_GOTOTHE} {LANG_HOMEPAGE}</a></td>
 	</tr>
 </table> <!--- copying the errorbox template -->
 <!--- END user forced logout -->

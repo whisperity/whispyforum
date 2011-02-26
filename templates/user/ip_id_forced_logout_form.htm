@@ -2,12 +2,11 @@
 <!--- Usage: user forced logout infos box -->
 <div id="menucontainer">
 	<div id="header"><div id="header_left"></div>
-	<div id="header_main">Login disabled</div><div id="header_right"></div></div>
+	<div id="header_main">{LANG_LOGIN_DISABLED}</div><div id="header_right"></div></div>
     <div id="content">
-        The previous login attempt was rejected due to<br>
-		session stacking. Login is disabled.
+        {LANG_LOGIN_DISABLED_STACKED_LOGINS}
     </div>
-	<div id="footer">Go back to the <a href="index.php">homepage</a>. You can login there.</div>
+	<div id="footer">{LANG_GOBACKTOTHE} <a href="index.php">{LANG_HOMEPAGE}</a>. {LANG_LOGIN_CANTHERE}</div>
 </div>
 <br>
 <!--- END user foced logout loginbox -->

@@ -5,14 +5,14 @@
 
 <table class="errorbox"> <!--- copying the errorbox template -->
 	<tr>
-		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_apps_looknfeel.png" alt="User customization"></td>
-		<td class="errortitle">Avatar upload error!</td>
+		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_apps_looknfeel.png" alt="{LANG_UCP_USER_CUSTOMIZATION}"></td>
+		<td class="errortitle">{LANG_AVATAR_UPLOAD} {LANG_ERROR_LOWERCASE_EXCLAMATION}</td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="errorbody">The file you wanted to upload is in a wrong format ({FILE_TYPE}). Allowed formats are: <font class="emphasis">PNG</font>, <font class="emphasis">JPG</font> or <font class="emphasis">GIF</font>.
-		<br><br>You're being redirected to the avatar uploading page...<br>
-		<a href="control_user.php?site=avatar_upload">Click here if your browser does not redirect you or if don't want to wait...</a></td>
+		<td class="errorbody">{LANG_AVATAR_WRONG_FORMAT} ({FILE_TYPE}). {LANG_AVATAR_ALLOWED_FORMATS} <font class="emphasis">PNG</font>, <font class="emphasis">JPG</font> {LANG_OR} <font class="emphasis">GIF</font>.
+		<br><br>{LANG_AVATAR_REDIRECT}<br>
+		<a href="control_user.php?site=avatar_upload">{LANG_REDIRECT_RETURN_LINK}</a></td>
 	</tr>
 </table> <!--- copying the errorbox template -->
 <!--- END user controlpanel avatar uploader filetype error -->

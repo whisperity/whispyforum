@@ -5,15 +5,14 @@
 
 <table class="errorbox"> <!--- copying the errorbox template -->
 	<tr>
-		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_apps_kgpg.png" alt="Login error!"></td>
-		<td class="errortitle">Direct opening</td>
+		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_apps_kgpg.png" alt="{LANG_LOGIN_ERROR}"></td>
+		<td class="errortitle">{LANG_DIRECT_OPENING}</td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="errorbody">It seems to be a direct opening of the login page.<br>
-		When you login, you're automatically redirected through this page by the engine passing vital variables. Those variables cannot be get.
-		<br><br>Please use the login box on the main page. You're being redirected there...<br>
-		<a href="index.php">Click here if your browser does not redirect you or if don't want to wait...</a></td>
+		<td class="errorbody">{LANG_LOGIN_DIRECT_OPENING}
+		<br><br>{LANG_LOGIN_PLEASEUSEBOX} {LANG_REDIRECT_THERE}<br>
+		<a href="index.php">{LANG_REDIRECT_RETURN_LINK}</a></td>
 	</tr>
 </table> <!--- copying the errorbox template -->
 <!--- END user login error nopost -->
