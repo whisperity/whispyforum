@@ -1,15 +1,15 @@
 <!--- BEGIN admin menus create form -->
 <!--- Usage: administrator control panel module 'menus' menu creation form -->
-<font class="emphasis">Variables marked with a red star (<span class="red-star">*</span>) are required to be entered.</font>
+<font class="emphasis">{LANG_MANDATORY_VARIABLES_REDSTAR}</font>
 
 <form method="POST" action="control_admin.php">
-<span class="form-header">Create new menu</span><br>
-Menu title<span class="red-star">*</span>: <input type="text" name="title" value="{TITLE}" size=35><br>
-Menu align position<span class="red-star">*</span>: <input type="text" name="align_pos" value="{ALIGN_POS}" size=10><br>
-Menu side<span class="red-star">*</span>: <input type="radio" name="side" value="left"{LEFT_SIDE}>Left&nbsp;<input type="radio" name="side" value="right"{RIGHT_SIDE}>Right<br>
-Number of items: 0<br>
+<span class="form-header">{LANG_MENUS_MENU_CREATE_HEADER}</span><br>
+{LANG_MENUS_TITLE}<span class="red-star">*</span>: <input type="text" name="title" value="{TITLE}" size=35><br>
+{LANG_MENUS_ALIGN_POSITION}<span class="red-star">*</span>: <input type="text" name="align_pos" value="{ALIGN_POS}" size=10><br>
+{LANG_MENUS_SIDE}<span class="red-star">*</span>: <input type="radio" name="side" value="left"{LEFT_SIDE}>{LANG_LEFT}&nbsp;<input type="radio" name="side" value="right"{RIGHT_SIDE}>{LANG_RIGHT}<br>
+{LANG_MENUS_NUMOFITEMS}: 0<br>
 <input type="hidden" name="site" value="menus">
 <input type="hidden" name="m_subsite" value="create_menu_do">
-<input type="submit" value="Create menu">
+<input type="submit" value="{LANG_MENUS_MENU_CREATE_BUTTON}">
 </form>
 <!--- END admin menus create form -->

@@ -1,10 +1,10 @@
 <!--- BEGIN registration userdata -->
 <!--- Usage: user registration information form -->
-To register a new user, you must enter it's login credientals into the boxes below. Further user information (like sign, profile box, avatar) could be set in the Control Panel after login.<br>
-<font class="emphasis">Variables marked with a red star (<span class="red-star">*</span>) are required to be entered.</font>
+{LANG_REG_DATA_INFO}<br>
+<font class="emphasis">{LANG_MANDATORY_VARIABLES_REDSTAR}</font>
 <br><br>
 <form method="POST" action="registration.php">
-<span class="form-header">New user's login information</span><br>
+<span class="form-header">{LANG_REG_DATA_FORM_HEADER}</span><br>
 {LANG_USERNAME}<span class="red-star">*</span>: <input type="text" name="username" value="{USERNAME}" size=35><br>
 {LANG_PASSWORD}<span class="red-star">*</span>: <input type="password" name="password" value="{PASSWORD}" size=35><br>
 {LANG_PASSWORD_AGAIN}<span class="red-star">*</span>: <input type="password" name="password_again" value="{PASSWORD_AGAIN}" size=35><br>

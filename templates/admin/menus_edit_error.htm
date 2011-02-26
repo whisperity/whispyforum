@@ -2,16 +2,16 @@
 <!--- Usage: administrator control panel module 'menus' menu edition error (sql error) -->
 <table class="errorbox"> <!--- copying the errorbox template -->
 	<tr>
-		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_locked.png" alt="Error!"></td>
-		<td class="errortitle">Error!</td>
+		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_locked.png" alt="{LANG_ERROR_EXCLAMATION}"></td>
+		<td class="errortitle{LANG_ERROR_EXCLAMATION}td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="errorbody">There were errors executing the SQL query to edit the menu. The menu wasn't modified.</td>
+		<td class="errorbody">{LANG_MENUS_MENU_MODIFY_SQL_ERROR}</td>
 	</tr>
 </table> <!--- copying the errorbox template -->
 
-If you want to retry, click back.
+{LANG_TO_RETRY_CLICK_BACK}
 <form method="POST" action="control_admin.php">
 <input type="hidden" name="menu_id" value="{MENU_ID}">
 <input type="hidden" name="title" value="{TITLE}">
@@ -20,6 +20,6 @@ If you want to retry, click back.
 <input type="hidden" name="site" value="menus">
 <input type="hidden" name="m_subsite" value="edit_menu">
 <input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
-<input type="submit" value="<< Back">
+<input type="submit" value="{LANG_BB_BACK}">
 </form>
 <!--- END admin menus edit error -->

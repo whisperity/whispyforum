@@ -2,12 +2,12 @@
 <!--- Usage: administrator control panel module 'menus' entry edition variable error box -->
 <table class="errorbox"> <!--- copying the errorbox template -->
 	<tr>
-		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_txt.png" alt="Error!"></td>
-		<td class="errortitle">Error!</td>
+		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_txt.png" alt="{LANG_ERROR_EXCLAMATION}"></td>
+		<td class="errortitle">{LANG_ERROR_EXCLAMATION}</td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="errorbody">You didn't entered one of the required variables, {VARIABLE} cannot be empty. The entry edition cannot be done until every required variable is entered.</td>
+		<td class="errorbody">{LANG_VAR_REQ_NOT_ENTERED} {VARIABLE} {LANG_VAR_REQ_CANT_BE_EMPTY} {LANG_MENUS_ENTRY_MODIFY_VAR_ERROR}</td>
 	</tr>
 </table> <!--- copying the errorbox template -->
 <form method="POST" action="control_admin.php">
@@ -17,6 +17,6 @@
 <input type="hidden" name="site" value="menus">
 <input type="hidden" name="m_subsite" value="edit_entry">
 <input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
-<input type="submit" value="<< Back">
+<input type="submit" value="{LANG_BB_BACK}">
 </form>
 <!--- END admin menus editentry error -->

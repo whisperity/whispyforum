@@ -73,7 +73,7 @@ switch ($regPos)
 		if ( $_POST['username'] == NULL ) // Username
 		{
 			$Ctemplate->useTemplate("user/reg_userdata_variable_error", array(
-				'VARIABLE'	=>	"Username", // Errornous variable name
+				'VARIABLE'	=>	"{LANG_USERNAME}", // Errornous variable name
 				'USERNAME'	=>	$_POST['username'], // Username (should be empty)
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
@@ -89,7 +89,7 @@ switch ($regPos)
 		if ( $_POST['password'] == NULL ) // Password
 		{
 			$Ctemplate->useTemplate("user/reg_userdata_variable_error", array(
-				'VARIABLE'	=>	"Password", // Errornous variable name
+				'VARIABLE'	=>	"{LANG_PASSWORD}", // Errornous variable name
 				'USERNAME'	=>	$_POST['username'], // Username
 				'PASSWORD'	=>	$_POST['password'], // Password (should be empty)
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
@@ -105,7 +105,7 @@ switch ($regPos)
 		if ( $_POST['password_again'] == NULL ) // Password (entered again)
 		{
 			$Ctemplate->useTemplate("user/reg_userdata_variable_error", array(
-				'VARIABLE'	=>	"Password (again)", // Errornous variable name
+				'VARIABLE'	=>	"{LANG_PASSWORD_AGAIN}", // Errornous variable name
 				'USERNAME'	=>	$_POST['username'], // Username
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again) (should be empty)
@@ -121,7 +121,7 @@ switch ($regPos)
 		if ( $_POST['email'] == NULL ) // E-mail address
 		{
 			$Ctemplate->useTemplate("user/reg_userdata_variable_error", array(
-				'VARIABLE'	=>	"E-mail address", // Errornous variable name
+				'VARIABLE'	=>	"{LANG_EMAIL}", // Errornous variable name
 				'USERNAME'	=>	$_POST['username'], // Username
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)

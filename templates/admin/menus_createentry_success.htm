@@ -2,12 +2,12 @@
 <!--- Usage: administrator control panel module 'menus' entry creation success -->
 <table class="successbox"> <!--- copying the successbox template -->
 	<tr>
-		<td class="successpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_txt.png" alt="Success!"></td>
+		<td class="successpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_txt.png" alt="{LANG_SUCCESS_EXCLAMATION}"></td>
 		<td class="successtitle">Created the menu</td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="successbody">Creation of entry <tt>{LABEL}</tt> executed successfully.</td>
+		<td class="successbody">{LANG_MENUS_ENTRY_CREATE_SUCCESS_1} <tt>{LABEL}</tt> {LANG_EXECUTED_SUCCESSFULLY}</td>
 	</tr>
 </table> <!--- copying the successbox template -->
 
@@ -15,5 +15,5 @@
 <input type="hidden" name="site" value="menus">
 <input type="hidden" name="m_subsite" value="list_items">
 <input type="hidden" name="menu_id" value="{M_ID}">
-<input type="submit" value="<< Back to item list">
+<input type="submit" value="{LANG_MENUS_BACKTO_ENTRY_LIST}">
 <!--- END admin menus createentry success -->

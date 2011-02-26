@@ -148,18 +148,18 @@ switch ($site) // Outputs and scripts are based on the site variable
 							// If there were errors deleting the menu
 							$Ctemplate->useTemplate("errormessage", array(
 								'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
-								'TITLE'	=>	"The menu could not be deleted", // Error title
+								'TITLE'	=>	"{LANG_MENUS_MENU_DELETE_ERROR}", // Error title
 								'BODY'	=>	"", // Error text
-								'ALT'	=>	"Query execution error" // Alternate picture text
+								'ALT'	=>	"{LANG_SQL_EXEC_ERROR}" // Alternate picture text
 							), FALSE ); // We give an error
 						} elseif ( $deleteMenu == TRUE )
 						{
 							// If we succeeded deleting the menu
 							$Ctemplate->useTemplate("successbox", array(
 								'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_txt.png", // Text folder icon
-								'TITLE'	=>	"Menu deleted", // Success title
-								'BODY'	=>	"The menu was deleted successfully.", // Success text
-								'ALT'	=>	"Query execution success" // Alternate picture text
+								'TITLE'	=>	"{LANG_MENUS_MENU_DELETE_SUCESS}", // Success title
+								'BODY'	=>	"{LANG_MENUS_MENU_DELETE_1}", // Success text
+								'ALT'	=>	"{LANG_SQL_EXEC_SUCCESS}" // Alternate picture text
 							), FALSE ); // We give a success message
 							
 							// Back form
@@ -179,10 +179,10 @@ switch ($site) // Outputs and scripts are based on the site variable
 					// Give error
 					$Ctemplate->useTemplate("errormessage", array(
 						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
-						'TITLE'	=>	"Missing parameters", // Error title
-						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
-						'ALT'	=>	"Missing parameters" // Alternate picture text
-					), FALSE ); // We give an unaviable error
+						'TITLE'	=>	"{LANG_MISSING_PARAMETERS}", // Error title
+						'BODY'	=>	"{LANG_MISSING_PARAMETERS_BODY}", // Error text
+						'ALT'	=>	"{LANG_MISSING_PARAMETERS}" // Alternate picture text
+					), FALSE ); // We give an error
 				}
 				break;
 			case "delete_menu_confirmed":
@@ -199,9 +199,9 @@ switch ($site) // Outputs and scripts are based on the site variable
 						// If there were errors deleting the menu
 						$Ctemplate->useTemplate("errormessage", array(
 							'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
-							'TITLE'	=>	"The menu could not be deleted", // Error title
+							'TITLE'	=>	"{LANG_MENUS_MENU_DELETE_ERROR}", // Error title
 							'BODY'	=>	"", // Error text
-							'ALT'	=>	"Query execution error" // Alternate picture text
+							'ALT'	=>	"{LANG_SQL_EXEC_ERROR}" // Alternate picture text
 						), FALSE ); // We give an error
 					} elseif ( $deleteMenu == TRUE )
 					{
@@ -210,9 +210,9 @@ switch ($site) // Outputs and scripts are based on the site variable
 						
 						$Ctemplate->useTemplate("successbox", array(
 							'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_txt.png", // Text folder icon
-							'TITLE'	=>	"Menu deleted", // Success title
-							'BODY'	=>	"The menu was deleted successfully.", // Success text
-							'ALT'	=>	"Query execution success" // Alternate picture text
+							'TITLE'	=>	"{LANG_MENUS_MENU_DELETE_SUCESS}", // Success title
+							'BODY'	=>	"{LANG_MENUS_MENU_DELETE_1}", // Success text
+							'ALT'	=>	"{LANG_SQL_EXEC_SUCCESS}" // Alternate picture text
 						), FALSE ); // We give a success message
 						
 						if ( $deleteItems == FALSE )
@@ -220,18 +220,18 @@ switch ($site) // Outputs and scripts are based on the site variable
 							// If we failed to delete the items
 							$Ctemplate->useTemplate("messagebox", array(
 								'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
-								'TITLE'	=>	"The menu items could not be deleted", // Error title
-								'BODY'	=>	"The menu was deleted, but the items failed to do so. This isn't really an issue, becuase when cleanupping, these orphan entries will be cleaned up.", // Error text
-								'ALT'	=>	"Query execution error" // Alternate picture text
+								'TITLE'	=>	"{LANG_MENUS_MENU_DELETE_ITEMSNOTDELETED}", // Error title
+								'BODY'	=>	"{LANG_MENUS_MENU_DELETE_ITEMSNOTDELETED_BODY}", // Error text
+								'ALT'	=>	"{LANG_SQL_EXEC_ERROR}" // Alternate picture text
 							), FALSE ); // We give a message (orange box)
 						} elseif ( $deleteItems == TRUE )
 						{
 							// If we succeeded deleting the items
 							$Ctemplate->useTemplate("successbox", array(
 								'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_txt.png", // Text folder icon
-								'TITLE'	=>	"Menu items deleted", // Success title
-								'BODY'	=>	"The menu's items were deleted successfully.", // Success text
-								'ALT'	=>	"Query execution success" // Alternate picture text
+								'TITLE'	=>	"{LANG_MENUS_MENU_DELETE_ITEMSDELETED}", // Success title
+								'BODY'	=>	"{LANG_MENUS_MENU_DELETE_ITEMSDELETED_BODY}", // Success text
+								'ALT'	=>	"{LANG_SQL_EXEC_SUCCESS}" // Alternate picture text
 							), FALSE ); // We give a success message
 						}
 						
@@ -242,10 +242,10 @@ switch ($site) // Outputs and scripts are based on the site variable
 					// Give error
 					$Ctemplate->useTemplate("errormessage", array(
 						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
-						'TITLE'	=>	"Missing parameters", // Error title
-						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
-						'ALT'	=>	"Missing parameters" // Alternate picture text
-					), FALSE ); // We give an unaviable error
+						'TITLE'	=>	"{LANG_MISSING_PARAMETERS}", // Error title
+						'BODY'	=>	"{LANG_MISSING_PARAMETERS_BODY}", // Error text
+						'ALT'	=>	"{LANG_MISSING_PARAMETERS}" // Alternate picture text
+					), FALSE ); // We give an error
 				}
 				break;
 			/* MENU DELETION */
@@ -280,7 +280,7 @@ switch ($site) // Outputs and scripts are based on the site variable
 				if ( $_POST['title'] == NULL ) // Menu header
 				{
 					$Ctemplate->useTemplate("admin/menus_create_variable_error", array(
-						'VARIABLE'	=>	"Title", // Errornous variable name
+						'VARIABLE'	=>	"{LANG_MENUS_TITLE}", // Errornous variable name
 						'TITLE'	=>	$_POST['title'], // Header (should be empty)
 						'ALIGN_POS'	=>	$_POST['align_pos'], // Align position
 						'SIDE'	=>	$_POST['side'], // Menu side
@@ -295,7 +295,7 @@ switch ($site) // Outputs and scripts are based on the site variable
 				if ( $_POST['align_pos'] == NULL ) // Align position
 				{
 					$Ctemplate->useTemplate("admin/menus_create_variable_error", array(
-						'VARIABLE'	=>	"Align position", // Errornous variable name
+						'VARIABLE'	=>	"{LANG_MENUS_ALIGN_POSITION}", // Errornous variable name
 						'TITLE'	=>	$_POST['title'], // Header
 						'ALIGN_POS'	=>	$_POST['align_pos'], // Align position (should be empty)
 						'SIDE'	=>	$_POST['side'] // Menu side
@@ -378,10 +378,10 @@ switch ($site) // Outputs and scripts are based on the site variable
 					// Give error
 					$Ctemplate->useTemplate("errormessage", array(
 						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
-						'TITLE'	=>	"Missing parameters", // Error title
-						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
-						'ALT'	=>	"Missing parameters" // Alternate picture text
-					), FALSE ); // We give an unaviable error
+						'TITLE'	=>	"{LANG_MISSING_PARAMETERS}", // Error title
+						'BODY'	=>	"{LANG_MISSING_PARAMETERS_BODY}", // Error text
+						'ALT'	=>	"{LANG_MISSING_PARAMETERS}" // Alternate picture text
+					), FALSE ); // We give an error
 				}
 				break;
 			case "edit_menu_do":
@@ -395,7 +395,7 @@ switch ($site) // Outputs and scripts are based on the site variable
 					{
 						$Ctemplate->useTemplate("admin/menus_edit_variable_error", array(
 							'MENU_ID'	=>	$_POST['menu_id'], // Menu ID
-							'VARIABLE'	=>	"Title", // Errornous variable name
+							'VARIABLE'	=>	"{LANG_MENUS_TITLE}", // Errornous variable name
 							'TITLE'	=>	$_POST['title'], // Header (should be empty)
 							'ALIGN_POS'	=>	$_POST['align_pos'], // Align position
 							'SIDE'	=>	$_POST['side'], // Menu side
@@ -411,7 +411,7 @@ switch ($site) // Outputs and scripts are based on the site variable
 					{
 						$Ctemplate->useTemplate("admin/menus_edit_variable_error", array(
 							'MENU_ID'	=>	$_POST['menu_id'], // Menu ID
-							'VARIABLE'	=>	"Align position", // Errornous variable name
+							'VARIABLE'	=>	"{LANG_MENUS_ALIGN_POSITION}", // Errornous variable name
 							'TITLE'	=>	$_POST['title'], // Header
 							'ALIGN_POS'	=>	$_POST['align_pos'], // Align position (should be empty)
 							'SIDE'	=>	$_POST['side'] // Menu side
@@ -457,10 +457,10 @@ switch ($site) // Outputs and scripts are based on the site variable
 					// Give error
 					$Ctemplate->useTemplate("errormessage", array(
 						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
-						'TITLE'	=>	"Missing parameters", // Error title
-						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
-						'ALT'	=>	"Missing parameters" // Alternate picture text
-					), FALSE ); // We give an unaviable error
+						'TITLE'	=>	"{LANG_MISSING_PARAMETERS}", // Error title
+						'BODY'	=>	"{LANG_MISSING_PARAMETERS_BODY}", // Error text
+						'ALT'	=>	"{LANG_MISSING_PARAMETERS}" // Alternate picture text
+					), FALSE ); // We give an error
 				}
 				break;
 			/* MENU EDITION */
@@ -498,12 +498,12 @@ switch ($site) // Outputs and scripts are based on the site variable
 						$hrExploded = explode('/', $eRow['href']);
 						
 						// Define whether the link is internal or external
-						$hrefType = 'INTERNAL'; // The link is internal by default
+						$hrefType = '{LANG_MENUS_INTERNAL}'; // The link is internal by default
 						
 						// Check for HTTP links
 						if ( in_array('http:', $hrExploded) )
 						{
-							$hrefType = 'EXTERNAL'; // If it has HTTP in it, the link is external
+							$hrefType = '{LANG_MENUS_EXTERNAL}'; // If it has HTTP in it, the link is external
 						}
 						
 						// Now, $hrefType is 'INTERNAL' or 'EXTERNAL'
@@ -511,7 +511,7 @@ switch ($site) // Outputs and scripts are based on the site variable
 						$Ctemplate->useTemplate("admin/menus_listentries_entry", array(
 							'E_LABEL'	=>	$eRow['label'], // Entry label
 							'E_HREF'	=>	$eRow['href'], // Entry link target
-							'E_LINK_TYPE'	=>	ucfirst(strtolower($hrefType)), // Type of the link (formatted to be 'Internal' or 'External')
+							'E_LINK_TYPE'	=>	$hrefType, // Type of the link (formatted to be 'Internal' or 'External')
 							'E_ID'	=>	$eRow['id'] // ID of menu entry
 						), FALSE); // Generate table row of one entry
 					}
@@ -521,10 +521,10 @@ switch ($site) // Outputs and scripts are based on the site variable
 					// Give error
 					$Ctemplate->useTemplate("errormessage", array(
 						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
-						'TITLE'	=>	"Missing parameters", // Error title
-						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
-						'ALT'	=>	"Missing parameters" // Alternate picture text
-					), FALSE ); // We give an unaviable error
+						'TITLE'	=>	"{LANG_MISSING_PARAMETERS}", // Error title
+						'BODY'	=>	"{LANG_MISSING_PARAMETERS_BODY}", // Error text
+						'ALT'	=>	"{LANG_MISSING_PARAMETERS}" // Alternate picture text
+					), FALSE ); // We give an error
 				}
 				break;
 			/* ITEM LISTING */
@@ -547,17 +547,17 @@ switch ($site) // Outputs and scripts are based on the site variable
 						// If there were errors deleting the menu
 						$Ctemplate->useTemplate("errormessage", array(
 							'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
-							'TITLE'	=>	"The entry could not be deleted", // Error title
+							'TITLE'	=>	"{LANG_MENUS_ENTRY_DELETE_ERROR}", // Error title
 							'BODY'	=>	"", // Error text
-							'ALT'	=>	"Query execution error" // Alternate picture text
+							'ALT'	=>	"{LANG_SQL_EXEC_ERROR}" // Alternate picture text
 						), FALSE ); // We give an error
 					} elseif ( $deleteEntry == TRUE )
 					{
 						$Ctemplate->useTemplate("successbox", array(
 							'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_txt.png", // Text folder icon
-							'TITLE'	=>	"Entry deleted", // Success title
-							'BODY'	=>	"The entry was deleted successfully.", // Success text
-							'ALT'	=>	"Query execution success" // Alternate picture text
+							'TITLE'	=>	"{LANG_MENUS_ENTRY_DELETE_SUCESS}", // Success title
+							'BODY'	=>	"{LANG_MENUS_ENTRY_DELETE_1}", // Success text
+							'ALT'	=>	"{LANG_SQL_EXEC_SUCCESS}" // Alternate picture text
 						), FALSE ); // We give a success message
 						
 						// Back form
@@ -569,10 +569,10 @@ switch ($site) // Outputs and scripts are based on the site variable
 					// Give error
 					$Ctemplate->useTemplate("errormessage", array(
 						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
-						'TITLE'	=>	"Missing parameters", // Error title
-						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
-						'ALT'	=>	"Missing parameters" // Alternate picture text
-					), FALSE ); // We give an unaviable error
+						'TITLE'	=>	"{LANG_MISSING_PARAMETERS}", // Error title
+						'BODY'	=>	"{LANG_MISSING_PARAMETERS_BODY}", // Error text
+						'ALT'	=>	"{LANG_MISSING_PARAMETERS}" // Alternate picture text
+					), FALSE ); // We give an error
 				}
 				break;
 			/* ITEM DELETION */
@@ -608,10 +608,10 @@ switch ($site) // Outputs and scripts are based on the site variable
 					// Give error
 					$Ctemplate->useTemplate("errormessage", array(
 						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
-						'TITLE'	=>	"Missing parameters", // Error title
-						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
-						'ALT'	=>	"Missing parameters" // Alternate picture text
-					), FALSE ); // We give an unaviable error
+						'TITLE'	=>	"{LANG_MISSING_PARAMETERS}", // Error title
+						'BODY'	=>	"{LANG_MISSING_PARAMETERS_BODY}", // Error text
+						'ALT'	=>	"{LANG_MISSING_PARAMETERS}" // Alternate picture text
+					), FALSE ); // We give an error
 				}
 				
 				break;
@@ -622,7 +622,7 @@ switch ($site) // Outputs and scripts are based on the site variable
 				if ( $_POST['label'] == NULL ) // Entry label
 				{
 					$Ctemplate->useTemplate("admin/menus_createentry_variable_error", array(
-						'VARIABLE'	=>	"Label", // Missing variable's name
+						'VARIABLE'	=>	"{LANG_MENUS_LABEL}", // Missing variable's name
 						'LABEL'	=>	$_POST['label'], // Entry label (should be empty)
 						'HREF'	=>	$_POST['href'], // Link target
 						'MENU_ID'	=>	$_POST['menu_id'] // Menu ID
@@ -637,7 +637,7 @@ switch ($site) // Outputs and scripts are based on the site variable
 				if ( $_POST['href'] == NULL ) // URL
 				{
 					$Ctemplate->useTemplate("admin/menus_createentry_variable_error", array(
-						'VARIABLE'	=>	"URL", // Missing variable's name
+						'VARIABLE'	=>	"{LANG_MENUS_URL}", // Missing variable's name
 						'LABEL'	=>	$_POST['label'], // Entry label
 						'HREF'	=>	$_POST['href'], // Link target (should be empty)
 						'MENU_ID'	=>	$_POST['menu_id'] // Menu ID
@@ -712,10 +712,10 @@ switch ($site) // Outputs and scripts are based on the site variable
 					// Give error
 					$Ctemplate->useTemplate("errormessage", array(
 						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
-						'TITLE'	=>	"Missing parameters", // Error title
-						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
-						'ALT'	=>	"Missing parameters" // Alternate picture text
-					), FALSE ); // We give an unaviable error
+						'TITLE'	=>	"{LANG_MISSING_PARAMETERS}", // Error title
+						'BODY'	=>	"{LANG_MISSING_PARAMETERS_BODY}", // Error text
+						'ALT'	=>	"{LANG_MISSING_PARAMETERS}" // Alternate picture text
+					), FALSE ); // We give an error
 				}
 				break;
 			case "edit_entry_do":
@@ -728,7 +728,7 @@ switch ($site) // Outputs and scripts are based on the site variable
 					if ( $_POST['label'] == NULL ) // Entry label
 					{
 						$Ctemplate->useTemplate("admin/menus_editentry_variable_error", array(
-							'VARIABLE'	=>	"Label", // Missing variable's name
+							'VARIABLE'	=>	"{LANG_MENUS_LABEL}", // Missing variable's name
 							'LABEL'	=>	$_POST['label'], // Entry label (should be empty)
 							'HREF'	=>	$_POST['href'], // Link target
 							'ENTRY_ID'	=>	$_POST['entry_id'] // Entry ID
@@ -743,7 +743,7 @@ switch ($site) // Outputs and scripts are based on the site variable
 					if ( $_POST['href'] == NULL ) // URL
 					{
 						$Ctemplate->useTemplate("admin/menus_editentry_variable_error", array(
-							'VARIABLE'	=>	"URL", // Missing variable's name
+							'VARIABLE'	=>	"{LANG_MENUS_URL}", // Missing variable's name
 							'LABEL'	=>	$_POST['label'], // Entry label
 							'HREF'	=>	$_POST['href'], // Link target (should be empty)
 							'ENTRY_ID'	=>	$_POST['entry_id'] // Entry ID
@@ -788,10 +788,10 @@ switch ($site) // Outputs and scripts are based on the site variable
 					// Give error
 					$Ctemplate->useTemplate("errormessage", array(
 						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
-						'TITLE'	=>	"Missing parameters", // Error title
-						'BODY'	=>	"One or more of the required parameters hadn't been passed.", // Error text
-						'ALT'	=>	"Missing parameters" // Alternate picture text
-					), FALSE ); // We give an unaviable error
+						'TITLE'	=>	"{LANG_MISSING_PARAMETERS}", // Error title
+						'BODY'	=>	"{LANG_MISSING_PARAMETERS_BODY}", // Error text
+						'ALT'	=>	"{LANG_MISSING_PARAMETERS}" // Alternate picture text
+					), FALSE ); // We give an error
 				}
 				break;
 			/* ITEM EDITION */

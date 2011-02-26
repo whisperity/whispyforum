@@ -1,15 +1,15 @@
 <!--- BEGIN admin menus editentry form -->
 <!--- Usage: administrator control panel module 'menus' entry edition form -->
-<font class="emphasis">Variables marked with a red star (<span class="red-star">*</span>) are required to be entered.</font>
+<font class="emphasis">{LANG_MANDATORY_VARIABLES_REDSTAR}</font>
 
 <form method="POST" action="control_admin.php">
-<span class="form-header">Edit entry: {LABEL}</span><br>
-Menu: {M_HEADER}<br>
-Label<span class="red-star">*</span>: <input type="text" name="label" value="{LABEL}" size=35><br>
-URL<span class="red-star">*</span>: <input type="text" name="href" value="{HREF}" size=50><br>
+<span class="form-header">{LANG_MENUS_ENTRY_MODIFY_BUTTON}: {LABEL}</span><br>
+{LANG_MENUS_MENU}: {M_HEADER}<br>
+{LANG_MENUS_LABEL}<span class="red-star">*</span>: <input type="text" name="label" value="{LABEL}" size=35><br>
+{LANG_MENUS_URL}<span class="red-star">*</span>: <input type="text" name="href" value="{HREF}" size=50><br>
 <input type="hidden" name="site" value="menus">
 <input type="hidden" name="m_subsite" value="edit_entry_do">
 <input type="hidden" name="entry_id" value="{ENTRY_ID}">
-<input type="submit" value="Edit entry">
+<input type="submit" value="{LANG_MENUS_ENTRY_MODIFY_BUTTON}">
 </form>
 <!--- END admin menus editentry form -->
