@@ -15,10 +15,6 @@ global $Ctemplate; // Class is global
 $Ctemplate = new class_template;
 /* Libraries */
 
-// Generate framework header
-$Ctemplate->useStaticTemplate("framework/header", FALSE);
-/* HEADER */
-
 /* Preload checks */
 // Check whether configuration file exists
 if ( file_exists("config.php") == 1 )
@@ -78,6 +74,11 @@ print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_FILES,tru
 /* START GENERATION */
 $Cmysql->Connect(); // Connect to database
 $Cusers->Initialize(); // We initialize the userdata
+// User initialization also loads the language file
+
+// Generate framework header
+$Ctemplate->useStaticTemplate("framework/header", FALSE);
+/* HEADER */
 
 /* DEVELOPEMENT */
 print "<h4>SESSION</h4>";

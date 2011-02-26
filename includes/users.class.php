@@ -25,6 +25,8 @@ class class_users
 		} else {
 			$this->__checkUserData(); // We check the login status if there's active session
 		}
+		
+		require('language/' .$_SESSION['usr_language']. '.php'); // Load language file
 	}
 	
 	private function __createSession()
@@ -43,6 +45,7 @@ class class_users
 		$_SESSION['log_bool'] = FALSE; // Logged out
 		$_SESSION['avatar_filename'] = ""; // Guests does not have avatars
 		$_SESSION['theme_name'] = "winky"; // Default theme name
+		$_SESSION['usr_language'] = "english"; // Default language name
 	}
 	
 	private function __destroySession()
@@ -205,6 +208,8 @@ class class_users
 			$_SESSION['log_status'] = "user";
 			$_SESSION['log_bool'] = TRUE;
 			$_SESSION['avatar_filename'] = $userDBArray['avatar_filename'];
+			$_SESSION['theme_name'] = "winky"; // Default theme name
+			$_SESSION['usr_language'] = "english"; // Default language name
 			
 			$Cmysql->Query("UPDATE users SET curr_ip='" .$_SESSION['curr_ip']. "', curr_sessid='" .$_SESSION['curr_sessid']. "', loggedin=1 WHERE id='" .$userDBArray['id']. "'"); // We update the database to enter the current session data
 			return TRUE; // Then return TRUE

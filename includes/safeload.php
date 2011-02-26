@@ -77,6 +77,7 @@ print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_FILES,tru
 /* START GENERATION */
 $Cmysql->Connect(); // Connect to database
 $Cusers->Initialize(); // We initialize the userdata
+// User initialization also loads the language file
 
 /* DEVELOPEMENT */
 print "<h4>SESSION</h4>";
