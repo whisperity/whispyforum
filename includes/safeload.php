@@ -34,6 +34,7 @@ if ( file_exists("config.php") == 1 )
 			'BODY'	=>	"WhispyForum appears to be installed, however, the configuration file lacks some important variables. It's advised to reinstall the system. ".'You can install it by clicking <a href="install.php" alt="Install WhispyForum">here</a> and running the install script.', // Error text
 			'ALT'	=>	"Corrupt configuration" // Alternate picture text
 	), FALSE ); // We output an error message
+	exit; // Terminate the script
 	} // Else: do nothing
 } elseif ( file_exists("config.php") == 0 ) // If not
 {
@@ -44,6 +45,7 @@ if ( file_exists("config.php") == 1 )
 		'BODY'	=>	"The site's configuration file is missing. It usally means that the engine isn't installed properly. Without configuration, the engine cannot be used, because it can't connect to the database. ".'You can install it by clicking <a href="install.php" alt="Install WhispyForum">here</a> and running the install script.', // Error text
 		'ALT'	=>	"File unaviable" // Alternate picture text
 	), FALSE ); // We output an error message
+	exit; // Terminate the script
 }
 
 /* Preload checks */
@@ -78,7 +80,7 @@ $Cusers->Initialize(); // We initialize the userdata
 
 /* DEVELOPEMENT */
 print "<h4>SESSION</h4>";
-print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_SESSION,true))."<br>"; 
+print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_SESSION,true))."<br>";
 
 /* FRAMEWORK */
 
