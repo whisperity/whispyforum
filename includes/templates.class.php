@@ -137,7 +137,9 @@ class class_template
 		 * example:
 		 *	useTemplate("filename");
 		 */
-		 
+		
+		global $wf_lang; // Load the language array (/language/language_name.php loads it)
+		
 		if ( $templateName != NULL )  // If template name is specified
 		{
 			$this->__getTemplate($templateName); // We read in the template...
