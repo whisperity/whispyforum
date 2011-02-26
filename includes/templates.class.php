@@ -153,6 +153,21 @@ class class_template
 				$this->_output=str_replace('{THEME_NAME}',$_SESSION['theme_name'],$this->_output);
 			}
 			
+			/* Replacing language tokens */
+			preg_match_all('/{LANG_.*?}/', $this->_output, $lKeys, PREG_PATTERN_ORDER, 0);
+			// $lKeys[0] contains all {LANG_*} language variables (* is the string's name)
+			
+			$j = 0; // Counter reset to zero
+			
+				foreach($lKeys[0] as $lang_tag)
+				{
+					// Then replace the output, updating it
+					$this->_output=str_replace($lKeys[0][$j],$wf_lang[ $lKeys[0][$j] ],$this->_output);
+					
+					$j++; // Turn the counter by one
+				}
+			/* Replacing language tokens */
+			
 			if ( $varOutput == TRUE ) // If we decided to give return output
 			{
 				// First, we need to cache output into a variable
