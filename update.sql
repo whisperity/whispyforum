@@ -82,3 +82,8 @@ CREATE TABLE IF NOT EXISTS menu_entries (
 INSERT INTO menus(header, align, side) VALUES ('Main menu', 0, 'left');
 
 INSERT INTO menu_entries(menu_id, label, href) VALUES (1, 'Homepage', 'index.php');
+
+#
+# Revision 537 (added multiple languages support) 
+#
+ALTER TABLE `users` ADD `language` VARCHAR( 32 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'english' COMMENT 'user preferred language';

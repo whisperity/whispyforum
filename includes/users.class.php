@@ -29,11 +29,11 @@ class class_users
 		if ( isset($_SESSION['usr_language']) )
 		{
 			// If the session stores the user's language preference
-			include('language/' .$_SESSION['usr_language']. '.php'); // Load set language file
+			include('language/' .$_SESSION['usr_language']. '/language.php'); // Load set language file
 		} elseif ( !isset($_SESSION['usr_language']) )
 		{
 			// If the index isn't defined,
-			include('language/english.php'); // Load English language file
+			include('language/english/language.php'); // Load English language file
 		}
 	}
 	
@@ -217,7 +217,7 @@ class class_users
 			$_SESSION['log_bool'] = TRUE;
 			$_SESSION['avatar_filename'] = $userDBArray['avatar_filename'];
 			$_SESSION['theme_name'] = "winky"; // Default theme name
-			$_SESSION['usr_language'] = "english"; // Default language name
+			$_SESSION['usr_language'] = $userDBArray['language'];
 			
 			$Cmysql->Query("UPDATE users SET curr_ip='" .$_SESSION['curr_ip']. "', curr_sessid='" .$_SESSION['curr_sessid']. "', loggedin=1 WHERE id='" .$userDBArray['id']. "'"); // We update the database to enter the current session data
 			return TRUE; // Then return TRUE

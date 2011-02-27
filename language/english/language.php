@@ -147,7 +147,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_UCP_TOOLTIP}'	=>	"User control panel",
 	'{LANG_UCP_USER_CUSTOMIZATION}'	=>	"User customization",
 	
-	/* Avatars */
+	/* Avatar */
 	'{LANG_USR_YOUR_AVATAR}'	=>	"Your avatar",
 	'{LANG_UPLOAD_AVATAR}'	=>	"Upload avatar",
 	'{LANG_AVATAR_UPLOAD}'	=>	"Avatar upload",
@@ -166,6 +166,16 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_AVATAR_TOOBIG_1}'	=>	"The file you uploaded is too big! Maximum filesize:",
 	'{LANG_AVATAR_TOOBIG_2}'	=>	"MB, but you wanted to upload a big,",
 	'{LANG_AVATAR_TOOBIG_3}'	=>	"sized file.",
+	
+	/* Site preferences */
+	'{LANG_SITEPREF_TITLE}'	=>	"Here you can site your preferences on the site (language/theme). Please note, that this preferences are linked to your user. If you're a guest, you'll get the default settings.",
+	'{LANG_SITEPREFS}'	=>	"Site preferences",
+	'{LANG_SITEPREF_LANGUAGE_EMPHASIS}'	=>	"To modify your language, select it from the drop-down list and click Modify language.",
+	'{LANG_SITEPREF_MODIY_LANGUAGE_NOTICE}'	=>	"Your current language is automatically selected.",
+	'{LANG_SITEPREF_MODIFY_LANGUAGE}'	=>	"Modify language",
+	'{LANG_SITEPREF_MODIFY_LANGUAGE_ERROR}'	=>	"Cannot modify the language",
+	'{LANG_SITEPREF_MODIFY_LANGUAGE_SUCCESS}'	=>	"Language modified",
+	'{LANG_SITEPREF_MODIFY_LANGUAGE_SUCCESS_1}'	=>	"You successfully modified your language. The next page you request will load in the language you set.",
 	
 	/* Administrator control panel */
 	'{LANG_ACP_TOOLTIP}'	=>	"Administrator control panel",
