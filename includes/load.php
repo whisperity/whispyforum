@@ -15,10 +15,6 @@ global $Ctemplate; // Class is global
 $Ctemplate = new class_template;
 /* Libraries */
 
-// Generate framework header
-$Ctemplate->useStaticTemplate("framework/header", FALSE);
-/* HEADER */
-
 /* Preload checks */
 // Check whether configuration file exists
 if ( file_exists("config.php") == 1 )
@@ -29,22 +25,20 @@ if ( file_exists("config.php") == 1 )
 	if ( !defined('WHISPYFORUM') ) // There is a "DEFINE()" constant in config.php which is a random UUID generated on install
 	{
 		$Ctemplate->useTemplate("errormessage", array(
-			'THEME_NAME'	=>	"winky", // Theme name
 			'PICTURE_NAME'	=>	"Nuvola_apps_package_settings.png", // Text file icon
-			'TITLE'	=>	"Corruption!", // Error title
-			'BODY'	=>	"WhispyForum appears to be installed, however, the configuration file lacks some important variables. It's advised to reinstall the system. ".'You can install it by clicking <a href="install.php" alt="Install WhispyForum">here</a> and running the install script.', // Error text
-			'ALT'	=>	"Corrupt configuration" // Alternate picture text
+			'TITLE'	=>	"{LANG_LOAD_CORRUPTION}", // Error title
+			'BODY'	=>	"{LANG_LOAD_CORRUPTION_BODY}", // Error text
+			'ALT'	=>	"{LANG_LOAD_CORRUPTION_ALT}" // Alternate picture text
 	), FALSE ); // We output an error message
 	exit; // Terminate execution
 	} // Else: do nothing
 } elseif ( file_exists("config.php") == 0 ) // If not
 {
 	$Ctemplate->useTemplate("errormessage", array(
-		'THEME_NAME'	=>	"winky", // Theme name
 		'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Unaviable file icon
-		'TITLE'	=>	"Configuration file not found!", // Error title
-		'BODY'	=>	"The site's configuration file is missing. It usally means that the engine isn't installed properly. Without configuration, the engine cannot be used, because it can't connect to the database. ".'You can install it by clicking <a href="install.php" alt="Install WhispyForum">here</a> and running the install script.', // Error text
-		'ALT'	=>	"File unaviable" // Alternate picture text
+		'TITLE'	=>	"{LANG_LOAD_NOCFG}", // Error title
+		'BODY'	=>	"{LANG_LOAD_NOCFG_BODY}", // Error text
+		'ALT'	=>	"{LANG_FILE_UNAVIABLE}" // Alternate picture text
 	), FALSE ); // We output an error message
 	exit; // Terminate execution
 }
@@ -66,22 +60,27 @@ $Cusers = new class_users;
 require("includes/functions.php");
 /* Libraries */
 
-/* DEVELOPEMENT 
+/* DEVELOPEMENT */
 // PH, workaround: output HTTP POST and GET arrays
 print "<h4>GET</h4>";
 print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_GET,true))."<br>";
 print "<h4>POST</h4>";
 print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_POST,true))."<br>";
 print "<h4>FILES</h4>";
-print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_FILES,true))."<br>"; */
+print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_FILES,true))."<br>";
 
 /* START GENERATION */
 $Cmysql->Connect(); // Connect to database
 $Cusers->Initialize(); // We initialize the userdata
+// User initialization also loads the language file
 
-/* DEVELOPEMENT 
+// Generate framework header
+$Ctemplate->useStaticTemplate("framework/header", FALSE);
+/* HEADER */
+
+/* DEVELOPEMENT */
 print "<h4>SESSION</h4>";
-print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_SESSION,true))."<br>"; */
+print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_SESSION,true))."<br>";
 
 /* FRAMEWORK */
 
@@ -98,24 +97,6 @@ function DoFooter()
 	global $Ctemplate, $Cmysql; // Load classes
 	
 	$Ctemplate->useStaticTemplate("framework/right", FALSE); // Close center table and right menubar begin
-		$num_students = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM users"));
-		$num_performers = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM fu_performers"));
-		
-		$pending = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM fu_performers WHERE status='pending'"));
-		$will_come = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM fu_performers WHERE status='agreed'"));
-		$wont_come = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM fu_performers WHERE status='refused'"));
-		$unallocated = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM fu_performers WHERE status='unallocated'"));
-		
-		$Ctemplate->useTemplate("freeuni/index_statistics", array(
-			'NUM_STUDENTS'	=>	$num_students[0], // Number of students
-			'NUM_PERFORMERS'	=>	$num_performers[0], // Number of performes (total)
-			'PENDING'	=>	$pending[0], // Performers pending (waiting for response)
-			'WILL_COME'	=>	$will_come[0], // Performers agreed
-			'WONT_COME'	=>	$wont_come[0], // Performers rejected
-			'UNALLOCATED'	=>	$unallocated[0], // Number of performers waiting to be allocated to a student
-			'WIDTH'	=>	"100%" // Box width 
-		), FALSE); // Give global statistics page
-		
 		$Ctemplate->DoMenuBars('RIGHT'); // Do right menubar
 	$Ctemplate->useStaticTemplate("framework/footer", FALSE); // Close right menubar and generate footer
 	/* FOOTER */
