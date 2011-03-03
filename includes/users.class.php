@@ -25,16 +25,6 @@ class class_users
 		} else {
 			$this->__checkUserData(); // We check the login status if there's active session
 		}
-		
-		if ( isset($_SESSION['usr_language']) )
-		{
-			// If the session stores the user's language preference
-			include('language/' .$_SESSION['usr_language']. '/language.php'); // Load set language file
-		} elseif ( !isset($_SESSION['usr_language']) )
-		{
-			// If the index isn't defined,
-			include('language/english/language.php'); // Load English language file
-		}
 	}
 	
 	private function __createSession()
@@ -53,7 +43,6 @@ class class_users
 		$_SESSION['log_bool'] = FALSE; // Logged out
 		$_SESSION['avatar_filename'] = ""; // Guests does not have avatars
 		$_SESSION['theme_name'] = "winky"; // Default theme name
-		$_SESSION['usr_language'] = "english"; // Default language name
 	}
 	
 	private function __destroySession()
@@ -186,6 +175,8 @@ class class_users
 			$Ctemplate->useStaticTemplate("user/userform_user-ap_link", FALSE); // Output link
 		}
 		
+		$Ctemplate->useStaticTemplate("user/userform_user-freeuni_links", FALSE); // Free university links
+		
 		$Ctemplate->useTemplate("user/userform_logout", array(
 			'RETURN_TO'	=>	$returnLink
 		), FALSE); // Logout button
@@ -216,8 +207,6 @@ class class_users
 			$_SESSION['log_status'] = "user";
 			$_SESSION['log_bool'] = TRUE;
 			$_SESSION['avatar_filename'] = $userDBArray['avatar_filename'];
-			$_SESSION['theme_name'] = "winky"; // Default theme name
-			$_SESSION['usr_language'] = $userDBArray['language'];
 			
 			$Cmysql->Query("UPDATE users SET curr_ip='" .$_SESSION['curr_ip']. "', curr_sessid='" .$_SESSION['curr_sessid']. "', loggedin=1 WHERE id='" .$userDBArray['id']. "'"); // We update the database to enter the current session data
 			return TRUE; // Then return TRUE

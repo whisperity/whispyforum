@@ -67,10 +67,11 @@ class class_mysql
 		global $cfg, $Ctemplate; // We need to initialize the config array and the template class
 		
 		$Ctemplate->useTemplate("errormessage", array(
+			'THEME_NAME'	=>	"winky", // Theme name
 			'PICTURE_NAME'	=>	"Nuvola_devices_raid.png", // HDDs icon
-			'TITLE'	=>	"{LANG_SQL_NOCONNECTION}", // Error title
-			'BODY'	=>	'{LANG_SQL_DBCONN_TO} <tt>' .$cfg['dbhost']. '</tt> ({LANG_USERNAME_LOWERCASE} <tt>' .$cfg['dbuser']. '</tt>, {LANG_USING_LOWERCASE} {LANG_PASSWORD_LOWERCASE}: <tt>'. ( ($cfg['dbpass'] != NULL) ? '{LANG_YES}' : '{LANG_NO}' ) .'</tt>) {LANG_COULD_NOT_BE_MADE}', // Error text
-			'ALT'	=>	"{LANG_SQL_ERROR}" // Alternate picture text
+			'TITLE'	=>	"Unable to connect!", // Error title
+			'BODY'	=>	'Database connection to <tt>' .$cfg['dbhost']. '</tt> (user <tt>' .$cfg['dbuser']. '</tt>, using password: <tt>'. ( ($cfg['dbpass'] != NULL) ? 'yes' : 'no' ) .'</tt>) could not be made.', // Error text
+			'ALT'	=>	"Connection error" // Alternate picture text
 	), FALSE ); // We output an error message
 	}
 	
@@ -84,10 +85,11 @@ class class_mysql
 		global $cfg, $Ctemplate; // We need to initialize the config array and the template class
 		
 		$Ctemplate->useTemplate("errormessage", array(
+			'THEME_NAME'	=>	"winky", // Theme name
 			'PICTURE_NAME'	=>	"Nuvola_devices_raid.png", // HDDs icon
-			'TITLE'	=>	"{LANG_SQL_DBSELECT_ERROR}", // Error title
-			'BODY'	=>	'{LANG_SQL_THEDATABASE} <tt>' .$cfg['dbname']. '</tt> {LANG_SQL_COULD_NOT_BE_SELECTED}', // Error text
-			'ALT'	=>	"{LANG_SQL_ERROR}" // Alternate picture text
+			'TITLE'	=>	"Unable to select database!", // Error title
+			'BODY'	=>	'The specified database <tt>' .$cfg['dbname']. '</tt> could not be selected.', // Error text
+			'ALT'	=>	"mySQL error" // Alternate picture text
 	), FALSE ); // We output an error message
 	}
 	
@@ -138,10 +140,11 @@ class class_mysql
 		global $cfg, $Ctemplate; // We need to initialize the config array and the template class
 		
 		$Ctemplate->useTemplate("errormessage", array(
+			'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 			'PICTURE_NAME'	=>	"Nuvola_devices_raid.png", // HDDs icon
-			'TITLE'	=>	"{LANG_SQL_EXEC_ERROR}", // Error title
-			'BODY'	=>	'{LANG_SQL_THEQUERY} <tt>' .$sQuery. '</tt> {LANG_SQL_COULD_NOT_BE_PROCESSED}<br>{LANG_SQL_ERROR_MSG_WAS} <tt>' .mysql_error(). '</tt>', // Error text
-			'ALT'	=>	"{LANG_SQL_EXEC_ERROR}" // Alternate picture text
+			'TITLE'	=>	"Unable to process mySQL query!", // Error title
+			'BODY'	=>	'The specified query <tt>' .$sQuery. '</tt> could not be processed.<br>The mySQL error message was <tt>' .mysql_error(). '</tt>', // Error text
+			'ALT'	=>	"mySQL query error" // Alternate picture text
 	), FALSE ); // We output an error message
 	}
 	
@@ -162,8 +165,8 @@ class class_mysql
 			 * using this escape function gives errors.
 			*/
 			
-			$sSring = @mysql_real_escape_string($sString); // We escape the string with the help of the SQL server
-				//or $this->__giveEscapeStringError($sString); // If we can't, give error
+			$sSring = @mysql_real_escape_string($sString) // We escape the string with the help of the SQL server
+				or $this->__giveEscapeStringError($sString); // If we can't, give error
 			
 			return $sString; // Return the escaped string
 		}
@@ -181,10 +184,11 @@ class class_mysql
 		global $cfg, $Ctemplate; // We need to initialize the config array and the template class
 		
 		$Ctemplate->useTemplate("errormessage", array(
+			'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 			'PICTURE_NAME'	=>	"Nuvola_devices_raid.png", // HDDs icon
 			'TITLE'	=>	"String failed to escape!", // Error title
 			'BODY'	=>	'There were errors escaping string <tt>' .htmlspecialchars($sString). '</tt>.<br>The mySQL error message was <tt>' .mysql_error(). '</tt>', // Error text
-			'ALT'	=>	"{LANG_SQL_ERROR}" // Alternate picture text
+			'ALT'	=>	"mySQL query error" // Alternate picture text
 	), FALSE ); // We output an error message
 	}
 }
