@@ -175,7 +175,14 @@ class class_users
 			$Ctemplate->useStaticTemplate("user/userform_user-ap_link", FALSE); // Output link
 		}
 		
-		$Ctemplate->useStaticTemplate("user/userform_user-freeuni_links", FALSE); // Free university links
+		$Ctemplate->useTemplate("user/userform_user-freeuni_links", array(
+			'THEME_NAME'	=>	$_SESSION['theme_name'],
+			'ADMINLOGO'	=>	($userDBArray['userLevel'] >= 3 ? 
+				$Ctemplate->useTemplate("adminlogo", array(
+				'THEME_NAME'	=>	$_SESSION['theme_name']
+				), TRUE)
+			: "") // Administrator logo if the user is an admin
+		), FALSE); // Free university links
 		
 		$Ctemplate->useTemplate("user/userform_logout", array(
 			'RETURN_TO'	=>	$returnLink

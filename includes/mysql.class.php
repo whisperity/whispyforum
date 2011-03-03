@@ -165,8 +165,8 @@ class class_mysql
 			 * using this escape function gives errors.
 			*/
 			
-			$sSring = @mysql_real_escape_string($sString) // We escape the string with the help of the SQL server
-				or $this->__giveEscapeStringError($sString); // If we can't, give error
+			$sSring = @mysql_real_escape_string($sString); // We escape the string with the help of the SQL server
+				//or $this->__giveEscapeStringError($sString); // If we can't, give error
 			
 			return $sString; // Return the escaped string
 		}
