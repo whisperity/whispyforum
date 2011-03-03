@@ -1,0 +1,135 @@
+<!--- BEGIN wf freeuni info -->
+<!--- Usage: general WF information (on the index.php) -->
+<hr>
+<h3>Közérdekű információk, hírek kezelése</h3>
+Akinek bármiféle közérdekű információja vagy linkmegosztási hajlama lenne, az a következőt teheti:
+<ul>
+	<li><b>közérdekű információ esetén</b>
+		<ul>
+			<li>szól nekem, hogy tegyük ki</li>
+			<li>vár, amíg a dinamikus hírkezelő elkészül és felkerül</li>
+		</ul>
+	</li>
+	<li><b>közérdekű link esetén</b> szól egy adminisztrátornak aki a linket kihelyezi</li>
+</ul>
+
+<hr>
+
+<h3>A weboldalról úgy összességében</h3>
+<p>Amit most láttok, az az általam fejlesztett PHP alapú portálmotor 2. 
+verziójának (az első verziót a fajosztály honlapon megtalálhatod, ha érdekel az 
+a programozói világszégyene) eléggé kezdetleges kiadása.</p>
+
+<p>A rendszert angol nyelven írom és dokumentálom. Templatizált 
+felépítést használ. Minden egyes kis blokk amit itt látsz, egy kiforrt 
+sablonkezelő szüleménye. Nyers sablonfájlokat olvas be, amelyeket a kód által 
+meghatározott adatok (pl. jobb oldalt az a szép kis számadó táblázat) 
+behelyettesít. Ezért van az, hogy a hasonló célt szolgáló elemek (hiba/siker 
+üzenetek, menüdobozok, listák) hasonlítanak egymásra. Neked csak hasonlóak, 
+mivel te már a kész, behelyettesített állapotot kapod. De a kezdetleges 
+sablonfájl egy és ugyanagyaz, így egybevágó egységekbe történik a berakodás.</p>
+
+<blockquote>
+
+<p>Például:</p>
+
+  <pre>Szia [{}KEY_GENERIC:NEVED]!</pre>
+
+<p>Ezt, ha a NEVED kulcshoz azt írnám be, hogy &quot;<i>Norbi</i>&quot;, akkor ezt adná ki:</p>
+
+  <pre>Szia Norbi!</pre>
+</blockquote>
+
+<p>Az otthon kotyvasztott változat már támogatja a többnyelvűséget. A sablonok 
+nem a &quot;Szia&quot; szót tartalmazzák, hanem egy utalást a SZIA szóra. A 
+felhasználódnál beállítható nyelv alapján tölti be ezt a szót angolul, magyarul, 
+németül, olaszul vagy épp oroszul. Ez a lehetőség az itt látható rendszeren még 
+NEM KERÜLT bevezetésre (nem is hiszem, hogy fog), sem a különálló dinamikus 
+stíluskezelés.</p>
+
+<p>Azonban bizonyos sablonok, amelyeket ti sokszor fogtok látni, magyarítva 
+lett. A felhasználói vezérlőpult (ami perpillanat egy igen értelmetlen avatarkép 
+feltöltőt foglal magába), az adminisztrátori dolgok angolok maradtak. (Nem hiszem, 
+hogy ezeket sűrűn fogjuk látogatni)</p>
+
+<hr>
+
+<h3>A szabadegyetem szervezési site használati utasítása és leírása</h3>
+<p>A jelenlegi állapot az első fázist, az előadók csábítását (és a csábításaitok 
+kulturált naplózását) tartalmazza. Az egész részekből épül fel, úgy mint (ezt a 
+drága osztálytársaim már hallották :) ):</p>
+
+<h4>Előadó létrehozása</h4>
+<p>Az előadó létrehozása egyszerű. A felhasználói dobozodban (bal oldalt első 
+kis doboz, ahol felül az <i>Üdv, neved!</i> felirat szerepel) kattints a <b>Új 
+előadó felvétele az adatbázisba</b> lehetőségre. A megjelenő űrlapot az 
+instrukcióknak megfelelően töltsd ki. Ha mindent kitöltöttél, az előadó 
+felvételre kerül <i>Szabad</i> státuszban (a státuszokról fentebb olvashatsz).</p>
+
+<h4>Előadó lefoglalása</h4>
+<p>Mielőtt nekiállnál beállítani, hogy az kiszemelt előadód jön-e, le kell őt 
+foglalnod. Az oldal relációs koncepciót alkalmaz: <b>egy előadó státuszát csak 
+az a felhasználó, és csakis az állíthatja, akihez az szóban forgó előadó 
+lefoglalásra került</b>. Így más nem tud a te folyamatodba belepiszkítani. 
+Kattints a felhasználói dobozban (innen érsz el mindent) a <b>Szabad előadó 
+lefoglalása</b> lehetősére. Megjelennek a szabad státuszú előadók. A kiszemelt 
+ember mellett kattins a <i>Lefoglalás</i> gombra. Ez létrehozza a relációt, és 
+az előadó a te felhasználódhoz rendelődik, <i>Függő</i> státuszt kapva.</p>
+
+<h4>Előadó kezelés</h4>
+<p>A hozzád lefoglalt előadók státuszának módosításához kattins a <b>Saját 
+előadóim kezelése</b> lehetőségre. Megjelennek az általad lefoglalt előadók, 
+státusz szerint sorba rendezve: legfelül a <i>Függő</i>, alatta a <i>Vállaja</i>, 
+majd legalul a <i>Nem vállalja</i> státuszúak. Státusz módosításához egyszerűen 
+kattints az adott előadó nevével kezdődő sor megfelelő gombjára.<br>
+A szerkesztés gombbal a megjegyzés rovat tartalma átírható.</p>
+
+<h4>Előadó visszamondása</h4>
+<p>A státuszgombok mellett megtalálható egy <i>Előadó lemondása</i> gomb is. 
+Erre kattintva az előadó visszakerül <i>Szabad</i> státuszba (így bárki más 
+lefoglalhatja később), az őt hozzád kötő reláció pedig megszűnik létezni. 
+Státuszát ezentúl nem módosíthatod (hacsak nem foglalod le újra, de az már egy másik állapot).</p>
+
+<h4>Előadók listázása</h4>
+<p>Előadók listázásához az <b>Előadók listázása</b> lehetőséget kell választanod 
+a felhasználói dobozban. Az előadók itt is kategorizált formában jelennek meg. 
+Felülről lefelé először a <i>Vállaja</i>, a <i>Függő</i>, a <i>Szabad</i>, majd 
+legalul a <i>Nem vállalja</i> státusszal rendelkezőek. Nyomtatóbarát változatban 
+a lista státuszkiemelő színezés nélkül jelenik meg.<br>
+<u><b>Adminisztrátorok</b></u>: Az előadók után minden sorban megjelenik egy <b>
+Előadó törlése</b> gomb. Erre kattintva az előadó törlődik az adatbázisból, és 
+az esetleges az előadót valakihez kötő reláció is megszűnik.<br>
+Az előadók után minden sorban megjelenik egy <b>
+Szerkesztés</b> gomb. Erre kattintva az előadó megjegyzés rovata szerkeszthető..</p>
+
+<h4>Statisztika</h4>
+<p>A kezdőlapon és a jobb oldali menüsávban található egy <i>Globális 
+statisztika</i> feliratú doboz. Ebben a dobozban egyszerű statisztika (azért nem 
+átfogó, mert ahhoz számolni kéne diák/előadó/siker/bukás átlagot) található az 
+oldalról. <b>A statisztika valósidejű, az éppen megtekintett weboldal 
+megnyitásakor érvényben lévő állapotot tükrözi.</b></p>
+
+<h4>Garancia</h4>
+<p>A freeweb tárhelyszolgáltató nem vállal felelősséget az esetleges 
+adatvesztésekért. Erről már gondoskodtam: minden nap legalább egy biztonsági 
+mentés létrejön a reggeli órákban (számításaim szerint akkor kb. 0 ember 
+látogatni az oldalt egyidőben), melyet e-mailben és WHMPK csomagként is 
+megkapok. Ezzel biztosítva egy esetleges adatvesztést. A programkód is el van 
+mentve, nagymamámnál a spájzban a kolbászok között, valamint két külső merevlemezen, árnyékmásolaton, DAT-szalagon, ki is van nyomtatva, lassan már álmomból felkelve is tudni fogom.</p>
+
+<h4>Még valami</h4>
+<p>Divat lehet, hogy ha végzünk egy oldalon, akkor nem jelentkezünk ki, csak bezárjuk a böngészőt (meghagyva ezzel az aktív munkamenetet és hadd ne térjek ki az egyéb biztonsági kockázatokra). <b>Kérek mindenkit, hogy ha elvégezte dolgát</b> <s>húzza le a WC-t és használja az illatosítót</s> <b>jelentkezzen ki.</b> Ha más helyről, más gépről (IP-címről) vagy munkamenet sütivel jelentkezik be, a rendszer óvintézkedéseket tesz, az előző munkamenetet blokkolja. Oda visszatérve pedig az újat, szóval körbeblokkolnád magad. Kitaláltam, de <u>ez lesz a rendszer első éles tesztje, csak távolról ismert emberekkel</u> (valódi emberekkel?), <u>távoli szerveren, éles adatokkal.</u> Bármi hiba beüthet, a rendszer kis naplócskát ír amit tudok elemezni, ezt figyelni fogom, ha valami hiba van nekiállok javítani. <b>Ha te is megtapasztalsz valami anomáliát</b> (igyekeztem anomáliamentessé tenni a rendszert, de ha egy hiba kénytelen felhasználói értesítést adni (nem sunnyoghat el a munkanaplóban), ezek a jelentések lényegretörőek és érthetőek (anyukámon lett tesztelve, aki még annyira sem ért a gépekhez, mint nagyanyám) lettek), <b>jelezz nekem, például Facebook-on a Távközlési Fórumon, vagy akár személyesen is.</b> Még egyszer leírom: <b><u>ha végeztél, kattints a Kilépés gombra, várd meg a zöld jelzést, és hogy az oldal visszategyen a kezdőlapra. Ezután nyugodtan bezárhatod az ilyen-olyan böngésződet.</u></b></p>
+
+<h3>Hova tovább?</h3>
+
+<p>Előrejelzésem szerint, ha lehetséges, az előadásokra való jelentkezés is itt 
+lesz lebonyolítva. Az oldal meg fog maradni, természetesen az előadók 
+buherálásának a lehetőségét le fogom zárni. Közben, ha oda eljutok a törzskód 
+fejlesztésével, egy gyors merge (összefűzés) is lefuthat. Az összefűzés 
+következtében számotokra a régi funkciót nem fognak megváltozni, de a rendszer 
+tartalmazni fogja a már említett dinamikus nyelvkezelést, valamint a magrendszer esetleges későbbi támogatását. Szóval ha valaki lesz 
+olyan elmebeteg hardcore, hogy oroszul használja az oldalt, jó egészséget neki! (Feltéve, ha lesz valaki, aki tisztességes fordítást csinál, met magamban és Google Translateban nem bízom...)</p>
+<p align="right"><i>Eredményes oldalhasználatot,</i><br><i>Doktorovics Dypertkov, Supreme Commander of the Second 
+Marciist Union</i></p>
+
+<!--- END wf freeuni info -->
