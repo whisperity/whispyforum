@@ -219,6 +219,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_MENUS_MENU_MODIFY_VAR_ERROR}'	=>	"The menu edition cannot be done until every required variable is entered.",
 	'{LANG_MENUS_MENU_MODIFY_SUCCESS_HEAD}'	=>	"Edited the menu",
 	'{LANG_MENUS_MENU_MODIFY_SUCCESS_1}'	=>	"Edition of menu",
+	'{LANG_MENUS_ENTRY_CREATE_SUCCESS_HEAD}'	=>	"Created the entry",
 	'{LANG_MENUS_ENTRY_CREATE_SUCCESS_1}' =>	"Creation of entry",
 	'{LANG_MENUS_ENTRY_CREATE_BUTTON}'	=>	"Add new entry",
 	'{LANG_MENUS_ENTRY_CREATE_SQL_ERROR}'	=>	"There were errors executing the SQL query to create the new entry. No new entry was created.",
