@@ -1,0 +1,42 @@
+<!--- BEGIN freeuniversity2 add lecture data -->
+<!--- Usage: lecture adding lecture data -->
+Az új előadás felvételéhez kérlek add meg az adatait.<br>
+<font class="emphasis">A vörös csillaggal (<span class="red-star">*</span>) jelölt mezőket kötelezően ki kell tölteni.</font>
+<br><br>
+<form method="POST" action="freeuni2_lecture_add.php">
+<span class="form-header">Új előadás adatai</span><br>
+Előadás címe<span class="red-star">*</span>: <input type="text" name="lecture_name" value="{LECTURE_NAME}" size=35><br>
+Előadó neve<span class="red-star">*</span>: <input type="text" name="lecturer" value="{LECTURER}" size=35><br>
+<br>
+<table border="0" style="width: 100%">
+<tr>
+	<th>Óra</th>
+	<th>Előadás meg lesz tartva<span class="red-star">*</span></th>
+	<th>Hallgató limit (ha nincs, hagyd <i>0</i> értéken)</th>
+</tr>
+<tr>
+	<td style="font-weight: bold">1.</td>
+	<td><input type="radio" name="hour1" value="yes"{HOUR1_YES}>Igen&nbsp;<input type="radio" name="hour1" value="no"{HOUR1_NO}>Nem</td>
+	<td><input type="text" name="limit1" value="{LIMIT1}" size=10></td>
+</tr>
+<tr>
+	<td style="font-weight: bold">2.</td>
+	<td><input type="radio" name="hour2" value="yes"{HOUR2_YES}>Igen&nbsp;<input type="radio" name="hour2" value="no"{HOUR2_NO}>Nem</td>
+	<td><input type="text" name="limit2" value="{LIMIT2}" size=10></td>
+</tr>
+<tr>
+	<td style="font-weight: bold">3.</td>
+	<td><input type="radio" name="hour3" value="yes"{HOUR3_YES}>Igen&nbsp;<input type="radio" name="hour3" value="no"{HOUR3_NO}>Nem</td>
+	<td><input type="text" name="limit3" value="{LIMIT3}" size=10></td>
+</tr>
+<tr>
+	<td style="font-weight: bold">4.</td>
+	<td><input type="radio" name="hour4" value="yes"{HOUR4_YES}>Igen&nbsp;<input type="radio" name="hour4" value="no"{HOUR4_NO}>Nem</td>
+	<td><input type="text" name="limit4" value="{LIMIT4}" size=10></td>
+</tr>
+</table>
+<img src="themes/winky/freeuniversity_flower.gif" alt="Adminisztrátor specifikus opció/elemeket tartalmaz">&nbsp;<input type="submit" value="Tovább >>">
+<input type="hidden" name="addPos" value=1>
+</form>
+<font class="emphasis">A továbblépéshez kattints a gombra.</font>
+<!--- END freeuniversity2 add lecture data -->

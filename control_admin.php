@@ -22,9 +22,9 @@ if ( $uDBArray['userLevel'] < 3 )
 	$Ctemplate->useTemplate("errormessage", array(
 		'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 		'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
-		'TITLE'	=>	"Insufficient rights", // Error title
-		'BODY'	=>	"This page requires you to have Administrator or higher rights.", // Error text
-		'ALT'	=>	"User permissions error" // Alternate picture text
+		'TITLE'	=>	"Hiányos jogkör!", // Error title
+		'BODY'	=>	"A lap megtekintéséhez adminisztrátori vagy nagyobb jogokra van szükséged.", // Error text
+		'ALT'	=>	"Házirendhiba" // Alternate picture text
 	), FALSE ); // We give an unaviable error
 } elseif ( $uDBArray['userLevel'] >= 3 )
 {
@@ -817,6 +817,13 @@ switch ($site) // Outputs and scripts are based on the site variable
 		}
 		break;
 	/* * MENU MANAGING * */
+	/* --------------------------- */
+	/* * FREEUNIVERSITY BACKUPS * */
+	case "freeuni-backup-settings":
+		$Ctemplate->useTemplate("admin/freeuni_backup", array(
+			'FREESIZE'	=>	str_replace("GB", "GiB", DecodeSize(disk_free_space("D:")))
+		), FALSE);
+		break;
 	/* --------------------------- */
 }
 }

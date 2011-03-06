@@ -175,9 +175,42 @@ class class_users
 			$Ctemplate->useStaticTemplate("user/userform_user-ap_link", FALSE); // Output link
 		}
 		
-		$Ctemplate->useTemplate("user/userform_user-freeuni_links", array(
-			'THEME_NAME'	=>	$_SESSION['theme_name']
-		), FALSE); // Free university links
+		if ( FREEUNI_PHASE == 1 )
+		{
+			// If we're in phase one, give phase one links
+			$Ctemplate->useTemplate("user/userform_user-freeuni_links", array(
+				'THEME_NAME'	=>	$_SESSION['theme_name'],
+				'ADMINLOGO'	=>	($userDBArray['userLevel'] >= 3 ? 
+						$Ctemplate->useTemplate("adminlogo", array(
+							'THEME_NAME'	=>	$_SESSION['theme_name']
+						), TRUE)
+					: NULL) // Administrator logo if the user is an admin
+				), FALSE); // Free university links
+		}
+		
+		if ( FREEUNI_PHASE == 2 )
+		{
+			// If we're in phase two, give phase two link
+			$Ctemplate->useTemplate("user/userform_user-freeuni2_links", array(
+				'LINK_NEW_LECTURE'	=>	($userDBArray['userLevel'] >= 3 ?
+						$Ctemplate->useTemplate("freeuni2/ub_new_lecture", array(
+							'THEME_NAME'	=>	$_SESSION['theme_name']
+						), TRUE)
+					: NULL), // 'Add new lecture' only if the user is an admin
+				'LINK_SELECT_LECTURE'	=>	$Ctemplate->useStaticTemplate("freeuni2/ub_select_lecture", TRUE),
+				'LINK_MANAGE_LECTURE'	=>	$Ctemplate->useStaticTemplate("freeuni2/ub_manage_lecture", TRUE),
+				'LINK_LIST_STUDENTS'	=>	($userDBArray['userLevel'] >= 3 ?
+						$Ctemplate->useTemplate("freeuni2/ub_list_students", array(
+							'THEME_NAME'	=>	$_SESSION['theme_name']
+						), TRUE)
+					: NULL), // 'List students' only if the user is an admin
+				'LINK_LIST_LECTURES'	=>	($userDBArray['userLevel'] >= 3 ?
+						$Ctemplate->useTemplate("freeuni2/ub_list_lectures", array(
+							'THEME_NAME'	=>	$_SESSION['theme_name']
+						), TRUE)
+					: NULL) // 'List lectures' only if the user is an admin
+			), FALSE); // Free university 2 links
+		}
 		
 		$Ctemplate->useTemplate("user/userform_logout", array(
 			'RETURN_TO'	=>	$returnLink

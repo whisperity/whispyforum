@@ -10,6 +10,22 @@
 include("includes/load.php"); // Load webpage
 $Ctemplate->useStaticTemplate("freeuni/add_performers_head", FALSE); // Header
 
+if ( FREEUNI_PHASE != 1 )
+{
+	// If we aren't in phase 1 (see ./freeuniversity_phases.php)
+	
+	$Ctemplate->useTemplate("freeuniversity_phase_error", array(
+		'FREEUNI_PHASE'	=>	FREEUNI_PHASE, // Current phase (number)
+		'REQUIRED_PHASE'	=>	1, // Required phase (number)
+		'REQUIRED_TEXT'	=>	"Előadók szervezése", // Required phase (text)
+	), FALSE); // Error message
+	
+	// Terminate the script
+	$Ctemplate->useStaticTemplate("freeuni/add_performers_foot", FALSE); // Footer
+	DoFooter();
+	exit;
+}
+
 // We define the $site variable
 $site = "";
 
@@ -19,9 +35,9 @@ if ( $_SESSION['log_bool'] == FALSE )
 	$Ctemplate->useTemplate("errormessage", array(
 		'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 		'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
-		'TITLE'	=>	"This page is unaviable for guests!", // Error title
-		'BODY'	=>	"This page requires you to log in to view it's contents.<br><br>Please use the login box to log in to the site. After that, you can view this page.", // Error text
-		'ALT'	=>	"User permissions error" // Alternate picture text
+		'TITLE'	=>	"A weboldal nem érhető el vendégek számára!", // Error title
+		'BODY'	=>	"A lap megtekintéséhez bejelentkezett felhasználónak kell lenned.<br><br>Kérlek használd a bejelentkezési űrlapot a bejelentkezéshez. Utána megtekintheted a tartalmat!", // Error text
+		'ALT'	=>	"Házirendhiba" // Alternate picture text
 	), FALSE ); // We give an unaviable error
 } elseif ( $_SESSION['log_bool'] == TRUE)
 {
@@ -60,7 +76,7 @@ switch ($addPos)
 		}
 		break;
 	case 1:
-		// User registering
+		// Performer adding
 		
 		// First, we do a check whether every required fields have data
 		if ( $_POST['pname'] == NULL ) // Performer's name
@@ -74,7 +90,7 @@ switch ($addPos)
 			), FALSE);
 			
 			// We terminate the script
-			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
+			$Ctemplate->useStaticTemplate("freeuni/add_performers_foot", FALSE); // Footer
 			DoFooter();
 			exit;
 		}
@@ -82,7 +98,6 @@ switch ($addPos)
 		if ( ( $_POST['email'] == NULL ) && ( $_POST['telephone'] == NULL ) ) // E-mail or telephone number
 		{
 			$Ctemplate->useTemplate("freeuni/add_performers_variable_error", array(
-				'VARIABLE'	=>	"E-mail cím vagy telefonszám", // Errornous variable name
 				'PNAME'	=>	$_POST['pname'], // Performer's name
 				'EMAIL'	=>	$_POST['email'], // Performer's e-mail address (should be empty)
 				'TELEPHONE'	=>	$_POST['telephone'], // Telephone number (should be empty)
@@ -90,7 +105,7 @@ switch ($addPos)
 			), FALSE);
 			
 			// We terminate the script
-			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
+			$Ctemplate->useStaticTemplate("freeuni/add_performers_foot", FALSE); // Footer
 			DoFooter();
 			exit;
 		}

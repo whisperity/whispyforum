@@ -10,15 +10,31 @@
 include("includes/load.php"); // Load webpage
 $Ctemplate->useStaticTemplate("freeuni/manage_head", FALSE); // Header
 
+if ( FREEUNI_PHASE != 1 )
+{
+	// If we aren't in phase 1 (see ./freeuniversity_phases.php)
+	
+	$Ctemplate->useTemplate("freeuniversity_phase_error", array(
+		'FREEUNI_PHASE'	=>	FREEUNI_PHASE, // Current phase (number)
+		'REQUIRED_PHASE'	=>	1, // Required phase (number)
+		'REQUIRED_TEXT'	=>	"Előadók szervezése", // Required phase (text)
+	), FALSE); // Error message
+	
+	// Terminate the script
+	$Ctemplate->useStaticTemplate("freeuni/manage_foot", FALSE); // Footer
+	DoFooter();
+	exit;
+}
+
 if ( $_SESSION['log_bool'] == FALSE )
 {
 	// If the user is a guest
 	$Ctemplate->useTemplate("errormessage", array(
 		'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 		'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
-		'TITLE'	=>	"This page is unaviable for guests!", // Error title
-		'BODY'	=>	"This page requires you to log in to view it's contents.<br><br>Please use the login box to log in to the site. After that, you can view this page.", // Error text
-		'ALT'	=>	"User permissions error" // Alternate picture text
+		'TITLE'	=>	"A weboldal nem érhető el vendégek számára!", // Error title
+		'BODY'	=>	"A lap megtekintéséhez bejelentkezett felhasználónak kell lenned.<br><br>Kérlek használd a bejelentkezési űrlapot a bejelentkezéshez. Utána megtekintheted a tartalmat!", // Error text
+		'ALT'	=>	"Házirendhiba" // Alternate picture text
 	), FALSE ); // We give an unaviable error
 } elseif ( $_SESSION['log_bool'] == TRUE)
 {
@@ -239,6 +255,53 @@ if ( $_SESSION['log_bool'] == FALSE )
 					$Ctemplate->useStaticTemplate("freeuni/manage_return_to_list", FALSE); // Give return link
 				}
 				break;
+			case "edit":
+				// Editing the performer's data
+				$perf_rel_uid = mysql_fetch_row($Cmysql->Query("SELECT user_id FROM fu_perf_user_relation WHERE performer_id=" .$_POST['performer_id'])); // Query the related user's ID
+				
+				if ( $perf_rel_uid[0] == $_SESSION['uid'] )
+				{
+					if (@$_POST['edit_do'] == "yes")
+					{
+						// If we requested doing edition
+						$edit_query = $Cmysql->Query("UPDATE fu_performers SET comments='" .
+							$Cmysql->EscapeString($_POST['comments']). "' WHERE id='" .
+							$Cmysql->EscapeString($_POST['performer_id']). "'"); // TRUE if we succeed, FALSE if we fail
+						
+						if ( $edit_query == FALSE )
+						{
+							// If we failed, give error and return form
+							$Ctemplate->useTemplate("freeuni/manage_edit_error", array(
+								'PERFORMER_ID'	=>	$_POST['performer_id'], // ID of the performer
+								'COMMENTS'	=>	$_POST['comments'] // Comments
+							), FALSE);
+						} elseif ( $edit_query == TRUE )
+						{
+							// If we succeeded, give success message
+							$Ctemplate->useStaticTemplate("freeuni/manage_edit_success", FALSE);
+						}
+					} else {
+						// Query the comments
+						$comments = mysql_fetch_row($Cmysql->Query("SELECT comments FROM fu_performers WHERE id='" .
+							$Cmysql->EscapeString($_POST['performer_id']). "'"));
+						
+						if ( @$_POST['error_goback'] == "yes" ) // If user is redirected because of an error
+						{
+							// We output the form with data returned (user doesn't have to enter it again)
+							$Ctemplate->useTemplate("freeuni/manage_edit_data", array(
+								'PERFORMER_ID'	=>	$_POST['performer_id'], // ID of the performer
+								'COMMENTS'	=>	$_POST['comments'] // Comments
+							), FALSE);
+						} else {
+							// We output general form
+							$Ctemplate->useTemplate("freeuni/manage_edit_data", array(
+								'PERFORMER_ID'	=>	$_POST['performer_id'], // ID of the performer
+								'COMMENTS'	=>	$comments[0] // Current comments
+							), FALSE); // Login information
+						}
+					}
+				}
+			break;
 		}
 	} else {
 		// Normal opening (without parameters)
@@ -267,7 +330,7 @@ if ( $_SESSION['log_bool'] == FALSE )
 					'PERFORMER_NAME'	=>	$row_p['pName'],
 					'EMAIL'	=>	$row_p['email'],
 					'TELEPHONE'	=>	$row_p['telephone'],
-					'COMMENTS'	=>	substr($row_p['comments'], 0, 64), // First 64 character of comments
+					'COMMENTS'	=>	substr($row_p['comments'], 0, 128), // First 128 characters of comments
 					'PERFORMER_ID'	=>	$row_p['id']
 				), FALSE);
 			}
@@ -292,7 +355,7 @@ if ( $_SESSION['log_bool'] == FALSE )
 					'PERFORMER_NAME'	=>	$row_wc['pName'],
 					'EMAIL'	=>	$row_wc['email'],
 					'TELEPHONE'	=>	$row_wc['telephone'],
-					'COMMENTS'	=>	substr($row_wc['comments'], 0, 64), // First 64 character of comments
+					'COMMENTS'	=>	substr($row_wc['comments'], 0, 128), // First 128 characters of comments
 					'PERFORMER_ID'	=>	$row_wc['id']
 				), FALSE);
 			}
@@ -317,7 +380,7 @@ if ( $_SESSION['log_bool'] == FALSE )
 					'PERFORMER_NAME'	=>	$row_r['pName'],
 					'EMAIL'	=>	$row_r['email'],
 					'TELEPHONE'	=>	$row_r['telephone'],
-					'COMMENTS'	=>	substr($row_r['comments'], 0, 64), // First 64 character of comments
+					'COMMENTS'	=>	substr($row_r['comments'], 0, 128), // First 128 characters of comments
 					'PERFORMER_ID'	=>	$row_r['id']
 				), FALSE);
 			}

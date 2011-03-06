@@ -93,6 +93,11 @@ INSERT INTO menu_entries(menu_id, label, href) VALUES (1, 'Homepage', 'index.php
 #
 
 #
+# adding class to users
+#
+ALTER TABLE `users` ADD `osztaly` VARCHAR( 10 ) NOT NULL COMMENT 'class of the user';
+
+#
 # performers table
 #
 CREATE TABLE IF NOT EXISTS fu_performers (
@@ -114,3 +119,34 @@ CREATE TABLE IF NOT EXISTS fu_perf_user_relation (
 	`performer_id` int(10) NOT NULL COMMENT 'performer id (fu_performers.id)',
 	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'relational table between users and performers';
+
+#
+# Free Univeristy Phase 2
+#
+
+#
+# lectures table
+#
+CREATE TABLE IF NOT EXISTS fu2_lectures (
+	`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+	`lecture_name` varchar(255) NOT NULL COMMENT 'name of the lecture',
+	`lecturer` varchar(255) NOT NULL COMMENT 'name of the lecturer',
+	`hour1` enum('yes', 'no') NOT NULL DEFAULT 'no' COMMENT 'lecture takes place in hour #1',
+	`hour2` enum('yes', 'no') NOT NULL DEFAULT 'no' COMMENT 'lecture takes place in hour #2',
+	`hour3` enum('yes', 'no') NOT NULL DEFAULT 'no' COMMENT 'lecture takes place in hour #3',
+	`hour4` enum('yes', 'no') NOT NULL DEFAULT 'no' COMMENT 'lecture takes place in hour #4',
+	`limit1` int(3) NULL COMMENT 'student limit for hour #1',
+	`limit2` int(3) NULL COMMENT 'student limit for hour #2',
+	`limit3` int(3) NULL COMMENT 'student limit for hour #3',
+	`limit4` int(3) NULL COMMENT 'student limit for hour #4',
+	PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'lecture information';
+
+#
+# Relation between users and fu2_lectures
+# for relating user to it's selected lecture
+#
+ALTER TABLE `users` ADD `hour1` INT(10) NULL COMMENT 'lecture id for hour #1 (fu2_lectures.id)';
+ALTER TABLE `users` ADD `hour2` INT(10) NULL COMMENT 'lecture id for hour #2 (fu2_lectures.id)';
+ALTER TABLE `users` ADD `hour3` INT(10) NULL COMMENT 'lecture id for hour #3 (fu2_lectures.id)';
+ALTER TABLE `users` ADD `hour4` INT(10) NULL COMMENT 'lecture id for hour #4 (fu2_lectures.id)';

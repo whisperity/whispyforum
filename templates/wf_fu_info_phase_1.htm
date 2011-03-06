@@ -1,0 +1,59 @@
+<!--- BEGIN wf freeuni info phase1 -->
+<!--- Usage: general WF information free uni phase ONE (on the index.php) -->
+<hr>
+
+<h3>A szabadegyetem szervezési site használati utasítása és leírása <i>(Első fázis)</i></h3>
+<p>A jelenlegi állapot az első fázist, az előadók csábítását (és a csábításaitok 
+kulturált naplózását) tartalmazza. Az egész részekből épül fel, úgy mint (ezt a 
+drága osztálytársaim már hallották :) ):</p>
+
+<h4>Előadó létrehozása</h4>
+<p>Az előadó létrehozása egyszerű. A felhasználói dobozodban (bal oldalt első 
+kis doboz, ahol felül az <i>Üdv, neved!</i> felirat szerepel) kattints a <b>Új 
+előadó felvétele az adatbázisba</b> lehetőségre. A megjelenő űrlapot az 
+instrukcióknak megfelelően töltsd ki. Ha mindent kitöltöttél, az előadó 
+felvételre kerül <i>Szabad</i> státuszban (a státuszokról fentebb olvashatsz).</p>
+
+<h4>Előadó lefoglalása</h4>
+<p>Mielőtt nekiállnál beállítani, hogy az kiszemelt előadód jön-e, le kell őt 
+foglalnod. Az oldal relációs koncepciót alkalmaz: <b>egy előadó státuszát csak 
+az a felhasználó, és csakis az állíthatja, akihez az szóban forgó előadó 
+lefoglalásra került</b>. Így más nem tud a te folyamatodba belepiszkítani. 
+Kattints a felhasználói dobozban (innen érsz el mindent) a <b>Szabad előadó 
+lefoglalása</b> lehetősére. Megjelennek a szabad státuszú előadók. A kiszemelt 
+ember mellett kattins a <i>Lefoglalás</i> gombra. Ez létrehozza a relációt, és 
+az előadó a te felhasználódhoz rendelődik, <i>Függő</i> státuszt kapva.</p>
+
+<h4>Előadó kezelés</h4>
+<p>A hozzád lefoglalt előadók státuszának módosításához kattins a <b>Saját 
+előadóim kezelése</b> lehetőségre. Megjelennek az általad lefoglalt előadók, 
+státusz szerint sorba rendezve: legfelül a <i>Függő</i>, alatta a <i>Vállaja</i>, 
+majd legalul a <i>Nem vállalja</i> státuszúak. Státusz módosításához egyszerűen 
+kattints az adott előadó nevével kezdődő sor megfelelő gombjára.<br>
+A szerkesztés gombbal a megjegyzés rovat tartalma átírható.</p>
+
+<h4>Előadó visszamondása</h4>
+<p>A státuszgombok mellett megtalálható egy <i>Előadó lemondása</i> gomb is. 
+Erre kattintva az előadó visszakerül <i>Szabad</i> státuszba (így bárki más 
+lefoglalhatja később), az őt hozzád kötő reláció pedig megszűnik létezni. 
+Státuszát ezentúl nem módosíthatod (hacsak nem foglalod le újra, de az már egy másik állapot).</p>
+
+<h4>Előadók listázása</h4>
+<p>Előadók listázásához az <b>Előadók listázása</b> lehetőséget kell választanod 
+a felhasználói dobozban. Az előadók itt is kategorizált formában jelennek meg. 
+Felülről lefelé először a <i>Vállaja</i>, a <i>Függő</i>, a <i>Szabad</i>, majd 
+legalul a <i>Nem vállalja</i> státusszal rendelkezőek. Nyomtatóbarát változatban 
+a lista státuszkiemelő színezés nélkül jelenik meg.<br>
+<img src="themes/winky/freeuniversity_flower.gif" alt="Adminisztrátor specifikus opció/elemeket tartalmaz">&nbsp;<u><b>Adminisztrátorok</b></u>: Az előadók után minden sorban megjelenik egy <b>
+Előadó törlése</b> gomb. Erre kattintva az előadó törlődik az adatbázisból, és 
+az esetleges az előadót valakihez kötő reláció is megszűnik.<br>
+Az előadók után minden sorban megjelenik egy <b>
+Szerkesztés</b> gomb. Erre kattintva az előadó megjegyzés rovata szerkeszthető..</p>
+
+<h4>Statisztika</h4>
+<p>A kezdőlapon és a jobb oldali menüsávban található egy <i>Globális 
+statisztika</i> feliratú doboz. Ebben a dobozban egyszerű statisztika (azért nem 
+átfogó, mert ahhoz számolni kéne diák/előadó/siker/bukás átlagot) található az 
+oldalról. <b>A statisztika valósidejű, az éppen megtekintett weboldal 
+megnyitásakor érvényben lévő állapotot tükrözi.</b></p>
+<!--- END wf freeuni info phase1 -->

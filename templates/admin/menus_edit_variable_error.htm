@@ -2,12 +2,12 @@
 <!--- Usage: administrator control panel module 'menus' menu edition variable error box -->
 <table class="errorbox"> <!--- copying the errorbox template -->
 	<tr>
-		<td class="errorpicture"><img src="themes/winky/Nuvola_filesystems_folder_txt.png" alt="Error!"></td>
-		<td class="errortitle">Error!</td>
+		<td class="errorpicture"><img src="themes/winky/Nuvola_filesystems_folder_txt.png" alt="Hiba!"></td>
+		<td class="errortitle">Hiba!</td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="errorbody">You didn't entered one of the required variables, {VARIABLE} cannot be empty. The menu edition cannot be done until every required variable is entered.</td>
+		<td class="errorbody">Nem töltöttél ki egy kötelező mezőt. {VARIABLE} nem lehet üres. A menü szerkesztése nem folytatódhat amíg minden kötelező mező kitöltésre nem kerül.</td>
 	</tr>
 </table> <!--- copying the errorbox template -->
 <form method="POST" action="control_admin.php">
@@ -18,6 +18,6 @@
 <input type="hidden" name="site" value="menus">
 <input type="hidden" name="m_subsite" value="edit_menu">
 <input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
-<input type="submit" value="<< Back">
+<input type="submit" value="<< Vissza">
 </form>
 <!--- END admin menus edit error -->

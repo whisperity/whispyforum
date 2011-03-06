@@ -1,13 +1,13 @@
 <!--- BEGIN user controlpanel avatar uploader -->
 <!--- Usage: ucp user avatar uploader -->
 
-Your current avatar: <img src="upload/usr_avatar/{AVATAR_FILENAME}" alt="Az avatarod"><br>
+Az aktuális avatarod: <img src="upload/usr_avatar/{AVATAR_FILENAME}" alt="Az avatarod"><br>
 
-To upload a new avatar, browse it and click Upload. Please be sure that your avatar is a <font class="emphasis">PNG</font>, <font class="emphasis">JPG</font> or <font class="emphasis">GIF</font> file. Also, your avatar should be greater or equal than <font class="emphasis">150x150 pixels</font> (bigger images will be automatically resized). Maximum file size: <font class="emphasis">2 MB</font>.
+Az új avatar feltöltéséhez tallózd be, majd kattins a Feltöltés gombra. Figyelj arra, hogy az avatar kép egy <font class="emphasis">PNG</font>, <font class="emphasis">JPG</font> vagy <font class="emphasis">GIF</font> fájl legyen. Az avatar képméretének legalább <font class="emphasis">150x150 pixelnek</font> kell lennie (a nagyobb képek automatikusan átméreteződnek). A fájl maximális mérete: <font class="emphasis">2 MB</font> lehet.
 
 <form enctype='multipart/form-data' action='control_user.php' method='POST'>
 		<input name='pic_file' type='file' size='50' accept='application/octet-stream'>
-	<input type='submit' name="av_upload" value='Upload'>
+	<input type='submit' name="av_upload" value='Feltöltés'>
 	<input type='hidden' name='site' value='avatar_upload'>
 </form>
 

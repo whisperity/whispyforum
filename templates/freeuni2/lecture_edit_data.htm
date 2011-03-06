@@ -1,0 +1,50 @@
+<!--- BEGIN freeuniversity2 edit lecture data -->
+<!--- Usage: lecture editing lecture data -->
+Az előadás szerkesztéséhez kérlek add meg az új adatokat.<br>
+<font class="emphasis">A vörös csillaggal (<span class="red-star">*</span>) jelölt mezőket kötelezően ki kell tölteni.<br>
+Az előadás módosítása során, ha a limitet módosítani kívánod, az sose lehet kisebb, mint a már aktuálisan jelentkezett diákok száma. Ha kisebb limitet szeretnél, előtte töröld az előadást az adott órából, majd add hozzá újra.</font>
+
+<br><br>
+<form method="POST" action="freeuni2_list_lectures.php">
+<span class="form-header">Előadás szerkesztése: {LECTURE_NAME}</span><br>
+Előadás címe<span class="red-star">*</span>: <input type="text" name="lecture_name" value="{LECTURE_NAME}" size=35><br>
+Előadó neve<span class="red-star">*</span>: <input type="text" name="lecturer" value="{LECTURER}" size=35><br>
+<br>
+<table border="0" style="width: 100%">
+<tr>
+	<th>Óra</th>
+	<th>Előadás meg lesz tartva<span class="red-star">*</span></th>
+	<th>Hallgató limit (ha nincs, hagyd <i>0</i> értéken)</th>
+	<th>Aktuálisan jelentkezett diákok száma (a limit ennél nem lehet kisebb!)</th>
+</tr>
+<tr>
+	<td style="font-weight: bold">1.</td>
+	<td><input type="radio" name="hour1" value="yes"{HOUR1_YES}>Igen&nbsp;<input type="radio" name="hour1" value="no"{HOUR1_NO}>Nem</td>
+	<td><input type="text" name="limit1" value="{LIMIT1}" size=10></td>
+	<td>{STUDENTS1}</td>
+</tr>
+<tr>
+	<td style="font-weight: bold">2.</td>
+	<td><input type="radio" name="hour2" value="yes"{HOUR2_YES}>Igen&nbsp;<input type="radio" name="hour2" value="no"{HOUR2_NO}>Nem</td>
+	<td><input type="text" name="limit2" value="{LIMIT2}" size=10></td>
+	<td>{STUDENTS2}</td>
+</tr>
+<tr>
+	<td style="font-weight: bold">3.</td>
+	<td><input type="radio" name="hour3" value="yes"{HOUR3_YES}>Igen&nbsp;<input type="radio" name="hour3" value="no"{HOUR3_NO}>Nem</td>
+	<td><input type="text" name="limit3" value="{LIMIT3}" size=10></td>
+	<td>{STUDENTS3}</td>
+</tr>
+<tr>
+	<td style="font-weight: bold">4.</td>
+	<td><input type="radio" name="hour4" value="yes"{HOUR4_YES}>Igen&nbsp;<input type="radio" name="hour4" value="no"{HOUR4_NO}>Nem</td>
+	<td><input type="text" name="limit4" value="{LIMIT4}" size=10></td>
+	<td>{STUDENTS4}</td>
+</tr>
+</table>
+<img src="themes/winky/freeuniversity_flower.gif" alt="Adminisztrátor specifikus opció/elemeket tartalmaz">&nbsp;<input type="submit" value="Tovább >>">
+<input type="hidden" name="edit_do" value="yes">
+<input type="hidden" name="lecture_id" value="{LECTURE_ID}">
+</form>
+<font class="emphasis">A továbblépéshez kattints a gombra.</font>
+<!--- END freeuniversity2 edit lecture data -->

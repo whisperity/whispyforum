@@ -1,0 +1,25 @@
+<!--- BEGIN freeuniversity2 lecture list table-row -->
+<!--- Usage: listing lectures row for list table -->
+<tr>
+<td>{LECTURE_NAME}</td>
+<td>{LECTURER}</td>
+<td>{HOUR1}</td>
+<td>{HOUR2}</td>
+<td>{HOUR3}</td>
+<td>{HOUR4}</td>
+<td>
+<form method="POST" action="freeuni2_list_lectures.php">
+<input type="hidden" name="edit" value="yes">
+<input type="hidden" name="lecture_id" value="{LECTURE_ID}">
+<input type="submit" value="Szerkesztés">
+</form>
+</td>
+<td>
+<form method="POST" action="freeuni2_list_lectures.php">
+<input type="hidden" name="delete" value="yes">
+<input type="hidden" name="lecture_id" value="{LECTURE_ID}">
+<input type="submit" value="Törlés">
+</form>
+</td>
+</tr>
+<!--- END freeuniversity2 lecture list table-row -->

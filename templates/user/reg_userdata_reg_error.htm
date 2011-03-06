@@ -2,23 +2,24 @@
 <!--- Usage: registration error box (sql error) -->
 <table class="errorbox"> <!--- copying the errorbox template -->
 	<tr>
-		<td class="errorpicture"><img src="themes/winky/Nuvola_apps_kgpg.png" alt="Error!"></td>
-		<td class="errortitle">Error!</td>
+		<td class="errorpicture"><img src="themes/winky/Nuvola_apps_kgpg.png" alt="Hiba!"></td>
+		<td class="errortitle">Hiba!</td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="errorbody">There were errors executing the SQL query to register you. Your new user isn't registered.</td>
+		<td class="errorbody">Az SQL lekérdezés végrehajtása közben hiba történt. Az új felhasználó nem került létrehozásra.</td>
 	</tr>
 </table> <!--- copying the errorbox template -->
 
-If you want to retry the registraion, click back.
+Ha újra meg szeretnéd próbálni, kattints a Vissza gombra.
 <form method="POST" action="registration.php">
 <input type="hidden" name="username" value="{USERNAME}">
 <input type="hidden" name="password" value="{PASSWORD}">
 <input type="hidden" name="password_again" value="{PASSWORD_AGAIN}">
 <input type="hidden" name="email" value="{EMAIL}">
+<input type="hidden" name="osztaly" value="{OSZTALY}">
 <input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
-<input type="submit" value="<< Back">
+<input type="submit" value="<< Vissza">
 <input type="hidden" name="regPos" value=1> <!--- Going back to step 2 -->
 </form>
 <!--- END registration userdata register error -->

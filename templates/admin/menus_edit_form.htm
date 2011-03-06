@@ -1,16 +1,16 @@
 <!--- BEGIN admin menus edit form -->
 <!--- Usage: administrator control panel module 'menus' menu edition form -->
-<font class="emphasis">Variables marked with a red star (<span class="red-star">*</span>) are required to be entered.</font>
+<font class="emphasis">A vörös csillaggal (<span class="red-star">*</span>) jelölt mezőket kötelezően ki kell tölteni.</font>
 
 <form method="POST" action="control_admin.php">
-<span class="form-header">Edit menu: {TITLE}</span><br>
-Menu title<span class="red-star">*</span>: <input type="text" name="title" value="{TITLE}" size=35><br>
-Menu align position<span class="red-star">*</span>: <input type="text" name="align_pos" value="{ALIGN_POS}" size=10><br>
-Menu side<span class="red-star">*</span>: <input type="radio" name="side" value="left"{LEFT_SIDE}>Left&nbsp;<input type="radio" name="side" value="right"{RIGHT_SIDE}>Right<br>
-Number of items: {M_NUM_ITEMS}<br>
+<span class="form-header">Menü szerkesztése: {TITLE}</span><br>
+Fejléc<span class="red-star">*</span>: <input type="text" name="title" value="{TITLE}" size=35><br>
+Függőleges elhelyezkedés<span class="red-star">*</span>: <input type="text" name="align_pos" value="{ALIGN_POS}" size=10><br>
+Oldalsáv<span class="red-star">*</span>: <input type="radio" name="side" value="left"{LEFT_SIDE}>Bal&nbsp;<input type="radio" name="side" value="right"{RIGHT_SIDE}>Jobb<br>
+Elemek száma: {M_NUM_ITEMS}<br>
 <input type="hidden" name="site" value="menus">
 <input type="hidden" name="m_subsite" value="edit_menu_do">
 <input type="hidden" name="menu_id" value="{MENU_ID}">
-<input type="submit" value="Edit menu">
+<input type="submit" value="Szerkesztés">
 </form>
 <!--- END admin menus edit form -->

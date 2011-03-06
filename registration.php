@@ -19,9 +19,9 @@ if ( $_SESSION['log_bool'] == TRUE )
 	$Ctemplate->useTemplate("errormessage", array(
 		'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 		'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
-		'TITLE'	=>	"This page is unaviable for registered users!", // Error title
-		'BODY'	=>	"This page requires you to be a guest to view it's contents.<br><br>Please use the control box to log out from the site. After that, you can view this page.", // Error text
-		'ALT'	=>	"User permissions error" // Alternate picture text
+		'TITLE'	=>	"A weboldal regisztrált felhasználók számára nem érhető el!", // Error title
+		'BODY'	=>	"A lap megtekintéséhez vendégnek kell lenned.<br><br>Kérlek használd a felhasználói dobozt a kijelentkezéshez, utána megtekintheted a tartalmát.", // Error text
+		'ALT'	=>	"Házirendhiba" // Alternate picture text
 	), FALSE ); // We give an unaviable error
 } elseif ( $_SESSION['log_bool'] == FALSE)
 {
@@ -55,7 +55,8 @@ switch ($regPos)
 				'USERNAME'	=>	$_POST['username'], // Username
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
-				'EMAIL'	=>	$_POST['email'] // E-mail address
+				'EMAIL'	=>	$_POST['email'], // E-mail address
+				'OSZTALY'	=>	$_POST['osztaly'] // School class
 				), FALSE);
 		} else {
 			// We output general form
@@ -63,7 +64,8 @@ switch ($regPos)
 				'USERNAME'	=>	"", // Username
 				'PASSWORD'	=>	"", // Password
 				'PASSWORD_AGAIN'	=>	"", // Password (entered again)
-				'EMAIL'	=>	"" // E-mail address
+				'EMAIL'	=>	"", // E-mail address
+				'OSZTALY'	=>	"", // School class
 				), FALSE); // Login information
 		}
 		break;
@@ -74,12 +76,13 @@ switch ($regPos)
 		if ( $_POST['username'] == NULL ) // Username
 		{
 			$Ctemplate->useTemplate("user/reg_userdata_variable_error", array(
-				'VARIABLE'	=>	"Username", // Errornous variable name
+				'VARIABLE'	=>	"Felhasználói név", // Errornous variable name
 				'USERNAME'	=>	$_POST['username'], // Username (should be empty)
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
-				'EMAIL'	=>	$_POST['email'] // E-mail address
-				), FALSE);
+				'EMAIL'	=>	$_POST['email'], // E-mail address
+				'OSZTALY'	=>	$_POST['osztaly'] // School class
+			), FALSE);
 			
 			// We terminate the script
 			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
@@ -90,12 +93,13 @@ switch ($regPos)
 		if ( $_POST['password'] == NULL ) // Password
 		{
 			$Ctemplate->useTemplate("user/reg_userdata_variable_error", array(
-				'VARIABLE'	=>	"Password", // Errornous variable name
+				'VARIABLE'	=>	"Jelszó", // Errornous variable name
 				'USERNAME'	=>	$_POST['username'], // Username
 				'PASSWORD'	=>	$_POST['password'], // Password (should be empty)
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
-				'EMAIL'	=>	$_POST['email'] // E-mail address
-				), FALSE);
+				'EMAIL'	=>	$_POST['email'], // E-mail address
+				'OSZTALY'	=>	$_POST['osztaly'] // School class
+			), FALSE);
 			
 			// We terminate the script
 			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
@@ -106,12 +110,13 @@ switch ($regPos)
 		if ( $_POST['password_again'] == NULL ) // Password (entered again)
 		{
 			$Ctemplate->useTemplate("user/reg_userdata_variable_error", array(
-				'VARIABLE'	=>	"Password (again)", // Errornous variable name
+				'VARIABLE'	=>	"Jelszó (újra)", // Errornous variable name
 				'USERNAME'	=>	$_POST['username'], // Username
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again) (should be empty)
-				'EMAIL'	=>	$_POST['email'] // E-mail address
-				), FALSE);
+				'EMAIL'	=>	$_POST['email'], // E-mail address
+				'OSZTALY'	=>	$_POST['osztaly'] // School class
+			), FALSE);
 			
 			// We terminate the script
 			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
@@ -122,12 +127,29 @@ switch ($regPos)
 		if ( $_POST['email'] == NULL ) // E-mail address
 		{
 			$Ctemplate->useTemplate("user/reg_userdata_variable_error", array(
-				'VARIABLE'	=>	"E-mail address", // Errornous variable name
+				'VARIABLE'	=>	"E-mail cím", // Errornous variable name
 				'USERNAME'	=>	$_POST['username'], // Username
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
-				'EMAIL'	=>	$_POST['email'] // E-mail address (should be empty)
-				), FALSE);
+				'EMAIL'	=>	$_POST['email'], // E-mail address (should be empty)
+				'OSZTALY'	=>	$_POST['osztaly'] // School class
+			), FALSE);
+			// We terminate the script
+			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
+			DoFooter();
+			exit;
+		}
+		
+		if ( $_POST['osztaly'] == NULL ) // E-mail address
+		{
+			$Ctemplate->useTemplate("user/reg_userdata_variable_error", array(
+				'VARIABLE'	=>	"Osztály", // Errornous variable name
+				'USERNAME'	=>	$_POST['username'], // Username
+				'PASSWORD'	=>	$_POST['password'], // Password
+				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
+				'EMAIL'	=>	$_POST['email'], // E-mail address
+				'OSZTALY'	=>	$_POST['osztaly'] // School class (should be empty)
+			), FALSE);
 			// We terminate the script
 			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
 			DoFooter();
@@ -143,7 +165,8 @@ switch ($regPos)
 				'USERNAME'	=>	$_POST['username'], // Username
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
-				'EMAIL'	=>	$_POST['email'] // E-mail address
+				'EMAIL'	=>	$_POST['email'], // E-mail address
+				'OSZTALY'	=>	$_POST['osztaly'] // School class
 				), FALSE);
 			// We terminate the script
 			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
@@ -152,10 +175,11 @@ switch ($regPos)
 		}
 		
 		// Everything is fine, we register the user.
-		$regQuery = $Cmysql->Query("INSERT INTO users(username, pwd, email, regdate, userLevel) VALUES ('" .
-			$Cmysql->EscapeString($_POST['username']). "'," .
-			"'" .md5($Cmysql->EscapeString($_POST['password'])). "'," .
-			"'" .$Cmysql->EscapeString($_POST['email']). "', " .time(). ", 1)"); // Will be true if we succeed
+		$regQuery = $Cmysql->Query("INSERT INTO users(username, pwd, email, osztaly, regdate, userLevel) VALUES ('" .
+			$Cmysql->EscapeString($_POST['username']). "', " .
+			"'" .md5($Cmysql->EscapeString($_POST['password'])). "', " .
+			"'" .$Cmysql->EscapeString($_POST['email']). "', " .
+			"'" .$Cmysql->EscapeString(strtoupper(preg_replace("/(\.\s*)/",". ",$_POST['osztaly']))). "', " .time(). ", 1)"); // Will be true if we succeed
 		
 		if ( $regQuery == FALSE )
 		{
@@ -164,7 +188,8 @@ switch ($regPos)
 				'USERNAME'	=>	$_POST['username'], // Username
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
-				'EMAIL'	=>	$_POST['email'] // E-mail address
+				'EMAIL'	=>	$_POST['email'], // E-mail address
+				'OSZTALY'	=>	$_POST['osztaly'] // School class
 				), FALSE); // Give error message and retry form
 		} elseif ( $regQuery == TRUE )
 		{

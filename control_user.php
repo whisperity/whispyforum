@@ -19,9 +19,9 @@ if ( $_SESSION['log_bool'] == FALSE )
 	$Ctemplate->useTemplate("errormessage", array(
 		'THEME_NAME'	=>	$_SESSION['theme_name'], // Theme name
 		'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
-		'TITLE'	=>	"This page is unaviable for guests!", // Error title
-		'BODY'	=>	"This page requires you to log in to view it's contents.<br><br>Please use the login box to log in to the site. After that, you can view this page.", // Error text
-		'ALT'	=>	"User permissions error" // Alternate picture text
+		'TITLE'	=>	"A weboldal nem érhető el vendégek számára!", // Error title
+		'BODY'	=>	"A lap megtekintéséhez bejelentkezett felhasználónak kell lenned.<br><br>Kérlek használd a bejelentkezési űrlapot a bejelentkezéshez. Utána megtekintheted a tartalmat!", // Error text
+		'ALT'	=>	"Házirendhiba" // Alternate picture text
 	), FALSE ); // We give an unaviable error
 } elseif ( $_SESSION['log_bool'] == TRUE)
 {

@@ -253,10 +253,15 @@ switch ($instPos)
 			`loggedin` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1 if user is currently logged in, 0 if not',
 			`userLevel` tinyint(2) NOT NULL DEFAULT '0' COMMENT 'clearance level',
 			`avatar_filename` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'avatar picture filename',
+			`osztaly` VARCHAR(10) NOT NULL COMMENT 'class of the user',
+			`hour1` INT(10) NULL COMMENT 'lecture id for hour #1 (fu2_lectures.id)',
+			`hour2` INT(10) NULL COMMENT 'lecture id for hour #2 (fu2_lectures.id)',
+			`hour3` INT(10) NULL COMMENT 'lecture id for hour #3 (fu2_lectures.id)',
+			`hour4` INT(10) NULL COMMENT 'lecture id for hour #4 (fu2_lectures.id)',
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'userdata'"); // $dbtables_user sets to true if we succeeded creating a table
 		
-		// We check users table creation
+		// We check table creation
 		if ( $dbtables_user == FALSE )
 		{
 			// Give error
@@ -291,7 +296,7 @@ switch ($instPos)
 		$dbtables_menu_data = FALSE; // We failed adding the default data first
 		$dbtables_menu_data = $Cmysql->Query("INSERT INTO menus(header, align, side) VALUES ('Main menu', 0, 'left')"); // $dbtables_menu_data sets to true if we succeeded adding default data
 		
-		// We check menus table creation
+		// We check table creation
 		if ( ( $dbtables_menu == FALSE) || ( $dbtables_menu_data == FALSE ) )
 		{
 			// Give error
@@ -326,7 +331,7 @@ switch ($instPos)
 		$dbtables_menuEntries_data = FALSE; // We failed adding the default data first
 		$dbtables_menuEntries_data = $Cmysql->Query("INSERT INTO menu_entries(menu_id, label, href) VALUES (1, 'Homepage', 'index.php')"); // $dbtables_menuEntries_data sets to true if we succeeded adding default data
 		
-		// We check menu entries table creation
+		// We check table creation
 		if ( ( $dbtables_menuEntries == FALSE) || ( $dbtables_menuEntries_data == FALSE ) )
 		{
 			// Give error
@@ -360,7 +365,7 @@ switch ($instPos)
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'data for performers'"); // $dbtables_fu_performers sets to true if we succeeded creating a table
 		
-		// We check users table creation
+		// We check table creation
 		if ( $dbtables_fu_performers == FALSE )
 		{
 			// Give error
@@ -391,7 +396,7 @@ switch ($instPos)
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'relational table between users and performers'"); // $dbtables_fu_perf_user_relation sets to true if we succeeded creating a table
 		
-		// We check users table creation
+		// We check table creation
 		if ( $dbtables_fu_perf_user_relation == FALSE )
 		{
 			// Give error
@@ -411,6 +416,45 @@ switch ($instPos)
 			), FALSE);
 		}
 		/* Free university performers <-> users relational table */
+		
+		/* Free university 2 lectures table */
+		// Stores information about lectures
+		$dbtables_fu2_lectures = FALSE; // We failed creating the table first
+		$dbtables_fu2_lectures = $Cmysql->Query("CREATE TABLE IF NOT EXISTS fu2_lectures (
+			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+			`lecture_name` varchar(255) NOT NULL COMMENT 'name of the lecture',
+			`lecturer` varchar(255) NOT NULL COMMENT 'name of the lecturer',
+			`hour1` enum('yes', 'no') NOT NULL DEFAULT 'no' COMMENT 'lecture takes place in hour #1',
+			`hour2` enum('yes', 'no') NOT NULL DEFAULT 'no' COMMENT 'lecture takes place in hour #2',
+			`hour3` enum('yes', 'no') NOT NULL DEFAULT 'no' COMMENT 'lecture takes place in hour #3',
+			`hour4` enum('yes', 'no') NOT NULL DEFAULT 'no' COMMENT 'lecture takes place in hour #4',
+			`limit1` int(3) NULL COMMENT 'student limit for hour #1',
+			`limit2` int(3) NULL COMMENT 'student limit for hour #2',
+			`limit3` int(3) NULL COMMENT 'student limit for hour #3',
+			`limit4` int(3) NULL COMMENT 'student limit for hour #4',
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'lecture information'"); // $dbtables_fu2_lectures sets to true if we succeeded creating a table
+		
+		// We check users table creation
+		if ( $dbtables_fu2_lectures == FALSE )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
+				'TABLENAME'	=>	"fu2_lectures" // Table name
+			), FALSE);
+			
+			// We set the creation global error variable to false
+			$tablecreation = FALSE;
+			
+			$tablelist .= "fu2_lectures"; // Append users table name to fail-list
+		} elseif ( $dbtables_fu2_lectures != FALSE )
+		{
+			// Give success
+			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
+				'TABLENAME'	=>	"fu2_lectures" // Table name
+			), FALSE);
+		}
+		/* Free university 2 lectures table */
 		
 		// Check global variable status
 		if ( $tablecreation == FALSE )

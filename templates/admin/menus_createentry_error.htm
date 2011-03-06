@@ -2,16 +2,16 @@
 <!--- Usage: administrator control panel module 'menus' entry creation error (sql error) -->
 <table class="errorbox"> <!--- copying the errorbox template -->
 	<tr>
-		<td class="errorpicture"><img src="themes/winky/Nuvola_filesystems_folder_locked.png" alt="Error!"></td>
-		<td class="errortitle">Error!</td>
+		<td class="errorpicture"><img src="themes/winky/Nuvola_filesystems_folder_locked.png" alt="Hiba!"></td>
+		<td class="errortitle">Hiba!</td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="errorbody">There were errors executing the SQL query to create the new entry. No new entry was created.</td>
+		<td class="errorbody">Az SQL lekérdezés futtatása közben hiba történt. Az új menüelem nem jött létre.</td>
 	</tr>
 </table> <!--- copying the errorbox template -->
 
-If you want to retry, click back.
+Ha újra szeretnéd próbálni, kattints a Vissza gombra.
 <form method="POST" action="control_admin.php">
 <input type="hidden" name="label" value="{LABEL}">
 <input type="hidden" name="href" value="{HREF}">
@@ -19,6 +19,6 @@ If you want to retry, click back.
 <input type="hidden" name="site" value="menus">
 <input type="hidden" name="m_subsite" value="create_entry">
 <input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
-<input type="submit" value="<< Back">
+<input type="submit" value="<< Vissza">
 </form>
 <!--- END admin menus createentry error -->

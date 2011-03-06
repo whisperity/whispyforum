@@ -1,0 +1,29 @@
+<!--- BEGIN freeuniversity2 edit lecture variable error -->
+<!--- Usage: lecture editing error box -->
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/winky/Nuvola_filesystems_folder_txt.png" alt="Hiba!"></td>
+		<td class="errortitle">Hiba!</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">Nem töltöttél ki egy kötelező mezőt. A {VARIABLE} mező értéke nem lehet üres. A módosítás nem folytatódhat amíg minden kötelező mező ki nem lesz töltve.</td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+<form method="POST" action="freeuni2_list_lectures.php">
+<input type="hidden" name="lecture_id" value="{LECTURE_ID}">
+<input type="hidden" name="lecture_name" value="{LECTURE_NAME}">
+<input type="hidden" name="lecturer" value="{LECTURER}">
+<input type="hidden" name="hour1" value="{HOUR1}">
+<input type="hidden" name="limit1" value="{LIMIT1}">
+<input type="hidden" name="hour2" value="{HOUR2}">
+<input type="hidden" name="limit2" value="{LIMIT2}">
+<input type="hidden" name="hour3" value="{HOUR3}">
+<input type="hidden" name="limit3" value="{LIMIT3}">
+<input type="hidden" name="hour4" value="{HOUR4}">
+<input type="hidden" name="limit4" value="{LIMIT4}">
+<input type="hidden" name="edit" value="yes">
+<input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
+<input type="submit" value="<< Vissza">
+</form>
+<!--- END freeuniversity2 edit lecture variable error -->
