@@ -24,6 +24,27 @@ The current time is {TIME}, today is {DAY_NAME}</pre></blockquote>
 <p>The dynamic places are the variables inside <tt>{ }</tt> brackets. These 
 variables are being replaced to their values runtime while parsing.</p>
 
+<h4>Putting comments into templates</h4>
+
+<p>The template files can have two types of comments:</p>
+
+<h5>Comments removed while parsing</h5>
+
+<p>The removed comments are placed in between <tt>
+<font color="#008000">&lt;!---</font></tt> and <font color="#008000">--&gt;</font> (first
+<b>three</b>, then <b>two</b> hyphens). Comments in this format will be removed 
+from the <a href="../includes/templates.class.php.htm#priv_var_output">HTML 
+output</a> while parsing.</p>
+
+<h5>Comments outputted</h5>
+
+<p>If you want comments to be sent to your browser (in the output), put it 
+between <tt>
+<font color="#008000">&lt;!--</font></tt> and <font color="#008000">--&gt;</font> 
+characters (<b>two</b> and <b>two</b> hyphens). This is also an HTML output 
+which isn't parsed by the browser, but the template conductor does not remove 
+it.</p>
+
 <h3>Example</h3>
 <p>Let's call the above template <i>welcome</i> (thus it's filename and path is
 <i>/templates/welcome.htm</i>). When the template is used, it's called with the

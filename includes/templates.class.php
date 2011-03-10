@@ -105,6 +105,9 @@ class class_template
 				$this->_output=str_replace('{THEME_NAME}',$_SESSION['theme_name'],$this->_output);
 			}
 			
+			// Removing the <!--- HTML TEMPLATE COMMENTS --> from the output
+			$this->_output=preg_replace("/<!---.*?-->/","",$this->_output);
+			
 			if ( $varOutput == TRUE ) // If we decided to give return output
 			{
 				// First, we need to cache output into a variable
@@ -169,6 +172,9 @@ class class_template
 					$j++; // Turn the counter by one
 				}
 			/* Replacing language tokens */
+			
+			// Removing the <!--- HTML TEMPLATE COMMENTS --> from the output
+			$this->_output=preg_replace("/<!---.*?-->/","",$this->_output);
 			
 			if ( $varOutput == TRUE ) // If we decided to give return output
 			{
