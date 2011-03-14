@@ -129,4 +129,64 @@ function DecodeSize( $bytes )
 	for( $i = 0; $bytes >= 1024 && $i < ( count( $types ) -1 ); $bytes /= 1024, $i++ );
 	return( round( $bytes, 2 ) . " " . $types[$i] );
 } 
+
+function bbDecode($input){
+
+	$bbCode = array(
+		"/\n?\[code\](.*?)\[\/code\]/si",
+		//'/(^|[ \n\r\t])((http(s?):\/\/)(www\.)?([a-z0-9_-]+(\.[a-z0-9_-]+)+)(:[0-9]+)?(\/[^\/ \)\(\n\r]*)*)/is',
+		"/\[img\](.*?)\[\/img\]/si",
+		"/\[img[=]([0-9]*?)x([0-9]*?)\](.*?)\[\/img\]/si",
+		"/\[i\](.*?)\[\/i\]/si",
+		"/\[b\](.*?)\[\/b\]/si",
+		"/\[u\](.*?)\[\/u\]/si",
+		"/\[s\](.*?)\[\/s\]/si",
+		//"/([a-z_-][a-z0-9\._-]*@[a-z0-9_-]+(\.[a-z0-9_-]+)+)/is",
+		"/\[url\](.*?)\[\/url\]/si",
+		"/\[url=(.*?)\](.*?)\[\/url\]/si",
+		"/\n?\[quote\]\n*/i",
+		'/\n?\[quote=["]?([a-zA-Z0-9\s]*?)["]?\]\n*/i',
+		"/\[\/quote\]/i",
+		"/\n/i"
+	); 
+	
+	$htmlTags = array(
+		"<TABLE BORDER=\"0\" ALIGN=\"CENTER\" CELLPADDING=\"0\" CELLSPACING=\"0\" WIDTH=\"75%\"><TR><TD CLASS=\"code\" ALIGN=\"LEFT\"><B>{LANG_BB_TAG_CODE}</B><BR><HR>\\1<HR></TD></TR></TABLE>",
+		//'\1[url=\2]\2[/url]',
+		"<IMG SRC=\"\\1\" BORDER=\"0\">",
+		"<IMG SRC=\"\\3\" BORDER=\"0\" WIDTH=\"\\1\" HEIGHT=\"\\2\">",
+		"<I>\\1</I>",
+		"<B>\\1</B>",
+		"<U>\\1</U>",
+		"<S>\\1</S>",
+		//"[url=mailto:\\1]\\1[/url]",
+		"<A HREF=\"\\1\" TARGET=\"_blank\">\\1</A>",
+		"<A HREF=\"\\1\" TARGET=\"_blank\">\\2</A>",
+		"<TABLE BORDER=\"0\" ALIGN=\"CENTER\" CELLPADDING=\"0\" CELLSPACING=\"0\" WIDTH=\"75%\"><TR><TD CLASS=\"quote\" ALIGN=\"LEFT\"><B>{LANG_BB_TAG_QUOTE}</B><BR><HR>",
+		"<TABLE BORDER=\"0\" ALIGN=\"CENTER\" CELLPADDING=\"0\" CELLSPACING=\"0\" WIDTH=\"75%\"><TR><TD CLASS=\"quote\" ALIGN=\"LEFT\"><B>{LANG_BB_TAG_QUOTE_BY} \\1</B><BR><HR>",
+		"<HR></TD></TR></TABLE>",
+		"<br>"
+	);
+	
+	$output = preg_replace($bbCode, $htmlTags, $input);
+	
+	global $wf_lang; // Initializing language array
+	
+	/* Replacing language tokens */
+	preg_match_all('/{LANG_.*?}/', $output, $lKeys, PREG_PATTERN_ORDER, 0);
+	// $lKeys[0] contains all {LANG_*} language variables (* is the string's name)
+	
+	$j = 0; // Counter reset to zero
+	
+	foreach($lKeys[0] as $lang_tag)
+	{
+		// Then replace the output, updating it
+		$output=str_replace($lKeys[0][$j],$wf_lang[ $lKeys[0][$j] ],$output);
+		
+		$j++; // Turn the counter by one
+	}
+	/* Replacing language tokens */
+	
+	return $output; 
+}
 ?>

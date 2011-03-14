@@ -282,3 +282,22 @@ span.install-menu-entries {
 	height: 42px;
 }
 /* Menu box */
+
+/* BB code parse boxes */
+td.code {
+	color: #0000a0;
+	text-align: left;
+	font-size: 12px;
+	border: 0.5px dashed #0000a0;
+}
+
+td.quote {
+	border: 0.5px solid #dddddd;
+	font-style: italic;
+	padding: 5px;
+	margin-left: 10px;
+	margin-right: 10px;
+	font-size: 12px;
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+}
+/* BB code parse boxes */

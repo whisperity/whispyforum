@@ -1,0 +1,232 @@
+<!--- BEGIN bbcodes -->
+<!--- Usage: listing aviable bb codes on /tool.bb-test.php -->
+<form method="POST" action="tool.bb-test.php">
+	<span class="form-header">{LANG_BBCODES_FORM_HEADER}</span><br>
+	{LANG_TEXT}: <textarea name="text" rows="5" cols="55">{TEXTAREA}</textarea><br>
+	<input type="submit" value="{LANG_PARSE}">
+</form>
+
+<h3 align="center">{LANG_BBCODES_AVIABLE}</h3>
+{LANG_BBCODES_INTRO}
+<br><br>
+{LANG_BBCODES_INTRO_TRUNCATION}
+<br><br>
+{LANG_BBCODES_CURRENTLY_TRANSLATES}
+<table border="1" style="width: 100%">
+<!--- bold -->
+<tr>
+	<th rowspan="4">{LANG_BOLD} {LANG_TEXT_LOWERCASE}</th>
+	<th colspan="3">{LANG_FORMAT}</th>
+</tr>
+<tr>
+	<td colspan="3" align="center">[b]{LANG_TEXT_LOWERCASE}[/b]</td>
+</tr>
+<tr>
+	<th>{LANG_EXAMPLE}</th>
+	<th>{LANG_BBCODES_HTML_EQUIVALENT}</th>
+	<th>{LANG_OUTPUT}</th>
+</tr>
+<tr>
+	<td>[b]{LANG_BBCODES_BOLD}[/b]</td>
+	<td>&lt;b&gt;{LANG_BBCODES_BOLD}&lt;/b&gt;</td>
+	<td>{BOLD_TEXT}</td>
+</tr>
+<!--- bold -->
+<!--- italic -->
+<tr>
+	<th rowspan="4">{LANG_ITALIC} {LANG_TEXT_LOWERCASE}</th>
+	<th colspan="3">{LANG_FORMAT}</th>
+</tr>
+<tr>
+	<td colspan="3" align="center">[i]{LANG_TEXT_LOWERCASE}[/i]</td>
+</tr>
+<tr>
+	<th>{LANG_EXAMPLE}</th>
+	<th>{LANG_BBCODES_HTML_EQUIVALENT}</th>
+	<th>{LANG_OUTPUT}</th>
+</tr>
+<tr>
+	<td>[i]{LANG_BBCODES_ITALIC}/i]</td>
+	<td>&lt;i&gt;{LANG_BBCODES_ITALIC}&lt;/i&gt;</td>
+	<td>{ITALIC_TEXT}</td>
+</tr>
+<!--- italic -->
+<!--- underlined -->
+<tr>
+	<th rowspan="4">{LANG_UNDERLINED} {LANG_TEXT_LOWERCASE}</th>
+	<th colspan="3">{LANG_FORMAT}</th>
+</tr>
+<tr>
+	<td colspan="3" align="center">[u]{LANG_TEXT_LOWERCASE}[/u]</td>
+</tr>
+<tr>
+	<th>{LANG_EXAMPLE}</th>
+	<th>{LANG_BBCODES_HTML_EQUIVALENT}</th>
+	<th>{LANG_OUTPUT}</th>
+</tr>
+<tr>
+	<td>[u]{{LANG_BBCODES_UNDERLINED}[/u]</td>
+	<td>&lt;u&gt;{LANG_BBCODES_UNDERLINED}&lt;/u&gt;</td>
+	<td>{UNDERLINED_TEXT}</td>
+</tr>
+<!--- underlined -->
+<!--- stroked -->
+<tr>
+	<th rowspan="4">{LANG_STROKED} {LANG_TEXT_LOWERCASE}</th>
+	<th colspan="3">{LANG_FORMAT}</th>
+</tr>
+<tr>
+	<td colspan="3" align="center">[s]{LANG_TEXT_LOWERCASE}[/s]</td>
+</tr>
+<tr>
+	<th>{LANG_EXAMPLE}</th>
+	<th>{LANG_BBCODES_HTML_EQUIVALENT}</th>
+	<th>{LANG_OUTPUT}</th>
+</tr>
+<tr>
+	<td>[s]{LANG_BBCODES_STROKED}[/s]</td>
+	<td>&lt;s&gt;{LANG_BBCODES_STROKED}&lt;/s&gt;</td>
+	<td>{STROKED_TEXT}</td>
+</tr>
+<!--- stroked -->
+<!--- image -->
+<tr>
+	<th rowspan="4">{LANG_IMAGE}</th>
+	<th colspan="3">{LANG_FORMAT}</th>
+</tr>
+<tr>
+	<td colspan="3" align="center">[img]{LANG_BBCODES_FILE_PATH}[/img]</td>
+</tr>
+<tr>
+	<th>{LANG_EXAMPLE}</th>
+	<th>{LANG_BBCODES_HTML_EQUIVALENT}</th>
+	<th>{LANG_OUTPUT}</th>
+</tr>
+<tr>
+	<td>[img]/themes/winky/Nuvola_apps_package_settings.png[/img]</td>
+	<td>&lt;img src=&quot;/themes/winky/Nuvola_apps_package_settings.png&quot;&gt;&lt;/img&gt;</td>
+	<td>{IMAGE}</td>
+</tr>
+<!--- image -->
+<!--- image with size -->
+<tr>
+	<th rowspan="4">{LANG_BBCODES_IMAGE_WITH_SIZE}</th>
+	<th colspan="3">{LANG_FORMAT}</th>
+</tr>
+<tr>
+	<td colspan="3" align="center">[img=1x2]{LANG_BBCODES_FILE_PATH}[/img]<br>
+		<small>1: {LANG_WIDTH} {LANG_BBCODES_IN_PIXELS}<br>
+		2: {LANG_HEIGHT} {LANG_BBCODES_IN_PIXELS}</small></td>
+</tr>
+<tr>
+	<th>{LANG_EXAMPLE}</th>
+	<th>{LANG_BBCODES_HTML_EQUIVALENT}</th>
+	<th>{LANG_OUTPUT}</th>
+</tr>
+<tr>
+	<td>[img=24x24]/themes/winky/Nuvola_apps_package_settings.png[/img]</td>
+	<td>&lt;img src=&quot;/themes/winky/Nuvola_apps_package_settings.png&quot width=&quot;24&quot; height=&quot;24&quot;&gt;&lt;/img&gt;</td>
+	<td>{IMAGE_SIZED}</td>
+</tr>
+<!--- image with size -->
+<!--- code -->
+<tr>
+	<th rowspan="5">{LANG_SOURCECODE}</th>
+	<th colspan="3">{LANG_FORMAT}</th>
+</tr>
+<tr>
+	<td colspan="3" align="center">[code]{LANG_SOURCECODE}[/code]</td>
+</tr>
+<tr>
+	<th>{LANG_EXAMPLE}</th>
+	<th>{LANG_BBCODES_HTML_EQUIVALENT}</th>
+	<th>{LANG_OUTPUT}</th>
+</tr>
+<tr>
+	<td>[code]using namespace System;[/code]</td>
+	<td>{LANG_BBCODES_NESTED}</td>
+	<td>{CODE}</td>
+</tr>
+<tr>
+	<th>{LANG_COMMENTS}</th>
+	<td colspan="2">{LANG_BBCODES_CODE_COMMENTS}</td>
+</tr>
+<!--- code -->
+<!--- url -->
+<tr>
+	<th rowspan="4">{LANG_URL}</th>
+	<th colspan="3">{LANG_FORMAT}</th>
+</tr>
+<tr>
+	<td colspan="3" align="center">[url]{LANG_URL}[/url]</td>
+</tr>
+<tr>
+	<th>{LANG_EXAMPLE}</th>
+	<th>{LANG_BBCODES_HTML_EQUIVALENT}</th>
+	<th>{LANG_OUTPUT}</th>
+</tr>
+<tr>
+	<td>[url]http://google.com[/url]</td>
+	<td>&lt;a href=&quot;http://google.com&quot;&gt;http://google.com&lt;/a&gt;</td>
+	<td>{URL}</td>
+</tr>
+<!--- url -->
+<!--- url with text -->
+<tr>
+	<th rowspan="4">{LANG_BBCODES_URL_WITH_TEXT}</th>
+	<th colspan="3">{LANG_FORMAT}</th>
+</tr>
+<tr>
+	<td colspan="3" align="center">[url={LANG_URL}]{LANG_TEXT_LOWERCASE}[/url]</td>
+</tr>
+<tr>
+	<th>{LANG_EXAMPLE}</th>
+	<th>{LANG_BBCODES_HTML_EQUIVALENT}</th>
+	<th>{LANG_OUTPUT}</th>
+</tr>
+<tr>
+	<td>[url=http://google.com]{LANG_BBCODES_GOOGLE_HOMEPAGE}[/url]</td>
+	<td>&lt;a href=&quot;http://google.com&quot;&gt;{LANG_BBCODES_GOOGLE_HOMEPAGE}&lt;/a&gt;</td>
+	<td>{URL_WITH_TEXT}</td>
+</tr>
+<!--- url with text -->
+<!--- quotes -->
+<tr>
+	<th rowspan="4">{LANG_QUOTE}</th>
+	<th colspan="3">{LANG_FORMAT}</th>
+</tr>
+<tr>
+	<td colspan="3" align="center">[quote]{LANG_QUOTATED} {LANG_TEXT_LOWERCASE}[/quote]</td>
+</tr>
+<tr>
+	<th>{LANG_EXAMPLE}</th>
+	<th>{LANG_BBCODES_HTML_EQUIVALENT}</th>
+	<th>{LANG_OUTPUT}</th>
+</tr>
+<tr>
+	<td>[quote]{LANG_BBCODES_PICASSO_QUOTE}[/quote]</td>
+	<td>{LANG_BBCODES_NESTED}</td>
+	<td>{QUOTE}</td>
+</tr>
+<!--- quote -->
+<!--- quote with citation -->
+<tr>
+	<th rowspan="4">{LANG_BBCODES_QUOTE_WITH_CITATION}</th>
+	<th colspan="3">{LANG_FORMAT}</th>
+</tr>
+<tr>
+	<td colspan="3" align="center">[quote="{LANG_BBCODES_CITATED_PERSON}"]{LANG_QUOTATED} {LANG_TEXT_LOWERCASE}[/quote]</td>
+</tr>
+<tr>
+	<th>{LANG_EXAMPLE}</th>
+	<th>{LANG_BBCODES_HTML_EQUIVALENT}</th>
+	<th>{LANG_OUTPUT}</th>
+</tr>
+<tr>
+	<td>[quote="Pablo Picasso"]{LANG_BBCODES_PICASSO_QUOTE}[/quote]</td>
+	<td>{LANG_BBCODES_NESTED}</td>
+	<td>{QUOTE_CITATED}</td>
+</tr>
+<!--- quote with citation -->
+</table>
+<!--- END bbcodes -->

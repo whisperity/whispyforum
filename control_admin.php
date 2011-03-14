@@ -637,7 +637,7 @@ switch ($site) // Outputs and scripts are based on the site variable
 				if ( $_POST['href'] == NULL ) // URL
 				{
 					$Ctemplate->useTemplate("admin/menus_createentry_variable_error", array(
-						'VARIABLE'	=>	"{LANG_MENUS_URL}", // Missing variable's name
+						'VARIABLE'	=>	"{LANG_URL}", // Missing variable's name
 						'LABEL'	=>	$_POST['label'], // Entry label
 						'HREF'	=>	$_POST['href'], // Link target (should be empty)
 						'MENU_ID'	=>	$_POST['menu_id'] // Menu ID
@@ -743,7 +743,7 @@ switch ($site) // Outputs and scripts are based on the site variable
 					if ( $_POST['href'] == NULL ) // URL
 					{
 						$Ctemplate->useTemplate("admin/menus_editentry_variable_error", array(
-							'VARIABLE'	=>	"{LANG_MENUS_URL}", // Missing variable's name
+							'VARIABLE'	=>	"{LANG_URL}", // Missing variable's name
 							'LABEL'	=>	$_POST['label'], // Entry label
 							'HREF'	=>	$_POST['href'], // Link target (should be empty)
 							'ENTRY_ID'	=>	$_POST['entry_id'] // Entry ID
