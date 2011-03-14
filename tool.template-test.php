@@ -7,18 +7,18 @@
  * WhispyForum
  */
 
- include('includes/load.php'); // We load the environment as usual
- 
- if ( isset($_POST['mode']) )
- {
- 	// If we get the mode variable from the frame
- 	// we run template testing.
- 	echo '<a href="tool.template-test.php">Back to forms</a>';
- 	
- 	echo '<h3>Input was:</h3>';
- 	// Basically we give the previous form (below after } else {) with the set data.
- 	print('Template name: ' .$_POST['tname']. '<br>
- 	<table border="1">
+include('includes/load.php'); // We load the environment as usual
+
+if ( isset($_POST['mode']) )
+{
+	// If we get the mode variable from the frame
+	// we run template testing.
+	echo '<a href="tool.template-test.php">Back to forms</a>';
+	
+	echo '<h3>Input was:</h3>';
+	// Basically we give the previous form (below after } else {) with the set data.
+	print('Template name: ' .$_POST['tname']. '<br>
+	<table border="1">
 		<tr>
 			<td>Variable (<tt>{VARIABLE}</tt> in template)</td>
 
@@ -141,7 +141,7 @@
 	</form>
 	<!--- End form -->
 	<?php
- }
- 
- DoFooter();
+}
+
+DoFooter();
 ?>
