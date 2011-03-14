@@ -78,8 +78,7 @@ switch ($regPos)
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
 				'EMAIL'	=>	$_POST['email'] // E-mail address
-				), FALSE);
-			
+			), FALSE);
 			// We terminate the script
 			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
 			DoFooter();
@@ -94,8 +93,7 @@ switch ($regPos)
 				'PASSWORD'	=>	$_POST['password'], // Password (should be empty)
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
 				'EMAIL'	=>	$_POST['email'] // E-mail address
-				), FALSE);
-			
+			), FALSE);
 			// We terminate the script
 			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
 			DoFooter();
@@ -110,8 +108,7 @@ switch ($regPos)
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again) (should be empty)
 				'EMAIL'	=>	$_POST['email'] // E-mail address
-				), FALSE);
-			
+			), FALSE);
 			// We terminate the script
 			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
 			DoFooter();
@@ -126,7 +123,7 @@ switch ($regPos)
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
 				'EMAIL'	=>	$_POST['email'] // E-mail address (should be empty)
-				), FALSE);
+			), FALSE);
 			// We terminate the script
 			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
 			DoFooter();
@@ -143,7 +140,43 @@ switch ($regPos)
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
 				'EMAIL'	=>	$_POST['email'] // E-mail address
-				), FALSE);
+			), FALSE);
+			// We terminate the script
+			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
+			DoFooter();
+			exit;
+		}
+		
+		// Check whether the user wants to register a used name
+		$nameAllocated = mysql_num_rows($Cmysql->Query("SELECT username FROM users WHERE username='" .$Cmysql->EscapeString($_POST['username']). "'"));
+		
+		if ( $nameAllocated != 0 )
+		{
+			// If there's a user with the same name
+			$Ctemplate->useTemplate("user/reg_userdata_name_allocated_error", array(
+				'USERNAME'	=>	$_POST['username'], // Username (errorneous)
+				'PASSWORD'	=>	$_POST['password'], // Password
+				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
+				'EMAIL'	=>	$_POST['email'] // E-mail address
+			), FALSE);
+			// We terminate the script
+			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
+			DoFooter();
+			exit;
+		}
+		
+		// Check whether the user wants to register a used e-mail address
+		$emailAllocated = mysql_num_rows($Cmysql->Query("SELECT email FROM users WHERE email='" .$Cmysql->EscapeString($_POST['email']). "'"));
+		
+		if ( $emailAllocated != 0 )
+		{
+			// If there's a user with the same name
+			$Ctemplate->useTemplate("user/reg_userdata_email_allocated_error", array(
+				'USERNAME'	=>	$_POST['username'], // Username (errorneous)
+				'PASSWORD'	=>	$_POST['password'], // Password
+				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
+				'EMAIL'	=>	$_POST['email'] // E-mail address
+			), FALSE);
 			// We terminate the script
 			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
 			DoFooter();
@@ -164,7 +197,7 @@ switch ($regPos)
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
 				'EMAIL'	=>	$_POST['email'] // E-mail address
-				), FALSE); // Give error message and retry form
+			), FALSE); // Give error message and retry form
 		} elseif ( $regQuery == TRUE )
 		{
 			// If registration completed successfully

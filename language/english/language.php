@@ -149,6 +149,8 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_REG_ENDED}'	=>	"The registration ended!",
 	'{LANG_REG_DATA_INFO}'	=>	"To register a new user, you must enter it's login credientals into the boxes below. Further user information (like sign, profile box, avatar) could be set in the Control Panel after login.",
 	'{LANG_REG_DATA_FORM_HEADER}'	=>	"New user's login information",
+	'{LANG_REG_NAME_ALLOCATED}'	=>	"The username you wanted to register is in use. Please choose another!",
+	'{LANG_REG_EMAIL_ALLOCATED}'	=>	"The e-mail address you wanted to register is in use.",
 	
 	/* User levels */
 	'{LANG_INSUFFICIENT_RIGHTS}'	=>	"Insufficient rights",
