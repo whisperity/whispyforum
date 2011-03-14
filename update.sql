@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS menus (
 	`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
 	`header` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'menu header',
 	`align` tinyint(2) NOT NULL DEFAULT '0' COMMENT 'sidebar vertical align',
-	`side` ENUM('left', 'right') NOT NULL DEFAULT 'left' COMMENT 'sidebar choice',
+	`side` enum('left', 'right') NOT NULL DEFAULT 'left' COMMENT 'sidebar choice',
 	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'menu information';
 
@@ -81,7 +81,9 @@ CREATE TABLE IF NOT EXISTS menu_entries (
 #
 INSERT INTO menus(header, align, side) VALUES ('Main menu', 0, 'left');
 
-INSERT INTO menu_entries(menu_id, label, href) VALUES (1, 'Homepage', 'index.php');
+INSERT INTO menu_entries(menu_id, label, href) VALUES
+	(1, 'Homepage', 'index.php'),
+	(1, 'Forum', 'forum.php');
 
 #
 # Revision 537 (added multiple languages support) 
@@ -93,3 +95,15 @@ ALTER TABLE `users` ADD `language` VARCHAR( 32 ) CHARACTER SET utf8 COLLATE utf8
 #
 ALTER TABLE `users` ADD UNIQUE (`username`);
 ALTER TABLE `users` ADD UNIQUE (`email`);
+
+#
+# Revision 584 (adding default forum data)
+#
+CREATE TABLE IF NOT EXISTS forums (
+	`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+	`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'title for the forum',
+	`info` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'little description appearing under forum title',
+	`minLevel` tinyint(2) NOT NULL DEFAULT '0' COMMENT 'minimal user level to list the forum (users.userLevel)',
+	`createdate` varchar(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
+	PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'data for forums';

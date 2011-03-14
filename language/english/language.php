@@ -283,5 +283,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_BBCODES_CITATED_PERSON}'	=>	"Citated person",
 	'{LANG_BBCODES_PICASSO_QUOTE}'	=>	"Computers are useless. They can only give you answers.",
 	
+	/* Forums */
+	'{LANG_FORUMS}'	=>	"Forums"
 );
 ?>

@@ -286,7 +286,7 @@ switch ($instPos)
 			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
 			`header` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'menu header',
 			`align` tinyint(2) NOT NULL DEFAULT '0' COMMENT 'sidebar vertical align',
-			`side` ENUM('left', 'right') NOT NULL DEFAULT 'left' COMMENT 'sidebar choice',
+			`side` enum('left', 'right') NOT NULL DEFAULT 'left' COMMENT 'sidebar choice',
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'menu information'"); // $dbtables_menu sets to true if we succeeded creating a table
 		
@@ -326,7 +326,9 @@ switch ($instPos)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'menu entry information'"); // $dbtables_menuEntries sets to true if we succeeded creating a table
 		
 		$dbtables_menuEntries_data = FALSE; // We failed adding the default data first
-		$dbtables_menuEntries_data = $Cmysql->Query("INSERT INTO menu_entries(menu_id, label, href) VALUES (1, 'Homepage', 'index.php')"); // $dbtables_menuEntries_data sets to true if we succeeded adding default data
+		$dbtables_menuEntries_data = $Cmysql->Query("INSERT INTO menu_entries(menu_id, label, href) VALUES
+		(1, 'Homepage', 'index.php'),
+		(1, 'Forum', 'forum.php'),"); // $dbtables_menuEntries_data sets to true if we succeeded adding default data
 		
 		// We check menu entries table creation
 		if ( ( $dbtables_menuEntries == FALSE) || ( $dbtables_menuEntries_data == FALSE ) )
@@ -348,6 +350,42 @@ switch ($instPos)
 			), FALSE);
 		}
 		/* Menu entries table */
+		
+		/* Forums table */
+		// Stores the data of forums
+		$dbtables_forums = FALSE; // We failed creating the tables first
+		$dbtables_forums = $Cmysql->Query("CREATE TABLE IF NOT EXISTS forums (
+			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+			`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'title for the forum',
+			`info` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'little description appearing under forum title',
+			`minLevel` tinyint(2) NOT NULL DEFAULT '0' COMMENT 'minimal user level to list the forum (users.userLevel)',
+			`createdate` varchar(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'data for forums'"); // $dbtables_forums sets to true if we succeeded creating a table
+		
+		$dbtables_forums_data = FALSE; // We failed adding the default data first
+		$dbtables_forums_data = $Cmysql->Query(""); // $dbtables_forums_data sets to true if we succeeded adding default data
+		
+		// We check menu entries table creation
+		if ( ( $dbtables_forums == FALSE) || ( $dbtables_forums_data == FALSE ) )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
+				'TABLENAME'	=>	"forums" // Table name
+			), FALSE);
+			
+			// We set the creation global error variable to false
+			$tablecreation = FALSE;
+			
+			$tablelist .= ", forums"; // Append menu table name to fail-list
+		} elseif ( ( $dbtables_forums != FALSE ) && ( $dbtables_forums_data != FALSE ) )
+		{
+			// Give success
+			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
+				'TABLENAME'	=>	"forums" // Table name
+			), FALSE);
+		}
+		/* Forums table */
 		
 		// Check global variable status
 		if ( $tablecreation == FALSE )
