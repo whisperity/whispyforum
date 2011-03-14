@@ -87,3 +87,9 @@ INSERT INTO menu_entries(menu_id, label, href) VALUES (1, 'Homepage', 'index.php
 # Revision 537 (added multiple languages support) 
 #
 ALTER TABLE `users` ADD `language` VARCHAR( 32 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'english' COMMENT 'user preferred language';
+
+#
+# Revisin 581 (making users table's username and e-mail field unique)
+#
+ALTER TABLE `users` ADD UNIQUE (`username`);
+ALTER TABLE `users` ADD UNIQUE (`email`);
