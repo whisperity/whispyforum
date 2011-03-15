@@ -38,13 +38,21 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "newforum" ) )
 				// We output the form with data returned (user doesn't have to enter it again)
 				$Ctemplate->useTemplate("forum/forums_create_form", array(
 					'TITLE'	=>	$_POST['title'], // Forum's title
-					'DESC'	=>	$_POST['desc'] // Description
+					'DESC'	=>	$_POST['desc'], // Description
+					'0_CHECKED'	=>	($_POST['minlevel'] == 0 ? " checked" : ""), // User min. level 0 (guest)
+					'1_CHECKED'	=>	($_POST['minlevel'] == 1 ? " checked" : ""), // User min. level 1 (user)
+					'2_CHECKED'	=>	($_POST['minlevel'] == 2 ? " checked" : ""), // User min. level 2 (moderator)
+					'3_CHECKED'	=>	($_POST['minlevel'] == 3 ? " checked" : "") // User min. level 3 (administrator)
 				), FALSE);
 			} else {
 				// We output general form
 				$Ctemplate->useTemplate("forum/forums_create_form", array(
 					'TITLE'	=>	"", // Forum's title
-					'DESC'	=>	"" // Description
+					'DESC'	=>	"", // Description
+					'0_CHECKED'	=>	" checked", // User min. level 0 (guest)
+					'1_CHECKED'	=>	"", // User min. level 1 (user)
+					'2_CHECKED'	=>	"", // User min. level 2 (moderator)
+					'3_CHECKED'	=>	"", // User min. level 3 (administrator)
 				), FALSE);
 			}
 		} elseif ( ( isset($_POST['newforum_do']) ) && ( $_POST['newforum_do'] == "yes") )
@@ -58,39 +66,39 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "newforum" ) )
 					'VARIABLE'	=>	"{LANG_FORUMS_TITLE}", // Errornous variable name
 					'TITLE'	=>	$_POST['title'], // Forum's title (should be empty)
 					'DESC'	=>	$_POST['desc'], // Description
-					
+					'MINLEVEL'	=>	$_POST['minlevel'] // Minimal user level
 				), FALSE);
 				
 				// We terminate the script
-				$Ctemplate->useStaticTemplate("forums/forums_foot", FALSE); // Footer
+				$Ctemplate->useStaticTemplate("forum/forums_foot", FALSE); // Footer
 				DoFooter();
 				exit;
 			}
 			
 			// Every variable has value, do the SQL query.
-			/*$mCreate = $Cmysql->Query("INSERT INTO menus(header, align, side) VALUES('" .
-				$Cmysql->EscapeString($_POST['title'])."', '".
-				$Cmysql->EscapeString($_POST['align_pos'])."', '".
-				$Cmysql->EscapeString($_POST['side']). "')");
+			$fCreate = $Cmysql->Query("INSERT INTO forums(title, info, minLevel, createdate) VALUES(".
+			"'" .$Cmysql->EscapeString($_POST['title']). "',
+				'" .$Cmysql->EscapeString($_POST['desc']). "',
+				'" .$Cmysql->EscapeString($_POST['minlevel']). "', " .time(). ")");
 			
-			// $mCreate is TRUE if we succeeded
-			// $mCreate is FALSE if we failed
+			// $fCreate is TRUE if we succeeded
+			// $fCreate is FALSE if we failed
 			
-			if ( $mCreate == FALSE )
+			if ( $fCreate == FALSE )
 			{
 				// Failed to create the menu
-				$Ctemplate->useTemplate("admin/menus_create_error", array(
-					'TITLE'	=>	$_POST['title'], // Header
-					'ALIGN_POS'	=>	$_POST['align_pos'], // Align position
-					'SIDE'	=>	$_POST['side'] // Menu side
+				$Ctemplate->useTemplate("forum/forums_create_error", array(
+					'TITLE'	=>	$_POST['title'], // Forum's title (should be empty)
+					'DESC'	=>	$_POST['desc'], // Description
+					'MINLEVEL'	=>	$_POST['minlevel'] // Minimal user level
 				), FALSE); // Output a retry form
-			} elseif ( $mCreate == TRUE )
+			} elseif ( $fCreate == TRUE )
 			{
 				// Created the menu
-				$Ctemplate->useTemplate("admin/menus_create_success", array(
+				$Ctemplate->useTemplate("forum/forums_create_success", array(
 					'TITLE'	=>	$_POST['title'] // Menu title
 				), FALSE); // Output a success form
-			}*/
+			}
 		}
 	}
 }
