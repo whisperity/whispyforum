@@ -227,18 +227,14 @@ class class_users
 				// the file in the theme directory to be deleted if the user wants to
 				// modify his/her avatar
 				
-				copy("themes/" .$_SESSION['theme_name']. "/default_avatar.png", "upload/usr_avatar/" .$fnToken. ".png"); // Copy the default file from the themeset
+				copy("themes/" .$_SESSION['theme_name']. "/default_avatar.png", "upload/usr_avatar/temporary_" .$fnToken. ".png"); // Copy the default file from the themeset
 				
 				// Make the user's avatar the temporary one
-				$_SESSION['avatar_filename'] = $fnToken. ".png";
-				
-				// Add the new picture as the default one for the user
-				$Cmysql->Query("UPDATE users SET avatar_filename='" .$_SESSION['avatar_filename']. "' WHERE id='" .$_SESSION['uid']. "'");
+				$_SESSION['avatar_filename'] = "temporary_" .$fnToken. ".png";
 			} else {
 				// If the user have a defined avatar, make it his SESSION avatar
 				$_SESSION['avatar_filename'] = $userDBArray['avatar_filename'];
 			}
-			
 			
 			$Cmysql->Query("UPDATE users SET curr_ip='" .$_SESSION['curr_ip']. "', curr_sessid='" .$_SESSION['curr_sessid']. "', loggedin=1 WHERE id='" .$userDBArray['id']. "'"); // We update the database to enter the current session data
 			return TRUE; // Then return TRUE
@@ -259,7 +255,7 @@ class class_users
 		
 		global $Cmysql; // We need to declare the mySQL class
 		
-		$bLogout = $Cmysql->Query("UPDATE users SET curr_ip='0.0.0.0', curr_sessid='', loggedin=0 WHERE id='" .$_SESSION['uid']. "'"); // Clear session connections from database
+		$bLogout = $Cmysql->Query("UPDATE users SET curr_ip='0.0.0.0', curr_sessid='', loggedin=0 WHERE id='" .$_SESSION['uid']. "' AND username='" .$Cmysql->EscapeString($username). "'"); // Clear session connections from database
 		
 		if ( $bLogout == FALSE )
 		{
@@ -268,6 +264,20 @@ class class_users
 		} elseif ( $bLogout == TRUE )
 		{
 			// If we successfully logged out the user
+			
+			$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT avatar_filename FROM users WHERE username='" .$Cmysql->EscapeString($username). "'")); // We query the filename of the user's avatar
+			
+			if ( $userDBArray['avatar_filename'] == NULL )
+			{
+				// If the user has no avatar filename set in the database
+				// It means that he/she haven't uploaded an avatar.
+				// If somebody logins without an avatar set,
+				// he/she will be assigned with a temporary avatar
+				// (see the Login function)
+				
+				// After logout, remove the temporary avatar's file
+				@unlink("upload/usr_avatar/" .$_SESSION['avatar_filename']);
+			}
 			
 			$this->__destroySession(); // We clear the session
 			return TRUE; // We give success
