@@ -231,9 +231,33 @@ class class_users
 				
 				// Make the user's avatar the temporary one
 				$_SESSION['avatar_filename'] = "temporary_" .$fnToken. ".png";
+				
+				// Update the database to make the system remove the temporary file at logout
+				$Cmysql->Query("UPDATE users SET avatar_filename='temporary' WHERE id='" .$userDBArray['id']. "'");
 			} else {
 				// If the user have a defined avatar, make it his SESSION avatar
 				$_SESSION['avatar_filename'] = $userDBArray['avatar_filename'];
+				
+				if ( !file_exists("upload/usr_avatar/" .$userDBArray['avatar_filename']) )
+				{
+					// If the user have an avatar previously set, but
+					// the file does not exists, set a temporary avatar for the user
+					
+					$fnToken = generateHexTokenNoDC(); // Generate token
+					
+					// We need to copy it to user upload directory to prevent
+					// the file in the theme directory to be deleted if the user wants to
+					// modify his/her avatar
+					
+					copy("themes/" .$_SESSION['theme_name']. "/default_avatar.png", "upload/usr_avatar/temporary_" .$fnToken. ".png"); // Copy the default file from the themeset
+					
+					// Make the user's avatar the temporary one
+					$_SESSION['avatar_filename'] = "temporary_" .$fnToken. ".png";
+					
+					// Remove the user's avatar setting from the database
+					// to make the system remove the temporary file at logout
+					$Cmysql->Query("UPDATE users SET avatar_filename='temporary' WHERE id='" .$userDBArray['id']. "'");
+				}
 			}
 			
 			$Cmysql->Query("UPDATE users SET curr_ip='" .$_SESSION['curr_ip']. "', curr_sessid='" .$_SESSION['curr_sessid']. "', loggedin=1 WHERE id='" .$userDBArray['id']. "'"); // We update the database to enter the current session data
@@ -267,7 +291,7 @@ class class_users
 			
 			$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT avatar_filename FROM users WHERE username='" .$Cmysql->EscapeString($username). "'")); // We query the filename of the user's avatar
 			
-			if ( $userDBArray['avatar_filename'] == NULL )
+			if ( $userDBArray['avatar_filename'] == "temporary" )
 			{
 				// If the user has no avatar filename set in the database
 				// It means that he/she haven't uploaded an avatar.
