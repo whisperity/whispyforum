@@ -215,9 +215,30 @@ class class_users
 			$_SESSION['uid'] = $userDBArray['id'];
 			$_SESSION['log_status'] = "user";
 			$_SESSION['log_bool'] = TRUE;
-			$_SESSION['avatar_filename'] = $userDBArray['avatar_filename'];
 			$_SESSION['theme_name'] = "winky"; // Default theme name
 			$_SESSION['usr_language'] = $userDBArray['language'];
+			
+			if ( $userDBArray['avatar_filename'] == NULL )
+			{
+				// If the user does not have an avatar set, make a default avatar for him/her
+				$fnToken = generateHexTokenNoDC(); // Generate token
+				
+				// We need to copy it to user upload directory to prevent
+				// the file in the theme directory to be deleted if the user wants to
+				// modify his/her avatar
+				
+				copy("themes/" .$_SESSION['theme_name']. "/default_avatar.png", "upload/usr_avatar/" .$fnToken. ".png"); // Copy the default file from the themeset
+				
+				// Make the user's avatar the temporary one
+				$_SESSION['avatar_filename'] = $fnToken. ".png";
+				
+				// Add the new picture as the default one for the user
+				$Cmysql->Query("UPDATE users SET avatar_filename='" .$_SESSION['avatar_filename']. "' WHERE id='" .$_SESSION['uid']. "'");
+			} else {
+				// If the user have a defined avatar, make it his SESSION avatar
+				$_SESSION['avatar_filename'] = $userDBArray['avatar_filename'];
+			}
+			
 			
 			$Cmysql->Query("UPDATE users SET curr_ip='" .$_SESSION['curr_ip']. "', curr_sessid='" .$_SESSION['curr_sessid']. "', loggedin=1 WHERE id='" .$userDBArray['id']. "'"); // We update the database to enter the current session data
 			return TRUE; // Then return TRUE
