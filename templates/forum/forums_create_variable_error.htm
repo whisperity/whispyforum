@@ -1,0 +1,21 @@
+<!--- BEGIN forums create form -->
+<!--- Usage: forum creating form, missing variable error box -->
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_txt.png" alt="{LANG_ERROR_EXCLAMATION}"></td>
+		<td class="errortitle">{LANG_ERROR_EXCLAMATION}</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">{LANG_VAR_REQ_NOT_ENTERED} {VARIABLE} {LANG_VAR_REQ_CANT_BE_EMPTY} {LANG_FORUMS_CREATE_VAR_ERROR}</td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+<form method="POST" action="forum.php">
+<input type="hidden" name="title" value="{TITLE}">
+<input type="hidden" name="desc" value="{DESC}">
+<input type="hidden" name="side" value="{SIDE}">
+<input type="hidden" name="action" value="newforum">
+<input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
+<input type="submit" value="{LANG_BB_BACK}">
+</form>
+<!--- END forums create form -->

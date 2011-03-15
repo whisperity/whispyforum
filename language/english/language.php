@@ -160,7 +160,12 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_REQUIRES_LOGGEDIN}'	=>	"This page requires you to log in to view it's contents.<br><br>Please use the login box to log in to the site. After that, you can view this page.",
 	'{LANG_NO_LOGGEDINS}'	=>	"This page is unaviable for registered users",
 	'{LANG_REQUIRES_GUEST}'	=>	"This page requires you to be a guest to view it's contents.<br><br>Please use the control box to log out from the site. After that, you can view this page.",
+	'{LANG_GUEST}'	=>	"Guest",
+	'{LANG_USER}'	=>	"User",
+	'{LANG_MODERATOR}'	=>	"Moderator",
 	'{LANG_ADMINISTRATOR}'	=>	"Administrator",
+	'{LANG_ROOT}'	=>	"Root admin",
+	
 	
 	/* Control panel */
 	'{LANG_CP_LOWERCASE}'	=>	"control panel",
@@ -284,6 +289,14 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_BBCODES_PICASSO_QUOTE}'	=>	"Computers are useless. They can only give you answers.",
 	
 	/* Forums */
-	'{LANG_FORUMS}'	=>	"Forums"
+	'{LANG_FORUMS}'	=>	"Forums",
+	'{LANG_FORUMS_TITLE}'	=>	"Title",
+	'{LANG_FORUMS_DESC}'	=>	"Description",
+	'{LANG_FORUMS_LASTPOST}'	=>	"Last post",
+	'{LANG_FORUMS_THREADS}'	=>	"Threads",
+	'{LANG_FORUMS_POSTS}'	=>	"Posts",
+	'{LANG_FORUMS_CREATE_NEW}'	=>	"Create new forum",
+	'{LANG_FORUMS_CREATE_HEADER}'	=>	"Data for the new forum",
+	'{LANG_FORUMS_CREATE_VAR_ERROR}'	=>	"The forum creation cannot be done until every required variable is entered.",
 );
 ?>

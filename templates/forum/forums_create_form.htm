@@ -1,0 +1,13 @@
+<!--- BEGIN forums create form -->
+<!--- Usage: forum creating form, getting new forum data -->
+<font class="emphasis">{LANG_MANDATORY_VARIABLES_REDSTAR}</font>
+
+<form method="POST" action="forum.php">
+<span class="form-header">{LANG_FORUMS_CREATE_HEADER}</span><br>
+{LANG_FORUMS_TITLE}<span class="red-star">*</span>: <input type="text" name="title" value="{TITLE}" size=35><br>
+{LANG_FORUMS_DESC}: <textarea name="desc" rows="3" cols="25">{DESC}</textarea><br>
+<input type="hidden" name="action" value="newforum">
+<input type="hidden" name="newforum_do" value="yes">
+<input type="submit" value="{LANG_FORUMS_CREATE_NEW}">
+</form>
+<!--- END forums create form -->

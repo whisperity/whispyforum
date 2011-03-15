@@ -103,7 +103,7 @@ CREATE TABLE IF NOT EXISTS forums (
 	`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
 	`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'title for the forum',
 	`info` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'little description appearing under forum title',
-	`minLevel` tinyint(2) NOT NULL DEFAULT '0' COMMENT 'minimal user level to list the forum (users.userLevel)',
+	`minLevel` enum('0', '1', '2', '3') NOT NULL DEFAULT '0' COMMENT 'minimal user level to list the forum (users.userLevel)',
 	`createdate` varchar(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
 	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'data for forums';
