@@ -47,7 +47,6 @@ $wf_lang = array(
 	'{LANG_REDIRECT_RETURN_LINK}'	=>	"Click here if your browser does not redirect you or if don't want to wait...",
 	'{LANG_MANDATORY_VARIABLES_REDSTAR}'	=>	'Variables marked with a red star (<span class="red-star">*</span>) are required to be entered.',
 	'{LANG_IS_MANDATORY}'	=>	"is mandatory",
-	'{LANG_YOU_NOT_ENTERED}'	=>	"You did not enter",
 	'{LANG_DIRECT_OPENING}'	=>	"Direct opening",
 	'{LANG_GOBACKTOTHE}'	=>	"Go back to the",
 	'{LANG_GOTOTHE}'	=>	"Go to the",
@@ -113,7 +112,7 @@ $wf_lang = array(
 	'{LANG_LOGIN_SUCCESS}'	=>	"Login success!",
 	'{LANG_LOGIN_PLEASEUSEBOX}'	=>	"Please use the login box to login to the site.",
 	'{LANG_LOGIN_WRONGPASSWORD}'	=>	"The user you entered does not exist, or you supplied wrong login credientals.",
-	'{LANG_LOGIN_CRITICAL_FOR}'	=>	"This variable is critical to properly log you in.",
+	'{LANG_LOGIN_CRITICAL_FOR}'	=>	"You did not enter {VARIABLE_BODY}. This variable is critical to properly log you in.",
 	'{LANG_LOGIN_DIRECT_OPENING}'	=>	"It seems to be a direct opening of the login page.<br>
 When you login, you're automatically redirected through this page by the engine passing vital variables. Those variables cannot be get.",
 	'{LANG_LOGIN_SUCCESSFUL}'	=>	"You've successfully logged in.",
@@ -178,20 +177,14 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_UPLOAD_AVATAR}'	=>	"Upload avatar",
 	'{LANG_AVATAR_UPLOAD}'	=>	"Avatar upload",
 	'{LANG_AVATAR_YOUR_CURRENT}'	=>	"Your current avatar:",
-	'{LANG_AVATAR_UPLOAD_1}'	=>	"To upload a new avatar, browse it and click Upload.",
-	'{LANG_AVATAR_UPLOAD_2}'	=>	"Please be sure that your avatar is a",
-	'{LANG_AVATAR_UPLOAD_3}'	=>	"Also, your avatar should be greater or equal than",
-	'{LANG_AVATAR_UPLOAD_4}'	=>	"(bigger images will be automatically resized).",
-	'{LANG_AVATAR_UPLOAD_5}'	=>	"Maximum file size:",
+	'{LANG_AVATAR_UPLOAD_BODY}'	=>	"To upload a new avatar, browse it and click Upload. Please be sure that your avatar is a ".'<font class="emphasis">PNG</font>, <font class="emphasis">JPG</font> {LANG_OR} <font class="emphasis">GIF</font>'." {LANG_FILE}. Also, your avatar should be greater or equal than " .'<font class="emphasis">150x150 {LANG_PIXELS}</font>'." (bigger images will be automatically resized). Maximum file size: ".'<font class="emphasis">2 MB</font>',
 	'{LANG_AVATAR_REDIRECT}'	=>	"You're being redirected to the avatar uploading page...",
 	'{LANG_AVATAR_WRONG_FORMAT}'	=>	"The file you wanted to upload is in a wrong format",
 	'{LANG_AVATAR_ALLOWED_FORMATS}'	=>	"Allowed formats are:",
 	'{LANG_AVATAR_GENERAL_ERROR}'	=>	"There was error uploading your avatar. Usally, this error pops when the upload folder (<tt>upload/usr_avatar</tt>) cannot be written (so the file could not be saved).",
 	'{LANG_AVATAR_REFRESH_1}'	=>	"Your avatar has been refreshed successfully.<br>Your new avatar:",
 	'{LANG_AVATAR_REFRESH_2}'	=>	"The old avatar's file has been permanently deleted.",
-	'{LANG_AVATAR_TOOBIG_1}'	=>	"The file you uploaded is too big! Maximum filesize:",
-	'{LANG_AVATAR_TOOBIG_2}'	=>	"MB, but you wanted to upload a big,",
-	'{LANG_AVATAR_TOOBIG_3}'	=>	"sized file.",
+	'{LANG_AVATAR_TOOBIG}'	=>	"The file you uploaded is too big! Maximum filesize: 2 MB, but you wanted to upload a big, {FILE_SIZE} sized file.",
 	
 	/* Site preferences */
 	'{LANG_SITEPREF_TITLE}'	=>	"Here you can site your preferences on the site (language/theme). Please note, that this preferences are linked to and specified for your user.",
@@ -260,8 +253,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_MENUS_BACKTO_ENTRY_LIST}'	=>	"<< Return to entry list",
 	
 	/* Variable error boxes */
-	'{LANG_VAR_REQ_NOT_ENTERED}'	=>	"You didn't entered one of the required variables,",
-	'{LANG_VAR_REQ_CANT_BE_EMPTY}'	=>	"cannot be empty.",
+	'{LANG_VAR_REQ_NOT_ENTERED}'	=>	"You didn't entered one of the required variables, {VARIABLE} cannot be empty.",
 	
 	/* BB codes */
 	'{LANG_BB_TAG_CODE}'	=>	"Code:",

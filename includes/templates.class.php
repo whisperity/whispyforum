@@ -60,6 +60,21 @@ class class_template
 		{
 			$this->__getTemplate($templateName); // Cache the template data
 			
+			/* Replacing language tokens */
+			preg_match_all('/{LANG_.*?}/', $this->_output, $lKeys, PREG_PATTERN_ORDER, 0);
+			// $lKeys[0] contains all {LANG_*} language variables (* is the string's name)
+			
+			$j = 0; // Counter reset to zero
+			
+				foreach($lKeys[0] as $lang_tag)
+				{
+					// Then replace the output, updating it
+					$this->_output=str_replace($lKeys[0][$j],$wf_lang[ $lKeys[0][$j] ],$this->_output);
+					
+					$j++; // Turn the counter by one
+				}
+			/* Replacing language tokens */
+			
 			if ( count($replaceArray) > 0 ) // If we specified the replace array
 			{
 				// Replace every template variable, while auto-updating output
