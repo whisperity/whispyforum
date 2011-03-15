@@ -128,10 +128,17 @@ function DecodeSize( $bytes )
 	$types = array( 'B', 'KB', 'MB', 'GB', 'TB' );
 	for( $i = 0; $bytes >= 1024 && $i < ( count( $types ) -1 ); $bytes /= 1024, $i++ );
 	return( round( $bytes, 2 ) . " " . $types[$i] );
-} 
+}
 
-function bbDecode($input){
-
+function bbDecode($input)
+{
+	/**
+	* This function replaces the BB code format to HTML format
+	* 
+	* @inputs: $input - BB code formatted text
+	* @outputs: HTML formatted text
+	*/
+	
 	$bbCode = array(
 		"/\n?\[code\](.*?)\[\/code\]/si",
 		//'/(^|[ \n\r\t])((http(s?):\/\/)(www\.)?([a-z0-9_-]+(\.[a-z0-9_-]+)+)(:[0-9]+)?(\/[^\/ \)\(\n\r]*)*)/is',
@@ -188,5 +195,25 @@ function bbDecode($input){
 	/* Replacing language tokens */
 	
 	return $output; 
+}
+
+function fDate($date = "current")
+{
+	/**
+	* This function formats the set TIMESTAMP (epoch)
+	* formatted date to a human-readable one.
+	* 
+	* @inputs: $date - timestamp (epoch) (if isn't set, it'll format the current time)
+	* @outputs: formatted date
+	*/
+	
+	if ( $date == "current" )
+	{
+		// If the $date has the default value
+		$date = time(); // Make it the current EPOCH TIMESTAMP
+	}
+	
+	// Format the date with the date(format, epoch); function and return it
+	return date("F j, Y, H:i", $date);
 }
 ?>

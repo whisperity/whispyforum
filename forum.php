@@ -86,7 +86,7 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "newforum" ) )
 			
 			if ( $fCreate == FALSE )
 			{
-				// Failed to create the menu
+				// Failed to create the forum
 				$Ctemplate->useTemplate("forum/forums_create_error", array(
 					'TITLE'	=>	$_POST['title'], // Forum's title (should be empty)
 					'DESC'	=>	$_POST['desc'], // Description
@@ -94,9 +94,9 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "newforum" ) )
 				), FALSE); // Output a retry form
 			} elseif ( $fCreate == TRUE )
 			{
-				// Created the menu
+				// Created the forum
 				$Ctemplate->useTemplate("forum/forums_create_success", array(
-					'TITLE'	=>	$_POST['title'] // Menu title
+					'TITLE'	=>	$_POST['title'] // Forum title
 				), FALSE); // Output a success form
 			}
 		}
@@ -118,13 +118,26 @@ if ( !isset($_POST['action']) )
 		: NULL ) // Output header for admin actions only if the user is moderator or higher
 	), FALSE); // Open the table and output header
 	
-	$forums_data = $Cmysql->Query("SELECT * FROM forums"); // Query down the forums
+	$uDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT userLevel FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'")); // We query the user's data
+	
+	$forums_data = $Cmysql->Query("SELECT * FROM forums WHERE minLevel <= '" .$Cmysql->EscapeString($uDBArray['userLevel']). "'"); // Query down the forums (only which the user has rights to see)
 	
 	while ( $row = mysql_fetch_assoc($forums_data) )
 	{
 		// Going through every row of the returned dataset,
 		// output rows for forums
-		var_dump($row);
+		
+		$Ctemplate->useTemplate("forum/forums_table_row", array(
+			'TITLE'	=>	$row['title'], // Forum's title
+			'DESC'	=>	$row['info'], // Description
+			'CREATE_DATE'	=>	fDate($row['createdate']), // Creation date (human-readable formatted)
+			'EDIT'	=>	($uLvl[0] >= 2 ? 
+				"edit"//$Ctemplate->useStaticTemplate("forum/", TRUE) // Return the button
+			: NULL ), // Output edit button for admin actions only if the user is moderator or higher
+			'DELETE'	=>	($uLvl[0] >= 3 ? 
+				"delete"//$Ctemplate->useStaticTemplate("forum/", TRUE) // Return the button
+			: NULL ) // Output delete button for admin actions only if the user is moderator or higher
+		), FALSE); // Output row
 	}
 	
 	$Ctemplate->useStaticTemplate("forum/forums_table_close", FALSE); // Close the table

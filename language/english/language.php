@@ -284,6 +284,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_FORUMS}'	=>	"Forums",
 	'{LANG_FORUMS_TITLE}'	=>	"Title",
 	'{LANG_FORUMS_DESC}'	=>	"Description",
+	'{LANG_FORUMS_CREATE_DATE}'	=>	"Creation date",
 	'{LANG_FORUMS_MINIMAL_LEVEL}'	=>	"Minimal level",
 	'{LANG_FORUMS_LASTPOST}'	=>	"Last post",
 	'{LANG_FORUMS_THREADS}'	=>	"Threads",
@@ -294,5 +295,6 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_FORUMS_CREATE_SQL_ERROR}'	=>	"There were errors executing the SQL query to create the new forum. No new forum was created.",
 	'{LANG_FORUMS_CREATE_SUCCESS_HEAD}'	=>	"Created the forum",
 	'{LANG_FORUMS_CREATE_SUCCESS}'	=>	"Creation of forum {TITLE}"
+	
 );
 ?>
