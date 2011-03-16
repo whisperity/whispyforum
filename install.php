@@ -363,11 +363,8 @@ switch ($instPos)
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'data for forums'"); // $dbtables_forums sets to true if we succeeded creating a table
 		
-		$dbtables_forums_data = FALSE; // We failed adding the default data first
-		$dbtables_forums_data = $Cmysql->Query(""); // $dbtables_forums_data sets to true if we succeeded adding default data
-		
-		// We check menu entries table creation
-		if ( ( $dbtables_forums == FALSE) || ( $dbtables_forums_data == FALSE ) )
+		// We check forums table creation
+		if ( $dbtables_forums == FALSE )
 		{
 			// Give error
 			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
@@ -378,7 +375,7 @@ switch ($instPos)
 			$tablecreation = FALSE;
 			
 			$tablelist .= ", forums"; // Append menu table name to fail-list
-		} elseif ( ( $dbtables_forums != FALSE ) && ( $dbtables_forums_data != FALSE ) )
+		} elseif ( $dbtables_forums != FALSE )
 		{
 			// Give success
 			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
@@ -386,6 +383,41 @@ switch ($instPos)
 			), FALSE);
 		}
 		/* Forums table */
+		
+		/* Topics table */
+		// Stores the data of topics
+		$dbtables_forums = FALSE; // We failed creating the tables first
+		$dbtables_forums = $Cmysql->Query("CREATE TABLE IF NOT EXISTS topics (
+			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+			`forumid` int(10) NOT NULL COMMENT 'id of the forum the topic is in (forums.id)',
+			`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'title for the forum',
+			`createuser` int(10) NOT NULL COMMENT 'the ID of the user who created the topic (users.id)',
+			`createdate` varchar(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
+			`locked` enum('0', '1') NOT NULL DEFAULT '0' COMMENT 'whethet the topic is locked (no new posts allowed): 1 - locked, 0 - not locked',
+			`highlighted` enum('0', '1') NOT NULL DEFAULT '0' COMMENT 'topic is highlighted at the top of the list if value is 1',
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'data for topics'"); // $dbtables_topics sets to true if we succeeded creating a table
+		
+		// We check topics table creation
+		if ( $dbtables_topics == FALSE )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
+				'TABLENAME'	=>	"topics" // Table name
+			), FALSE);
+			
+			// We set the creation global error variable to false
+			$tablecreation = FALSE;
+			
+			$tablelist .= ", topics"; // Append menu table name to fail-list
+		} elseif ( $dbtables_topics != FALSE )
+		{
+			// Give success
+			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
+				'TABLENAME'	=>	"topics" // Table name
+			), FALSE);
+		}
+		/* Topics table */
 		
 		// Check global variable status
 		if ( $tablecreation == FALSE )

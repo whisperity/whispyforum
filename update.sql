@@ -97,7 +97,7 @@ ALTER TABLE `users` ADD UNIQUE (`username`);
 ALTER TABLE `users` ADD UNIQUE (`email`);
 
 #
-# Revision 584 (adding default forum data)
+# Revision 584 (adding forums table)
 #
 CREATE TABLE IF NOT EXISTS forums (
 	`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
@@ -107,3 +107,17 @@ CREATE TABLE IF NOT EXISTS forums (
 	`createdate` varchar(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
 	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'data for forums';
+
+#
+# Revision 598 (adding topics table)
+#
+CREATE TABLE IF NOT EXISTS topics (
+	`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+	`forumid` int(10) NOT NULL COMMENT 'id of the forum the topic is in (forums.id)',
+	`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'title for the forum',
+	`createuser` int(10) NOT NULL COMMENT 'the ID of the user who created the topic (users.id)',
+	`createdate` varchar(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
+	`locked` enum('0', '1') NOT NULL DEFAULT '0' COMMENT 'whethet the topic is locked (no new posts allowed): 1 - locked, 0 - not locked',
+	`highlighted` enum('0', '1') NOT NULL DEFAULT '0' COMMENT 'topic is highlighted at the top of the list if value is 1',
+	PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'data for topics';
