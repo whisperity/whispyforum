@@ -1,0 +1,22 @@
+<!--- BEGIN forums edit moderator error -->
+<!--- Usage: forum edition form, error box (a user with only moderator rights wanted to lock a forum Administrator-only) -->
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_apps_agent.png" alt="{LANG_PERMISSIONS_ERROR}"></td>
+		<td class="errortitle">{LANG_INSUFFICIENT_RIGHTS}</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">{LANG_FORUMS_EDIT_MODERATOR_ERROR}</td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+<form method="POST" action="forum.php">
+<input type="hidden" name="forum_id" value="{FORUM_ID}">
+<input type="hidden" name="title" value="{TITLE}">
+<input type="hidden" name="desc" value="{DESC}">
+<input type="hidden" name="minlevel" value="{MINLEVEL}">
+<input type="hidden" name="action" value="edit">
+<input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
+<input type="submit" value="{LANG_BB_BACK}">
+</form>
+<!--- END forums edit moderator error -->

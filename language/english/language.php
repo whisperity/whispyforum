@@ -154,6 +154,7 @@ When you logout, you're automatically redirected through this page by the engine
 	/* User levels */
 	'{LANG_INSUFFICIENT_RIGHTS}'	=>	"Insufficient rights",
 	'{LANG_PERMISSIONS_ERROR}'	=>	"User permissions error",
+	'{LANG_REQUIRED_MODERATOR}'	=>	"This page requires you to have Moderator or higher rights.",
 	'{LANG_REQUIRED_ADMIN}'	=>	"This page requires you to have Administrator or higher rights.",
 	'{LANG_NO_GUESTS}'	=>	"This page is unaviable for guests",
 	'{LANG_REQUIRES_LOGGEDIN}'	=>	"This page requires you to log in to view it's contents.<br><br>Please use the login box to log in to the site. After that, you can view this page.",
@@ -163,6 +164,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_USER}'	=>	"User",
 	'{LANG_MODERATOR}'	=>	"Moderator",
 	'{LANG_ADMINISTRATOR}'	=>	"Administrator",
+	'{LANG_ADMINISTRATOR_PLURAL}'	=>	"Administrators",
 	'{LANG_ROOT}'	=>	"Root admin",
 	
 	
@@ -289,12 +291,20 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_FORUMS_LASTPOST}'	=>	"Last post",
 	'{LANG_FORUMS_THREADS}'	=>	"Threads",
 	'{LANG_FORUMS_POSTS}'	=>	"Posts",
+	'{LANG_FORUMS_BACKTOLIST}'	=>	"<< Back to list",
 	'{LANG_FORUMS_CREATE_NEW}'	=>	"Create new forum",
 	'{LANG_FORUMS_CREATE_HEADER}'	=>	"Data for the new forum",
 	'{LANG_FORUMS_CREATE_VAR_ERROR}'	=>	"The forum creation cannot be done until every required variable is entered.",
 	'{LANG_FORUMS_CREATE_SQL_ERROR}'	=>	"There were errors executing the SQL query to create the new forum. No new forum was created.",
 	'{LANG_FORUMS_CREATE_SUCCESS_HEAD}'	=>	"Created the forum",
-	'{LANG_FORUMS_CREATE_SUCCESS}'	=>	"Creation of forum {TITLE}"
+	'{LANG_FORUMS_CREATE_SUCCESS}'	=>	"Creation of forum {TITLE}",
 	
+	'{LANG_FORUMS_EDIT}'	=>	"Edit",
+	'{LANG_FORUMS_EDIT_HEADER}'	=>	"Edit forum: {OTITLE}",
+	'{LANG_FORUMS_EDIT_VAR_ERROR}'	=>	"The forum edition cannot be done until every required variable is entered.",
+	'{LANG_FORUMS_EDIT_SQL_ERROR}'	=>	"There were errors executing the SQL query to edit the forum. The forum remains the same.",
+	'{LANG_FORUMS_EDIT_MODERATOR_ERROR}'	=>	"You wanted to lock the forum's minimal level to {LANG_ADMINISTRATOR}, but you have only {LANG_MODERATOR} rights. Only {LANG_ADMINISTRATOR_PLURAL} can restrict forum's access to {LANG_ADMINISTRATOR_PLURAL}.",
+	'{LANG_FORUMS_EDIT_SUCCESS_HEAD}'	=>	"Edited the forum",
+	'{LANG_FORUMS_EDIT_SUCCESS}'	=>	"Edition of forum {TITLE}",
 );
 ?>

@@ -1,0 +1,22 @@
+<!--- BEGIN forums edit variable error -->
+<!--- Usage: forum edition form, missing variable error box -->
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_txt.png" alt="{LANG_ERROR_EXCLAMATION}"></td>
+		<td class="errortitle">{LANG_ERROR_EXCLAMATION}</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">{LANG_VAR_REQ_NOT_ENTERED} {LANG_FORUMS_EDIT_VAR_ERROR}</td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+<form method="POST" action="forum.php">
+<input type="hidden" name="forum_id" value="{FORUM_ID}">
+<input type="hidden" name="title" value="{TITLE}">
+<input type="hidden" name="desc" value="{DESC}">
+<input type="hidden" name="minlevel" value="{MINLEVEL}">
+<input type="hidden" name="action" value="edit">
+<input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
+<input type="submit" value="{LANG_BB_BACK}">
+</form>
+<!--- END forums edit variable error -->
