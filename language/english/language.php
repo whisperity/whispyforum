@@ -101,6 +101,9 @@ $wf_lang = array(
 	'{LANG_LOAD_CORRUPTION_ALT}'	=>	"Corrupt configuration",
 	'{LANG_LOAD_NOCFG}'	=>	"Configuration file not found!",
 	'{LANG_LOAD_NOCFG_BODY}'	=>	"The site's configuration file is missing. It usally means that the engine isn't installed properly. Without configuration, the engine cannot be used, because it can't connect to the database. ".'You can install it by clicking <a href="install.php" alt="Install WhispyForum">here</a> and running the install script.',
+	'{LANG_LOAD_SESS_WRITE}'	=>	"Session write error!",
+	'{LANG_LOAD_SESS_WRITE_BODY}'	=>	"The server cannot write the session data to the session directory. The session management is a critical submodule of the engine. Because of this error, the login does not work.<br>Contact your system administrator or hosting provider.",
+	'{LANG_LOAD_SESS_WRITE_ALT}'	=>	"Policy error",
 	
 	/* Template system */
 	'{LANG_TEMPLATESYS_TEMP_MISSING}'	=>	"Template missing",
@@ -116,9 +119,11 @@ $wf_lang = array(
 	'{LANG_LOGIN_DIRECT_OPENING}'	=>	"It seems to be a direct opening of the login page.<br>
 When you login, you're automatically redirected through this page by the engine passing vital variables. Those variables cannot be get.",
 	'{LANG_LOGIN_SUCCESSFUL}'	=>	"You've successfully logged in.",
-	'{LANG_LOGIN_DISABLED}'	=>	"There were errors logging you out. You stay logged in.",
+	'{LANG_LOGIN_DISABLED}'	=>	"Login is disabled",
 	'{LANG_LOGIN_DISABLED_STACKED_LOGINS}'	=>	"The previous login attempt was rejected due to<br>
 session stacking. Login is disabled.",
+	'{LANG_LOGIN_DISABLED_SESSION_ERROR}'	=>	"The session cannot be created and/or written. Because of this error, the login system does not work (the system cannot store and parse your login credientals).",
+	'{LANG_LOGIN_DISABLED_SESSION_ERROR_FOOTER}'	=>	"Contact your system administrator/hosting provider.",
 	'{LANG_LOGIN_CANTHERE}'	=>	"You can login there.",
 	'{LANG_MULTIPLE_LOGINS}'	=>	"Multiple logins",
 	'{LANG_MULTIPLE_LOGINS_NOSUPPORT}'	=>	"Multiple logins aren't supported",
