@@ -247,7 +247,7 @@ if ( !isset($_POST['action']) )
 	$Ctemplate->useTemplate("forum/forums_table_open", array(
 		'ADMIN_CREATE_NEW_FORUM'	=>	($uLvl[0] >= 3 ?
 			$Ctemplate->useStaticTemplate("forum/forums_admin_createnew", TRUE) // Return the button
-		: NULL ), // Output buttor for new forum only if the user is admin or higher
+		: NULL ), // Output button for new forum only if the user is admin or higher
 		'ADMIN_ACTIONS'	=>	($uLvl[0] >= 2 ? 
 			$Ctemplate->useStaticTemplate("forum/forums_admin_actions", TRUE) // Return the header
 		: NULL ) // Output header for admin actions only if the user is moderator or higher
@@ -263,6 +263,7 @@ if ( !isset($_POST['action']) )
 		// output rows for forums
 		
 		$Ctemplate->useTemplate("forum/forums_table_row", array(
+			'FORUM_ID'	=>	$row['id'], // ID of the forum
 			'TITLE'	=>	$row['title'], // Forum's title
 			'DESC'	=>	$row['info'], // Description
 			'CREATE_DATE'	=>	fDate($row['createdate']), // Creation date (human-readable formatted)

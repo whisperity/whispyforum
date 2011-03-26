@@ -16,8 +16,6 @@ class class_users
 		 * This function initializes the session and stores user content
 		 */
 		
-		global $Ctemplate; // Initialize the template conductor class
-		
 		session_start(); // We load the session
 		
 		if ( $_SESSION == NULL )
@@ -36,18 +34,6 @@ class class_users
 		{
 			// If the index isn't defined,
 			include('language/english/language.php'); // Load English language file
-		}
-		
-		// Check whether the session directory is writeable
-		if ( !is_writeable( ini_get('session.save_path') ) )
-		{
-			// If it isn't writeable, give error message
-			$Ctemplate->useTemplate("errormessage", array(
-				'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Unaviable file icon
-				'TITLE'	=>	"{LANG_LOAD_SESS_WRITE}", // Error title
-				'BODY'	=>	"{LANG_LOAD_SESS_WRITE_BODY}", // Error text
-				'ALT'	=>	"{LANG_LOAD_SESS_WRITE_ALT}" // Alternate picture text
-			), FALSE ); // We output an error message
 		}
 	}
 	
@@ -143,13 +129,6 @@ class class_users
 		 */
 		
 		global $Ctemplate; // We need to declare the template class
-		
-		// Check whether the session directory is writeable
-		if ( !is_writeable( ini_get('session.save_path') ) )
-		{
-			$Ctemplate->useStaticTemplate("user/session_write_error_form", FAlSE); // Give a placeholder login box without fields but with error message
-			return; // Exit the function
-		}
 		
 		if ( ( $_SESSION['log_status'] == "guest" ) && ( $_SESSION['log_bool'] == FALSE ) )
 		{

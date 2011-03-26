@@ -341,7 +341,7 @@ switch ($instPos)
 			// We set the creation global error variable to false
 			$tablecreation = FALSE;
 			
-			$tablelist .= ", menu_entries"; // Append menu table name to fail-list
+			$tablelist .= ", menu_entries"; // Append menu entries table name to fail-list
 		} elseif ( ( $dbtables_menuEntries != FALSE ) && ( $dbtables_menuEntries_data != FALSE ) )
 		{
 			// Give success
@@ -374,7 +374,7 @@ switch ($instPos)
 			// We set the creation global error variable to false
 			$tablecreation = FALSE;
 			
-			$tablelist .= ", forums"; // Append menu table name to fail-list
+			$tablelist .= ", forums"; // Append forums table name to fail-list
 		} elseif ( $dbtables_forums != FALSE )
 		{
 			// Give success
@@ -386,14 +386,14 @@ switch ($instPos)
 		
 		/* Topics table */
 		// Stores the data of topics
-		$dbtables_forums = FALSE; // We failed creating the tables first
-		$dbtables_forums = $Cmysql->Query("CREATE TABLE IF NOT EXISTS topics (
+		$dbtables_topics = FALSE; // We failed creating the tables first
+		$dbtables_topics = $Cmysql->Query("CREATE TABLE IF NOT EXISTS topics (
 			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
 			`forumid` int(10) NOT NULL COMMENT 'id of the forum the topic is in (forums.id)',
-			`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'title for the forum',
+			`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'title for the topic',
 			`createuser` int(10) NOT NULL COMMENT 'the ID of the user who created the topic (users.id)',
 			`createdate` varchar(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
-			`locked` enum('0', '1') NOT NULL DEFAULT '0' COMMENT 'whethet the topic is locked (no new posts allowed): 1 - locked, 0 - not locked',
+			`locked` enum('0', '1') NOT NULL DEFAULT '0' COMMENT 'whether the topic is locked (no new posts allowed): 1 - locked, 0 - not locked',
 			`highlighted` enum('0', '1') NOT NULL DEFAULT '0' COMMENT 'topic is highlighted at the top of the list if value is 1',
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'data for topics'"); // $dbtables_topics sets to true if we succeeded creating a table
@@ -409,7 +409,7 @@ switch ($instPos)
 			// We set the creation global error variable to false
 			$tablecreation = FALSE;
 			
-			$tablelist .= ", topics"; // Append menu table name to fail-list
+			$tablelist .= ", topics"; // Append topics table name to fail-list
 		} elseif ( $dbtables_topics != FALSE )
 		{
 			// Give success
@@ -418,6 +418,41 @@ switch ($instPos)
 			), FALSE);
 		}
 		/* Topics table */
+		
+		/* Posts table */
+		// Stores the data of posts
+		$dbtables_posts = FALSE; // We failed creating the tables first
+		$dbtables_posts = $Cmysql->Query("CREATE TABLE IF NOT EXISTS posts (
+			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+			`topicid` int(10) NOT NULL COMMENT 'id of the topic the post is in (topics.id)',
+			`forumid` int(10) NOT NULL COMMENT 'id of the forum the topic containing the post is in (forums.id)',
+			`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'title for the post',
+			`createuser` int(10) NOT NULL COMMENT 'the ID of the user who posted the post (users.id)',
+			`createdate` varchar(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
+			`content` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'text of the post',
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'data for posts'"); // $dbtables_posts sets to true if we succeeded creating a table
+		
+		// We check posts table creation
+		if ( $dbtables_posts == FALSE )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
+				'TABLENAME'	=>	"posts" // Table name
+			), FALSE);
+			
+			// We set the creation global error variable to false
+			$tablecreation = FALSE;
+			
+			$tablelist .= ", posts"; // Append posts table name to fail-list
+		} elseif ( $dbtables_posts != FALSE )
+		{
+			// Give success
+			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
+				'TABLENAME'	=>	"posts" // Table name
+			), FALSE);
+		}
+		/* Posts table */
 		
 		// Check global variable status
 		if ( $tablecreation == FALSE )

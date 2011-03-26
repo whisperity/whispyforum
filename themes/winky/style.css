@@ -311,3 +311,20 @@ td.quote {
 	font-family: Geneva, Arial, Helvetica, sans-serif;
 }
 /* BB code parse boxes */
+
+/* Forum */
+table.forums_table {
+	width: 100%;
+}
+
+table.topics_table {
+	width: 100%;
+}
+
+tr.forum-highlight {
+	background-color: #C0FFC0;
+}
+
+tr.forum-normal {
+	background-color: #FFFFFF;
+}

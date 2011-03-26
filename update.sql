@@ -114,10 +114,24 @@ CREATE TABLE IF NOT EXISTS forums (
 CREATE TABLE IF NOT EXISTS topics (
 	`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
 	`forumid` int(10) NOT NULL COMMENT 'id of the forum the topic is in (forums.id)',
-	`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'title for the forum',
+	`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'title for the topic',
 	`createuser` int(10) NOT NULL COMMENT 'the ID of the user who created the topic (users.id)',
 	`createdate` varchar(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
-	`locked` enum('0', '1') NOT NULL DEFAULT '0' COMMENT 'whethet the topic is locked (no new posts allowed): 1 - locked, 0 - not locked',
+	`locked` enum('0', '1') NOT NULL DEFAULT '0' COMMENT 'whether the topic is locked (no new posts allowed): 1 - locked, 0 - not locked',
 	`highlighted` enum('0', '1') NOT NULL DEFAULT '0' COMMENT 'topic is highlighted at the top of the list if value is 1',
 	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'data for topics';
+
+#
+# Revision 602 (adding posts table)
+#
+CREATE TABLE IF NOT EXISTS posts (
+	`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+	`topicid` int(10) NOT NULL COMMENT 'id of the topic the post is in (topics.id)',
+	`forumid` int(10) NOT NULL COMMENT 'id of the forum the topic containing the post is in (forums.id)',
+	`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'title for the post',
+	`createuser` int(10) NOT NULL COMMENT 'the ID of the user who posted the post (users.id)',
+	`createdate` varchar(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
+	`content` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'text of the post',
+	PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'data for posts';

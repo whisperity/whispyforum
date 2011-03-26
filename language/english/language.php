@@ -101,9 +101,6 @@ $wf_lang = array(
 	'{LANG_LOAD_CORRUPTION_ALT}'	=>	"Corrupt configuration",
 	'{LANG_LOAD_NOCFG}'	=>	"Configuration file not found!",
 	'{LANG_LOAD_NOCFG_BODY}'	=>	"The site's configuration file is missing. It usally means that the engine isn't installed properly. Without configuration, the engine cannot be used, because it can't connect to the database. ".'You can install it by clicking <a href="install.php" alt="Install WhispyForum">here</a> and running the install script.',
-	'{LANG_LOAD_SESS_WRITE}'	=>	"Session write error!",
-	'{LANG_LOAD_SESS_WRITE_BODY}'	=>	"The server cannot write the session data to the session directory. The session management is a critical submodule of the engine. Because of this error, the login does not work.<br>Contact your system administrator or hosting provider.",
-	'{LANG_LOAD_SESS_WRITE_ALT}'	=>	"Policy error",
 	
 	/* Template system */
 	'{LANG_TEMPLATESYS_TEMP_MISSING}'	=>	"Template missing",
@@ -122,8 +119,6 @@ When you login, you're automatically redirected through this page by the engine 
 	'{LANG_LOGIN_DISABLED}'	=>	"Login is disabled",
 	'{LANG_LOGIN_DISABLED_STACKED_LOGINS}'	=>	"The previous login attempt was rejected due to<br>
 session stacking. Login is disabled.",
-	'{LANG_LOGIN_DISABLED_SESSION_ERROR}'	=>	"The session cannot be created and/or written. Because of this error, the login system does not work (the system cannot store and parse your login credientals).",
-	'{LANG_LOGIN_DISABLED_SESSION_ERROR_FOOTER}'	=>	"Contact your system administrator/hosting provider.",
 	'{LANG_LOGIN_CANTHERE}'	=>	"You can login there.",
 	'{LANG_MULTIPLE_LOGINS}'	=>	"Multiple logins",
 	'{LANG_MULTIPLE_LOGINS_NOSUPPORT}'	=>	"Multiple logins aren't supported",
@@ -297,6 +292,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_FORUMS_THREADS}'	=>	"Threads",
 	'{LANG_FORUMS_POSTS}'	=>	"Posts",
 	'{LANG_FORUMS_BACKTOLIST}'	=>	"<< Back to list",
+	'{LANG_FORUMS_LIST_TOPICS}'	=>	"List topics",
 	'{LANG_FORUMS_CREATE_NEW}'	=>	"Create new forum",
 	'{LANG_FORUMS_CREATE_HEADER}'	=>	"Data for the new forum",
 	'{LANG_FORUMS_CREATE_VAR_ERROR}'	=>	"The forum creation cannot be done until every required variable is entered.",
@@ -311,5 +307,19 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_FORUMS_EDIT_MODERATOR_ERROR}'	=>	"You wanted to lock the forum's minimal level to {LANG_ADMINISTRATOR}, but you have only {LANG_MODERATOR} rights. Only {LANG_ADMINISTRATOR_PLURAL} can restrict forum's access to {LANG_ADMINISTRATOR_PLURAL}.",
 	'{LANG_FORUMS_EDIT_SUCCESS_HEAD}'	=>	"Edited the forum",
 	'{LANG_FORUMS_EDIT_SUCCESS}'	=>	"Edition of forum {TITLE}",
+	
+	'{LANG_TOPICS}'	=>	"Topics",
+	'{LANG_TOPICS_NORMAL}'	=>	"Normal thread",
+	'{LANG_TOPICS_NORMAL_LOCKED}'	=>	"Locked thread",
+	'{LANG_TOPICS_HIGHLIGHTED}'	=>	"Highlighted thread",
+	'{LANG_TOPICS_HIGHLIGHTED_LOCKED}'	=>	"Locked highlighted thread",
+	'{LANG_TOPICS_CREATOR}'	=>	"Creator",
+	'{LANG_TOPICS_THIS_FORUM_REQUIRES_GUEST}'	=>	"Viewing this forum requires you to have {LANG_GUEST} rights.",
+	'{LANG_TOPICS_THIS_FORUM_REQUIRES_USER}'	=>	"Viewing this forum requires you to have {LANG_USER} rights.",
+	'{LANG_TOPICS_THIS_FORUM_REQUIRES_MODERATOR}'	=>	"Viewing this forum requires you to have {LANG_MODERATOR} rights.",
+	'{LANG_TOPICS_THIS_FORUM_REQUIRES_ADMINISTRATOR}'	=>	"Viewing this forum requires you to have {LANG_ADMINISTRATOR} rights.",
+	
+	'{LANG_TOPICS_CREATE_NEW}'	=>	"Create new topic",
+	
 );
 ?>
