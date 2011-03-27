@@ -82,7 +82,13 @@ if ( $uLvl[0] < $fMLvl[0] )
 				'FORUM_NAME'	=>	$fTitle[0],
 				'TITLE'	=>	$_POST['title'], // Title of the topic
 				'POST_TITLE'	=>	$_POST['post_title'], // Title of the post
-				'POST_CONTENT'	=>	$_POST['post_content'] // Post body
+				'POST_CONTENT'	=>	$_POST['post_content'], // Post body
+				// The topic 'Lock' button will be get it's previous state
+				'LOCK_NO'	=>	($_POST['lock'] == 0 ? " checked" : ""),
+				'LOCK_YES'	=>	($_POST['lock'] == 1 ? " checked" : ""),
+				// The topic 'Highlight' button will be get it's previous state
+				'HIGHLIGHT_NO'	=>	($_POST['highlight'] == 0 ? " checked" : ""),
+				'HIGHLIGHT_YES'	=>	($_POST['highlight'] == 1 ? " checked" : ""),
 			), FALSE);
 		} else {
 			// We output general form
@@ -91,7 +97,13 @@ if ( $uLvl[0] < $fMLvl[0] )
 				'FORUM_NAME'	=>	$fTitle[0],
 				'TITLE'	=>	"", // Title of the topic
 				'POST_TITLE'	=>	"", // Title of the post
-				'POST_CONTENT'	=>	"" // Post body
+				'POST_CONTENT'	=>	"", // Post body
+				// The topic will not be locked by default
+				'LOCK_NO'	=>	" checked",
+				'LOCK_YES'	=>	"",
+				// The topic will not be highlighted by default
+				'HIGHLIGHT_NO'	=>	" checked",
+				'HIGHLIGHT_YES'	=>	"",
 			), FALSE);
 		}
 	}
@@ -107,7 +119,9 @@ if ( $uLvl[0] < $fMLvl[0] )
 				'FORUM_ID'	=>	$_POST['forum_id'],
 				'TITLE'	=>	$_POST['title'], // Title of the topic (should be empty)
 				'POST_TITLE'	=>	$_POST['post_title'], // Title of the post
-				'POST_CONTENT'	=>	$_POST['post_content'] // Post body
+				'POST_CONTENT'	=>	$_POST['post_content'], // Post body
+				'LOCK'	=>	$_POST['lock'],
+				'HIGHLIGHT'	=>	$_POST['highlight']
 			), FALSE);
 			
 			// We terminate the script
@@ -123,7 +137,9 @@ if ( $uLvl[0] < $fMLvl[0] )
 				'FORUM_ID'	=>	$_POST['forum_id'],
 				'TITLE'	=>	$_POST['title'], // Title of the topic
 				'POST_TITLE'	=>	$_POST['post_title'], // Title of the post
-				'POST_CONTENT'	=>	$_POST['post_content'] // Post body (should be empty)
+				'POST_CONTENT'	=>	$_POST['post_content'], // Post body (should be empty)
+				'LOCK'	=>	$_POST['lock'],
+				'HIGHLIGHT'	=>	$_POST['highlight']
 			), FALSE);
 			
 			// We terminate the script
@@ -133,16 +149,18 @@ if ( $uLvl[0] < $fMLvl[0] )
 		}
 		
 		// Every variable is entered, doing SQL work
-		$topic_create = $Cmysql->Query("INSERT INTO topics(forumid, title, createuser, createdate) VALUES (
+		$topic_create = $Cmysql->Query("INSERT INTO topics(forumid, title, createuser, createdate, locked, highlighted) VALUES (
 			'" .$Cmysql->EscapeString($_POST['forum_id']). "',
 			'" .$Cmysql->EscapeString($_POST['title']). "',
-			'" .$_SESSION['uid']. "', '" .time(). "')"); // Topic creation
+			'" .$Cmysql->EscapeString($_SESSION['uid']). "', '" .time(). "',
+			'" .$Cmysql->EscapeString($_POST['lock']). "',
+			'" .$Cmysql->EscapeString($_POST['highlight']). "')"); // Topic creation
 		
 		$post_create = $Cmysql->Query("INSERT INTO posts(topicid, forumid, title, createuser, createdate, content) VALUES (
 			'" .mysql_insert_id(). "',
 			'" .$Cmysql->EscapeString($_POST['forum_id']). "',
 			'" .$Cmysql->EscapeString($_POST['post_title']). "',
-			'" .$_SESSION['uid']. "', '" .time(). "',
+			'" .$Cmysql->EscapeString($_SESSION['uid']). "', '" .time(). "',
 			'" .$Cmysql->EscapeString($_POST['post_content']). "')"); // Post adding (to the previously created topic)
 		
 		if ( ( $topic_create == FALSE ) && ( $post_create == FALSE ) )

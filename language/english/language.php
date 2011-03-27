@@ -341,6 +341,8 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_TOPICS_CREATE_SQL_ERROR}'	=>	"There were errors executing the SQL query to create the new topic. No new topic was created.",
 	'{LANG_TOPICS_CREATE_SUCCESS_HEAD}'	=>	"Created the topic",
 	'{LANG_TOPICS_CREATE_SUCCESS}'	=>	"Creation of topic {TITLE}",
+	'{LANG_TOPICS_CREATE_LOCK}'	=>	"Lock (no new posts will be allowed)",
+	'{LANG_TOPICS_CREATE_HIGHLIGHT}'	=>	"Highlight (will be listed on the top)",
 	
 	'{LANG_POSTS_POST}'	=>	"Post",
 );

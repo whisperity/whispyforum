@@ -88,13 +88,16 @@ if ( $uLvl[0] < $fMLvl[0] )
 {
 	// The user has the rights to view the topic list
 	
+	$fName = mysql_fetch_row($Cmysql->Query("SELECT title FROM forums WHERE id='" .$Cmysql->EscapeString($id). "'"));
+	
 	$Ctemplate->useTemplate("forum/topics_table_open", array(
 		'CREATE_NEW_TOPIC'	=>	$Ctemplate->useTemplate("forum/topics_create_new", array(
 				'FORUM_ID'	=>	$id // ID of the forum we're creating the theme into
 			), TRUE), // Output button of new topic creation
 		'ADMIN_ACTIONS'	=>	($uLvl[0] >= 2 ? 
 			$Ctemplate->useStaticTemplate("forum/forums_admin_actions", TRUE) // Return the header
-		: NULL ) // Output header for admin actions only if the user is moderator or higher
+		: NULL ), // Output header for admin actions only if the user is moderator or higher
+		'FORUM_NAME'	=>	$fName[0] // Title of the forum
 	), FALSE); // Open the table and output header
 	
 	$topic_Hresult = $Cmysql->Query("SELECT * FROM topics WHERE forumid='" .$Cmysql->EscapeString($id). "' AND highlighted='1'"); // Query highlighted tables in the set forum
