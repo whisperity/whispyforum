@@ -1,0 +1,23 @@
+<!--- BEGIN topics create error -->
+<!--- Usage: topic creating form, sql error box -->
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_locked.png" alt="{LANG_ERROR_EXCLAMATION}"></td>
+		<td class="errortitle">{LANG_ERROR_EXCLAMATION}</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">{LANG_TOPICS_CREATE_SQL_ERROR}</td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+
+{LANG_TO_RETRY_CLICK_BACK}
+<form method="POST" action="newtopic.php">
+<input type="hidden" name="forum_id" value="{FORUM_ID}">
+<input type="hidden" name="title" value="{TITLE}">
+<input type="hidden" name="post_title" value="{POST_TITLE}">
+<input type="hidden" name="post_content" value="{POST_CONTENT}">
+<input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
+<input type="submit" value="{LANG_BB_BACK}">
+</form>
+<!--- END topics create error -->

@@ -1,0 +1,15 @@
+<!--- BEGIN topics create form -->
+<!--- Usage: topics create new topic form -->
+<font class="emphasis">{LANG_MANDATORY_VARIABLES_REDSTAR}</font>
+
+<form method="POST" action="newtopic.php">
+<span class="form-header">{LANG_TOPICS_CREATE_HEADER}</span><br>
+{LANG_FORUMS_TITLE}<span class="red-star">*</span>: <input type="text" name="title" value="{TITLE}" size=35><br>
+{LANG_TOPICS_POST_TITLE}: <input type="text" name="post_title" value="{POST_TITLE}" size=35><br>
+{LANG_POSTS_POST}<span class="red-star">*</span>:<br>
+<textarea rows="15" cols="50" name="post_content">{POST_CONTENT}</textarea><br>
+<input type="hidden" name="forum_id" value="{FORUM_ID}">
+<input type="hidden" name="post_do" value="do">
+<input type="submit" value="{LANG_TOPICS_CREATE_NEW}">
+</form>
+<!--- END topics create form -->

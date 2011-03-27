@@ -7,6 +7,21 @@
  * WhispyForum
  */
 
+ /**
+ *  *********************************************************
+ *  * IMPORTANT! PLEASE READ BEFORE TRANSLATING! IMPORTANT! *
+ *  *********************************************************
+ * 
+ * Please do not translate the words between { and } characters
+ * (like {LANG_LEFT}, {TITLE} and so on...).
+ * 
+ * Those are variable keys, which MUSTN'T BE LOCALIZED!!
+ *
+ *  *********************************************************
+ *  * IMPORTANT! PLEASE READ BEFORE TRANSLATING! IMPORTANT! *
+ *  *********************************************************
+ */
+
 global $wf_lang; // Language global array
 
 /* English localization */
@@ -309,6 +324,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_FORUMS_EDIT_SUCCESS}'	=>	"Edition of forum {TITLE}",
 	
 	'{LANG_TOPICS}'	=>	"Topics",
+	'{LANG_TOPICS_POST_TITLE}'	=>	"Post title",
 	'{LANG_TOPICS_NORMAL}'	=>	"Normal thread",
 	'{LANG_TOPICS_NORMAL_LOCKED}'	=>	"Locked thread",
 	'{LANG_TOPICS_HIGHLIGHTED}'	=>	"Highlighted thread",
@@ -320,6 +336,12 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_TOPICS_THIS_FORUM_REQUIRES_ADMINISTRATOR}'	=>	"Viewing this forum requires you to have {LANG_ADMINISTRATOR} rights.",
 	
 	'{LANG_TOPICS_CREATE_NEW}'	=>	"Create new topic",
+	'{LANG_TOPICS_CREATE_HEADER}'	=>	"Create new topic in forum: {FORUM_NAME}",
+	'{LANG_TOPICS_CREATE_VAR_ERROR}'	=>	"The topic creation cannot be done until every required variable is entered.",
+	'{LANG_TOPICS_CREATE_SQL_ERROR}'	=>	"There were errors executing the SQL query to create the new topic. No new topic was created.",
+	'{LANG_TOPICS_CREATE_SUCCESS_HEAD}'	=>	"Created the topic",
+	'{LANG_TOPICS_CREATE_SUCCESS}'	=>	"Creation of topic {TITLE}",
 	
+	'{LANG_POSTS_POST}'	=>	"Post",
 );
 ?>

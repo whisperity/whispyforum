@@ -2,13 +2,13 @@
  /**
  * WhispyForum script file - viewtopics.php
  * 
- * 
+ * Listing topics and managing topic-specific modifying (edit, delete) actions
  * 
  * WhispyForum
  */
 
 include("includes/load.php"); // Load webpage
-$Ctemplate->useStaticTemplate("forum/tables_head", FALSE); // Header
+$Ctemplate->useStaticTemplate("forum/topics_head", FALSE); // Header
 
 /* Generate the global POST or GET id variable */
 if ( isset($_POST['id']) )
@@ -38,7 +38,7 @@ if ( !isset($id) )
 	), FALSE ); // We give an error
 	
 	// We terminate execution
-	$Ctemplate->useStaticTemplate("forum/tables_foot", FALSE); // Footer
+	$Ctemplate->useStaticTemplate("forum/topics_foot", FALSE); // Footer
 	DoFooter();
 	exit;
 }
@@ -89,7 +89,9 @@ if ( $uLvl[0] < $fMLvl[0] )
 	// The user has the rights to view the topic list
 	
 	$Ctemplate->useTemplate("forum/topics_table_open", array(
-		'CREATE_NEW_TOPIC'	=>	$Ctemplate->useStaticTemplate("forum/topics_create_new", TRUE), // Output button of new topic creation
+		'CREATE_NEW_TOPIC'	=>	$Ctemplate->useTemplate("forum/topics_create_new", array(
+				'FORUM_ID'	=>	$id // ID of the forum we're creating the theme into
+			), TRUE), // Output button of new topic creation
 		'ADMIN_ACTIONS'	=>	($uLvl[0] >= 2 ? 
 			$Ctemplate->useStaticTemplate("forum/forums_admin_actions", TRUE) // Return the header
 		: NULL ) // Output header for admin actions only if the user is moderator or higher
@@ -99,12 +101,17 @@ if ( $uLvl[0] < $fMLvl[0] )
 	
 	while ( $Hrow = mysql_fetch_assoc($topic_Hresult) )
 	{
+		// Get the username of who created the topic
+		$Hcreator_uName = mysql_fetch_row($Cmysql->Query("SELECT username FROM users WHERE id='" .$Cmysql->EscapeString($Hrow['createuser']). "'"));
+		
 		// Output rows for every table
 		$Ctemplate->useTemplate("forum/topics_table_row", array(
 			'TYPE'	=>	"highlight", // Different theme for highlighted topics
 			'LOCKED'	=>	($Hrow['locked'] == 1 ? "_locked" : ""), // The icon will be a locked icon if the thread is locked
 			'ALT'	=>	($Hrow['locked'] == 1 ? "{LANG_TOPICS_HIGHLIGHTED_LOCKED}" : "{LANG_TOPICS_HIGHLIGHTED}"), // Alternate picture text
 			'TITLE'	=>	$Hrow['title'], // Title of the topic
+			'CREATOR'	=>	$Hcreator_uName[0], // Username of creator
+			'CREATION_DATE'	=>	fDate($Hrow['createdate']), // Creation timestamp
 		), FALSE); // Output row
 	}
 	
@@ -112,18 +119,23 @@ if ( $uLvl[0] < $fMLvl[0] )
 	
 	while ( $row = mysql_fetch_assoc($topic_result) )
 	{
+		// Get the username of who created the topic
+		$creator_uName = mysql_fetch_row($Cmysql->Query("SELECT username FROM users WHERE id='" .$Cmysql->EscapeString($row['createuser']). "'"));
+		
 		// Output rows for every table
 		$Ctemplate->useTemplate("forum/topics_table_row", array(
 			'TYPE'	=>	"normal", // Different theme for normal topics
 			'LOCKED'	=>	($row['locked'] == 1 ? "_locked" : ""), // The icon will be a locked icon if the thread is locked
 			'ALT'	=>	($row['locked'] == 1 ? "{LANG_TOPICS_NORMAL_LOCKED}" : "{LANG_TOPICS_NORMAL}"), // Alternate picture text
 			'TITLE'	=>	$row['title'], // Title of the topic
+			'CREATOR'	=>	$creator_uName[0], // Username of creator
+			'CREATION_DATE'	=>	fDate($row['createdate']), // Creation timestamp
 		), FALSE); // Output row
 	}
 	
 	$Ctemplate->useStaticTemplate("forum/topics_table_close", FALSE); // Close the table
 }
 
-$Ctemplate->useStaticTemplate("forum/tables_foot", FALSE); // Footer
+$Ctemplate->useStaticTemplate("forum/topics_foot", FALSE); // Footer
 DoFooter();
 ?>
