@@ -169,8 +169,8 @@ When you logout, you're automatically redirected through this page by the engine
 	/* User levels */
 	'{LANG_INSUFFICIENT_RIGHTS}'	=>	"Insufficient rights",
 	'{LANG_PERMISSIONS_ERROR}'	=>	"User permissions error",
-	'{LANG_REQUIRED_MODERATOR}'	=>	"This page requires you to have Moderator or higher rights.",
-	'{LANG_REQUIRED_ADMIN}'	=>	"This page requires you to have Administrator or higher rights.",
+	'{LANG_REQUIRES_MODERATOR}'	=>	"This page requires you to have Moderator or higher rights.",
+	'{LANG_REQUIRES_ADMIN}'	=>	"This page requires you to have Administrator or higher rights.",
 	'{LANG_NO_GUESTS}'	=>	"This page is unaviable for guests",
 	'{LANG_REQUIRES_LOGGEDIN}'	=>	"This page requires you to log in to view it's contents.<br><br>Please use the login box to log in to the site. After that, you can view this page.",
 	'{LANG_NO_LOGGEDINS}'	=>	"This page is unaviable for registered users",
@@ -325,6 +325,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_FORUMS_CREATE_SUCCESS}'	=>	"Creation of forum {TITLE}",
 	
 	'{LANG_FORUMS_PAGES}'	=>	"Pages ({CURRENT_PAGE} out of {PAGE_TOTAL}):",
+	'{LANG_FORUMS_LAST_POST_BY}'	=>	"by {NAME}",
 	
 	'{LANG_FORUMS_EDIT}'	=>	"Edit",
 	'{LANG_FORUMS_EDIT_HEADER}'	=>	"Edit forum: {OTITLE}",
@@ -333,6 +334,14 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_FORUMS_EDIT_MODERATOR_ERROR}'	=>	"You wanted to lock the forum's minimal level to {LANG_ADMINISTRATOR}, but you have only {LANG_MODERATOR} rights. Only {LANG_ADMINISTRATOR_PLURAL} can restrict forum's access to {LANG_ADMINISTRATOR_PLURAL}.",
 	'{LANG_FORUMS_EDIT_SUCCESS_HEAD}'	=>	"Edited the forum",
 	'{LANG_FORUMS_EDIT_SUCCESS}'	=>	"Edition of forum {TITLE}",
+	
+	'{LANG_FORUMS_DELETE}'	=>	"Delete",
+	'{LANG_FORUMS_DELETE_SQL_ERROR}'	=>	"There were errors executing the SQL query to delete the forum. The forum remains undeleted.",
+	'{LANG_FORUMS_DELETE_SUCCESS_HEAD}'	=>	"Deleted the forum",
+	'{LANG_FORUMS_DELETE_TOPICS_SQL_ERROR}'	=>	"There were errors executing the SQL query to delete the topics in the recently deleted forum. The topics remain orphan.",
+	'{LANG_FORUMS_DELETE_TOPICS_SUCCESS_HEAD}'	=>	"Deleted the topics from the recently deleted forum",
+	'{LANG_FORUMS_DELETE_POSTS_SQL_ERROR}'	=>	"There were errors executing the SQL query to delete the posts in the recently deleted forum. The posts remain orphan.",
+	'{LANG_FORUMS_DELETE_POSTS_SUCCESS_HEAD}'	=>	"Deleted the posts from the recently deleted forum",
 	
 	'{LANG_TOPICS}'	=>	"Topics",
 	'{LANG_TOPICS_POST_TITLE}'	=>	"Post title",

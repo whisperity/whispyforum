@@ -23,7 +23,7 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "newforum" ) )
 		$Ctemplate->useTemplate("errormessage", array(
 			'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
 			'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
-			'BODY'	=>	"{LANG_REQUIRED_ADMIN}", // Error text
+			'BODY'	=>	"{LANG_REQUIRES_ADMIN}", // Error text
 			'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
 		), FALSE ); // We give an unaviable error
 	} elseif ( $uLvl[0] >= 3 )
@@ -107,14 +107,14 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "newforum" ) )
 /* Editing a forum */
 if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "edit" ) && ( isset($_POST['forum_id']) ) )
 {
-	// Adding new forum
+	// Editing a forum
 	if ( $uLvl[0] < 2 )
 	{
 		// If the user does not have rights to add new forum
 		$Ctemplate->useTemplate("errormessage", array(
 			'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
 			'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
-			'BODY'	=>	"{LANG_REQUIRED_MODERATOR}", // Error text
+			'BODY'	=>	"{LANG_REQUIRES_MODERATOR}", // Error text
 			'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
 		), FALSE ); // We give an unaviable error
 	} elseif ( $uLvl[0] >= 2 )
@@ -220,7 +220,7 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "edit" ) && ( isset($_
 			
 			if ( $fEdit == FALSE )
 			{
-				// Failed to create the forum
+				// Failed to edit the forum
 				$Ctemplate->useTemplate("forum/forums_edit_error", array(
 					'FORUM_ID'	=>	$_POST['forum_id'], // ID of the forum
 					'TITLE'	=>	$_POST['title'], // Forum's title
@@ -229,7 +229,7 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "edit" ) && ( isset($_
 				), FALSE); // Output a retry form
 			} elseif ( $fEdit == TRUE )
 			{
-				// Created the forum
+				// Edited the forum
 				$Ctemplate->useTemplate("forum/forums_edit_success", array(
 					'TITLE'	=>	$_POST['title'] // Forum's title
 				), FALSE); // Output a success form
@@ -238,6 +238,108 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "edit" ) && ( isset($_
 	}
 }
 /* Editing a forum */
+
+/* Deleting a forum */
+if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "delete" ) && ( isset($_POST['forum_id']) ) )
+{
+	// Deleting a forum
+	if ( $uLvl[0] < 3 )
+	{
+		// If the user does not have rights to add new forum
+		$Ctemplate->useTemplate("errormessage", array(
+			'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
+			'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
+			'BODY'	=>	"{LANG_REQUIRES_ADMIN}", // Error text
+			'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
+		), FALSE ); // We give an unaviable error
+	} elseif ( $uLvl[0] >= 3 )
+	{
+		// Access granted
+		
+		// Delete the forum
+		$fDel = $Cmysql->Query("DELETE FROM forums WHERE id='" .$Cmysql->EscapeString($_POST['forum_id']). "'");
+		
+		// $fDel is TRUE if we succeeded
+		// $fDel is FALSE if we failed
+		
+		if ( $fDel == FALSE )
+		{
+			// Failed to delete the forum
+			$Ctemplate->useTemplate("errormessage", array(
+				'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
+				'TITLE'	=>	"{LANG_ERROR_EXCLAMATION}", // Error title
+				'BODY'	=>	"{LANG_FORUMS_DELETE_SQL_ERROR}", // Error text
+				'ALT'	=>	"{LANG_ERROR_EXCLAMATION}" // Alternate picture text
+			), FALSE ); // We give an error
+			
+			$Ctemplate->useStaticTemplate("forum/forums_backtolist", FALSE); // Return button
+		} elseif ( $fDel == TRUE )
+		{
+			// Deleted the forum
+			$Ctemplate->useTemplate("successbox", array(
+				'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_txt.png", // Folder with pencil icon
+				'TITLE'	=>	"{LANG_SUCCESS_EXCLAMATION}", // Success title
+				'BODY'	=>	"{LANG_FORUMS_DELETE_SUCCESS_HEAD}", // Success text
+				'ALT'	=>	"{LANG_SUCCESS_EXCLAMATION}" // Alternate picture text
+			), FALSE ); // We give success
+			
+			// Delete the topics
+			$tDel = $Cmysql->Query("DELETE FROM topics WHERE forumid='" .$Cmysql->EscapeString($_POST['forum_id']). "'");
+			
+			// $tDel is TRUE if we succeeded
+			// $tDel is FALSE if we failed
+			
+			if ( $tDel == FALSE )
+			{
+				// Failed to delete the topics
+				$Ctemplate->useTemplate("errormessage", array(
+					'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
+					'TITLE'	=>	"{LANG_ERROR_EXCLAMATION}", // Error title
+					'BODY'	=>	"{LANG_FORUMS_DELETE_TOPICS_SQL_ERROR}", // Error text
+					'ALT'	=>	"{LANG_ERROR_EXCLAMATION}" // Alternate picture text
+				), FALSE ); // We give an error
+			} elseif ( $tDel == TRUE )
+			{
+				// Deleted the topics
+				$Ctemplate->useTemplate("successbox", array(
+					'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_txt.png", // Folder with pencil icon
+					'TITLE'	=>	"{LANG_SUCCESS_EXCLAMATION}", // Success title
+					'BODY'	=>	"{LANG_FORUMS_DELETE_TOPICS_SUCCESS_HEAD}", // Success text
+					'ALT'	=>	"{LANG_SUCCESS_EXCLAMATION}" // Alternate picture text
+				), FALSE ); // We give an error
+			}
+			
+			// Delete the posts
+			$pDel = $Cmysql->Query("DELETE FROM posts WHERE forumid='" .$Cmysql->EscapeString($_POST['forum_id']). "'");
+			
+			// $pDel is TRUE if we succeeded
+			// $pDel is FALSE if we failed
+			
+			if ( $pDel == FALSE )
+			{
+				// Failed to delete the posts
+				$Ctemplate->useTemplate("errormessage", array(
+					'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
+					'TITLE'	=>	"{LANG_ERROR_EXCLAMATION}", // Error title
+					'BODY'	=>	"{LANG_FORUMS_DELETE_POSTS_SQL_ERROR}", // Error text
+					'ALT'	=>	"{LANG_ERROR_EXCLAMATION}" // Alternate picture text
+				), FALSE ); // We give an error
+			} elseif ( $pDel == TRUE )
+			{
+				// Deleted the posts
+				$Ctemplate->useTemplate("successbox", array(
+					'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_txt.png", // Folder with pencil icon
+					'TITLE'	=>	"{LANG_SUCCESS_EXCLAMATION}", // Success title
+					'BODY'	=>	"{LANG_FORUMS_DELETE_POSTS_SUCCESS_HEAD}", // Success text
+					'ALT'	=>	"{LANG_SUCCESS_EXCLAMATION}" // Alternate picture text
+				), FALSE ); // We give an error
+			}
+			
+			$Ctemplate->useStaticTemplate("forum/forums_backtolist", FALSE); // Return button
+		}
+	}
+}
+/* Deleting a forum */
 
 /* Listing forums */
 if ( !isset($_POST['action']) )
@@ -265,19 +367,34 @@ if ( !isset($_POST['action']) )
 		// Count the threads in the forum
 		$thread_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM topics WHERE forumid='" .$row['id']. "'"));
 		
+		// Get last post
+		$last_post = mysql_fetch_assoc($Cmysql->Query("SELECT createuser, createdate FROM posts WHERE forumid='" .$row['id']. "' LIMIT 1"));
+		// and get last poster's name
+		$last_post_user = mysql_fetch_row($Cmysql->Query("SELECT username FROM users WHERE id='" .$last_post['createuser']. "'"));
+		
+		// Count the posts in the forum
+		$post_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM posts WHERE forumid='" .$row['id']. "'"));
+		
 		$Ctemplate->useTemplate("forum/forums_table_row", array(
 			'FORUM_ID'	=>	$row['id'], // ID of the forum
 			'TITLE'	=>	$row['title'], // Forum's title
 			'DESC'	=>	$row['info'], // Description
 			'CREATE_DATE'	=>	fDate($row['createdate']), // Creation date (human-readable formatted)
+			'LAST_POST'	=>	$Ctemplate->useTemplate("forum/topics_table_row_last_post", array(
+				'DATESTAMP'	=>	fDate($last_post['createdate']),
+				'NAME'	=>	$last_post_user[0]
+			), TRUE), 
 			'THREADS'	=>	$thread_count[0],
+			'POSTS'	=>	$post_count[0],
 			'EDIT'	=>	($uLvl[0] >= 2 ? 
 				$Ctemplate->useTemplate("forum/forums_admin_edit", array(
 					'FORUM_ID'	=>	$row['id'] // ID of the forum
 				), TRUE) // Return the button
 			: NULL ), // Output edit button for admin actions only if the user is moderator or higher
 			'DELETE'	=>	($uLvl[0] >= 3 ? 
-				"delete"//$Ctemplate->useStaticTemplate("forum/", TRUE) // Return the button
+				$Ctemplate->useTemplate("forum/forums_admin_delete", array(
+					'FORUM_ID'	=>	$row['id'] // ID of the forum
+				), TRUE)
 			: NULL ) // Output delete button for admin actions only if the user is moderator or higher
 		), FALSE); // Output row
 	}

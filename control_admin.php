@@ -22,7 +22,7 @@ if ( $uDBArray['userLevel'] < 3 )
 	$Ctemplate->useTemplate("errormessage", array(
 		'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
 		'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
-		'BODY'	=>	"{LANG_REQUIRED_ADMIN}", // Error text
+		'BODY'	=>	"{LANG_REQUIRES_ADMIN}", // Error text
 		'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
 	), FALSE ); // We give an unaviable error
 } elseif ( $uDBArray['userLevel'] >= 3 )

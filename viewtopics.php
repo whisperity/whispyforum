@@ -109,6 +109,14 @@ if ( $uLvl[0] < $fMLvl[0] )
 		// Get the username of who created the topic
 		$Hcreator_uName = mysql_fetch_row($Cmysql->Query("SELECT username FROM users WHERE id='" .$Cmysql->EscapeString($Hrow['createuser']). "'"));
 		
+		// Get post count
+		$Hpost_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM posts WHERE topicid='" .$Hrow['id']. "'"));
+		
+		// Get last post
+		$Hlast_post = mysql_fetch_assoc($Cmysql->Query("SELECT createuser, createdate FROM posts WHERE topicid='" .$Hrow['id']. "' LIMIT 1"));
+		// and get last poster's name
+		$Hlast_post_user = mysql_fetch_row($Cmysql->Query("SELECT username FROM users WHERE id='" .$Hlast_post['createuser']. "'"));
+		
 		// Output rows for every table
 		$Ctemplate->useTemplate("forum/topics_table_row", array(
 			'TYPE'	=>	"highlight", // Different theme for highlighted topics
@@ -117,6 +125,11 @@ if ( $uLvl[0] < $fMLvl[0] )
 			'TITLE'	=>	$Hrow['title'], // Title of the topic
 			'CREATOR'	=>	$Hcreator_uName[0], // Username of creator
 			'CREATION_DATE'	=>	fDate($Hrow['createdate']), // Creation timestamp
+			'LAST_POST'	=>	$Ctemplate->useTemplate("forum/topics_table_row_last_post", array(
+				'DATESTAMP'	=>	fDate($Hlast_post['createdate']),
+				'NAME'	=>	$Hlast_post_user[0]
+			), TRUE), 
+			'POSTS'	=>	$Hpost_count[0]
 		), FALSE); // Output row
 	}
 	
@@ -153,6 +166,14 @@ if ( $uLvl[0] < $fMLvl[0] )
 		// Get the username of who created the topic
 		$creator_uName = mysql_fetch_row($Cmysql->Query("SELECT username FROM users WHERE id='" .$Cmysql->EscapeString($row['createuser']). "'"));
 		
+		// Get post count
+		$post_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM posts WHERE topicid='" .$row['id']. "'"));
+		
+		// Get last post
+		$last_post = mysql_fetch_assoc($Cmysql->Query("SELECT createuser, createdate FROM posts WHERE topicid='" .$row['id']. "' LIMIT 1"));
+		// and get last poster's name
+		$last_post_user = mysql_fetch_row($Cmysql->Query("SELECT username FROM users WHERE id='" .$last_post['createuser']. "'"));
+		
 		// Output rows for every table
 		$Ctemplate->useTemplate("forum/topics_table_row", array(
 			'TYPE'	=>	"normal", // Different theme for normal topics
@@ -161,6 +182,11 @@ if ( $uLvl[0] < $fMLvl[0] )
 			'TITLE'	=>	$row['title'], // Title of the topic
 			'CREATOR'	=>	$creator_uName[0], // Username of creator
 			'CREATION_DATE'	=>	fDate($row['createdate']), // Creation timestamp
+			'LAST_POST'	=>	$Ctemplate->useTemplate("forum/topics_table_row_last_post", array(
+				'DATESTAMP'	=>	fDate($last_post['createdate']),
+				'NAME'	=>	$last_post_user[0]
+			), TRUE), 
+			'POSTS'	=>	$post_count[0]
 		), FALSE); // Output row
 	}
 	
