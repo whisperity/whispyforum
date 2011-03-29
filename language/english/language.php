@@ -213,6 +213,15 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_SITEPREF_MODIFY_LANGUAGE_SUCCESS}'	=>	"Language modified",
 	'{LANG_SITEPREF_MODIFY_LANGUAGE_SUCCESS_1}'	=>	"You successfully modified your language. The next page you request will load in the language you set.",
 	
+	/* Forum settings */
+	'{LANG_UCP_FORUM}'	=>	"Forum settings",
+	'{LANG_UCP_FORUM_TITLE}'	=>	"Here you can set your preferences about how the forum should operate.<br>".'<font class="emphasis">To modify something, set the new value and click Modify.</font>'." Your actual preference is automatically selected.",
+	'{LANG_UCP_FORUM_MODIFY}'	=>	"Modify",
+	'{LANG_UCP_FORUM_TOPICS_PER_PAGE}'	=>	"Topics appearing on one page",
+	'{LANG_UCP_FORUM_TOPIC_SWITCH_FAIL}'	=>	"Cannot modify the topics/page preference",
+	'{LANG_UCP_FORUM_TOPIC_SWITCH_SUCCESS}'	=>	"Topics/page preference modified",
+	'{LANG_UCP_FORUM_TOPIC_SWITCH_SUCCESS_1}'	=>	"You successfully modified your preference. The next page you request will use the new value.",
+	
 	/* Administrator control panel */
 	'{LANG_ACP_TOOLTIP}'	=>	"Administrator control panel",
 	

@@ -9,7 +9,11 @@
  * 
  * WhispyForum
  */
-echo '<link rel="stylesheet" type="text/css" href="themes/winky/style.css">'."\n"; // We load the default stylesheet
+echo '<head>
+	<title>{GLOBAL_TITLE}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	</head>
+<link rel="stylesheet" type="text/css" href="themes/winky/style.css">'."\n"; // We load the default stylesheet
 
 /* Libraries */
 // Template conductor (we load it before everything because templates are needed to get error messages)

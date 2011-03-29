@@ -135,3 +135,8 @@ CREATE TABLE IF NOT EXISTS posts (
 	`content` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'text of the post',
 	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'data for posts';
+
+#
+# Revision 610 (adding pager dynamic splitting)
+#
+ALTER TABLE `users` ADD `forum_topic_count_per_page` smallint(3) NOT NULL DEFAULT '15' COMMENT 'user preference: how many topics appear on one page';

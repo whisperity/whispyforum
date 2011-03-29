@@ -589,7 +589,7 @@
     <!--<td>auto_increment&nbsp;</td>-->
     <td height="19">auto increasing ID</td>
     <td height="19">&nbsp;</td>
-    <td height="19">&nbsp;</td>
+    <td height="19"><a href="../globals/session.htm#uid">Cached in session</a></td>
   </tr>
   <tr>
     <td height="19"><a name="users_username"></a>username</td>
@@ -600,7 +600,8 @@
     <!--<td>&nbsp;</td>-->
     <td height="19">user loginname</td>
     <td height="19">&nbsp;</td>
-    <td height="19">&nbsp;</td>
+    <td height="19">
+    <p align="left"><a href="../globals/session.htm#username">Cached in session</a></td>
   </tr>
   <tr>
     <td height="19"><a name="users_pwd"></a>pwd</td>
@@ -611,7 +612,7 @@
     <!--<td>&nbsp;</td>-->
     <td height="19">user password (md5 hashed)</td>
     <td height="19">&nbsp;</td>
-    <td height="19">&nbsp;</td>
+    <td height="19"><a href="../globals/session.htm#pwd">Cached in session</a></td>
   </tr>
   <tr>
     <td height="19">email</td>
@@ -633,7 +634,7 @@
     <!--<td>&nbsp;</td>-->
     <td height="19">current session IP address</td>
     <td height="19">&nbsp;</td>
-    <td height="19">&nbsp;</td>
+    <td height="19"><a href="../globals/session.htm#curr_ip">Cached in session</a></td>
   </tr>
   <tr>
     <td height="19"><a name="users_curr_sessid"></a>curr_sessid</td>
@@ -644,7 +645,8 @@
     <!--<td>&nbsp;</td>-->
     <td height="19">current session ID</td>
     <td height="19">&nbsp;</td>
-    <td height="19">&nbsp;</td>
+    <td height="19"><a href="../globals/session.htm#curr_sessid">Cached in 
+    session</a></td>
   </tr>
   <tr>
     <td height="19">regdate</td>
@@ -666,7 +668,8 @@
     <!--<td>&nbsp;</td>-->
     <td height="19">1 if user is currently logged in, 0 if not</td>
     <td height="19">&nbsp;</td>
-    <td height="19">&nbsp;</td>
+    <td height="19"><a href="../globals/session.htm#log_status">Cached in 
+    session</a></td>
   </tr>
   <tr>
     <td height="18"><a name="users_userLevel"></a>userLevel</td>
@@ -686,16 +689,30 @@
     <td height="19">&nbsp;</td>
     <td height="19">avatar picture filename</td>
     <td height="19">&nbsp;</td>
-    <td height="19">&nbsp;</td>
+    <td height="19"><a href="../globals/session.htm#avatar_filename">Cached in 
+    session</a></td>
   </tr>
   <tr>
-    <td height="19"><a name="users_language"></a>language</td>
-    <td height="19">varchar(32)</td>
-    <td height="19">No</td>
-    <td height="19">english</td>
-    <td height="19">user preferred language </td>
-    <td height="19">&nbsp;</td>
-    <td height="19"><a href="../globals/languages.htm">Related info</a></td>
+    <td height="10"><a name="users_language"></a>language</td>
+    <td height="10">varchar(32)</td>
+    <td height="10">No</td>
+    <td height="10">english</td>
+    <td height="10">user preferred language </td>
+    <td height="10"></td>
+    <td height="10"><a href="../globals/languages.htm">Related info</a><br>
+    <a href="../globals/session.htm#usr_language">Cached in session</a></td>
+  </tr>
+  <tr>
+    <td height="9"><label for="checkbox_row_12">
+    <span style="border-bottom: 1px dashed black;" title="user preference: how many topics appear on one page">
+    <a name="users_forum_topic_count_per_page"></a>forum_topic_count_per_page</span></label></td>
+    <td height="9">smallint(3)</td>
+    <td height="9">No</td>
+    <td height="9">15</td>
+    <td height="9">user preference: how many topics appear on one page</td>
+    <td height="9"></td>
+    <td height="9"><a href="../globals/session.htm#forum_topic_count_per_page">
+    Cached in session</a></td>
   </tr>
 </table>
 <h3>Indexes</h3>

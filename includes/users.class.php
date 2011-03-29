@@ -54,6 +54,9 @@ class class_users
 		$_SESSION['avatar_filename'] = ""; // Guests does not have avatars
 		$_SESSION['theme_name'] = "winky"; // Default theme name
 		$_SESSION['usr_language'] = "english"; // Default language name
+		
+		/* Forum */
+		$_SESSION['forum_topic_count_per_page'] = 15; // Default number of topics appearing on one page
 	}
 	
 	private function __destroySession()
@@ -259,6 +262,9 @@ class class_users
 					$Cmysql->Query("UPDATE users SET avatar_filename='temporary' WHERE id='" .$userDBArray['id']. "'");
 				}
 			}
+			
+			/* Forum */
+			$_SESSION['forum_topic_count_per_page'] = $userDBArray['forum_topic_count_per_page']; // Number of topics appearing on one page
 			
 			$Cmysql->Query("UPDATE users SET curr_ip='" .$_SESSION['curr_ip']. "', curr_sessid='" .$_SESSION['curr_sessid']. "', loggedin=1 WHERE id='" .$userDBArray['id']. "'"); // We update the database to enter the current session data
 			return TRUE; // Then return TRUE

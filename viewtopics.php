@@ -126,7 +126,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 	 * syntax.
 	 */
 	
-	$usr_topic_split_value = 2; // Use a dev value here
+	$usr_topic_split_value = $_SESSION['forum_topic_count_per_page']; // Use the user's preference (queried from session)
 	
 	// Query the total number of NORMAL (not highlighted) topics in the current forum
 	$topic_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM topics WHERE forumid='" .$Cmysql->EscapeString($id). "' AND highlighted='0'"));
