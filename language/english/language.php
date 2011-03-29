@@ -315,6 +315,8 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_FORUMS_CREATE_SUCCESS_HEAD}'	=>	"Created the forum",
 	'{LANG_FORUMS_CREATE_SUCCESS}'	=>	"Creation of forum {TITLE}",
 	
+	'{LANG_FORUMS_PAGES}'	=>	"Pages ({CURRENT_PAGE} out of {PAGE_TOTAL}):",
+	
 	'{LANG_FORUMS_EDIT}'	=>	"Edit",
 	'{LANG_FORUMS_EDIT_HEADER}'	=>	"Edit forum: {OTITLE}",
 	'{LANG_FORUMS_EDIT_VAR_ERROR}'	=>	"The forum edition cannot be done until every required variable is entered.",

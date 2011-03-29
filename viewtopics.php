@@ -100,6 +100,8 @@ if ( $uLvl[0] < $fMLvl[0] )
 		'FORUM_NAME'	=>	$fName[0] // Title of the forum
 	), FALSE); // Open the table and output header
 	
+	/* Highlighted tables */
+	// Highlighted tables appear on each page
 	$topic_Hresult = $Cmysql->Query("SELECT * FROM topics WHERE forumid='" .$Cmysql->EscapeString($id). "' AND highlighted='1'"); // Query highlighted tables in the set forum
 	
 	while ( $Hrow = mysql_fetch_assoc($topic_Hresult) )
@@ -118,7 +120,33 @@ if ( $uLvl[0] < $fMLvl[0] )
 		), FALSE); // Output row
 	}
 	
-	$topic_result = $Cmysql->Query("SELECT * FROM topics WHERE forumid='" .$Cmysql->EscapeString($id). "' AND highlighted='0'"); // Query "normal" tables in the set forum
+	/**
+	 * The topic list is split, based on user setting. (later aviable)
+	 * Because of it, we need to generate a page switcher by using the 'LIMIT start, count'
+	 * syntax.
+	 */
+	
+	$usr_topic_split_value = 2; // Use a dev value here
+	
+	// Query the total number of NORMAL (not highlighted) topics in the current forum
+	$topic_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM topics WHERE forumid='" .$Cmysql->EscapeString($id). "' AND highlighted='0'"));
+	
+	// Generate the number of pages (we need to ceil it up because we need to have integer pages)
+	$topic_pages = ceil($topic_count[0] / $usr_topic_split_value);
+	
+	// Generate the start_at value
+	if ( @$_GET['start_at'] == NULL )
+	{
+		// If the value is missing, we will assume 0 as the start
+		$topic_start = 0;
+	} elseif ( @$_GET['start_at'] != NULL )
+	{
+		// If we have start value, multiply it with the split value so it'll show the correct page
+		$topic_start = $_GET['start_at'] * $usr_topic_split_value;
+	}
+	
+	/* Normal tables */
+	$topic_result = $Cmysql->Query("SELECT * FROM topics WHERE forumid='" .$Cmysql->EscapeString($id). "' AND highlighted='0' LIMIT " .$topic_start.", " .$Cmysql->EscapeString($usr_topic_split_value)); // Query "normal" tables in the set forum (splitted)
 	
 	while ( $row = mysql_fetch_assoc($topic_result) )
 	{
@@ -137,6 +165,29 @@ if ( $uLvl[0] < $fMLvl[0] )
 	}
 	
 	$Ctemplate->useStaticTemplate("forum/topics_table_close", FALSE); // Close the table
+	
+	if ( $topic_pages > 1 )
+	{
+		// If we have more than one topic list page
+		
+		// Generate embedded pager
+		$pages = ""; // Define the variable
+		for ( $p = 0; $p <= ($topic_pages-1); $p++ )
+		{
+			$pages .= $Ctemplate->useTemplate("forum/topics_page_embed", array(
+				'FORUM_ID'	=>	$id,
+				'START_AT'	=>	$p,
+				'PAGE_NUMBER'	=>	($p+1)
+			), TRUE);
+		}
+		
+		// Output switcher table
+		$Ctemplate->useTemplate("forum/topics_pages_table", array(
+			'CURRENT_PAGE'	=>	(@$_GET['start_at']+1), // Number of current page
+			'PAGES_EMBED'	=>	$pages, // Embedding the generated pages box
+			'PAGE_TOTAL'	=>	$topic_pages
+		), FALSE);
+	}
 }
 
 $Ctemplate->useStaticTemplate("forum/topics_foot", FALSE); // Footer

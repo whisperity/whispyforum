@@ -313,11 +313,11 @@ td.quote {
 /* BB code parse boxes */
 
 /* Forum */
-table.forums_table {
+table.forums-table {
 	width: 100%;
 }
 
-table.topics_table {
+table.topics-table {
 	width: 100%;
 }
 
@@ -329,6 +329,11 @@ tr.forum-normal {
 	background-color: #FFFFFF;
 }
 
-textarea.forum_post_field {
+textarea.forum-post-field {
 	/* Rows and Col(umn)s cannot be set here :'( */
+}
+
+td.topic-pager {
+	border: 1px dashed #FFFFFF;
+	color: #000000;
 }

@@ -121,7 +121,7 @@ class class_template
 			}
 			
 			// Removing the <!--- HTML TEMPLATE COMMENTS --> from the output
-			$this->_output=preg_replace("/<!---.*?-->/","",$this->_output);
+			$this->_output=preg_replace("/\n?<!---.*?-->\n?/","",$this->_output);
 			
 			if ( $varOutput == TRUE ) // If we decided to give return output
 			{

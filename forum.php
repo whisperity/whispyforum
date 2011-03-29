@@ -262,11 +262,15 @@ if ( !isset($_POST['action']) )
 		// Going through every row of the returned dataset,
 		// output rows for forums
 		
+		// Count the threads in the forum
+		$thread_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM topics WHERE forumid='" .$row['id']. "'"));
+		
 		$Ctemplate->useTemplate("forum/forums_table_row", array(
 			'FORUM_ID'	=>	$row['id'], // ID of the forum
 			'TITLE'	=>	$row['title'], // Forum's title
 			'DESC'	=>	$row['info'], // Description
 			'CREATE_DATE'	=>	fDate($row['createdate']), // Creation date (human-readable formatted)
+			'THREADS'	=>	$thread_count[0],
 			'EDIT'	=>	($uLvl[0] >= 2 ? 
 				$Ctemplate->useTemplate("forum/forums_admin_edit", array(
 					'FORUM_ID'	=>	$row['id'] // ID of the forum

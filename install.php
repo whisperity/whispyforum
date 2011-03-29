@@ -248,7 +248,7 @@ switch ($instPos)
 			`email` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'user e-mail address',
 			`curr_ip` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0.0.0.0' COMMENT 'current session IP address',
 			`curr_sessid` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'current session ID',
-			`regdate` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'registration date',
+			`regdate` int(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'registration date',
 			`loggedin` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1 if user is currently logged in, 0 if not',
 			`userLevel` tinyint(2) NOT NULL DEFAULT '0' COMMENT 'clearance level',
 			`avatar_filename` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'avatar picture filename',
@@ -359,7 +359,7 @@ switch ($instPos)
 			`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'title for the forum',
 			`info` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'little description appearing under forum title',
 			`minLevel` enum('0', '1', '2', '3') NOT NULL DEFAULT '0' COMMENT 'minimal user level to list the forum (users.userLevel)',
-			`createdate` varchar(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
+			`createdate` int(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'data for forums'"); // $dbtables_forums sets to true if we succeeded creating a table
 		
@@ -392,7 +392,7 @@ switch ($instPos)
 			`forumid` int(10) NOT NULL COMMENT 'id of the forum the topic is in (forums.id)',
 			`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'title for the topic',
 			`createuser` int(10) NOT NULL COMMENT 'the ID of the user who created the topic (users.id)',
-			`createdate` varchar(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
+			`createdate` int(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
 			`locked` enum('0', '1') NOT NULL DEFAULT '0' COMMENT 'whether the topic is locked (no new posts allowed): 1 - locked, 0 - not locked',
 			`highlighted` enum('0', '1') NOT NULL DEFAULT '0' COMMENT 'topic is highlighted at the top of the list if value is 1',
 			PRIMARY KEY (`id`)
@@ -428,7 +428,7 @@ switch ($instPos)
 			`forumid` int(10) NOT NULL COMMENT 'id of the forum the topic containing the post is in (forums.id)',
 			`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'title for the post',
 			`createuser` int(10) NOT NULL COMMENT 'the ID of the user who posted the post (users.id)',
-			`createdate` varchar(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
+			`createdate` int(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
 			`content` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'text of the post',
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'data for posts'"); // $dbtables_posts sets to true if we succeeded creating a table
