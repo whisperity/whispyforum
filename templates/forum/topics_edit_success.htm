@@ -1,0 +1,19 @@
+<!--- BEGIN topics edit success -->
+<!--- Usage: topic edition form, success box -->
+
+<table class="successbox"> <!--- copying the successbox template -->
+	<tr>
+		<td class="successpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_txt.png" alt="{LANG_SUCCESS_EXCLAMATION}"></td>
+		<td class="successtitle">{LANG_TOPICS_EDIT_SUCCESS_HEAD}</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="successbody">{LANG_TOPICS_EDIT_SUCCESS} {LANG_EXECUTED_SUCCESSFULLY}</td>
+	</tr>
+</table> <!--- copying the successbox template -->
+
+<form method="GET" action="viewtopics.php">
+<input type="hidden" name="id" value="{FORUM_ID}">
+<input type="submit" value="{LANG_FORUMS_BACKTOLIST}">
+</form>
+<!--- END topics edit success -->

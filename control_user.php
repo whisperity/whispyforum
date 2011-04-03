@@ -249,52 +249,61 @@ switch ($site)
 		break;
 	case "forum":
 		// Forum settings
-		if ( isset($_POST['set_type']) )
+		if ( isset($_POST['set_do']) )
 		{
-			if ( ( $_POST['set_type'] == "topic_switch" ) && ( isset($_POST['new_topic_switch_value']) ) )
+			// Change the preference
+			$mod = $Cmysql->Query("UPDATE users SET ".
+				"forum_topic_count_per_page='" .$Cmysql->EscapeString($_POST['new_topic_switch_value']). "', ".
+				"forum_post_count_per_page='" .$Cmysql->EscapeString($_POST['new_post_switch_value']). "' ".
+				"WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'");
+			
+			// $mod is TRUE if we succeed and FALSE if we fail
+			if ( $mod == FALSE )
 			{
-				// Change the topic switch value in the database
-				$TSmod = $Cmysql->Query("UPDATE users SET forum_topic_count_per_page='" .$Cmysql->EscapeString($_POST['new_topic_switch_value']). "' WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'");
+				// If we failed
+				$Ctemplate->useTemplate("errormessage", array(
+					'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
+					'TITLE'	=>	"{LANG_UCP_FORUM_FAIL}", // Error title
+					'BODY'	=>	"", // Error text
+					'ALT'	=>	"{LANG_SQL_EXEC_ERROR}" // Alternate picture text
+				), FALSE ); // We give an unaviable error
 				
-				// $TSmod is TRUE if we succeed and FALSE if we fail
-				if ( $TSmod == FALSE )
-				{
-					// If we failed
-					$Ctemplate->useTemplate("errormessage", array(
-						'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
-						'TITLE'	=>	"{LANG_UCP_FORUM_TOPIC_SWITCH_FAIL}", // Error title
-						'BODY'	=>	"", // Error text
-						'ALT'	=>	"{LANG_SQL_EXEC_ERROR}" // Alternate picture text
-					), FALSE ); // We give an unaviable error
-					
-					$Ctemplate->useStaticTemplate("user/cp_forum_back", FALSE); // Back button
-				} elseif ( $TSmod == TRUE )
-				{
-					// If we succeeded
-					$Ctemplate->useTemplate("successbox", array(
-						'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_home.png", // House (user CP header)
-						'TITLE'	=>	"{LANG_UCP_FORUM_TOPIC_SWITCH_SUCCESS}", // Success title
-						'BODY'	=>	"{LANG_UCP_FORUM_TOPIC_SWITCH_SUCCESS_1}", // Success text
-						'ALT'	=>	"{LANG_SQL_EXEC_SUCCESS}" // Alternate picture text
-					), FALSE ); // We give a success message
-					
-					$Ctemplate->useStaticTemplate("user/cp_forum_back", FALSE); // Back button
-					
-					// Modify the session so the next page load
-					// will use the new value
-					$_SESSION['forum_topic_count_per_page'] = $_POST['new_topic_switch_value'];
-				}
+				$Ctemplate->useStaticTemplate("user/cp_forum_back", FALSE); // Back button
+			} elseif ( $mod == TRUE )
+			{
+				// If we succeeded
+				$Ctemplate->useTemplate("successbox", array(
+					'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_home.png", // House (user CP header)
+					'TITLE'	=>	"{LANG_UCP_FORUM_SUCCESS}", // Success title
+					'BODY'	=>	"{LANG_UCP_FORUM_SUCCESS_1}", // Success text
+					'ALT'	=>	"{LANG_SQL_EXEC_SUCCESS}" // Alternate picture text
+				), FALSE ); // We give a success message
+				
+				$Ctemplate->useStaticTemplate("user/cp_forum_back", FALSE); // Back button
+				
+				// Modify the session so the next page load
+				// will use the new value
+				$_SESSION['forum_topic_count_per_page'] = $_POST['new_topic_switch_value'];
+				$_SESSION['forum_post_count_per_page'] = $_POST['new_post_switch_value'];
 			}
 		} else {
 			$Ctemplate->useStaticTemplate("user/cp_forum", FALSE);
 			
-			$Ctemplate->useTemplate("user/cp_forum_form_topic_switch", array(
-				'5_SELECT'	=>	($_SESSION['forum_topic_count_per_page'] == 5 ? " selected" : ""),
-				'15_SELECT'	=>	($_SESSION['forum_topic_count_per_page'] == 15 ? " selected" : ""),
-				'30_SELECT'	=>	($_SESSION['forum_topic_count_per_page'] == 30 ? " selected" : ""),
-				'50_SELECT'	=>	($_SESSION['forum_topic_count_per_page'] == 50 ? " selected" : ""),
-				'100_SELECT'	=>	($_SESSION['forum_topic_count_per_page'] == 100 ? " selected" : "")
-			), FALSE); // Output topic switc panel
+			$Ctemplate->useTemplate("user/cp_forum_form", array(
+				// Topic switch
+				'T_5_SELECT'	=>	($_SESSION['forum_topic_count_per_page'] == 5 ? " selected" : ""),
+				'T_15_SELECT'	=>	($_SESSION['forum_topic_count_per_page'] == 15 ? " selected" : ""),
+				'T_30_SELECT'	=>	($_SESSION['forum_topic_count_per_page'] == 30 ? " selected" : ""),
+				'T_50_SELECT'	=>	($_SESSION['forum_topic_count_per_page'] == 50 ? " selected" : ""),
+				'T_100_SELECT'	=>	($_SESSION['forum_topic_count_per_page'] == 100 ? " selected" : ""),
+				
+				// Post switch
+				'P_5_SELECT'	=>	($_SESSION['forum_post_count_per_page'] == 5 ? " selected" : ""),
+				'P_15_SELECT'	=>	($_SESSION['forum_post_count_per_page'] == 15 ? " selected" : ""),
+				'P_30_SELECT'	=>	($_SESSION['forum_post_count_per_page'] == 30 ? " selected" : ""),
+				'P_50_SELECT'	=>	($_SESSION['forum_post_count_per_page'] == 50 ? " selected" : ""),
+				'P_100_SELECT'	=>	($_SESSION['forum_post_count_per_page'] == 100 ? " selected" : "")
+			), FALSE); // Output panel
 		}
 		break;
 }

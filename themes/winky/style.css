@@ -315,10 +315,20 @@ td.quote {
 /* Forum */
 table.forums-table {
 	width: 100%;
+	background-color: #FFFFFF;
+}
+
+tr.forums-head {
+	background-color: #1993C8;
 }
 
 table.topics-table {
 	width: 100%;
+	background-color: #FFFFFF;
+}
+
+tr.topics-head {
+	background-color: #1993C8;
 }
 
 tr.forum-highlight {
@@ -334,6 +344,58 @@ textarea.forum-post-field {
 }
 
 td.topic-pager {
+	border: 1px dashed #FFFFFF;
+	color: #000000;
+}
+
+table.post-list {
+	width: 100%;
+	background-color: #FFFFFF;
+}
+
+td.post-info {
+	width: 25%;
+}
+
+td.poster-name {
+	width: 100%;
+	font-weight: bold;
+	color: #FFFFFF;
+	font-size: 11pt;
+	background-color: #1993C8;
+}
+
+img.post-usr-image {
+	border: 1px dotted #1993C8;
+}
+
+td.post-post-container {
+	width: 75%;
+	background-color: #FFFFFF;
+}
+
+table.post-post-container {
+	width: 100%;
+	height: 100%;
+	background-color: #FFFFFF;
+}
+
+td.post-head {
+	width: 50%;
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size: 10pt;
+	padding: 0.5px;
+	background-color: #1993C8;
+}
+
+td.post-post {
+	width: 100%;
+	height: 100%;
+	background-color: #FFFFFF;
+}
+
+td.post-pager {
 	border: 1px dashed #FFFFFF;
 	color: #000000;
 }

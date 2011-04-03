@@ -25,13 +25,38 @@ if ( !isset($_POST['forum_id']) )
 	exit;
 }
 
+$fName = mysql_fetch_row($Cmysql->Query("SELECT title FROM forums WHERE id='" .$Cmysql->EscapeString($_POST['forum_id']). "'")); // Title of the forum the topics are in
+		
+if ( $fName == FALSE )
+{
+	// If the selected forum does not exist, give error
+	$Ctemplate->useTemplate("errormessage", array(
+		'PICTURE_NAME'	=>	"Nuvola_apps_error.png", // Error X icon
+		'TITLE'	=>	"{LANG_ERROR_EXCLAMATION}", // Error title
+		'BODY'	=>	"{LANG_TOPICS_CREATE_FORUM_DOES_NOT_EXIST}", // Error text
+		'ALT'	=>	"{LANG_ERROR_EXCLAMATION}" // Alternate picture text
+	), FALSE ); // We give an error
+	
+	// We terminate the script
+	$Ctemplate->useStaticTemplate("forum/topics_foot", FALSE); // Footer
+	DoFooter();
+	exit;
+}
+
 // Get the current user's level
 $uLvl = mysql_fetch_row($Cmysql->Query("SELECT userLevel FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'"));
+
+if ( $uLvl == FALSE )
+{
+	// If the user does not have a return value (meaning the user is a guest)
+	// Set the level to 0
+	$uLvl = array(0	=>	'0');
+}
 
 // Query the minimal level for the forum
 $fMLvl = mysql_fetch_row($Cmysql->Query("SELECT minLevel FROM forums WHERE id='" .$Cmysql->EscapeString($_POST['forum_id']). "'"));
 
-if ( $uLvl[0] < $fMLvl[0] )
+if ( ( $uLvl[0] < $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
 {
 	// If the user is on lower level
 	// than the currently required to view the forum
@@ -66,7 +91,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 		'BODY'	=>	$minLName, // Error text
 		'ALT'	=>	"{LANG_PERMISSIONS_ERROR}", // Alternate picture text
 	), FALSE ); // Give rights error
-} elseif ( $uLvl[0] >= $fMLvl[0] )
+} elseif ( ( $uLvl[0] >= $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
 {
 	// The user has the rights to view the topic list, thus has rights to create one
 	
@@ -180,6 +205,16 @@ if ( $uLvl[0] < $fMLvl[0] )
 			), FALSE); // Give success if we did it!
 		}
 	}
+} elseif ( $uLvl[0] == "0" )
+{
+	// If the user is a guest, even though he/she can view the forum
+	
+	$Ctemplate->useTemplate("errormessage", array(
+		'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
+		'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
+		'BODY'	=>	"{LANG_TOPICS_CREATE_GUEST_ERROR}", // Error text
+		'ALT'	=>	"{LANG_PERMISSIONS_ERROR}", // Alternate picture text
+	), FALSE ); // Give rights error
 }
 
 $Ctemplate->useStaticTemplate("forum/topics_create_foot", FALSE); // Footer

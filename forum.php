@@ -357,6 +357,13 @@ if ( !isset($_POST['action']) )
 	
 	$uDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT userLevel FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'")); // We query the user's data
 	
+	if ( $uDBArray == FALSE )
+	{
+		// If the user does not have a return value (meaning the user is a guest)
+		// Set the level to 0
+		$uDBArray = array('userLevel'	=>	'0');
+	}
+	
 	$forums_data = $Cmysql->Query("SELECT * FROM forums WHERE minLevel <= '" .$Cmysql->EscapeString($uDBArray['userLevel']). "'"); // Query down the forums (only which the user has rights to see)
 	
 	while ( $row = mysql_fetch_assoc($forums_data) )
@@ -368,7 +375,7 @@ if ( !isset($_POST['action']) )
 		$thread_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM topics WHERE forumid='" .$row['id']. "'"));
 		
 		// Get last post
-		$last_post = mysql_fetch_assoc($Cmysql->Query("SELECT createuser, createdate FROM posts WHERE forumid='" .$row['id']. "' LIMIT 1"));
+		$last_post = mysql_fetch_assoc($Cmysql->Query("SELECT createuser, createdate FROM posts WHERE forumid='" .$row['id']. "' ORDER BY createdate DESC LIMIT 1"));
 		// and get last poster's name
 		$last_post_user = mysql_fetch_row($Cmysql->Query("SELECT username FROM users WHERE id='" .$last_post['createuser']. "'"));
 		

@@ -46,6 +46,13 @@ if ( !isset($id) )
 // Get the current user's level
 $uLvl = mysql_fetch_row($Cmysql->Query("SELECT userLevel FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'"));
 
+if ( $uLvl == FALSE )
+{
+	// If the user does not have a return value (meaning the user is a guest)
+	// Set the level to 0
+	$uLvl = array(0	=>	'0');
+}
+
 // Query the minimal level for the forum
 $fMLvl = mysql_fetch_row($Cmysql->Query("SELECT minLevel FROM forums WHERE id='" .$Cmysql->EscapeString($id). "'"));
 
@@ -88,132 +95,376 @@ if ( $uLvl[0] < $fMLvl[0] )
 {
 	// The user has the rights to view the topic list
 	
-	$fName = mysql_fetch_row($Cmysql->Query("SELECT title FROM forums WHERE id='" .$Cmysql->EscapeString($id). "'"));
-	
-	$Ctemplate->useTemplate("forum/topics_table_open", array(
-		'CREATE_NEW_TOPIC'	=>	$Ctemplate->useTemplate("forum/topics_create_new", array(
-				'FORUM_ID'	=>	$id // ID of the forum we're creating the theme into
-			), TRUE), // Output button of new topic creation
-		'ADMIN_ACTIONS'	=>	($uLvl[0] >= 2 ? 
-			$Ctemplate->useStaticTemplate("forum/forums_admin_actions", TRUE) // Return the header
-		: NULL ), // Output header for admin actions only if the user is moderator or higher
-		'FORUM_NAME'	=>	$fName[0] // Title of the forum
-	), FALSE); // Open the table and output header
-	
-	/* Highlighted tables */
-	// Highlighted tables appear on each page
-	$topic_Hresult = $Cmysql->Query("SELECT * FROM topics WHERE forumid='" .$Cmysql->EscapeString($id). "' AND highlighted='1'"); // Query highlighted tables in the set forum
-	
-	while ( $Hrow = mysql_fetch_assoc($topic_Hresult) )
+	/* Editing a forum */
+	if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "edit" ) && ( isset($_POST['topic_id']) ) )
 	{
-		// Get the username of who created the topic
-		$Hcreator_uName = mysql_fetch_row($Cmysql->Query("SELECT username FROM users WHERE id='" .$Cmysql->EscapeString($Hrow['createuser']). "'"));
-		
-		// Get post count
-		$Hpost_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM posts WHERE topicid='" .$Hrow['id']. "'"));
-		
-		// Get last post
-		$Hlast_post = mysql_fetch_assoc($Cmysql->Query("SELECT createuser, createdate FROM posts WHERE topicid='" .$Hrow['id']. "' LIMIT 1"));
-		// and get last poster's name
-		$Hlast_post_user = mysql_fetch_row($Cmysql->Query("SELECT username FROM users WHERE id='" .$Hlast_post['createuser']. "'"));
-		
-		// Output rows for every table
-		$Ctemplate->useTemplate("forum/topics_table_row", array(
-			'TYPE'	=>	"highlight", // Different theme for highlighted topics
-			'LOCKED'	=>	($Hrow['locked'] == 1 ? "_locked" : ""), // The icon will be a locked icon if the thread is locked
-			'ALT'	=>	($Hrow['locked'] == 1 ? "{LANG_TOPICS_HIGHLIGHTED_LOCKED}" : "{LANG_TOPICS_HIGHLIGHTED}"), // Alternate picture text
-			'TITLE'	=>	$Hrow['title'], // Title of the topic
-			'CREATOR'	=>	$Hcreator_uName[0], // Username of creator
-			'CREATION_DATE'	=>	fDate($Hrow['createdate']), // Creation timestamp
-			'LAST_POST'	=>	$Ctemplate->useTemplate("forum/topics_table_row_last_post", array(
-				'DATESTAMP'	=>	fDate($Hlast_post['createdate']),
-				'NAME'	=>	$Hlast_post_user[0]
-			), TRUE), 
-			'POSTS'	=>	$Hpost_count[0]
-		), FALSE); // Output row
-	}
-	
-	/**
-	 * The topic list is split, based on user setting. (later aviable)
-	 * Because of it, we need to generate a page switcher by using the 'LIMIT start, count'
-	 * syntax.
-	 */
-	
-	$usr_topic_split_value = $_SESSION['forum_topic_count_per_page']; // Use the user's preference (queried from session)
-	
-	// Query the total number of NORMAL (not highlighted) topics in the current forum
-	$topic_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM topics WHERE forumid='" .$Cmysql->EscapeString($id). "' AND highlighted='0'"));
-	
-	// Generate the number of pages (we need to ceil it up because we need to have integer pages)
-	$topic_pages = ceil($topic_count[0] / $usr_topic_split_value);
-	
-	// Generate the start_at value
-	if ( @$_GET['start_at'] == NULL )
-	{
-		// If the value is missing, we will assume 0 as the start
-		$topic_start = 0;
-	} elseif ( @$_GET['start_at'] != NULL )
-	{
-		// If we have start value, multiply it with the split value so it'll show the correct page
-		$topic_start = $_GET['start_at'] * $usr_topic_split_value;
-	}
-	
-	/* Normal tables */
-	$topic_result = $Cmysql->Query("SELECT * FROM topics WHERE forumid='" .$Cmysql->EscapeString($id). "' AND highlighted='0' LIMIT " .$topic_start.", " .$Cmysql->EscapeString($usr_topic_split_value)); // Query "normal" tables in the set forum (splitted)
-	
-	while ( $row = mysql_fetch_assoc($topic_result) )
-	{
-		// Get the username of who created the topic
-		$creator_uName = mysql_fetch_row($Cmysql->Query("SELECT username FROM users WHERE id='" .$Cmysql->EscapeString($row['createuser']). "'"));
-		
-		// Get post count
-		$post_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM posts WHERE topicid='" .$row['id']. "'"));
-		
-		// Get last post
-		$last_post = mysql_fetch_assoc($Cmysql->Query("SELECT createuser, createdate FROM posts WHERE topicid='" .$row['id']. "' LIMIT 1"));
-		// and get last poster's name
-		$last_post_user = mysql_fetch_row($Cmysql->Query("SELECT username FROM users WHERE id='" .$last_post['createuser']. "'"));
-		
-		// Output rows for every table
-		$Ctemplate->useTemplate("forum/topics_table_row", array(
-			'TYPE'	=>	"normal", // Different theme for normal topics
-			'LOCKED'	=>	($row['locked'] == 1 ? "_locked" : ""), // The icon will be a locked icon if the thread is locked
-			'ALT'	=>	($row['locked'] == 1 ? "{LANG_TOPICS_NORMAL_LOCKED}" : "{LANG_TOPICS_NORMAL}"), // Alternate picture text
-			'TITLE'	=>	$row['title'], // Title of the topic
-			'CREATOR'	=>	$creator_uName[0], // Username of creator
-			'CREATION_DATE'	=>	fDate($row['createdate']), // Creation timestamp
-			'LAST_POST'	=>	$Ctemplate->useTemplate("forum/topics_table_row_last_post", array(
-				'DATESTAMP'	=>	fDate($last_post['createdate']),
-				'NAME'	=>	$last_post_user[0]
-			), TRUE), 
-			'POSTS'	=>	$post_count[0]
-		), FALSE); // Output row
-	}
-	
-	$Ctemplate->useStaticTemplate("forum/topics_table_close", FALSE); // Close the table
-	
-	if ( $topic_pages > 1 )
-	{
-		// If we have more than one topic list page
-		
-		// Generate embedded pager
-		$pages = ""; // Define the variable
-		for ( $p = 0; $p <= ($topic_pages-1); $p++ )
+		// Editing a topic
+		if ( $uLvl[0] < 2 )
 		{
-			$pages .= $Ctemplate->useTemplate("forum/topics_page_embed", array(
-				'FORUM_ID'	=>	$id,
-				'START_AT'	=>	$p,
-				'PAGE_NUMBER'	=>	($p+1)
-			), TRUE);
+			// If the user does not have rights to add new forum
+			$Ctemplate->useTemplate("errormessage", array(
+				'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
+				'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
+				'BODY'	=>	"{LANG_REQUIRES_MODERATOR}", // Error text
+				'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
+			), FALSE ); // We give an unaviable error
+		} elseif ( $uLvl[0] >= 2 )
+		{
+			// Access granted :)
+			if ( !isset($_POST['edit_do']) )
+			{
+				// If we requested the form to add new forum
+				
+				$tData = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM topics WHERE id='" .$Cmysql->EscapeString($_POST['topic_id']). "'"));
+				
+				if ( @$_POST['error_goback'] == "yes" ) // If user is redirected because of an error
+				{
+					// We output the form with data returned (user doesn't have to enter it again)
+					$Ctemplate->useTemplate("forum/topics_edit_form", array(
+						'FORUM_ID'	=>	$id,
+						'TOPIC_ID'	=>	$_POST['topic_id'], // ID of the topic
+						'OTITLE'	=>	$tData['title'], // Topic's title (original)
+						'TITLE'	=>	$_POST['title'], // Topic's title (new, returned from error)
+						// The topic 'Lock' button will be get it's previous state
+						'LOCK_NO'	=>	($_POST['lock'] == 0 ? " checked" : ""),
+						'LOCK_YES'	=>	($_POST['lock'] == 1 ? " checked" : ""),
+						// The topic 'Highlight' button will be get it's previous state
+						'HIGHLIGHT_NO'	=>	($_POST['highlight'] == 0 ? " checked" : ""),
+						'HIGHLIGHT_YES'	=>	($_POST['highlight'] == 1 ? " checked" : ""),
+					), FALSE);
+				} else {
+					// We output general form
+					$Ctemplate->useTemplate("forum/topics_edit_form", array(
+						'FORUM_ID'	=>	$id,
+						'TOPIC_ID'	=>	$_POST['topic_id'], // ID of the topic
+						'OTITLE'	=>	$tData['title'], // Topic's title (original)
+						'TITLE'	=>	$tData['title'], // Topic's title (same as original)
+						// The topic 'Lock' button will be get it's previous state
+						'LOCK_NO'	=>	($tData['locked'] == 0 ? " checked" : ""),
+						'LOCK_YES'	=>	($tData['locked'] == 1 ? " checked" : ""),
+						// The topic 'Highlight' button will be get it's previous state
+						'HIGHLIGHT_NO'	=>	($tData['highlighted'] == 0 ? " checked" : ""),
+						'HIGHLIGHT_YES'	=>	($tData['highlighted'] == 1 ? " checked" : ""),
+					), FALSE);
+				}
+			} elseif ( ( isset($_POST['edit_do']) ) && ( $_POST['edit_do'] == "yes") )
+			{
+				// If we added the data and requested SQL query
+				
+				// First, we check whether every required variables were entered
+				if ( $_POST['title'] == NULL ) // Topic's title
+				{
+					$Ctemplate->useTemplate("forum/topics_edit_variable_error", array(
+						'VARIABLE'	=>	"{LANG_FORUMS_TITLE}", // Errornous variable name
+						'FORUM_ID'	=>	$id,
+						'TOPIC_ID'	=>	$_POST['topic_id'], // ID of the topic
+						'TITLE'	=>	$_POST['title'], // Topic's title (should be empty)
+						'LOCK'	=>	$_POST['lock'], // Description
+						'HIGHLIGHT'	=>	$_POST['highlight'] // Minimal user level
+					), FALSE);
+					
+					// We terminate the script
+					$Ctemplate->useStaticTemplate("forum/topics_foot", FALSE); // Footer
+					DoFooter();
+					exit;
+				}
+				
+				// Every variable has value, do the SQL query.
+				$tEdit = $Cmysql->Query("UPDATE topics SET ".
+					"title='" .$Cmysql->EscapeString($_POST['title']). "',
+					locked='" .$Cmysql->EscapeString($_POST['lock']). "',
+					highlighted='" .$Cmysql->EscapeString($_POST['highlight']). "' WHERE " .
+					"id='" .$Cmysql->EscapeString($_POST['topic_id']). "'");
+				
+				// $tEdit is TRUE if we succeeded
+				// $tEdit is FALSE if we failed
+				
+				if ( $tEdit == FALSE )
+				{
+					// Failed to edit the forum
+					$Ctemplate->useTemplate("forum/topics_edit_error", array(
+						'FORUM_ID'	=>	$id,
+						'TOPIC_ID'	=>	$_POST['topic_id'], // ID of the topic
+						'TITLE'	=>	$_POST['title'], // Topic's title
+						'LOCK'	=>	$_POST['lock'], // Description
+						'HIGHLIGHT'	=>	$_POST['highlight'] // Minimal user level
+					), FALSE); // Output a retry form
+				} elseif ( $tEdit == TRUE )
+				{
+					// Edited the forum
+					$Ctemplate->useTemplate("forum/topics_edit_success", array(
+						'FORUM_ID'	=>	$id,
+						'TITLE'	=>	$_POST['title'] // Topic's title
+					), FALSE); // Output a success form
+				}
+			}
+		}
+	}
+	/* Editing a forum */
+	
+	/* Deleting a topic */
+	if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "delete" ) && ( isset($_POST['topic_id']) ) )
+	{
+		// Deleting a topic
+		if ( $uLvl[0] < 2 )
+		{
+			// If the user does not have rights to add new forum
+			$Ctemplate->useTemplate("errormessage", array(
+				'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
+				'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
+				'BODY'	=>	"{LANG_REQUIRES_ADMIN}", // Error text
+				'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
+			), FALSE ); // We give an unaviable error
+		} elseif ( $uLvl[0] >= 2 )
+		{
+			// Access granted
+			
+			// Delete the topic
+			$tDel = $Cmysql->Query("DELETE FROM topics WHERE id='" .$Cmysql->EscapeString($_POST['topic_id']). "'");
+			
+			// $tDel is TRUE if we succeeded
+			// $tDel is FALSE if we failed
+			
+			if ( $tDel == FALSE )
+			{
+				// Failed to delete the forum
+				$Ctemplate->useTemplate("errormessage", array(
+					'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
+					'TITLE'	=>	"{LANG_ERROR_EXCLAMATION}", // Error title
+					'BODY'	=>	"{LANG_TOPICS_DELETE_SQL_ERROR}", // Error text
+					'ALT'	=>	"{LANG_ERROR_EXCLAMATION}" // Alternate picture text
+				), FALSE ); // We give an error
+				
+				$Ctemplate->useTemplate("forum/topics_backtolist", array(
+					'FORUM_ID'	=>	$id
+				), FALSE); // Return button
+			} elseif ( $tDel == TRUE )
+			{
+				// Deleted the topic
+				$Ctemplate->useTemplate("successbox", array(
+					'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_txt.png", // Folder with pencil icon
+					'TITLE'	=>	"{LANG_SUCCESS_EXCLAMATION}", // Success title
+					'BODY'	=>	"{LANG_TOPICS_DELETE_SUCCESS_HEAD}", // Success text
+					'ALT'	=>	"{LANG_SUCCESS_EXCLAMATION}" // Alternate picture text
+				), FALSE ); // We give success
+				
+				// Delete the posts
+				$pDel = $Cmysql->Query("DELETE FROM posts WHERE topicid='" .$Cmysql->EscapeString($_POST['topic_id']). "'");
+				
+				// $pDel is TRUE if we succeeded
+				// $pDel is FALSE if we failed
+				
+				if ( $pDel == FALSE )
+				{
+					// Failed to delete the posts
+					$Ctemplate->useTemplate("errormessage", array(
+						'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
+						'TITLE'	=>	"{LANG_ERROR_EXCLAMATION}", // Error title
+						'BODY'	=>	"{LANG_TOPICS_DELETE_POSTS_SQL_ERROR}", // Error text
+						'ALT'	=>	"{LANG_ERROR_EXCLAMATION}" // Alternate picture text
+					), FALSE ); // We give an error
+				} elseif ( $pDel == TRUE )
+				{
+					// Deleted the posts
+					$Ctemplate->useTemplate("successbox", array(
+						'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_txt.png", // Folder with pencil icon
+						'TITLE'	=>	"{LANG_SUCCESS_EXCLAMATION}", // Success title
+						'BODY'	=>	"{LANG_TOPICS_DELETE_POSTS_SUCCESS_HEAD}", // Success text
+						'ALT'	=>	"{LANG_SUCCESS_EXCLAMATION}" // Alternate picture text
+					), FALSE ); // We give an error
+				}
+				
+				$Ctemplate->useTemplate("forum/topics_backtolist", array(
+					'FORUM_ID'	=>	$id
+				), FALSE); // Return button
+			}
+		}
+	}
+	/* Deleting a topic */
+	
+	/* Listing topics */
+	if ( !isset($_POST['action']) )
+	{
+		$fName = mysql_fetch_row($Cmysql->Query("SELECT title FROM forums WHERE id='" .$Cmysql->EscapeString($id). "'")); // Title of the forum the topics are in
+		
+		if ( $fName == FALSE )
+		{
+			// If the selected forum does not exist, give error
+			$Ctemplate->useTemplate("errormessage", array(
+				'PICTURE_NAME'	=>	"Nuvola_apps_error.png", // Error X icon
+				'TITLE'	=>	"{LANG_ERROR_EXCLAMATION}", // Error title
+				'BODY'	=>	"{LANG_TOPICS_FORUM_DOES_NOT_EXIST}", // Error text
+				'ALT'	=>	"{LANG_ERROR_EXCLAMATION}" // Alternate picture text
+			), FALSE ); // We give an error
+			
+			// We terminate the script
+			$Ctemplate->useStaticTemplate("forum/topics_foot", FALSE); // Footer
+			DoFooter();
+			exit;
 		}
 		
-		// Output switcher table
-		$Ctemplate->useTemplate("forum/topics_pages_table", array(
-			'CURRENT_PAGE'	=>	(@$_GET['start_at']+1), // Number of current page
-			'PAGES_EMBED'	=>	$pages, // Embedding the generated pages box
-			'PAGE_TOTAL'	=>	$topic_pages
-		), FALSE);
+		$Ctemplate->useTemplate("forum/topics_table_open", array(
+			'CREATE_NEW_TOPIC'	=>	$Ctemplate->useTemplate("forum/topics_create_new", array(
+					'FORUM_ID'	=>	$id // ID of the forum we're creating the theme into
+				), TRUE), // Output button of new topic creation
+			'ADMIN_ACTIONS'	=>	($uLvl[0] >= 2 ? 
+				$Ctemplate->useStaticTemplate("forum/forums_admin_actions", TRUE) // Return the header
+			: NULL ), // Output header for admin actions only if the user is moderator or higher
+			'FORUM_NAME'	=>	$fName[0] // Title of the forum
+		), FALSE); // Open the table and output header
+		
+		/* Highlighted tables */
+		// Highlighted tables appear on each page
+		$topic_Hresult = $Cmysql->Query("SELECT * FROM topics WHERE forumid='" .$Cmysql->EscapeString($id). "' AND highlighted='1'"); // Query highlighted tables in the set forum
+		
+		while ( $Hrow = mysql_fetch_assoc($topic_Hresult) )
+		{
+			// Get the username of who created the topic
+			$Hcreator_uName = mysql_fetch_row($Cmysql->Query("SELECT username FROM users WHERE id='" .$Cmysql->EscapeString($Hrow['createuser']). "'"));
+			
+			// Get post count
+			$Hpost_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM posts WHERE topicid='" .$Hrow['id']. "'"));
+			
+			// Get last post
+			$Hlast_post = mysql_fetch_assoc($Cmysql->Query("SELECT createuser, createdate FROM posts WHERE topicid='" .$Hrow['id']. "' LIMIT 1"));
+			// and get last poster's name
+			$Hlast_post_user = mysql_fetch_row($Cmysql->Query("SELECT username FROM users WHERE id='" .$Hlast_post['createuser']. "'"));
+			
+			// Output rows for every table
+			$Ctemplate->useTemplate("forum/topics_table_row", array(
+				'TYPE'	=>	"highlight", // Different theme for highlighted topics
+				'LOCKED'	=>	($Hrow['locked'] == 1 ? "_locked" : ""), // The icon will be a locked icon if the thread is locked
+				'ALT'	=>	($Hrow['locked'] == 1 ? "{LANG_TOPICS_HIGHLIGHTED_LOCKED}" : "{LANG_TOPICS_HIGHLIGHTED}"), // Alternate picture text
+				'ID'	=>	$Hrow['id'],
+				'TITLE'	=>	$Hrow['title'], // Title of the topic
+				'CREATOR'	=>	$Hcreator_uName[0], // Username of creator
+				'CREATION_DATE'	=>	fDate($Hrow['createdate']), // Creation timestamp
+				'LAST_POST'	=>	$Ctemplate->useTemplate("forum/topics_table_row_last_post", array(
+					'DATESTAMP'	=>	fDate($Hlast_post['createdate']),
+					'NAME'	=>	$Hlast_post_user[0]
+				), TRUE), 
+				'POSTS'	=>	$Hpost_count[0],
+				'EDIT'	=>	($uLvl[0] >= 2 ?
+					$Ctemplate->useTemplate("forum/topics_admin_edit", array(
+						'TOPIC_ID'	=>	$Hrow['id'],
+						'FORUM_ID'	=>	$id
+					), TRUE)
+				: NULL ), // Edit button for admins and mods
+				'DELETE'	=>	($uLvl[0] >= 2 ?
+					$Ctemplate->useTemplate("forum/topics_admin_delete", array(
+						'TOPIC_ID'	=>	$Hrow['id'],
+						'FORUM_ID'	=>	$id
+					), TRUE)
+				: NULL ), // Delete button for admins and mods
+			), FALSE); // Output row
+		}
+		
+		/**
+		 * The topic list is split, based on user setting.
+		 * Because of it, we need to generate a page switcher by using the 'LIMIT start, count'
+		 * syntax.
+		 */
+		
+		$usr_topic_split_value = $_SESSION['forum_topic_count_per_page']; // Use the user's preference (queried from session)
+		
+		// Query the total number of NORMAL (not highlighted) topics in the current forum
+		$topic_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM topics WHERE forumid='" .$Cmysql->EscapeString($id). "' AND highlighted='0'"));
+		
+		// Generate the number of pages (we need to ceil it up because we need to have integer pages)
+		$topic_pages = ceil($topic_count[0] / $usr_topic_split_value);
+		
+		// Generate the start_at value
+		if ( @$_GET['start_at'] == NULL )
+		{
+			// If the value is missing, we will assume 0 as the start
+			$topic_start = 0;
+		} elseif ( @$_GET['start_at'] != NULL )
+		{
+			// If we have start value, multiply it with the split value so it'll show the correct page
+			$topic_start = $_GET['start_at'] * $usr_topic_split_value;
+		}
+		
+		/* Normal tables */
+		$topic_result = $Cmysql->Query("SELECT * FROM topics WHERE forumid='" .$Cmysql->EscapeString($id). "' AND highlighted='0' LIMIT " .$topic_start.", " .$Cmysql->EscapeString($usr_topic_split_value)); // Query "normal" tables in the set forum (splitted)
+		
+		while ( $row = mysql_fetch_assoc($topic_result) )
+		{
+			// Get the username of who created the topic
+			$creator_uName = mysql_fetch_row($Cmysql->Query("SELECT username FROM users WHERE id='" .$Cmysql->EscapeString($row['createuser']). "'"));
+			
+			// Get post count
+			$post_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM posts WHERE topicid='" .$row['id']. "'"));
+			
+			// Get last post
+			$last_post = mysql_fetch_assoc($Cmysql->Query("SELECT createuser, createdate FROM posts WHERE topicid='" .$row['id']. "' ORDER BY createdate DESC LIMIT 1"));
+			// and get last poster's name
+			$last_post_user = mysql_fetch_row($Cmysql->Query("SELECT username FROM users WHERE id='" .$last_post['createuser']. "'"));
+			
+			// Output rows for every table
+			$Ctemplate->useTemplate("forum/topics_table_row", array(
+				'TYPE'	=>	"normal", // Different theme for normal topics
+				'LOCKED'	=>	($row['locked'] == 1 ? "_locked" : ""), // The icon will be a locked icon if the thread is locked
+				'ALT'	=>	($row['locked'] == 1 ? "{LANG_TOPICS_NORMAL_LOCKED}" : "{LANG_TOPICS_NORMAL}"), // Alternate picture text
+				'ID'	=>	$row['id'],
+				'TITLE'	=>	$row['title'], // Title of the topic
+				'CREATOR'	=>	$creator_uName[0], // Username of creator
+				'CREATION_DATE'	=>	fDate($row['createdate']), // Creation timestamp
+				'LAST_POST'	=>	$Ctemplate->useTemplate("forum/topics_table_row_last_post", array(
+					'DATESTAMP'	=>	fDate($last_post['createdate']),
+					'NAME'	=>	$last_post_user[0]
+				), TRUE), 
+				'POSTS'	=>	$post_count[0],
+				'EDIT'	=>	($uLvl[0] >= 2 ?
+					$Ctemplate->useTemplate("forum/topics_admin_edit", array(
+						'TOPIC_ID'	=>	$row['id'],
+						'FORUM_ID'	=>	$id
+					), TRUE)
+				: NULL ), // Edit button for admins and mods
+				'DELETE'	=>	($uLvl[0] >= 2 ?
+					$Ctemplate->useTemplate("forum/topics_admin_delete", array(
+						'TOPIC_ID'	=>	$row['id'],
+						'FORUM_ID'	=>	$id
+					), TRUE)
+				: NULL ), // Delete button for admins and mods
+			), FALSE); // Output row
+		}
+		
+		// Get the overall count of topics in the forum
+		$topic_all_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM topics WHERE forumid='" .$Cmysql->EscapeString($id). "'"));
+		
+		if ( $topic_all_count[0] == 0 )
+		{
+			// If the forum does not have tables in it
+			
+			$Ctemplate->useStaticTemplate("forum/topics_table_row_noentry", FALSE); // Output message about no tables in the forum
+		}
+		
+		$Ctemplate->useStaticTemplate("forum/topics_table_close", FALSE); // Close the table
+		
+		if ( $topic_pages > 1 )
+		{
+			// If we have more than one topic list page
+			
+			// Generate embedded pager
+			$pages = ""; // Define the variable
+			for ( $p = 0; $p <= ($topic_pages-1); $p++ )
+			{
+				$pages .= $Ctemplate->useTemplate("forum/topics_page_embed", array(
+					'FORUM_ID'	=>	$id,
+					'START_AT'	=>	$p,
+					'PAGE_NUMBER'	=>	($p+1)
+				), TRUE);
+			}
+			
+			// Output switcher table
+			$Ctemplate->useTemplate("forum/topics_pages_table", array(
+				'CURRENT_PAGE'	=>	(@$_GET['start_at']+1), // Number of current page
+				'PAGES_EMBED'	=>	$pages, // Embedding the generated pages box
+				'PAGE_TOTAL'	=>	$topic_pages
+			), FALSE);
+		}
 	}
+	/* Listing topics*/
 }
 
 $Ctemplate->useStaticTemplate("forum/topics_foot", FALSE); // Footer

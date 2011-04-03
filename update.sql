@@ -140,3 +140,8 @@ CREATE TABLE IF NOT EXISTS posts (
 # Revision 610 (adding pager dynamic splitting)
 #
 ALTER TABLE `users` ADD `forum_topic_count_per_page` smallint(3) NOT NULL DEFAULT '15' COMMENT 'user preference: how many topics appear on one page';
+
+#
+# Revision 613 (adding pager dynamic splitting (posts))
+#
+ALTER TABLE `users` ADD `forum_post_count_per_page` smallint(3) NOT NULL DEFAULT '15' COMMENT 'user preference: how many posts appear on one page';

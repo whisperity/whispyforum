@@ -95,6 +95,8 @@ $wf_lang = array(
 	'{LANG_QUOTATED}'	=>	"Quotated",
 	'{LANG_WIDTH}'	=>	"Width",
 	'{LANG_HEIGHT}'	=>	"Height",
+	'{LANG_OFFLINE}'	=>	"Offline",
+	'{LANG_ONLINE}'	=>	"Online",
 	
 	/* SQL */
 	'{LANG_SQL_ERROR}'	=>	"mySQL error",
@@ -188,6 +190,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_CP_UPPERCASE}'	=>	"Control panel",
 	'{LANG_UCP_TOOLTIP}'	=>	"User control panel",
 	'{LANG_UCP_USER_CUSTOMIZATION}'	=>	"User customization",
+	'{LANG_REGISTERED}'	=>	"Registered:",
 	
 	/* Avatar */
 	'{LANG_USR_YOUR_AVATAR}'	=>	"Your avatar",
@@ -202,6 +205,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_AVATAR_REFRESH_1}'	=>	"Your avatar has been refreshed successfully.<br>Your new avatar:",
 	'{LANG_AVATAR_REFRESH_2}'	=>	"The old avatar's file has been permanently deleted.",
 	'{LANG_AVATAR_TOOBIG}'	=>	"The file you uploaded is too big! Maximum filesize: 2 MB, but you wanted to upload a big, {FILE_SIZE} sized file.",
+	'{LANG_USERNAMES_AVATAR}'	=>	"{USERNAME}'s avatar",
 	
 	/* Site preferences */
 	'{LANG_SITEPREF_TITLE}'	=>	"Here you can site your preferences on the site (language/theme). Please note, that this preferences are linked to and specified for your user.",
@@ -218,9 +222,10 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_UCP_FORUM_TITLE}'	=>	"Here you can set your preferences about how the forum should operate.<br>".'<font class="emphasis">To modify something, set the new value and click Modify.</font>'." Your actual preference is automatically selected.",
 	'{LANG_UCP_FORUM_MODIFY}'	=>	"Modify",
 	'{LANG_UCP_FORUM_TOPICS_PER_PAGE}'	=>	"Topics appearing on one page",
-	'{LANG_UCP_FORUM_TOPIC_SWITCH_FAIL}'	=>	"Cannot modify the topics/page preference",
-	'{LANG_UCP_FORUM_TOPIC_SWITCH_SUCCESS}'	=>	"Topics/page preference modified",
-	'{LANG_UCP_FORUM_TOPIC_SWITCH_SUCCESS_1}'	=>	"You successfully modified your preference. The next page you request will use the new value.",
+	'{LANG_UCP_FORUM_POSTS_PER_PAGE}'	=>	"Posts appearing on one page",
+	'{LANG_UCP_FORUM_FAIL}'	=>	"Cannot modify the preferences",
+	'{LANG_UCP_FORUM_SUCCESS}'	=>	"Preferences modified",
+	'{LANG_UCP_FORUM_SUCCESS_1}'	=>	"You successfully modified your preferences. The next page you request will use the new value.",
 	
 	/* Administrator control panel */
 	'{LANG_ACP_TOOLTIP}'	=>	"Administrator control panel",
@@ -344,18 +349,38 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_FORUMS_DELETE_POSTS_SUCCESS_HEAD}'	=>	"Deleted the posts from the recently deleted forum",
 	
 	'{LANG_TOPICS}'	=>	"Topics",
+	'{LANG_TOPICS_TITLE}'	=>	"Title",
 	'{LANG_TOPICS_POST_TITLE}'	=>	"Post title",
 	'{LANG_TOPICS_NORMAL}'	=>	"Normal thread",
 	'{LANG_TOPICS_NORMAL_LOCKED}'	=>	"Locked thread",
 	'{LANG_TOPICS_HIGHLIGHTED}'	=>	"Highlighted thread",
 	'{LANG_TOPICS_HIGHLIGHTED_LOCKED}'	=>	"Locked highlighted thread",
 	'{LANG_TOPICS_CREATOR}'	=>	"Creator",
+	'{LANG_TOPICS_BACKTOLIST}'	=>	"<< Back to list",
 	'{LANG_TOPICS_THIS_FORUM_REQUIRES_GUEST}'	=>	"Viewing this forum requires you to have {LANG_GUEST} rights.",
 	'{LANG_TOPICS_THIS_FORUM_REQUIRES_USER}'	=>	"Viewing this forum requires you to have {LANG_USER} rights.",
 	'{LANG_TOPICS_THIS_FORUM_REQUIRES_MODERATOR}'	=>	"Viewing this forum requires you to have {LANG_MODERATOR} rights.",
 	'{LANG_TOPICS_THIS_FORUM_REQUIRES_ADMINISTRATOR}'	=>	"Viewing this forum requires you to have {LANG_ADMINISTRATOR} rights.",
 	
+	'{LANG_TOPICS_FORUM_DOES_NOT_EXIST}'	=>	"The forum you wanted to view does not exists.",
+	
+	'{LANG_TOPICS_NO_TOPIC}'	=>	"There aren't any topics in this forum.",
+	
+	'{LANG_TOPICS_DELETE}'	=>	"Delete",
+	'{LANG_TOPICS_DELETE_SQL_ERROR}'	=>	"There were errors executing the SQL query to delete the topic. The topic remains undeleted.",
+	'{LANG_TOPICS_DELETE_SUCCESS_HEAD}'	=>	"Deleted the topic",
+	'{LANG_TOPICS_DELETE_POSTS_SQL_ERROR}'	=>	"There were errors executing the SQL query to delete the posts in the recently deleted topic. The posts remain orphan.",
+	'{LANG_TOPICS_DELETE_POSTS_SUCCESS_HEAD}'	=>	"Deleted the posts from the recently deleted topic",
+	
+	'{LANG_TOPICS_EDIT}'	=>	"Edit",
+	'{LANG_TOPICS_EDIT_HEADER}'	=>	"Edit topic: {OTITLE}",
+	'{LANG_TOPICS_EDIT_VAR_ERROR}'	=>	"The topic edition cannot be done until every required variable is entered.",
+	'{LANG_TOPICS_EDIT_SQL_ERROR}'	=>	"There were errors executing the SQL query to edit the topic. The topic remains the same.",
+	'{LANG_TOPICS_EDIT_SUCCESS_HEAD}'	=>	"Edited the topic",
+	'{LANG_TOPICS_EDIT_SUCCESS}'	=>	"Edition of topic {TITLE}",
+	
 	'{LANG_TOPICS_CREATE_NEW}'	=>	"Create new topic",
+	'{LANG_TOPICS_CREATE_GUEST_ERROR}'	=>	"Even though the forum allows you to see it as a guest, you cannot create a topic in it. Please log in or register.",
 	'{LANG_TOPICS_CREATE_HEADER}'	=>	"Create new topic in forum: {FORUM_NAME}",
 	'{LANG_TOPICS_CREATE_VAR_ERROR}'	=>	"The topic creation cannot be done until every required variable is entered.",
 	'{LANG_TOPICS_CREATE_SQL_ERROR}'	=>	"There were errors executing the SQL query to create the new topic. No new topic was created.",
@@ -363,7 +388,11 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_TOPICS_CREATE_SUCCESS}'	=>	"Creation of topic {TITLE}",
 	'{LANG_TOPICS_CREATE_LOCK}'	=>	"Lock (no new posts will be allowed)",
 	'{LANG_TOPICS_CREATE_HIGHLIGHT}'	=>	"Highlight (will be listed on the top)",
+	'{LANG_TOPICS_CREATE_FORUM_DOES_NOT_EXIST}'	=>	"The forum you wanted to create a new topic in does not exists.",
 	
+	'{LANG_POSTS}'	=>	"Posts",
 	'{LANG_POSTS_POST}'	=>	"Post",
+	
+	'{LANG_POSTS_CREATE_NEW}'	=>	"New post",
 );
 ?>
