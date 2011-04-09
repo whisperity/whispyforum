@@ -180,7 +180,9 @@ class class_users
 			'AVATAR_FILENAME'	=>	$_SESSION['avatar_filename'] // Avatar file
 		), FALSE); // Beginning divs of userbox
 		
-		$Ctemplate->useStaticTemplate("user/userform_user-cp_link", FALSE); // User control panel link
+		$Ctemplate->useTemplate("user/userform_user-cp_link", array(
+			'USERID'	=>	$_SESSION['uid']
+		), FALSE); // User control panel link
 		
 		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'")); // We query the user's data
 		

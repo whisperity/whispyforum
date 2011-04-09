@@ -8,7 +8,6 @@
  * WhispyForum
  */
 
-/* ************************************ */
 /* General */
 
 body {
@@ -85,9 +84,6 @@ span.form-header {
 
 /* Forms */
 
-/* General */
-
-/* ************************************ */
 /* Error message box template */
 table.errorbox {
 	font-weight: bold;
@@ -161,7 +157,6 @@ td.successpicture {}
 td.successbody {}
 /* Success message box template (nearly identical to errorbox) */
 
-/* ************************************ */
 /* Install */
 table.install-header {
 	width: 100%;

@@ -404,6 +404,7 @@ if ( !isset($_POST['action']) )
 				'NAME'	=>	$last_post_user[0],
 				'TOPICID'	=>	$last_post['topicid'],
 				'POSTID'	=>	$last_post['id'],
+				'USERID'	=>	$last_post['createuser']
 			), TRUE) : $wf_lang['{LANG_POSTS_NO}']),
 			'THREADS'	=>	$thread_count[0],
 			'POSTS'	=>	$post_count[0],

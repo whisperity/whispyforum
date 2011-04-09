@@ -344,6 +344,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 			
 			$Ctemplate->useTemplate("forum/posts_row_" .$WithOrWithout. "_title", array(
 				'ID'	=>	$row['id'], // Post ID
+				'USERID'	=>	$row['createuser'], // Poster's ID
 				'USERNAME'	=>	$uData['username'], // Poster's name
 				'IMGSRC'	=>	$poster_avatar, // Poster's avatar (or your theme's default if poster does not have one)
 				'REGDATE'	=>	fDate($uData['regdate']), // Poster's registration date

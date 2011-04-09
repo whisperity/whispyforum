@@ -363,6 +363,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 					'NAME'	=>	$Hlast_post_user[0],
 					'TOPICID'	=>	$Hlast_post['topicid'],
 					'POSTID'	=>	$Hlast_post['id'],
+					'USERID'	=>	$Hlast_post['createuser']
 				), TRUE) : $wf_lang['{LANG_POSTS_NO}']),
 				'POSTS'	=>	$Hpost_count[0],
 				'EDIT'	=>	($uLvl[0] >= 2 ?
@@ -437,6 +438,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 					'NAME'	=>	$last_post_user[0],
 					'TOPICID'	=>	$last_post['topicid'],
 					'POSTID'	=>	$last_post['id'],
+					'USERID'	=>	$last_post['createuser']
 				), TRUE) : $wf_lang['{LANG_POSTS_NO}']),
 				'POSTS'	=>	$post_count[0],
 				'EDIT'	=>	($uLvl[0] >= 2 ?

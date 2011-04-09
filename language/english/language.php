@@ -177,6 +177,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_REQUIRES_LOGGEDIN}'	=>	"This page requires you to log in to view it's contents.<br><br>Please use the login box to log in to the site. After that, you can view this page.",
 	'{LANG_NO_LOGGEDINS}'	=>	"This page is unaviable for registered users",
 	'{LANG_REQUIRES_GUEST}'	=>	"This page requires you to be a guest to view it's contents.<br><br>Please use the control box to log out from the site. After that, you can view this page.",
+	'{LANG_USERLEVEL}'	=>	"User level",
 	'{LANG_GUEST}'	=>	"Guest",
 	'{LANG_USER}'	=>	"User",
 	'{LANG_MODERATOR}'	=>	"Moderator",
@@ -184,6 +185,13 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_ADMINISTRATOR_PLURAL}'	=>	"Administrators",
 	'{LANG_ROOT}'	=>	"Root admin",
 	
+	/* Profile */
+	'{LANG_PROFILE}'	=>	"Profile",
+	'{LANG_PROFILE_VIEW}'	=>	"View profile",
+	'{LANG_PROFILE_NO_USER}'	=>	"No user",
+	'{LANG_PROFILE_DOES_NOT_EXIST}'	=>	"The user you wanted to view does not exist.",	
+	'{LANG_PROFILE_LOGGEDIN}'	=>	"Logged in",
+	'{LANG_PROFILE_LANGUAGE}'	=>	"Preferred language",
 	
 	/* Control panel */
 	'{LANG_CP_LOWERCASE}'	=>	"control panel",
