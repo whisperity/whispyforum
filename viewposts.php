@@ -88,134 +88,204 @@ if ( $uLvl[0] < $fMLvl[0] )
 {
 	// The user has the rights to view the topic list
 	
-	$topic_array = mysql_fetch_assoc($Cmysql->Query("SELECT title, forumid, locked FROM topics WHERE id='" .$Cmysql->EscapeString($id). "'")); // Data of the topic
-	
-	$fName = mysql_fetch_row($Cmysql->Query("SELECT title FROM forums WHERE id='" .$topic_array['forumid']. "'")); // $fName[0] is the name of the forum the topic (containing the posts) is in
-	
-	$tName = $topic_array['title']; // Name of the topic
-	
-	if ( $uLvl == FALSE )
+	/* Deleting a post */
+	if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "delete" ) && ( isset($_POST['post_id']) ) )
 	{
-		// If the user is a guest, give no option to post
-		$new_post_button = "<br>"; // We need to set the variable to avoid errors
-	} elseif ( ( $uLvl[0] >= $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
-	{
-		// If the user has the rights to view the forum and is logged in
-		// set different new post buttons for later use
+		// Get poster's userID
+		$pUID = mysql_fetch_row($Cmysql->Query("SELECT createuser FROM posts WHERE id='" .$Cmysql->EscapeString($_POST['post_id']). "'"));
 		
-		if ( $topic_array['locked'] == 0 )
+		// Deleting a topic
+		if ( ( $uLvl[0] < 2 ) && ( $pUID[0] != $_SESSION['uid'] ) )
 		{
-			// If the topic isn't locked
-			$new_post_button = $Ctemplate->useTemplate("forum/posts_new", array(
-				'TOPIC_ID'	=>	$id
-			), TRUE); // Set the new post button to a variable for later use
-		} elseif ( $topic_array['locked'] == 1 )
+			// If the user does not have rights to add new forum
+			$Ctemplate->useTemplate("errormessage", array(
+				'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
+				'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
+				'BODY'	=>	"{LANG_REQUIRES_MODERATOR}", // Error text
+				'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
+			), FALSE ); // We give an unaviable error
+		} elseif ( ( $uLvl[0] >= 2 ) || ( $pUID[0] == $_SESSION['uid'] ) )
 		{
-			// If the topic is locked
-			$new_post_button = $Ctemplate->useStaticTemplate("forum/posts_new_locked", TRUE); // Set an error picture to a variable for later use
+			// Access granted
+			
+			// Delete the post
+			$pDel = $Cmysql->Query("DELETE FROM posts WHERE id='" .$Cmysql->EscapeString($_POST['post_id']). "'");
+			
+			// $pDel is TRUE if we succeeded
+			// $pDel is FALSE if we failed
+			
+			if ( $pDel == FALSE )
+			{
+				// Failed to delete the forum
+				$Ctemplate->useTemplate("errormessage", array(
+					'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
+					'TITLE'	=>	"{LANG_ERROR_EXCLAMATION}", // Error title
+					'BODY'	=>	"{LANG_POSTS_DELETE_SQL_ERROR}", // Error text
+					'ALT'	=>	"{LANG_ERROR_EXCLAMATION}" // Alternate picture text
+				), FALSE ); // We give an error
+				
+				$Ctemplate->useTemplate("forum/posts_backtolist", array(
+					'TOPIC_ID'	=>	$id,
+					'START_AT'	=>	$_POST['start_at']
+				), FALSE); // Return button
+			} elseif ( $pDel == TRUE )
+			{
+				// Deleted the topic
+				$Ctemplate->useTemplate("successbox", array(
+					'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_txt.png", // Folder with pencil icon
+					'TITLE'	=>	"{LANG_SUCCESS_EXCLAMATION}", // Success title
+					'BODY'	=>	"{LANG_POSTS_DELETE_SUCCESS_HEAD}", // Success text
+					'ALT'	=>	"{LANG_SUCCESS_EXCLAMATION}" // Alternate picture text
+				), FALSE ); // We give success
+				
+				$Ctemplate->useTemplate("forum/posts_backtolist", array(
+					'TOPIC_ID'	=>	$id,
+					'START_AT'	=>	$_POST['start_at']
+				), FALSE); // Return button
+			}
 		}
 	}
+	/* Deleting a post */
 	
-	$Ctemplate->useTemplate("forum/posts_list_head", array(
-		'FORUMID'	=>	$topic_array['forumid'], // ID of the forum the topic is in
-		'FORUM_NAME'	=>	$fName[0],
-		'TOPIC_NAME'	=>	$tName,
-		'NEW_POST'	=>	$new_post_button
-	), FALSE); // Output opening of posts table
-	
-	/**
-	 * The post list is split, based on user setting.
-	 * Because of it, we need to generate a page switcher by using the 'LIMIT start, count'
-	 * syntax.
-	 */
-	
-	$usr_post_split_value = $_SESSION['forum_post_count_per_page']; // Use the user's preference (queried from session)
-	
-	// Query the total number of NORMAL (not highlighted) topics in the current forum
-	$post_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM posts WHERE topicid='" .$Cmysql->EscapeString($id). "'"));
-	
-	// Generate the number of pages (we need to ceil it up because we need to have integer pages)
-	$post_pages = ceil($post_count[0] / $usr_post_split_value);
-	
-	// Generate the start_at value
-	if ( @$_GET['start_at'] == NULL )
+	/* Listing posts */
+	if ( !isset($_POST['action']) )
 	{
-		// If the value is missing, we will assume 0 as the start
-		$post_start = 0;
-	} elseif ( @$_GET['start_at'] != NULL )
-	{
-		// If we have start value, multiply it with the split value so it'll show the correct page
-		$post_start = $_GET['start_at'] * $usr_post_split_value;
-	}
-	
-	$post_result = $Cmysql->Query("SELECT * FROM posts WHERE topicid='" .$Cmysql->EscapeString($id). "' ORDER BY createdate ASC LIMIT " .$post_start.", " .$Cmysql->EscapeString($usr_post_split_value)); // Query "normal" tables in the set forum (splitted)
-	
-	while ( $row = mysql_fetch_assoc($post_result) )
-	{
-		// Query poster's data
-		$uData = mysql_fetch_assoc($Cmysql->Query("SELECT username, regdate, loggedin, avatar_filename FROM users WHERE id='" .$Cmysql->EscapeString($row['createuser']). "'"));
+		$topic_array = mysql_fetch_assoc($Cmysql->Query("SELECT title, forumid, locked FROM topics WHERE id='" .$Cmysql->EscapeString($id). "'")); // Data of the topic
 		
-		if ( $uData['avatar_filename'] == NULL )
+		$fName = mysql_fetch_row($Cmysql->Query("SELECT title FROM forums WHERE id='" .$topic_array['forumid']. "'")); // $fName[0] is the name of the forum the topic (containing the posts) is in
+		
+		$tName = $topic_array['title']; // Name of the topic
+		
+		if ( $uLvl == FALSE )
 		{
-			$poster_avatar = "themes/{THEME_NAME}/default_avatar.png";
-		} else {
-			// If the user have a defined avatar, make it his SESSION avatar
-			$poster_avatar = "upload/usr_avatar/" .$uData['avatar_filename'];
+			// If the user is a guest, give no option to post
+			$new_post_button = "<br>"; // We need to set the variable to avoid errors
+		} elseif ( ( $uLvl[0] >= $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
+		{
+			// If the user has the rights to view the forum and is logged in
+			// set different new post buttons for later use
 			
-			if ( !file_exists("upload/usr_avatar/" .$uData['avatar_filename']) )
+			if ( $topic_array['locked'] == 0 )
 			{
-				$poster_avatar = "themes/{THEME_NAME}/default_avatar.png";
+				// If the topic isn't locked
+				$new_post_button = $Ctemplate->useTemplate("forum/posts_new", array(
+					'TOPIC_ID'	=>	$id
+				), TRUE); // Set the new post button to a variable for later use
+			} elseif ( $topic_array['locked'] == 1 )
+			{
+				// If the topic is locked
+				$new_post_button = $Ctemplate->useStaticTemplate("forum/posts_new_locked", TRUE); // Set an error picture to a variable for later use
 			}
 		}
 		
-		// Use seperate post template for posts having and not having title
-		if ( $row['title'] == NULL )
+		$Ctemplate->useTemplate("forum/posts_list_head", array(
+			'FORUMID'	=>	$topic_array['forumid'], // ID of the forum the topic is in
+			'FORUM_NAME'	=>	$fName[0],
+			'TOPIC_NAME'	=>	$tName,
+			'NEW_POST'	=>	$new_post_button
+		), FALSE); // Output opening of posts table
+		
+		/**
+		 * The post list is split, based on user setting.
+		 * Because of it, we need to generate a page switcher by using the 'LIMIT start, count'
+		 * syntax.
+		 */
+		
+		$usr_post_split_value = $_SESSION['forum_post_count_per_page']; // Use the user's preference (queried from session)
+		
+		// Query the total number of NORMAL (not highlighted) topics in the current forum
+		$post_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM posts WHERE topicid='" .$Cmysql->EscapeString($id). "'"));
+		
+		// Generate the number of pages (we need to ceil it up because we need to have integer pages)
+		$post_pages = ceil($post_count[0] / $usr_post_split_value);
+		
+		// Generate the start_at value
+		if ( @$_GET['start_at'] == NULL )
 		{
-			$WithOrWithout = "without"; // Use template without title
-		} else {
-			$WithOrWithout = "with"; // Use template with title
+			// If the value is missing, we will assume 0 as the start
+			$post_start = 0;
+		} elseif ( @$_GET['start_at'] != NULL )
+		{
+			// If we have start value, multiply it with the split value so it'll show the correct page
+			$post_start = $_GET['start_at'] * $usr_post_split_value;
 		}
 		
-		$Ctemplate->useTemplate("forum/posts_row_" .$WithOrWithout. "_title", array(
-			'ID'	=>	$row['id'], // Post ID
-			'USERNAME'	=>	$uData['username'], // Poster's name
-			'IMGSRC'	=>	$poster_avatar, // Poster's avatar (or your theme's default if poster does not have one)
-			'REGDATE'	=>	fDate($uData['regdate']), // Poster's registration date
-			'LOG_STATUS'	=>	($uData['loggedin'] == 1 ? "online" : "offline"), // Logged in or out picture
-			'LOG_ALT'	=>	"{LANG_" . ($uData['loggedin'] == 1 ? "ONLINE" : "OFFLINE"). "}", // Alternate text for log_status picture
-			'TITLE'	=>	$row['title'], // Post title
-			'DATE'	=>	fDate($row['createdate']), // Post date
-			'TEXT'	=>	bbDecode($row['content']) // The post itself
-		), FALSE); // Output one row for the post
+		$post_result = $Cmysql->Query("SELECT * FROM posts WHERE topicid='" .$Cmysql->EscapeString($id). "' ORDER BY createdate ASC LIMIT " .$post_start.", " .$Cmysql->EscapeString($usr_post_split_value)); // Query "normal" tables in the set forum (splitted)
 		
-		$WithOrWithout = ""; // Clear
-	}
-	
-	$Ctemplate->useStaticTemplate("forum/posts_list_foot", FALSE);
-	
-	/* Pager */
-	if ( $post_pages > 1 )
-	{
-		// If we have more than one topic list page
-		
-		// Generate embedded pager
-		$pages = ""; // Define the variable
-		for ( $p = 0; $p <= ($post_pages-1); $p++ )
+		while ( $row = mysql_fetch_assoc($post_result) )
 		{
-			$pages .= $Ctemplate->useTemplate("forum/posts_page_embed", array(
-				'TOPIC_ID'	=>	$id,
-				'START_AT'	=>	$p,
-				'PAGE_NUMBER'	=>	($p+1)
-			), TRUE);
+			// Query poster's data
+			$uData = mysql_fetch_assoc($Cmysql->Query("SELECT username, regdate, loggedin, avatar_filename FROM users WHERE id='" .$Cmysql->EscapeString($row['createuser']). "'"));
+			
+			if ( $uData['avatar_filename'] == NULL )
+			{
+				$poster_avatar = "themes/{THEME_NAME}/default_avatar.png";
+			} else {
+				// If the user have a defined avatar, make it his SESSION avatar
+				$poster_avatar = "upload/usr_avatar/" .$uData['avatar_filename'];
+				
+				if ( !file_exists("upload/usr_avatar/" .$uData['avatar_filename']) )
+				{
+					$poster_avatar = "themes/{THEME_NAME}/default_avatar.png";
+				}
+			}
+			
+			// Use seperate post template for posts having and not having title
+			if ( $row['title'] == NULL )
+			{
+				$WithOrWithout = "without"; // Use template without title
+			} else {
+				$WithOrWithout = "with"; // Use template with title
+			}
+			
+			$Ctemplate->useTemplate("forum/posts_row_" .$WithOrWithout. "_title", array(
+				'ID'	=>	$row['id'], // Post ID
+				'USERNAME'	=>	$uData['username'], // Poster's name
+				'IMGSRC'	=>	$poster_avatar, // Poster's avatar (or your theme's default if poster does not have one)
+				'REGDATE'	=>	fDate($uData['regdate']), // Poster's registration date
+				'LOG_STATUS'	=>	($uData['loggedin'] == 1 ? "online" : "offline"), // Logged in or out picture
+				'LOG_ALT'	=>	"{LANG_" . ($uData['loggedin'] == 1 ? "ONLINE" : "OFFLINE"). "}", // Alternate text for log_status picture
+				'TITLE'	=>	$row['title'], // Post title
+				'DATE'	=>	fDate($row['createdate']), // Post date
+				'TEXT'	=>	bbDecode($row['content']), // The post itself
+				'DELETE'	=>	( ($row['createuser'] == $_SESSION['uid']) || ($uLvl[0] >= 2) ? $Ctemplate->useTemplate("forum/posts_delete", array(
+					'POST_ID'	=>	$row['id'],
+					'TOPIC_ID'	=>	$id,
+					'START_AT'	=>	(@$_GET['start_at'] == NULL ? '0' : $_GET['start_at'])
+				), TRUE) : NULL ),
+			), FALSE); // Output one row for the post
+			
+			$WithOrWithout = ""; // Clear
 		}
 		
-		// Output switcher table
-		$Ctemplate->useTemplate("forum/posts_pages_table", array(
-			'CURRENT_PAGE'	=>	(@$_GET['start_at']+1), // Number of current page
-			'PAGES_EMBED'	=>	$pages, // Embedding the generated pages box
-			'PAGE_TOTAL'	=>	$post_pages
-		), FALSE);
+		$Ctemplate->useStaticTemplate("forum/posts_list_foot", FALSE);
+		
+		/* Pager */
+		if ( $post_pages > 0 )
+		{
+			// If we have more than one topic list page
+			
+			// Generate embedded pager
+			$pages = ""; // Define the variable
+			for ( $p = 0; $p <= ($post_pages-1); $p++ )
+			{
+				$pages .= $Ctemplate->useTemplate("forum/posts_page_embed", array(
+					'TOPIC_ID'	=>	$id,
+					'START_AT'	=>	$p,
+					'PAGE_NUMBER'	=>	($p+1)
+				), TRUE);
+			}
+			
+			// Output switcher table
+			$Ctemplate->useTemplate("forum/posts_pages_table", array(
+				'CURRENT_PAGE'	=>	(@$_GET['start_at']+1), // Number of current page
+				'PAGES_EMBED'	=>	$pages, // Embedding the generated pages box
+				'PAGE_TOTAL'	=>	$post_pages
+			), FALSE);
+		}
+		/* Pager */
 	}
+	/* Listing posts */
 }
 
 $Ctemplate->useStaticTemplate("forum/posts_foot", FALSE); // Footer

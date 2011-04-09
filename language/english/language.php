@@ -406,5 +406,9 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_POSTS_CREATE_SUCCESS_HEAD}'	=>	"Created the post",
 	'{LANG_POSTS_CREATE_SUCCESS}'	=>	"Creation of post {TITLE}",
 	'{LANG_POSTS_CREATE_TOPIC_DOES_NOT_EXIST}'	=>	"The topic you wanted to create a new post in does not exists.",
+	
+	'{LANG_POSTS_DELETE}'	=>	"Delete",
+	'{LANG_POSTS_DELETE_SQL_ERROR}'	=>	"There were errors executing the SQL query to delete the post. The post remains undeleted.",
+	'{LANG_POSTS_DELETE_SUCCESS_HEAD}'	=>	"Deleted the post",
 );
 ?>

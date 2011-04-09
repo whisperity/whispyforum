@@ -95,7 +95,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 {
 	// The user has the rights to view the topic list
 	
-	/* Editing a forum */
+	/* Editing a topic */
 	if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "edit" ) && ( isset($_POST['topic_id']) ) )
 	{
 		// Editing a topic
@@ -131,6 +131,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 						// The topic 'Highlight' button will be get it's previous state
 						'HIGHLIGHT_NO'	=>	($_POST['highlight'] == 0 ? " checked" : ""),
 						'HIGHLIGHT_YES'	=>	($_POST['highlight'] == 1 ? " checked" : ""),
+						'START_AT'	=>	$_POST['start_at']
 					), FALSE);
 				} else {
 					// We output general form
@@ -145,6 +146,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 						// The topic 'Highlight' button will be get it's previous state
 						'HIGHLIGHT_NO'	=>	($tData['highlighted'] == 0 ? " checked" : ""),
 						'HIGHLIGHT_YES'	=>	($tData['highlighted'] == 1 ? " checked" : ""),
+						'START_AT'	=>	$_POST['start_at']
 					), FALSE);
 				}
 			} elseif ( ( isset($_POST['edit_do']) ) && ( $_POST['edit_do'] == "yes") )
@@ -160,7 +162,8 @@ if ( $uLvl[0] < $fMLvl[0] )
 						'TOPIC_ID'	=>	$_POST['topic_id'], // ID of the topic
 						'TITLE'	=>	$_POST['title'], // Topic's title (should be empty)
 						'LOCK'	=>	$_POST['lock'], // Description
-						'HIGHLIGHT'	=>	$_POST['highlight'] // Minimal user level
+						'HIGHLIGHT'	=>	$_POST['highlight'], // Minimal user level
+						'START_AT'	=>	$_POST['start_at']
 					), FALSE);
 					
 					// We terminate the script
@@ -187,20 +190,22 @@ if ( $uLvl[0] < $fMLvl[0] )
 						'TOPIC_ID'	=>	$_POST['topic_id'], // ID of the topic
 						'TITLE'	=>	$_POST['title'], // Topic's title
 						'LOCK'	=>	$_POST['lock'], // Description
-						'HIGHLIGHT'	=>	$_POST['highlight'] // Minimal user level
+						'HIGHLIGHT'	=>	$_POST['highlight'], // Minimal user level
+						'START_AT'	=>	$_POST['start_at']
 					), FALSE); // Output a retry form
 				} elseif ( $tEdit == TRUE )
 				{
 					// Edited the forum
 					$Ctemplate->useTemplate("forum/topics_edit_success", array(
 						'FORUM_ID'	=>	$id,
-						'TITLE'	=>	$_POST['title'] // Topic's title
+						'TITLE'	=>	$_POST['title'], // Topic's title
+						'START_AT'	=>	$_POST['start_at']
 					), FALSE); // Output a success form
 				}
 			}
 		}
 	}
-	/* Editing a forum */
+	/* Editing a topic */
 	
 	/* Deleting a topic */
 	if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "delete" ) && ( isset($_POST['topic_id']) ) )
@@ -212,7 +217,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 			$Ctemplate->useTemplate("errormessage", array(
 				'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
 				'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
-				'BODY'	=>	"{LANG_REQUIRES_ADMIN}", // Error text
+				'BODY'	=>	"{LANG_REQUIRES_MODERATOR}", // Error text
 				'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
 			), FALSE ); // We give an unaviable error
 		} elseif ( $uLvl[0] >= 2 )
@@ -236,7 +241,8 @@ if ( $uLvl[0] < $fMLvl[0] )
 				), FALSE ); // We give an error
 				
 				$Ctemplate->useTemplate("forum/topics_backtolist", array(
-					'FORUM_ID'	=>	$id
+					'FORUM_ID'	=>	$id,
+					'START_AT'	=>	$_POST['start_at']
 				), FALSE); // Return button
 			} elseif ( $tDel == TRUE )
 			{
@@ -275,7 +281,8 @@ if ( $uLvl[0] < $fMLvl[0] )
 				}
 				
 				$Ctemplate->useTemplate("forum/topics_backtolist", array(
-					'FORUM_ID'	=>	$id
+					'FORUM_ID'	=>	$id,
+					'START_AT'	=>	$_POST['start_at']
 				), FALSE); // Return button
 			}
 		}
@@ -349,13 +356,15 @@ if ( $uLvl[0] < $fMLvl[0] )
 				'EDIT'	=>	($uLvl[0] >= 2 ?
 					$Ctemplate->useTemplate("forum/topics_admin_edit", array(
 						'TOPIC_ID'	=>	$Hrow['id'],
-						'FORUM_ID'	=>	$id
+						'FORUM_ID'	=>	$id,
+						'START_AT'	=>	(@$_GET['start_at'] == NULL ? '0' : $_GET['start_at'])
 					), TRUE)
 				: NULL ), // Edit button for admins and mods
 				'DELETE'	=>	($uLvl[0] >= 2 ?
 					$Ctemplate->useTemplate("forum/topics_admin_delete", array(
 						'TOPIC_ID'	=>	$Hrow['id'],
-						'FORUM_ID'	=>	$id
+						'FORUM_ID'	=>	$id,
+						'START_AT'	=>	(@$_GET['start_at'] == NULL ? '0' : $_GET['start_at'])
 					), TRUE)
 				: NULL ), // Delete button for admins and mods
 			), FALSE); // Output row
@@ -421,15 +430,17 @@ if ( $uLvl[0] < $fMLvl[0] )
 				'EDIT'	=>	($uLvl[0] >= 2 ?
 					$Ctemplate->useTemplate("forum/topics_admin_edit", array(
 						'TOPIC_ID'	=>	$row['id'],
-						'FORUM_ID'	=>	$id
+						'FORUM_ID'	=>	$id,
+						'START_AT'	=>	(@$_GET['start_at'] == NULL ? '0' : $_GET['start_at'])
 					), TRUE)
 				: NULL ), // Edit button for admins and mods
 				'DELETE'	=>	($uLvl[0] >= 2 ?
 					$Ctemplate->useTemplate("forum/topics_admin_delete", array(
 						'TOPIC_ID'	=>	$row['id'],
-						'FORUM_ID'	=>	$id
+						'FORUM_ID'	=>	$id,
+						'START_AT'	=>	(@$_GET['start_at'] == NULL ? '0' : $_GET['start_at'])
 					), TRUE)
-				: NULL ), // Delete button for admins and mods
+				: NULL ) // Delete button for admins and mods
 			), FALSE); // Output row
 		}
 		
@@ -445,7 +456,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 		
 		$Ctemplate->useStaticTemplate("forum/topics_table_close", FALSE); // Close the table
 		
-		if ( $topic_pages > 1 )
+		if ( $topic_pages > 0 )
 		{
 			// If we have more than one topic list page
 			
@@ -468,7 +479,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 			), FALSE);
 		}
 	}
-	/* Listing topics*/
+	/* Listing topics */
 }
 
 $Ctemplate->useStaticTemplate("forum/topics_foot", FALSE); // Footer
