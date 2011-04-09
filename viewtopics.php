@@ -113,7 +113,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 			// Access granted :)
 			if ( !isset($_POST['edit_do']) )
 			{
-				// If we requested the form to add new forum
+				// If we requested the form to edit a topic
 				
 				$tData = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM topics WHERE id='" .$Cmysql->EscapeString($_POST['topic_id']). "'"));
 				
@@ -184,7 +184,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 				
 				if ( $tEdit == FALSE )
 				{
-					// Failed to edit the forum
+					// Failed to edit the topic
 					$Ctemplate->useTemplate("forum/topics_edit_error", array(
 						'FORUM_ID'	=>	$id,
 						'TOPIC_ID'	=>	$_POST['topic_id'], // ID of the topic
@@ -195,7 +195,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 					), FALSE); // Output a retry form
 				} elseif ( $tEdit == TRUE )
 				{
-					// Edited the forum
+					// Edited the topic
 					$Ctemplate->useTemplate("forum/topics_edit_success", array(
 						'FORUM_ID'	=>	$id,
 						'TITLE'	=>	$_POST['title'], // Topic's title
@@ -213,7 +213,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 		// Deleting a topic
 		if ( $uLvl[0] < 2 )
 		{
-			// If the user does not have rights to add new forum
+			// If the user does not have rights to delete the topic
 			$Ctemplate->useTemplate("errormessage", array(
 				'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
 				'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
@@ -232,7 +232,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 			
 			if ( $tDel == FALSE )
 			{
-				// Failed to delete the forum
+				// Failed to delete the topic
 				$Ctemplate->useTemplate("errormessage", array(
 					'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
 					'TITLE'	=>	"{LANG_ERROR_EXCLAMATION}", // Error title
@@ -255,6 +255,18 @@ if ( $uLvl[0] < $fMLvl[0] )
 				), FALSE ); // We give success
 				
 				// Delete the posts
+				
+				// Remove one post from the posters' post count
+				$posts_in_topic = $Cmysql->Query("SELECT createuser FROM posts WHERE topicid='" .$Cmysql->EscapeString($_POST['topic_id']). "'"); // Query all posts in the recently deleted topic
+				
+				while ( $prow = mysql_fetch_row($posts_in_topic) )
+				{
+					// Going through every post in the topic
+					$pCount = mysql_fetch_row($Cmysql->Query("SELECT post_count FROM users WHERE id='" .$Cmysql->EscapeString($prow[0]). "'")); // Query the poster's post count
+					
+					$Cmysql->Query("UPDATE users SET post_count=" .($pCount[0] - 1). " WHERE id='" .$Cmysql->EscapeString($prow[0]). "'"); // Remove one post from count
+				}
+				
 				$pDel = $Cmysql->Query("DELETE FROM posts WHERE topicid='" .$Cmysql->EscapeString($_POST['topic_id']). "'");
 				
 				// $pDel is TRUE if we succeeded

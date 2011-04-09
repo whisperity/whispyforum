@@ -190,7 +190,6 @@ if ( ( $uLvl[0] < $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
 		
 		if ( ( $topic_create == FALSE ) && ( $post_create == FALSE ) )
 		{
-		
 			$Ctemplate->useTemplate("forum/topics_create_error", array(
 				'FORUM_ID'	=>	$_POST['forum_id'],
 				'TITLE'	=>	$_POST['title'], // Title of the topic
@@ -199,6 +198,10 @@ if ( ( $uLvl[0] < $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
 			), FALSE); // Give error if we failed the creation
 		} elseif ( ( $topic_create == TRUE ) && ( $post_create == TRUE ) )
 		{
+			// Apend one to the user's post count
+			$post_count = mysql_fetch_row($Cmysql->Query("SELECT post_count FROM users WHERE id='" .$_SESSION['uid']. "'")); // Query the current post count
+			$Cmysql->Query("UPDATE users SET post_count='" .($post_count[0] + 1). "' WHERE id='" .$_SESSION['uid']. "'"); // Append +1 post
+			
 			$Ctemplate->useTemplate("forum/topics_create_success", array(
 				'FORUM_ID'	=>	$_POST['forum_id'],
 				'TITLE'	=>	$_POST['title'], // Title of the topic

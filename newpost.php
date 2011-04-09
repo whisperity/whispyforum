@@ -160,6 +160,10 @@ if ( ( $uLvl[0] < $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
 			), FALSE); // Give error if we failed the creation
 		} elseif ( $post_create == TRUE )
 		{
+			// Apend one to the user's post count
+			$post_count = mysql_fetch_row($Cmysql->Query("SELECT post_count FROM users WHERE id='" .$_SESSION['uid']. "'")); // Query the current post count
+			$Cmysql->Query("UPDATE users SET post_count='" .($post_count[0] + 1). "' WHERE id='" .$_SESSION['uid']. "'"); // Append +1 post
+			
 			$Ctemplate->useTemplate("forum/posts_create_success", array(
 				'TOPICID'	=>	$_POST['id'],
 				'TITLE'	=>	(@$_POST['post_title'] == NULL ? "No title" : @$_POST['post_title']), // Title of the post

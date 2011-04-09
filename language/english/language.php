@@ -396,6 +396,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_POSTS_VIEWLAST}'	=>	"View last post",
 	'{LANG_POSTS_TITLE}'	=>	"Title",
 	'{LANG_POSTS_BACKTOLIST}'	=>	"<< Back",
+	'{LANG_POSTS_COUNT}'	=>	"Posts:",
 	
 	'{LANG_POSTS_CREATE_NEW}'	=>	"New post",
 	'{LANG_POSTS_CREATE_NEW_BTN}'	=>	"Create new post",
@@ -410,5 +411,12 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_POSTS_DELETE}'	=>	"Delete",
 	'{LANG_POSTS_DELETE_SQL_ERROR}'	=>	"There were errors executing the SQL query to delete the post. The post remains undeleted.",
 	'{LANG_POSTS_DELETE_SUCCESS_HEAD}'	=>	"Deleted the post",
+	
+	'{LANG_POSTS_EDIT}'	=>	"Edit",
+	'{LANG_POSTS_EDIT_HEADER}'	=>	"Edit post: {OTITLE}",
+	'{LANG_POSTS_EDIT_VAR_ERROR}'	=>	"The post edition cannot be done until every required variable is entered.",
+	'{LANG_POSTS_EDIT_SQL_ERROR}'	=>	"There were errors executing the SQL query to edit the post. The post remains the same.",
+	'{LANG_POSTS_EDIT_SUCCESS_HEAD}'	=>	"Edited the post",
+	'{LANG_POSTS_EDIT_SUCCESS}'	=>	"Edition of post {TITLE}",
 );
 ?>

@@ -310,6 +310,18 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "delete" ) && ( isset(
 			}
 			
 			// Delete the posts
+			
+			// Remove one post from the posters' post count
+			$posts_in_forum = $Cmysql->Query("SELECT createuser FROM posts WHERE forumid='" .$Cmysql->EscapeString($_POST['forum_id']). "'"); // Query all posts in the recently deleted topic
+			
+			while ( $prow = mysql_fetch_row($posts_in_forum) )
+			{
+				// Going through every post in the topic
+				$pCount = mysql_fetch_row($Cmysql->Query("SELECT post_count FROM users WHERE id='" .$Cmysql->EscapeString($prow[0]). "'")); // Query the poster's post count
+				
+				$Cmysql->Query("UPDATE users SET post_count=" .($pCount[0] - 1). " WHERE id='" .$Cmysql->EscapeString($prow[0]). "'"); // Remove one post from count
+			}
+			
 			$pDel = $Cmysql->Query("DELETE FROM posts WHERE forumid='" .$Cmysql->EscapeString($_POST['forum_id']). "'");
 			
 			// $pDel is TRUE if we succeeded
