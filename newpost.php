@@ -1,16 +1,16 @@
 <?php
  /**
- * WhispyForum script file - newtopic.php
+ * WhispyForum script file - newpost.php
  * 
- * Adding new topic
+ * Adding new post
  * 
  * WhispyForum
  */
 
 include("includes/load.php"); // Load webpage
-$Ctemplate->useStaticTemplate("forum/topics_create_head", FALSE); // Header
+$Ctemplate->useStaticTemplate("forum/posts_create_head", FALSE); // Header
 
-if ( !isset($_POST['forum_id']) )
+if ( !isset($_POST['id']) )
 {
 	$Ctemplate->useTemplate("errormessage", array(
 		'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png", // Terminal icon
@@ -25,20 +25,20 @@ if ( !isset($_POST['forum_id']) )
 	exit;
 }
 
-$fName = mysql_fetch_row($Cmysql->Query("SELECT title FROM forums WHERE id='" .$Cmysql->EscapeString($_POST['forum_id']). "'")); // Title of the forum the topics are in
+$tName = mysql_fetch_row($Cmysql->Query("SELECT title, forumid FROM topics WHERE id='" .$Cmysql->EscapeString($_POST['id']). "'")); // Title of the topic the posts are in
 		
-if ( $fName == FALSE )
+if ( $tName == FALSE )
 {
 	// If the selected forum does not exist, give error
 	$Ctemplate->useTemplate("errormessage", array(
 		'PICTURE_NAME'	=>	"Nuvola_apps_error.png", // Error X icon
 		'TITLE'	=>	"{LANG_ERROR_EXCLAMATION}", // Error title
-		'BODY'	=>	"{LANG_TOPICS_CREATE_FORUM_DOES_NOT_EXIST}", // Error text
+		'BODY'	=>	"{LANG_POSTS_CREATE_TOPIC_DOES_NOT_EXIST}", // Error text
 		'ALT'	=>	"{LANG_ERROR_EXCLAMATION}" // Alternate picture text
 	), FALSE ); // We give an error
 	
 	// We terminate the script
-	$Ctemplate->useStaticTemplate("forum/topics_create_foot", FALSE); // Footer
+	$Ctemplate->useStaticTemplate("forum/posts_create_foot", FALSE); // Footer
 	DoFooter();
 	exit;
 }
@@ -54,7 +54,7 @@ if ( $uLvl == FALSE )
 }
 
 // Query the minimal level for the forum
-$fMLvl = mysql_fetch_row($Cmysql->Query("SELECT minLevel FROM forums WHERE id='" .$Cmysql->EscapeString($_POST['forum_id']). "'"));
+$fMLvl = mysql_fetch_row($Cmysql->Query("SELECT minLevel FROM forums WHERE id='" .$tName[1]. "'"));
 
 if ( ( $uLvl[0] < $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
 {
@@ -93,42 +93,32 @@ if ( ( $uLvl[0] < $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
 	), FALSE ); // Give rights error
 } elseif ( ( $uLvl[0] >= $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
 {
-	// The user has the rights to view the topic list, thus has rights to create one
+	// The user has the rights to view the post list, thus has rights to create one
 	
 	if ( !isset($_POST['post_do']) )
 	{
-		$fTitle = mysql_fetch_row($Cmysql->Query("SELECT title FROM forums WHERE id='" .$Cmysql->EscapeString($_POST['forum_id']). "'")); // Query the title of the forum
+		$fTitle = mysql_fetch_row($Cmysql->Query("SELECT title FROM forums WHERE id='" .$tName[1]. "'")); // Query the title of the forum
 		
 		if ( @$_POST['error_goback'] == "yes" ) // If user is redirected because of an error
 		{
 			// We output the form with data returned (user doesn't have to enter it again)
-			$Ctemplate->useTemplate("forum/topics_create_form", array(
-				'FORUM_ID'	=>	$_POST['forum_id'],
-				'FORUM_NAME'	=>	$fTitle[0],
-				'TITLE'	=>	$_POST['title'], // Title of the topic
-				'POST_TITLE'	=>	$_POST['post_title'], // Title of the post
-				'POST_CONTENT'	=>	$_POST['post_content'], // Post body
-				// The topic 'Lock' button will be get it's previous state
-				'LOCK_NO'	=>	($_POST['lock'] == 0 ? " checked" : ""),
-				'LOCK_YES'	=>	($_POST['lock'] == 1 ? " checked" : ""),
-				// The topic 'Highlight' button will be get it's previous state
-				'HIGHLIGHT_NO'	=>	($_POST['highlight'] == 0 ? " checked" : ""),
-				'HIGHLIGHT_YES'	=>	($_POST['highlight'] == 1 ? " checked" : ""),
+			$Ctemplate->useTemplate("forum/posts_create_form", array(
+				'FORUMID'	=>	$tName[1], // ID of the forum
+				'FORUM_NAME'	=>	$fTitle[0], // Header of the forum
+				'TOPICID'	=>	$_POST['id'], // ID of the topic
+				'TOPIC_NAME'	=>	$tName[0], // Title of the topic
+				'POST_TITLE'	=>	$_POST['post_title'], // Post title
+				'POST_CONTENT'	=>	$_POST['post_content'], // Post content
 			), FALSE);
 		} else {
 			// We output general form
-			$Ctemplate->useTemplate("forum/topics_create_form", array(
-				'FORUM_ID'	=>	$_POST['forum_id'],
-				'FORUM_NAME'	=>	$fTitle[0],
-				'TITLE'	=>	"", // Title of the topic
-				'POST_TITLE'	=>	"", // Title of the post
-				'POST_CONTENT'	=>	"", // Post body
-				// The topic will not be locked by default
-				'LOCK_NO'	=>	" checked",
-				'LOCK_YES'	=>	"",
-				// The topic will not be highlighted by default
-				'HIGHLIGHT_NO'	=>	" checked",
-				'HIGHLIGHT_YES'	=>	"",
+			$Ctemplate->useTemplate("forum/posts_create_form", array(
+				'FORUMID'	=>	$tName[1], // ID of the forum
+				'FORUM_NAME'	=>	$fTitle[0], // Header of the forum
+				'TOPICID'	=>	$_POST['id'], // ID of the topic
+				'TOPIC_NAME'	=>	$tName[0], // Title of the topic
+				'POST_TITLE'	=>	"", // Post title (nothing)
+				'POST_CONTENT'	=>	"", // Post content (nothing)
 			), FALSE);
 		}
 	}
@@ -136,72 +126,43 @@ if ( ( $uLvl[0] < $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
 	if ( @$_POST['post_do'] == "do" )
 	{
 		// Check for missing mandatory variables...
-		
-		if ( $_POST['title'] == NULL ) // Title of the topic
-		{
-			$Ctemplate->useTemplate("forum/topics_create_variable_error", array(
-				'VARIABLE'	=>	"{LANG_FORUMS_TITLE}", // Missing variable's name
-				'FORUM_ID'	=>	$_POST['forum_id'],
-				'TITLE'	=>	$_POST['title'], // Title of the topic (should be empty)
-				'POST_TITLE'	=>	$_POST['post_title'], // Title of the post
-				'POST_CONTENT'	=>	$_POST['post_content'], // Post body
-				'LOCK'	=>	$_POST['lock'],
-				'HIGHLIGHT'	=>	$_POST['highlight']
-			), FALSE);
-			
-			// We terminate the script
-			$Ctemplate->useStaticTemplate("forum/topics_create_foot", FALSE); // Footer
-			DoFooter();
-			exit;
-		}
-		
+
 		if ( $_POST['post_content'] == NULL ) // Post body
 		{
-			$Ctemplate->useTemplate("forum/topics_create_variable_error", array(
+			$Ctemplate->useTemplate("forum/posts_create_variable_error", array(
 				'VARIABLE'	=>	"{LANG_POSTS_POST}", // Missing variable's name
-				'FORUM_ID'	=>	$_POST['forum_id'],
-				'TITLE'	=>	$_POST['title'], // Title of the topic
+				'TOPICID'	=>	$_POST['id'],
 				'POST_TITLE'	=>	$_POST['post_title'], // Title of the post
 				'POST_CONTENT'	=>	$_POST['post_content'], // Post body (should be empty)
-				'LOCK'	=>	$_POST['lock'],
-				'HIGHLIGHT'	=>	$_POST['highlight']
 			), FALSE);
 			
 			// We terminate the script
-			$Ctemplate->useStaticTemplate("forum/topics_create_foot", FALSE); // Footer
+			$Ctemplate->useStaticTemplate("forum/posts_create_foot", FALSE); // Footer
 			DoFooter();
 			exit;
 		}
 		
 		// Every variable is entered, doing SQL work
-		$topic_create = $Cmysql->Query("INSERT INTO topics(forumid, title, createuser, createdate, locked, highlighted) VALUES (
-			'" .$Cmysql->EscapeString($_POST['forum_id']). "',
-			'" .$Cmysql->EscapeString($_POST['title']). "',
-			'" .$Cmysql->EscapeString($_SESSION['uid']). "', '" .time(). "',
-			'" .$Cmysql->EscapeString($_POST['lock']). "',
-			'" .$Cmysql->EscapeString($_POST['highlight']). "')"); // Topic creation
 		
 		$post_create = $Cmysql->Query("INSERT INTO posts(topicid, forumid, title, createuser, createdate, content) VALUES (
-			'" .mysql_insert_id(). "',
-			'" .$Cmysql->EscapeString($_POST['forum_id']). "',
+			'" .$Cmysql->EscapeString($_POST['id']). "',
+			'" .$Cmysql->EscapeString($tName[1]). "',
 			'" .$Cmysql->EscapeString($_POST['post_title']). "',
 			'" .$Cmysql->EscapeString($_SESSION['uid']). "', '" .time(). "',
 			'" .$Cmysql->EscapeString($_POST['post_content']). "')"); // Post adding (to the previously created topic)
 		
-		if ( ( $topic_create == FALSE ) && ( $post_create == FALSE ) )
+		if  ( $post_create == FALSE )
 		{
-		
-			$Ctemplate->useTemplate("forum/topics_create_error", array(
-				'FORUM_ID'	=>	$_POST['forum_id'],
-				'TITLE'	=>	$_POST['title'], // Title of the topic
+			$Ctemplate->useTemplate("forum/posts_create_error", array(
+				'TOPICID'	=>	$_POST['id'],
 				'POST_TITLE'	=>	$_POST['post_title'], // Title of the post
 				'POST_CONTENT'	=>	$_POST['post_content'] // Post body
 			), FALSE); // Give error if we failed the creation
-		} elseif ( ( $topic_create == TRUE ) && ( $post_create == TRUE ) )
+		} elseif ( $post_create == TRUE )
 		{
-			$Ctemplate->useTemplate("forum/topics_create_success", array(
-				'FORUM_ID'	=>	$_POST['forum_id'],
-				'TITLE'	=>	$_POST['title'], // Title of the topic
+			$Ctemplate->useTemplate("forum/posts_create_success", array(
+				'TOPICID'	=>	$_POST['id'],
+				'TITLE'	=>	(@$_POST['post_title'] == NULL ? "No title" : @$_POST['post_title']), // Title of the post
 			), FALSE); // Give success if we did it!
 		}
 	}
@@ -212,11 +173,11 @@ if ( ( $uLvl[0] < $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
 	$Ctemplate->useTemplate("errormessage", array(
 		'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
 		'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
-		'BODY'	=>	"{LANG_TOPICS_CREATE_GUEST_ERROR}", // Error text
+		'BODY'	=>	"{LANG_POSTS_CREATE_GUEST_ERROR}", // Error text
 		'ALT'	=>	"{LANG_PERMISSIONS_ERROR}", // Alternate picture text
 	), FALSE ); // Give rights error
 }
 
-$Ctemplate->useStaticTemplate("forum/topics_create_foot", FALSE); // Footer
+$Ctemplate->useStaticTemplate("forum/posts_create_foot", FALSE); // Footer
 DoFooter();
 ?>

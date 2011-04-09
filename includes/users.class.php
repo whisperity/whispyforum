@@ -177,7 +177,7 @@ class class_users
 		
 		$Ctemplate->useTemplate("user/userform_head", array(
 			'USERNAME'	=>	$_SESSION['username'], // Username (from session)
-			'AVATAR_FILENAME'	=>	$_SESSION['avatar_filename'] // Avatar file (requires implementation)
+			'AVATAR_FILENAME'	=>	$_SESSION['avatar_filename'] // Avatar file
 		), FALSE); // Beginning divs of userbox
 		
 		$Ctemplate->useStaticTemplate("user/userform_user-cp_link", FALSE); // User control panel link

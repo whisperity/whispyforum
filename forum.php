@@ -375,7 +375,7 @@ if ( !isset($_POST['action']) )
 		$thread_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM topics WHERE forumid='" .$row['id']. "'"));
 		
 		// Get last post
-		$last_post = mysql_fetch_assoc($Cmysql->Query("SELECT createuser, createdate FROM posts WHERE forumid='" .$row['id']. "' ORDER BY createdate DESC LIMIT 1"));
+		$last_post = mysql_fetch_assoc($Cmysql->Query("SELECT id, topicid, createuser, createdate FROM posts WHERE forumid='" .$row['id']. "' ORDER BY createdate DESC LIMIT 1"));
 		// and get last poster's name
 		$last_post_user = mysql_fetch_row($Cmysql->Query("SELECT username FROM users WHERE id='" .$last_post['createuser']. "'"));
 		
@@ -387,10 +387,12 @@ if ( !isset($_POST['action']) )
 			'TITLE'	=>	$row['title'], // Forum's title
 			'DESC'	=>	$row['info'], // Description
 			'CREATE_DATE'	=>	fDate($row['createdate']), // Creation date (human-readable formatted)
-			'LAST_POST'	=>	$Ctemplate->useTemplate("forum/topics_table_row_last_post", array(
+			'LAST_POST'	=>	($last_post['createdate'] != NULL ? $Ctemplate->useTemplate("forum/topics_table_row_last_post", array(
 				'DATESTAMP'	=>	fDate($last_post['createdate']),
-				'NAME'	=>	$last_post_user[0]
-			), TRUE), 
+				'NAME'	=>	$last_post_user[0],
+				'TOPICID'	=>	$last_post['topicid'],
+				'POSTID'	=>	$last_post['id'],
+			), TRUE) : $wf_lang['{LANG_POSTS_NO}']),
 			'THREADS'	=>	$thread_count[0],
 			'POSTS'	=>	$post_count[0],
 			'EDIT'	=>	($uLvl[0] >= 2 ? 

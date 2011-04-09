@@ -1,0 +1,15 @@
+<!--- BEGIN posts create form -->
+<!--- Usage: posts create new topic form -->
+<a href="forum.php">{LANG_FORUMS}</a> - <a href="viewtopics.php?id={FORUMID}">{FORUM_NAME}</a> - <a href="viewposts.php?id={TOPICID}">{TOPIC_NAME}</a><br><br>
+<font class="emphasis">{LANG_MANDATORY_VARIABLES_REDSTAR}</font>
+
+<form method="POST" action="newpost.php">
+<span class="form-header">{LANG_POSTS_CREATE_HEADER}</span><br>
+{LANG_POSTS_TITLE}: <input type="text" name="post_title" value="{POST_TITLE}" size=35><br>
+{LANG_POSTS_POST}<span class="red-star">*</span>:<br>
+<textarea class="forum-post-field" rows="15" cols="50" name="post_content">{POST_CONTENT}</textarea><br>
+<input type="hidden" name="id" value="{TOPICID}">
+<input type="hidden" name="post_do" value="do">
+<input type="submit" value="{LANG_POSTS_CREATE_NEW_BTN}">
+</form>
+<!--- END posts create form -->

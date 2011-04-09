@@ -392,7 +392,19 @@ When you logout, you're automatically redirected through this page by the engine
 	
 	'{LANG_POSTS}'	=>	"Posts",
 	'{LANG_POSTS_POST}'	=>	"Post",
+	'{LANG_POSTS_NO}'	=>	"No posts",
+	'{LANG_POSTS_VIEWLAST}'	=>	"View last post",
+	'{LANG_POSTS_TITLE}'	=>	"Title",
+	'{LANG_POSTS_BACKTOLIST}'	=>	"<< Back",
 	
 	'{LANG_POSTS_CREATE_NEW}'	=>	"New post",
+	'{LANG_POSTS_CREATE_NEW_BTN}'	=>	"Create new post",
+	'{LANG_POSTS_CREATE_GUEST_ERROR}'	=>	"Even though the forum allows you to see it as a guest, you cannot post in it. Please log in or register.",
+	'{LANG_POSTS_CREATE_HEADER}'	=>	"Create new post in topic: {TOPIC_NAME}",
+	'{LANG_POSTS_CREATE_VAR_ERROR}'	=>	"The post creation cannot be done until every required variable is entered.",
+	'{LANG_POSTS_CREATE_SQL_ERROR}'	=>	"There were errors executing the SQL query to post. No new post was created.",
+	'{LANG_POSTS_CREATE_SUCCESS_HEAD}'	=>	"Created the post",
+	'{LANG_POSTS_CREATE_SUCCESS}'	=>	"Creation of post {TITLE}",
+	'{LANG_POSTS_CREATE_TOPIC_DOES_NOT_EXIST}'	=>	"The topic you wanted to create a new post in does not exists.",
 );
 ?>

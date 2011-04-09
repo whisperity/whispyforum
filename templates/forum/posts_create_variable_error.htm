@@ -1,0 +1,20 @@
+<!--- BEGIN posts create variable error -->
+<!--- Usage: post creation form, missing variable error box -->
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_txt.png" alt="{LANG_ERROR_EXCLAMATION}"></td>
+		<td class="errortitle">{LANG_ERROR_EXCLAMATION}</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">{LANG_VAR_REQ_NOT_ENTERED} {LANG_POSTS_CREATE_VAR_ERROR}</td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+<form method="POST" action="newpost.php">
+<input type="hidden" name="id" value="{TOPICID}">
+<input type="hidden" name="post_title" value="{POST_TITLE}">
+<input type="hidden" name="post_content" value="{POST_CONTENT}">
+<input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
+<input type="submit" value="{LANG_BB_BACK}">
+</form>
+<!--- END posts create variable error -->

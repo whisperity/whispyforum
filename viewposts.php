@@ -94,14 +94,33 @@ if ( $uLvl[0] < $fMLvl[0] )
 	
 	$tName = $topic_array['title']; // Name of the topic
 	
+	if ( $uLvl == FALSE )
+	{
+		// If the user is a guest, give no option to post
+		$new_post_button = "<br>"; // We need to set the variable to avoid errors
+	} elseif ( ( $uLvl[0] >= $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
+	{
+		// If the user has the rights to view the forum and is logged in
+		// set different new post buttons for later use
+		
+		if ( $topic_array['locked'] == 0 )
+		{
+			// If the topic isn't locked
+			$new_post_button = $Ctemplate->useTemplate("forum/posts_new", array(
+				'TOPIC_ID'	=>	$id
+			), TRUE); // Set the new post button to a variable for later use
+		} elseif ( $topic_array['locked'] == 1 )
+		{
+			// If the topic is locked
+			$new_post_button = $Ctemplate->useStaticTemplate("forum/posts_new_locked", TRUE); // Set an error picture to a variable for later use
+		}
+	}
+	
 	$Ctemplate->useTemplate("forum/posts_list_head", array(
 		'FORUMID'	=>	$topic_array['forumid'], // ID of the forum the topic is in
 		'FORUM_NAME'	=>	$fName[0],
 		'TOPIC_NAME'	=>	$tName,
-		'NEW_POST'	=>	($topic_array['locked'] == 0 ? 
-			$Ctemplate->useTemplate("forum/posts_new", array(
-				'TOPIC_ID'	=>	$id
-			), TRUE) : $Ctemplate->useStaticTemplate("forum/posts_new_locked", TRUE)), // New post button (or error if the topic is locked)
+		'NEW_POST'	=>	$new_post_button
 	), FALSE); // Output opening of posts table
 	
 	/**
@@ -110,7 +129,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 	 * syntax.
 	 */
 	
-	$usr_post_split_value = 2; // dev value // Use the user's preference (queried from session)
+	$usr_post_split_value = $_SESSION['forum_post_count_per_page']; // Use the user's preference (queried from session)
 	
 	// Query the total number of NORMAL (not highlighted) topics in the current forum
 	$post_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM posts WHERE topicid='" .$Cmysql->EscapeString($id). "'"));
@@ -149,7 +168,16 @@ if ( $uLvl[0] < $fMLvl[0] )
 			}
 		}
 		
-		$Ctemplate->useTemplate("forum/posts_row", array(
+		// Use seperate post template for posts having and not having title
+		if ( $row['title'] == NULL )
+		{
+			$WithOrWithout = "without"; // Use template without title
+		} else {
+			$WithOrWithout = "with"; // Use template with title
+		}
+		
+		$Ctemplate->useTemplate("forum/posts_row_" .$WithOrWithout. "_title", array(
+			'ID'	=>	$row['id'], // Post ID
 			'USERNAME'	=>	$uData['username'], // Poster's name
 			'IMGSRC'	=>	$poster_avatar, // Poster's avatar (or your theme's default if poster does not have one)
 			'REGDATE'	=>	fDate($uData['regdate']), // Poster's registration date
@@ -157,8 +185,10 @@ if ( $uLvl[0] < $fMLvl[0] )
 			'LOG_ALT'	=>	"{LANG_" . ($uData['loggedin'] == 1 ? "ONLINE" : "OFFLINE"). "}", // Alternate text for log_status picture
 			'TITLE'	=>	$row['title'], // Post title
 			'DATE'	=>	fDate($row['createdate']), // Post date
-			'TEXT'	=>	$row['content'] // The post itself
+			'TEXT'	=>	bbDecode($row['content']) // The post itself
 		), FALSE); // Output one row for the post
+		
+		$WithOrWithout = ""; // Clear
 	}
 	
 	$Ctemplate->useStaticTemplate("forum/posts_list_foot", FALSE);

@@ -330,7 +330,7 @@ switch ($instPos)
 		$dbtables_menuEntries_data = FALSE; // We failed adding the default data first
 		$dbtables_menuEntries_data = $Cmysql->Query("INSERT INTO menu_entries(menu_id, label, href) VALUES
 		(1, 'Homepage', 'index.php'),
-		(1, 'Forum', 'forum.php'),"); // $dbtables_menuEntries_data sets to true if we succeeded adding default data
+		(1, 'Forum', 'forum.php')"); // $dbtables_menuEntries_data sets to true if we succeeded adding default data
 		
 		// We check menu entries table creation
 		if ( ( $dbtables_menuEntries == FALSE) || ( $dbtables_menuEntries_data == FALSE ) )
@@ -365,8 +365,12 @@ switch ($instPos)
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'data for forums'"); // $dbtables_forums sets to true if we succeeded creating a table
 		
+		$dbtables_forums_data = FALSE; // We failed adding the default data first
+		$dbtables_forums_data = $Cmysql->Query("INSERT INTO forums(title, info, minLevel, createdate) VALUES
+		(1, 'Forum', 'This is an automatically created forum for You', '0', '" .time(). "')"); // $dbtables_forums_data sets to true if we succeeded adding default data
+		
 		// We check forums table creation
-		if ( $dbtables_forums == FALSE )
+		if ( ( $dbtables_forums == FALSE ) || ( $dbtables_forums_data == FALSE ) )
 		{
 			// Give error
 			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
@@ -377,7 +381,7 @@ switch ($instPos)
 			$tablecreation = FALSE;
 			
 			$tablelist .= ", forums"; // Append forums table name to fail-list
-		} elseif ( $dbtables_forums != FALSE )
+		} elseif ( ( $dbtables_forums != FALSE ) && ( $dbtables_forums_data != FALSE ) )
 		{
 			// Give success
 			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
@@ -400,8 +404,12 @@ switch ($instPos)
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'data for topics'"); // $dbtables_topics sets to true if we succeeded creating a table
 		
+		$dbtables_topics_data = FALSE; // We failed adding the default data first
+		$dbtables_topics_data = $Cmysql->Query("INSERT INTO topics(forumid, title, createuser, createdate, locked, highlighted) VALUES
+		(1, 'Topic', '1', '" .time(). "', '0', '0')"); // $dbtables_topics_data sets to true if we succeeded adding default data
+		
 		// We check topics table creation
-		if ( $dbtables_topics == FALSE )
+		if ( ( $dbtables_topics == FALSE ) || ( $dbtables_topics_data == FALSE ) )
 		{
 			// Give error
 			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
@@ -412,7 +420,7 @@ switch ($instPos)
 			$tablecreation = FALSE;
 			
 			$tablelist .= ", topics"; // Append topics table name to fail-list
-		} elseif ( $dbtables_topics != FALSE )
+		} elseif ( ( $dbtables_topics != FALSE ) && ( $dbtables_topics_data != FALSE ) )
 		{
 			// Give success
 			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
@@ -435,8 +443,12 @@ switch ($instPos)
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'data for posts'"); // $dbtables_posts sets to true if we succeeded creating a table
 		
+		$dbtables_posts_data = FALSE; // We failed adding the default data first
+		$dbtables_posts_data = $Cmysql->Query("INSERT INTO posts(topicid, forumid, title, createuser, createdate, content) VALUES
+		(1, 1, 'First post', '1', '" .time(). "', 'This is your first post to show you the forum. You can delete this if you want to!')"); // $dbtables_posts_data sets to true if we succeeded adding default data
+		
 		// We check posts table creation
-		if ( $dbtables_posts == FALSE )
+		if ( ( $dbtables_posts == FALSE ) || ( $dbtables_posts_data == FALSE ) )
 		{
 			// Give error
 			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
@@ -447,7 +459,7 @@ switch ($instPos)
 			$tablecreation = FALSE;
 			
 			$tablelist .= ", posts"; // Append posts table name to fail-list
-		} elseif ( $dbtables_posts != FALSE )
+		} elseif ( ( $dbtables_posts != FALSE ) && ( $dbtables_posts_data != FALSE ) )
 		{
 			// Give success
 			$Ctemplate->useTemplate("install/ins_dbtables_success", array(

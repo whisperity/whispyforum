@@ -304,9 +304,9 @@ if ( $uLvl[0] < $fMLvl[0] )
 		}
 		
 		$Ctemplate->useTemplate("forum/topics_table_open", array(
-			'CREATE_NEW_TOPIC'	=>	$Ctemplate->useTemplate("forum/topics_create_new", array(
+			'CREATE_NEW_TOPIC'	=>	( ($uLvl[0] >= $fMLvl[0]) && ($uLvl[0] != "0") ? $Ctemplate->useTemplate("forum/topics_create_new", array(
 					'FORUM_ID'	=>	$id // ID of the forum we're creating the theme into
-				), TRUE), // Output button of new topic creation
+				), TRUE) : "<br>"), // Output button of new topic creation (only if the user is logged in and has rights to view the forum)
 			'ADMIN_ACTIONS'	=>	($uLvl[0] >= 2 ? 
 				$Ctemplate->useStaticTemplate("forum/forums_admin_actions", TRUE) // Return the header
 			: NULL ), // Output header for admin actions only if the user is moderator or higher
@@ -326,7 +326,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 			$Hpost_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM posts WHERE topicid='" .$Hrow['id']. "'"));
 			
 			// Get last post
-			$Hlast_post = mysql_fetch_assoc($Cmysql->Query("SELECT createuser, createdate FROM posts WHERE topicid='" .$Hrow['id']. "' LIMIT 1"));
+			$Hlast_post = mysql_fetch_assoc($Cmysql->Query("SELECT id, topicid, createuser, createdate FROM posts WHERE topicid='" .$Hrow['id']. "' ORDER BY createdate DESC LIMIT 1"));
 			// and get last poster's name
 			$Hlast_post_user = mysql_fetch_row($Cmysql->Query("SELECT username FROM users WHERE id='" .$Hlast_post['createuser']. "'"));
 			
@@ -339,10 +339,12 @@ if ( $uLvl[0] < $fMLvl[0] )
 				'TITLE'	=>	$Hrow['title'], // Title of the topic
 				'CREATOR'	=>	$Hcreator_uName[0], // Username of creator
 				'CREATION_DATE'	=>	fDate($Hrow['createdate']), // Creation timestamp
-				'LAST_POST'	=>	$Ctemplate->useTemplate("forum/topics_table_row_last_post", array(
+				'LAST_POST'	=>	($Hlast_post['createdate'] != NULL ? $Ctemplate->useTemplate("forum/topics_table_row_last_post", array(
 					'DATESTAMP'	=>	fDate($Hlast_post['createdate']),
-					'NAME'	=>	$Hlast_post_user[0]
-				), TRUE), 
+					'NAME'	=>	$Hlast_post_user[0],
+					'TOPICID'	=>	$Hlast_post['topicid'],
+					'POSTID'	=>	$Hlast_post['id'],
+				), TRUE) : $wf_lang['{LANG_POSTS_NO}']),
 				'POSTS'	=>	$Hpost_count[0],
 				'EDIT'	=>	($uLvl[0] >= 2 ?
 					$Ctemplate->useTemplate("forum/topics_admin_edit", array(
@@ -396,7 +398,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 			$post_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM posts WHERE topicid='" .$row['id']. "'"));
 			
 			// Get last post
-			$last_post = mysql_fetch_assoc($Cmysql->Query("SELECT createuser, createdate FROM posts WHERE topicid='" .$row['id']. "' ORDER BY createdate DESC LIMIT 1"));
+			$last_post = mysql_fetch_assoc($Cmysql->Query("SELECT id, topicid, createuser, createdate FROM posts WHERE topicid='" .$row['id']. "' ORDER BY createdate DESC LIMIT 1"));
 			// and get last poster's name
 			$last_post_user = mysql_fetch_row($Cmysql->Query("SELECT username FROM users WHERE id='" .$last_post['createuser']. "'"));
 			
@@ -409,10 +411,12 @@ if ( $uLvl[0] < $fMLvl[0] )
 				'TITLE'	=>	$row['title'], // Title of the topic
 				'CREATOR'	=>	$creator_uName[0], // Username of creator
 				'CREATION_DATE'	=>	fDate($row['createdate']), // Creation timestamp
-				'LAST_POST'	=>	$Ctemplate->useTemplate("forum/topics_table_row_last_post", array(
+				'LAST_POST'	=> ($last_post['createdate'] != NULL ? $Ctemplate->useTemplate("forum/topics_table_row_last_post", array(
 					'DATESTAMP'	=>	fDate($last_post['createdate']),
-					'NAME'	=>	$last_post_user[0]
-				), TRUE), 
+					'NAME'	=>	$last_post_user[0],
+					'TOPICID'	=>	$last_post['topicid'],
+					'POSTID'	=>	$last_post['id'],
+				), TRUE) : $wf_lang['{LANG_POSTS_NO}']),
 				'POSTS'	=>	$post_count[0],
 				'EDIT'	=>	($uLvl[0] >= 2 ?
 					$Ctemplate->useTemplate("forum/topics_admin_edit", array(
