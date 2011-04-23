@@ -175,7 +175,8 @@ function bbDecode($input)
 		"<br>"
 	);
 	
-	$output = preg_replace($bbCode, $htmlTags, $input);
+	$output = htmlspecialchars($input, ENT_QUOTES, 'UTF-8'); // Kill the HTML codes inside
+	$output = preg_replace($bbCode, $htmlTags, $output); // Parse the BB codes
 	
 	global $wf_lang; // Initializing language array
 	
@@ -194,7 +195,7 @@ function bbDecode($input)
 	}
 	/* Replacing language tokens */
 	
-	return $output; 
+	return $output; // Return the formatted variable
 }
 
 function fDate($date = "current")

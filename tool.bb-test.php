@@ -2,15 +2,19 @@
  /**
  * WhispyForum tool - bb code tester
  * 
+ * Use this to try out BB code formatted text (for example, in the forum)
+ *
+ * Even though this file is marked as a TOOL, DO NOT DELETE IT!
+ * 
  * WhispyForum
  */
 
-include('includes/load.php'); // We load the environment as usual
+include('includes/safeload.php'); // We load the engine, but not the framework
 
 if ( isset($_POST['text']) )
 {
 	// Parse text
-	echo bbDecode($_POST['text']);
+	echo bbDecode($Cmysql->EscapeString($_POST['text']));
 }
 
 $Ctemplate->useTemplate("bbcodes", array(

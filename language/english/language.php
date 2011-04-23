@@ -15,6 +15,9 @@
  * Please do not translate the words between { and } characters
  * (like {LANG_LEFT}, {TITLE} and so on...).
  * 
+ * Also, do not translate HTML code elements. It'll broke the system
+ * if you do so.
+ * 
  * Those are variable keys, which MUSTN'T BE LOCALIZED!!
  *
  *  *********************************************************
@@ -316,6 +319,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_VAR_REQ_NOT_ENTERED}'	=>	"You didn't entered one of the required variables, {VARIABLE} cannot be empty.",
 	
 	/* BB codes */
+	'{LANG_BB_VIEWCODES}'	=>	"View BB codes",
 	'{LANG_BB_TAG_CODE}'	=>	"Code:",
 	'{LANG_BB_TAG_QUOTE}'	=>	"Quote:",
 	'{LANG_BB_TAG_QUOTE_BY}'	=>	"Quote by:",

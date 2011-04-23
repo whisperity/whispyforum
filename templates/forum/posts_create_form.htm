@@ -6,7 +6,7 @@
 <form method="POST" action="newpost.php">
 <span class="form-header">{LANG_POSTS_CREATE_HEADER}</span><br>
 {LANG_POSTS_TITLE}: <input type="text" name="post_title" value="{POST_TITLE}" size=35><br>
-{LANG_POSTS_POST}<span class="red-star">*</span>:<br>
+{LANG_POSTS_POST}<span class="red-star">*</span> <small>(<a href="tool.bb-test.php" target="_blank">{LANG_BB_VIEWCODES}</a>)</small>:<br>
 <textarea class="forum-post-field" rows="15" cols="50" name="post_content">{POST_CONTENT}</textarea><br>
 <input type="hidden" name="id" value="{TOPICID}">
 <input type="hidden" name="post_do" value="do">
