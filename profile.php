@@ -101,6 +101,14 @@ switch ($userData['userLevel'])
 include('language/' .$userData['language']. '/definition.php');
 // This loads an array $wf_lang_def containing two keys essential for us here
 
+/* Badge data */
+$firstpost = $Cbadges->CheckBadge('FIRSTPOST', $_GET['id']);
+$avatar_badge = $Cbadges->CheckBadge('AVATAR', $_GET['id']);
+$fifty_post = $Cbadges->CheckBadge('FIFTY_POST', $_GET['id']);
+$twentyfifty_post = $Cbadges->CheckBadge('TWENTYFIFTY_POST', $_GET['id']);
+$fivehundred_post = $Cbadges->CheckBadge('FIVEHUNDRED_POST', $_GET['id']);
+$thousand_post = $Cbadges->CheckBadge('THOUSAND_POST', $_GET['id']);
+
 $Ctemplate->useTemplate("user/profile_body", array(
 	'USERNAME'	=>	$userData['username'],
 	'EMAIL'	=>	$userData['email'],
@@ -112,7 +120,47 @@ $Ctemplate->useTemplate("user/profile_body", array(
 	'LANGUAGE'	=>	$wf_lang_def['LOCALIZED_NAME']." (".$wf_lang_def['SHORT_NAME'].")",
 	'FORUM_TOPICS_PER_PAGE'	=>	$userData['forum_topic_count_per_page'],
 	'FORUM_POSTS_PER_PAGE'	=>	$userData['forum_post_count_per_page'],
-	'POST_COUNT'	=>	$userData['post_count']
+	'POST_COUNT'	=>	$userData['post_count'],
+	
+	'BADGES'	=>	$Cbadges->BadgeCount($_GET['id']),
+	'TOTAL_BADGES'	=>	$Cbadges->TotalBadgeCount(),
+	'BADGES_PERCENT'	=>	round(( ($Cbadges->BadgeCount($_GET['id']) / $Cbadges->TotalBadgeCount()) * 100), 1),
+	
+	/* FIRSTPOST badge */
+	'BADGE_FIRSTPOST_PIC'	=>	$firstpost['picture'],
+	'BADGE_FIRSTPOST'	=>	$firstpost['name'],
+	'BADGE_FIRSTPOST_TOOLTIP'	=>	$firstpost['tooltip'],
+	'BADGE_FIRSTPOST_EARNDATE'	=>	($firstpost['earndate'] == 0 ? $wf_lang['{LANG_NOT_YET}'] : fDate($firstpost['earndate'])),
+	
+	/* AVATAR badge */
+	'BADGE_AVATAR_PIC'	=>	$avatar_badge['picture'],
+	'BADGE_AVATAR'	=>	$avatar_badge['name'],
+	'BADGE_AVATAR_TOOLTIP'	=>	$avatar_badge['tooltip'],
+	'BADGE_AVATAR_EARNDATE'	=>	($avatar_badge['earndate'] == 0 ? $wf_lang['{LANG_NOT_YET}'] : fDate($avatar_badge['earndate'])),
+	
+	/* FIFTY_POST badge */
+	'BADGE_FIFTY_POST_PIC'	=>	$fifty_post['picture'],
+	'BADGE_FIFTY_POST'	=>	$fifty_post['name'],
+	'BADGE_FIFTY_POST_TOOLTIP'	=>	$fifty_post['tooltip'],
+	'BADGE_FIFTY_POST_EARNDATE'	=>	($fifty_post['earndate'] == 0 ? $wf_lang['{LANG_NOT_YET}'] : fDate($fifty_post['earndate'])),
+	
+	/* TWENTYFIFTY_POST badge */
+	'BADGE_TWENTYFIFTY_POST_PIC'	=>	$twentyfifty_post['picture'],
+	'BADGE_TWENTYFIFTY_POST'	=>	$twentyfifty_post['name'],
+	'BADGE_TWENTYFIFTY_POST_TOOLTIP'	=>	$twentyfifty_post['tooltip'],
+	'BADGE_TWENTYFIFTY_POST_EARNDATE'	=>	($twentyfifty_post['earndate'] == 0 ? $wf_lang['{LANG_NOT_YET}'] : fDate($twentyfifty_post['earndate'])),
+	
+	/* FIVEHUNDRED_POST badge */
+	'BADGE_FIVEHUNDRED_POST_PIC'	=>	$fivehundred_post['picture'],
+	'BADGE_FIVEHUNDRED_POST'	=>	$fivehundred_post['name'],
+	'BADGE_FIVEHUNDRED_POST_TOOLTIP'	=>	$fivehundred_post['tooltip'],
+	'BADGE_FIVEHUNDRED_POST_EARNDATE'	=>	($fivehundred_post['earndate'] == 0 ? $wf_lang['{LANG_NOT_YET}'] : fDate($fivehundred_post['earndate'])),
+	
+	/* THOUSAND_POST badge */
+	'BADGE_THOUSAND_POST_PIC'	=>	$thousand_post['picture'],
+	'BADGE_THOUSAND_POST'	=>	$thousand_post['name'],
+	'BADGE_THOUSAND_POST_TOOLTIP'	=>	$thousand_post['tooltip'],
+	'BADGE_THOUSAND_POST_EARNDATE'	=>	($thousand_post['earndate'] == 0 ? $wf_lang['{LANG_NOT_YET}'] : fDate($thousand_post['earndate']))
 ), FALSE); // Output profile box
 
 }

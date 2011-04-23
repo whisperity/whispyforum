@@ -97,6 +97,8 @@ $wf_lang = array(
 	'{LANG_HEIGHT}'	=>	"Height",
 	'{LANG_OFFLINE}'	=>	"Offline",
 	'{LANG_ONLINE}'	=>	"Online",
+	'{LANG_EARNED_AT}'	=>	"earned at",
+	'{LANG_NOT_YET}'	=>	"not yet",
 	
 	/* SQL */
 	'{LANG_SQL_ERROR}'	=>	"mySQL error",
@@ -193,12 +195,31 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_PROFILE_LOGGEDIN}'	=>	"Logged in",
 	'{LANG_PROFILE_LANGUAGE}'	=>	"Preferred language",
 	
+	/* Badges */
+	'{LANG_BADGES_TOTAL_ACCUMULATED}'	=>	"Number of badges earned",
+	'{LANG_BADGES_UNDEFINED}'	=>	"Unknown badge!",
+	'{LANG_BADGES_UNDEFINED_BODY}'	=>	"The script tried to use the <tt>{BADGE_NAME}</tt> badge, but such badge does not exist.",
+	'{LANG_BADGES_LOCKED}'	=>	"Locked",
+	'{LANG_BADGES_LOCKED_TIP}'	=>	"This badge is locked.",
+	'{LANG_BADGES_AVATAR}'	=>	"It's me!",
+	'{LANG_BADGES_AVATAR_TIP}'	=>	"Upload your personal avatar.",
+	'{LANG_BADGES_FIRSTPOST}'	=>	"Late from the party",
+	'{LANG_BADGES_FIRSTPOST_TIP}'	=>	"Contribute your first post.",
+	'{LANG_BADGES_FIFTY_POST}'	=>	"Annual",
+	'{LANG_BADGES_FIFTY_POST_TIP}'	=>	"This was your 50th post.",
+	'{LANG_BADGES_TWENTYFIFTY_POST}'	=>	"Trying outer worlds",
+	'{LANG_BADGES_TWENTYFIFTY_POST_TIP}'	=>	"Post 250 times.",
+	'{LANG_BADGES_FIVEHUNDRED_POST}'	=>	"Eye of the needle, spool of the thread",
+	'{LANG_BADGES_FIVEHUNDRED_POST_TIP}'	=>	"Your 500 posts are something to be proud of.",
+	'{LANG_BADGES_THOUSAND_POST}'	=>	"Sewing machine",
+	'{LANG_BADGES_THOUSAND_POST_TIP}'	=>	"Reach 1000 posts. Period.",
+	
 	/* Control panel */
 	'{LANG_CP_LOWERCASE}'	=>	"control panel",
 	'{LANG_CP_UPPERCASE}'	=>	"Control panel",
 	'{LANG_UCP_TOOLTIP}'	=>	"User control panel",
 	'{LANG_UCP_USER_CUSTOMIZATION}'	=>	"User customization",
-	'{LANG_REGISTERED}'	=>	"Registered:",
+	'{LANG_REGISTERED}'	=>	"Registered",
 	
 	/* Avatar */
 	'{LANG_USR_YOUR_AVATAR}'	=>	"Your avatar",
@@ -338,7 +359,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_FORUMS_CREATE_SUCCESS}'	=>	"Creation of forum {TITLE}",
 	
 	'{LANG_FORUMS_PAGES}'	=>	"Pages ({CURRENT_PAGE} out of {PAGE_TOTAL}):",
-	'{LANG_FORUMS_LAST_POST_BY}'	=>	"by {NAME}",
+	'{LANG_FORUMS_LAST_POST_BY}'	=>	'by <a href="profile.php?id={USERID}" alt="{LANG_PROFILE_VIEW}">{NAME}</a>',
 	
 	'{LANG_FORUMS_EDIT}'	=>	"Edit",
 	'{LANG_FORUMS_EDIT_HEADER}'	=>	"Edit forum: {OTITLE}",
@@ -404,7 +425,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_POSTS_VIEWLAST}'	=>	"View last post",
 	'{LANG_POSTS_TITLE}'	=>	"Title",
 	'{LANG_POSTS_BACKTOLIST}'	=>	"<< Back",
-	'{LANG_POSTS_COUNT}'	=>	"Posts:",
+	'{LANG_POSTS_COUNT}'	=>	"Posts",
 	
 	'{LANG_POSTS_CREATE_NEW}'	=>	"New post",
 	'{LANG_POSTS_CREATE_NEW_BTN}'	=>	"Create new post",

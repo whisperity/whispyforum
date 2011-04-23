@@ -150,3 +150,13 @@ ALTER TABLE `users` ADD `forum_post_count_per_page` smallint(3) NOT NULL DEFAULT
 # Revision 618 (adding user's post count)
 #
 ALTER TABLE `users` ADD `post_count` int(6) NOT NULL DEFAULT '0' COMMENT 'number of posts from the user';
+
+#
+# Revision 627 (adding the badges (achievements) system)
+#
+CREATE TABLE IF NOT EXISTS badges (
+	`userid` int(10) NOT NULL COMMENT 'id of the user who earned the badge',
+	`badgename` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'name of the badge the user earned (refers badge class _badge_array)',
+	`earndate` int(16) NOT NULL DEFAULT '0' COMMENT 'timestamp when the user earned the badge',
+	UNIQUE KEY `userid AND badgename` (`userid`,`badgename`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'badge information';

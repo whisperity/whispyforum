@@ -110,6 +110,8 @@ switch ($site)
 						
 						$_SESSION['avatar_filename'] = $fnToken.$fExt; // Update session with new avatar filename (refreshing avatar does not need user relog)
 						
+						$Cbadges->GrantBadge("AVATAR"); // Give badge for avatar upload
+						
 						// Successful upload
 						$Ctemplate->useTemplate("user/cp_avatar_upload_success", array(
 							'AVATAR_FILENAME'	=>	$fnToken.$fExt

@@ -202,6 +202,41 @@ if ( ( $uLvl[0] < $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
 			$post_count = mysql_fetch_row($Cmysql->Query("SELECT post_count FROM users WHERE id='" .$_SESSION['uid']. "'")); // Query the current post count
 			$Cmysql->Query("UPDATE users SET post_count='" .($post_count[0] + 1). "' WHERE id='" .$_SESSION['uid']. "'"); // Append +1 post
 			
+			/* Badge giving */
+			// We do seperate IFs here, because if the system couldn't give the previous badge, we allow the user to earn it again (at the next post count level)
+			if ( ($post_count[0] + 1) >= 1 )
+			{
+				// If the user's new post count is greater or equal than 1
+				// (funny, because this is the users first post)
+				
+				$Cbadges->GrantBadge("FIRSTPOST"); // give the user the FIRSTPOST badge
+			}
+			if ( ($post_count[0] +1 ) >= 50 )
+			{
+				// If the user's new post count is greater or equal than 50
+				
+				$Cbadges->GrantBadge("FIFTY_POST"); // give the user the FIFTY_POST badge
+			}
+			if ( ($post_count[0] +1 ) >= 250 )
+			{
+				// If the user's new post count is greater or equal than 250
+				
+				$Cbadges->GrantBadge("TWENTYFIFTY_POST"); // give the user the TWENTYFIFTY_POST badge
+			}
+			if ( ($post_count[0] +1 ) >= 500 )
+			{
+				// If the user's new post count is greater or equal than 500
+				
+				$Cbadges->GrantBadge("FIVEHUNDRED_POST"); // give the user the FIVEHUNDRED_POST badge
+			}
+			if ( ($post_count[0] +1 ) >= 1000 )
+			{
+				// If the user's new post count is greater or equal than 1000
+				
+				$Cbadges->GrantBadge("THOUSAND_POST"); // give the user the THOUSAND_POST badge
+			}
+			/* Badge giving */
+			
 			$Ctemplate->useTemplate("forum/topics_create_success", array(
 				'FORUM_ID'	=>	$_POST['forum_id'],
 				'TITLE'	=>	$_POST['title'], // Title of the topic

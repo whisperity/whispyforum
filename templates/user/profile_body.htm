@@ -5,19 +5,19 @@
 	<td valign="top">
 		<table border="0" style="width: 100%">
 		<tr>
-			<td>{LANG_USERNAME}:</td>
+			<td><font class="emphasis">{LANG_USERNAME}:</font></td>
 			<td>{USERNAME}</td>
 		</tr>
 		<tr>
-			<td>{LANG_EMAIL}:</td>
+			<td><font class="emphasis">{LANG_EMAIL}:</font></td>
 			<td>{EMAIL}</td>
 		</tr>
 		<tr>
-			<td>{LANG_REGISTERED}:</td>
+			<td><font class="emphasis">{LANG_REGISTERED}:</font></td>
 			<td>{REGDATE}</td>
 		</tr>
 		<tr>
-			<td>{LANG_USERLEVEL}:</td>
+			<td><font class="emphasis">{LANG_USERLEVEL}:</font></td>
 			<td>{LEVEL}</td>
 		</tr>
 		</table>
@@ -28,7 +28,7 @@
 			<td colspan="2"><img src="{IMGSRC}" alt="{LANG_USERNAMES_AVATAR}"></td>
 		</tr>
 		<tr>
-			<td>{LANG_PROFILE_LOGGEDIN}:</td>
+			<td><font class="emphasis">{LANG_PROFILE_LOGGEDIN}:</font></td>
 			<td><img src="themes/winky/{LOG_STATUS}.png" alt="{LOG_ALT}"></td>
 		</tr>
 		</table>
@@ -38,15 +38,15 @@
 	<td valign="top">
 		<table border="0" style="width: 100%">
 		<tr>
-			<td>{LANG_UCP_FORUM_TOPICS_PER_PAGE}:</td>
+			<td><font class="emphasis">{LANG_UCP_FORUM_TOPICS_PER_PAGE}:</font></td>
 			<td>{FORUM_TOPICS_PER_PAGE}</td>
 		</tr>
 		<tr>
-			<td>{LANG_UCP_FORUM_POSTS_PER_PAGE}:</td>
+			<td><font class="emphasis">{LANG_UCP_FORUM_POSTS_PER_PAGE}:</font></td>
 			<td>{FORUM_POSTS_PER_PAGE}</td>
 		</tr>
 		<tr>
-			<td>{LANG_POSTS_COUNT}:</td>
+			<td><font class="emphasis">{LANG_POSTS_COUNT}:</font></td>
 			<td>{POST_COUNT}</td>
 		</tr>
 		</table>
@@ -54,8 +54,80 @@
 	<td valign="top">
 		<table border="0" style="width: 100%">
 		<tr>
-			<td>{LANG_PROFILE_LANGUAGE}:</td>
+			<td><font class="emphasis">{LANG_PROFILE_LANGUAGE}:</font></td>
 			<td>{LANGUAGE}</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+<tr>
+	<td valign="top" colspan="2">
+	{LANG_BADGES_TOTAL_ACCUMULATED}: {BADGES}/{TOTAL_BADGES} ({BADGES_PERCENT}%)
+		<table border="0" style="width: 100%">
+		<tr>
+			<td>
+				<table border="0" style="width: 100%">
+				<tr>
+					<td><img src="themes/{THEME_NAME}/{BADGE_AVATAR_PIC}" alt="{BADGE_AVATAR_TOOLTIP}"></td>
+				</tr>
+				<tr>
+					<td><font class="emphasis">{BADGE_AVATAR}</font><br><small>{BADGE_AVATAR_TOOLTIP}<br>({LANG_EARNED_AT}: {BADGE_AVATAR_EARNDATE})</small></td>
+				</tr>
+				</table>
+			</td>
+			<td>
+				<table border="0" style="width: 100%">
+				<tr>
+					<td><img src="themes/{THEME_NAME}/{BADGE_FIRSTPOST_PIC}" alt="{BADGE_FIRSTPOST_TOOLTIP}"></td>
+				</tr>
+				<tr>
+					<td><font class="emphasis">{BADGE_FIRSTPOST}</font><br><small>{BADGE_FIRSTPOST_TOOLTIP}<br>({LANG_EARNED_AT}: {BADGE_FIRSTPOST_EARNDATE})</small></td>
+				</tr>
+				</table>
+			</td>
+			<td>
+				<table border="0" style="width: 100%">
+				<tr>
+					<td><img src="themes/{THEME_NAME}/{BADGE_FIFTY_POST_PIC}" alt="{BADGE_FIFTY_POST_TOOLTIP}"></td>
+				</tr>
+				<tr>
+					<td><font class="emphasis">{BADGE_FIFTY_POST}</font><br><small>{BADGE_FIFTY_POST_TOOLTIP}<br>({LANG_EARNED_AT}: {BADGE_FIFTY_POST_EARNDATE})</small></td>
+				</tr>
+				</table>
+			</td>
+			<td>
+				<table border="0" style="width: 100%">
+				<tr>
+					<td><img src="themes/{THEME_NAME}/{BADGE_TWENTYFIFTY_POST_PIC}" alt="{BADGE_TWENTYFIFTY_POST_TOOLTIP}"></td>
+				</tr>
+				<tr>
+					<td><font class="emphasis">{BADGE_TWENTYFIFTY_POST}</font><br><small>{BADGE_TWENTYFIFTY_POST_TOOLTIP}<br>({LANG_EARNED_AT}: {BADGE_TWENTYFIFTY_POST_EARNDATE})</small></td>
+				</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<table border="0" style="width: 100%">
+				<tr>
+					<td><img src="themes/{THEME_NAME}/{BADGE_FIVEHUNDRED_POST_PIC}" alt="{BADGE_FIVEHUNDRED_POST_TOOLTIP}"></td>
+				</tr>
+				<tr>
+					<td><font class="emphasis">{BADGE_FIVEHUNDRED_POST}</font><br><small>{BADGE_FIVEHUNDRED_POST_TOOLTIP}<br>({LANG_EARNED_AT}: {BADGE_FIVEHUNDRED_POST_EARNDATE})</small></td>
+				</tr>
+				</table>
+			</td>
+			<td colspan="2">
+				<table border="0" style="width: 100%">
+				<tr>
+					<td><img src="themes/{THEME_NAME}/{BADGE_THOUSAND_POST_PIC}" alt="{BADGE_THOUSAND_POST_TOOLTIP}"></td>
+				</tr>
+				<tr>
+					<td><font class="emphasis">{BADGE_THOUSAND_POST}</font><br><small>{BADGE_THOUSAND_POST_TOOLTIP}<br>({LANG_EARNED_AT}: {BADGE_THOUSAND_POST_EARNDATE})</small></td>
+				</tr>
+				</table>
+			</td>
 		</tr>
 		</table>
 	</td>

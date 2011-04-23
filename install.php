@@ -469,6 +469,40 @@ switch ($instPos)
 		}
 		/* Posts table */
 		
+		/* Badges table */
+		// Stores the data of earned badges
+		$dbtables_badges = FALSE; // We failed creating the tables first
+		$dbtables_badges = $Cmysql->Query("CREATE TABLE IF NOT EXISTS badges (
+			`userid` int(10) NOT NULL COMMENT 'id of the user who earned the badge',
+			`badgename` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'name of the badge the user earned (refers badge class _badge_array)',
+			`earndate` int(16) NOT NULL DEFAULT '0' COMMENT 'timestamp when the user earned the badge',
+			UNIQUE KEY `userid AND badgename` (`userid`,`badgename`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'badge information';"); // $dbtables_badges sets to true if we succeeded creating a table
+		
+		$dbtables_badges_data = FALSE; // We failed adding the default data first
+		$dbtables_badges_data = $Cmysql->Query("INSERT INTO badges(userid, badgename, earndate) VALUES ('1', 'FIRSTPOST', '" .time(). "')"); // $dbtables_badges_data sets to true if we succeeded adding default data
+		
+		// We check badges table creation
+		if ( ( $dbtables_badges == FALSE) || ( $dbtables_badges_data == FALSE ) )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
+				'TABLENAME'	=>	"badges" // Table name
+			), FALSE);
+			
+			// We set the creation global error variable to false
+			$tablecreation = FALSE;
+			
+			$tablelist .= ", badges"; // Append badges table name to fail-list
+		} elseif ( ( $dbtables_badges != FALSE ) && ( $dbtables_badges_data != FALSE ) )
+		{
+			// Give success
+			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
+				'TABLENAME'	=>	"badges" // Table name
+			), FALSE);
+		}
+		/* Menu entries table */
+		
 		// Check global variable status
 		if ( $tablecreation == FALSE )
 		{
@@ -486,8 +520,6 @@ switch ($instPos)
 		break;
 	case 6:
 		// Administrator user generator - getting data
-		
-		
 		
 		if ( @$_POST['error_goback'] == "yes" ) // If user is redirected from step 2 because of an error
 		{
@@ -553,10 +585,10 @@ switch ($instPos)
 		// $adminreg isn't FALSE if the admin user was registered
 		// $adminreg is FALSE if the admin user registration failed
 		
-		$adminreg = $Cmysql->Query("INSERT INTO users(username, pwd, email, regdate, userLevel) VALUES ('" .
+		$adminreg = $Cmysql->Query("INSERT INTO users(username, pwd, email, regdate, userLevel, post_count) VALUES ('" .
 			$Cmysql->EscapeString($_POST['root_name']). "'," .
 			"'" .md5($Cmysql->EscapeString($_POST['root_pass'])). "'," .
-			"'" .$Cmysql->EscapeString($_POST['root_email']). "', " .time(). ", 4)"); // Will be true if we succeed
+			"'" .$Cmysql->EscapeString($_POST['root_email']). "', " .time(). ", 4, 1)"); // Will be true if we succeed
 		
 		if ( $adminreg == FALSE )
 		{

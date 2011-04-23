@@ -3,18 +3,18 @@
 <form method="POST" action="control_user.php">
 <input type="hidden" name="site" value="forum">
 {LANG_UCP_FORUM_TOPICS_PER_PAGE}: <select size="1" name="new_topic_switch_value">
-	<option value="5"{P_5_SELECT}>5</option>
-	<option value="15"{P_15_SELECT}>15</option>
-	<option value="30"{P_30_SELECT}>30</option>
-	<option value="50"{P_50_SELECT}>50</option>
-	<option value="100"{P_100_SELECT}>100</option>
-</select><br>
-{LANG_UCP_FORUM_POSTS_PER_PAGE}: <select size="1" name="new_post_switch_value">
 	<option value="5"{T_5_SELECT}>5</option>
 	<option value="15"{T_15_SELECT}>15</option>
 	<option value="30"{T_30_SELECT}>30</option>
 	<option value="50"{T_50_SELECT}>50</option>
 	<option value="100"{T_100_SELECT}>100</option>
+</select><br>
+{LANG_UCP_FORUM_POSTS_PER_PAGE}: <select size="1" name="new_post_switch_value">
+	<option value="5"{P_5_SELECT}>5</option>
+	<option value="15"{P_15_SELECT}>15</option>
+	<option value="30"{P_30_SELECT}>30</option>
+	<option value="50"{P_50_SELECT}>50</option>
+	<option value="100"{P_100_SELECT}>100</option>
 </select><br>
 <input type="hidden" name="set_do" value="do">
 <input type="submit" value="{LANG_UCP_FORUM_MODIFY}">

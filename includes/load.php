@@ -74,6 +74,12 @@ $Cmysql->Connect(); // Connect to database
 $Cusers->Initialize(); // We initialize the userdata
 // User initialization also loads the language file
 
+// Badge manager
+require("badges.class.php");
+global $Cbadges; // Class is global
+$Cbadges = new class_badges;
+$Cbadges->Init(); // Load and define the badge array
+
 // Generate framework header
 $Ctemplate->useStaticTemplate("framework/header", FALSE);
 /* HEADER */
@@ -81,18 +87,18 @@ $Ctemplate->useStaticTemplate("framework/header", FALSE);
 /* DEVELOPEMENT */
 print "<h4>SESSION</h4>";
 print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_SESSION,true))."<br>";
-//print "<h4>SERVER</h4>";
-//print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_SERVER,true))."<br>";
-//print "<h4>REQUEST</h4>";
-//print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_REQUEST,true))."<br>";
-//print "<h4>ENVIRONMENT</h4>";
-//print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_ENV,true))."<br>";
-//print "<h4>COOKIES</h4>";
-//print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_COOKIE,true))."<br>";
-//print "<h4>Configuration</h4>";
-//print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($cfg,true))."<br>";
-//print "<h4>Localization</h4>";
-//print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($wf_lang,true))."<br>";
+// print "<h4>SERVER</h4>";
+// print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_SERVER,true))."<br>";
+// print "<h4>REQUEST</h4>";
+// print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_REQUEST,true))."<br>";
+// print "<h4>ENVIRONMENT</h4>";
+// print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_ENV,true))."<br>";
+// print "<h4>COOKIES</h4>";
+// print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_COOKIE,true))."<br>";
+// print "<h4>Configuration</h4>";
+// print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($cfg,true))."<br>";
+// print "<h4>Localization</h4>";
+// print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($wf_lang,true))."<br>";
 
 /* FRAMEWORK */
 
