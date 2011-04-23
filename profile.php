@@ -102,12 +102,55 @@ include('language/' .$userData['language']. '/definition.php');
 // This loads an array $wf_lang_def containing two keys essential for us here
 
 /* Badge data */
-$firstpost = $Cbadges->CheckBadge('FIRSTPOST', $_GET['id']);
-$avatar_badge = $Cbadges->CheckBadge('AVATAR', $_GET['id']);
-$fifty_post = $Cbadges->CheckBadge('FIFTY_POST', $_GET['id']);
-$twentyfifty_post = $Cbadges->CheckBadge('TWENTYFIFTY_POST', $_GET['id']);
-$fivehundred_post = $Cbadges->CheckBadge('FIVEHUNDRED_POST', $_GET['id']);
-$thousand_post = $Cbadges->CheckBadge('THOUSAND_POST', $_GET['id']);
+$badges = array_keys($Cbadges->badge_array); // Create an array from the badges
+$i = 0; // Define a counter on zero
+$badge_embed = NULL; // Define the container variable
+
+foreach($badges as $badge)
+{
+	// Going through every badge, fill the container
+	if ( $badge != "LOCKED" )
+	{
+		// If the badge currently querying is not the 'LOCKED'
+		// badge, fill the container. (Don't do the locked, because it's a meta-badge for not yet unlocked badge)
+		
+		if ( $i === 0 )
+		{
+			// If the counter is zero, create a new row to the table
+			$badge_embed .= "<tr>";
+		}
+		
+		$bData = $Cbadges->CheckBadge($badge, $_GET['id']); // Query the badge's data if the user have already earned it, or the LOCKED badge's data if it's locked for the user
+		
+		$badge_embed .= $Ctemplate->useTemplate("user/profile_badge", array(
+			'BADGE_PIC'	=>	$bData['picture'],
+			'BADGE'	=>	$bData['name'],
+			'BADGE_TOOLTIP'	=>	$bData['tooltip'],
+			'BADGE_EARNDATE'	=>	($bData['earndate'] == 0 ? $wf_lang['{LANG_NOT_YET}'] : fDate($bData['earndate'])),
+		), TRUE); // Put the badge's table cell to the container
+		
+		$i++; // Add one to i
+		
+		if ( $i === 4 )
+		{
+			// If the counter is four, close the opened row (we split badges into four per row)
+			$badge_embed .= '</tr>';
+			
+			// Reset i to zero, so the next badge will be in the new row
+			$i = 0;
+		}
+	}
+}
+
+if ( $i != 4 )
+{
+	// After embedding the badges, 
+	// if we haven't filled up a complete row with four badges
+	// we need to close the unclosed row to prevent output errors
+	$badge_embed .= '</tr>';
+}
+
+/* Badge data */
 
 $Ctemplate->useTemplate("user/profile_body", array(
 	'USERNAME'	=>	$userData['username'],
@@ -126,41 +169,7 @@ $Ctemplate->useTemplate("user/profile_body", array(
 	'TOTAL_BADGES'	=>	$Cbadges->TotalBadgeCount(),
 	'BADGES_PERCENT'	=>	round(( ($Cbadges->BadgeCount($_GET['id']) / $Cbadges->TotalBadgeCount()) * 100), 1),
 	
-	/* FIRSTPOST badge */
-	'BADGE_FIRSTPOST_PIC'	=>	$firstpost['picture'],
-	'BADGE_FIRSTPOST'	=>	$firstpost['name'],
-	'BADGE_FIRSTPOST_TOOLTIP'	=>	$firstpost['tooltip'],
-	'BADGE_FIRSTPOST_EARNDATE'	=>	($firstpost['earndate'] == 0 ? $wf_lang['{LANG_NOT_YET}'] : fDate($firstpost['earndate'])),
-	
-	/* AVATAR badge */
-	'BADGE_AVATAR_PIC'	=>	$avatar_badge['picture'],
-	'BADGE_AVATAR'	=>	$avatar_badge['name'],
-	'BADGE_AVATAR_TOOLTIP'	=>	$avatar_badge['tooltip'],
-	'BADGE_AVATAR_EARNDATE'	=>	($avatar_badge['earndate'] == 0 ? $wf_lang['{LANG_NOT_YET}'] : fDate($avatar_badge['earndate'])),
-	
-	/* FIFTY_POST badge */
-	'BADGE_FIFTY_POST_PIC'	=>	$fifty_post['picture'],
-	'BADGE_FIFTY_POST'	=>	$fifty_post['name'],
-	'BADGE_FIFTY_POST_TOOLTIP'	=>	$fifty_post['tooltip'],
-	'BADGE_FIFTY_POST_EARNDATE'	=>	($fifty_post['earndate'] == 0 ? $wf_lang['{LANG_NOT_YET}'] : fDate($fifty_post['earndate'])),
-	
-	/* TWENTYFIFTY_POST badge */
-	'BADGE_TWENTYFIFTY_POST_PIC'	=>	$twentyfifty_post['picture'],
-	'BADGE_TWENTYFIFTY_POST'	=>	$twentyfifty_post['name'],
-	'BADGE_TWENTYFIFTY_POST_TOOLTIP'	=>	$twentyfifty_post['tooltip'],
-	'BADGE_TWENTYFIFTY_POST_EARNDATE'	=>	($twentyfifty_post['earndate'] == 0 ? $wf_lang['{LANG_NOT_YET}'] : fDate($twentyfifty_post['earndate'])),
-	
-	/* FIVEHUNDRED_POST badge */
-	'BADGE_FIVEHUNDRED_POST_PIC'	=>	$fivehundred_post['picture'],
-	'BADGE_FIVEHUNDRED_POST'	=>	$fivehundred_post['name'],
-	'BADGE_FIVEHUNDRED_POST_TOOLTIP'	=>	$fivehundred_post['tooltip'],
-	'BADGE_FIVEHUNDRED_POST_EARNDATE'	=>	($fivehundred_post['earndate'] == 0 ? $wf_lang['{LANG_NOT_YET}'] : fDate($fivehundred_post['earndate'])),
-	
-	/* THOUSAND_POST badge */
-	'BADGE_THOUSAND_POST_PIC'	=>	$thousand_post['picture'],
-	'BADGE_THOUSAND_POST'	=>	$thousand_post['name'],
-	'BADGE_THOUSAND_POST_TOOLTIP'	=>	$thousand_post['tooltip'],
-	'BADGE_THOUSAND_POST_EARNDATE'	=>	($thousand_post['earndate'] == 0 ? $wf_lang['{LANG_NOT_YET}'] : fDate($thousand_post['earndate']))
+	'BADGES_EMBED'	=>	$badge_embed
 ), FALSE); // Output profile box
 
 }

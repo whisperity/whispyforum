@@ -10,7 +10,7 @@
  */
 class class_badges
 {
-	private $_badge_array; // Define the badge array variable
+	public $badge_array; // Define the badge array variable
 	
 	function Init()
 	{
@@ -22,7 +22,7 @@ class class_badges
 		
 		global $wf_lang; // Because badge tooltips are localized, we need to hook up the localization array
 		
-		$this->_badge_array = array(
+		$this->badge_array = array(
 			'LOCKED'	=>	array(
 				// Array for locked badges
 				'PICTURE'	=>	"badge_locked.png", // Badge picture name (under /themes/{THEME_NAME} directory)
@@ -64,7 +64,7 @@ class class_badges
 				'PICTURE'	=>	"badge_thousand_post_earned.png", // Badge picture name (under /themes/{THEME_NAME} directory)
 				'NAME'	=>	$wf_lang['{LANG_BADGES_THOUSAND_POST}'],
 				'TOOLTIP'	=>	$wf_lang['{LANG_BADGES_THOUSAND_POST_TIP}']
-				),
+				)
 		);
 	}
 	
@@ -80,7 +80,7 @@ class class_badges
 		global $Cmysql; // We access the database, so we must hook the class here
 		global $Ctemplate; // We use templates here, hook the class
 		
-		if ( array_key_exists($badgeName, $this->_badge_array) == FALSE )
+		if ( array_key_exists($badgeName, $this->badge_array) == FALSE )
 		{
 			// If we tried to grant a badge which does not exist
 			$Ctemplate->useTemplate("badge_err", array(
@@ -121,7 +121,7 @@ class class_badges
 		
 		global $Cmysql, $Ctemplate; // Load all required classes (database, templates)
 		
-		if ( array_key_exists($badgeName, $this->_badge_array) == FALSE )
+		if ( array_key_exists($badgeName, $this->badge_array) == FALSE )
 		{
 			// If we tried to grant a badge which does not exist
 			$Ctemplate->useTemplate("badge_err", array(
@@ -141,9 +141,9 @@ class class_badges
 			// the result is the 'locked' badge
 			
 			$result = array(
-				'picture'	=>	$this->_badge_array['LOCKED']['PICTURE'],
-				'name'	=>	$this->_badge_array['LOCKED']['NAME'],
-				'tooltip'	=>	$this->_badge_array['LOCKED']['TOOLTIP'],
+				'picture'	=>	$this->badge_array['LOCKED']['PICTURE'],
+				'name'	=>	$this->badge_array['LOCKED']['NAME'],
+				'tooltip'	=>	$this->badge_array['LOCKED']['TOOLTIP'],
 				'earndate'	=>	0
 			);
 		} elseif ( $has != 0 )
@@ -153,9 +153,9 @@ class class_badges
 			$earndate = mysql_fetch_row($query); // Fetch a row from the earning date
 			
 			$result = array(
-				'picture'	=>	$this->_badge_array[$badgeName]['PICTURE'],
-				'name'	=>	$this->_badge_array[$badgeName]['NAME'],
-				'tooltip'	=>	$this->_badge_array[$badgeName]['TOOLTIP'],
+				'picture'	=>	$this->badge_array[$badgeName]['PICTURE'],
+				'name'	=>	$this->badge_array[$badgeName]['NAME'],
+				'tooltip'	=>	$this->badge_array[$badgeName]['TOOLTIP'],
 				'earndate'	=>	$earndate[0]
 			);
 		}
@@ -185,7 +185,7 @@ class class_badges
 		 * @outputs: number of badges
 		 */
 		
-		return (count($this->_badge_array)-1); // We need to remove one, because the 'LOCKED' badge is isn't really a badge, just a placeholder for the badges a user hasn't unlocked yet
+		return (count($this->badge_array)-1); // We need to remove one, because the 'LOCKED' badge is isn't really a badge, just a placeholder for the badges a user hasn't unlocked yet
 	}
 }
 ?>

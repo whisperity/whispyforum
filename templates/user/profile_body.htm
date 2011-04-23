@@ -1,6 +1,6 @@
 <!--- BEGIN user profile body -->
 <!--- Usage: profile body -->
-<table style="width: 100%" border="0">
+<table border="0" style="width: 100%">
 <tr>
 	<td valign="top">
 		<table border="0" style="width: 100%">
@@ -64,71 +64,7 @@
 	<td valign="top" colspan="2">
 	{LANG_BADGES_TOTAL_ACCUMULATED}: {BADGES}/{TOTAL_BADGES} ({BADGES_PERCENT}%)
 		<table border="0" style="width: 100%">
-		<tr>
-			<td>
-				<table border="0" style="width: 100%">
-				<tr>
-					<td><img src="themes/{THEME_NAME}/{BADGE_AVATAR_PIC}" alt="{BADGE_AVATAR_TOOLTIP}"></td>
-				</tr>
-				<tr>
-					<td><font class="emphasis">{BADGE_AVATAR}</font><br><small>{BADGE_AVATAR_TOOLTIP}<br>({LANG_EARNED_AT}: {BADGE_AVATAR_EARNDATE})</small></td>
-				</tr>
-				</table>
-			</td>
-			<td>
-				<table border="0" style="width: 100%">
-				<tr>
-					<td><img src="themes/{THEME_NAME}/{BADGE_FIRSTPOST_PIC}" alt="{BADGE_FIRSTPOST_TOOLTIP}"></td>
-				</tr>
-				<tr>
-					<td><font class="emphasis">{BADGE_FIRSTPOST}</font><br><small>{BADGE_FIRSTPOST_TOOLTIP}<br>({LANG_EARNED_AT}: {BADGE_FIRSTPOST_EARNDATE})</small></td>
-				</tr>
-				</table>
-			</td>
-			<td>
-				<table border="0" style="width: 100%">
-				<tr>
-					<td><img src="themes/{THEME_NAME}/{BADGE_FIFTY_POST_PIC}" alt="{BADGE_FIFTY_POST_TOOLTIP}"></td>
-				</tr>
-				<tr>
-					<td><font class="emphasis">{BADGE_FIFTY_POST}</font><br><small>{BADGE_FIFTY_POST_TOOLTIP}<br>({LANG_EARNED_AT}: {BADGE_FIFTY_POST_EARNDATE})</small></td>
-				</tr>
-				</table>
-			</td>
-			<td>
-				<table border="0" style="width: 100%">
-				<tr>
-					<td><img src="themes/{THEME_NAME}/{BADGE_TWENTYFIFTY_POST_PIC}" alt="{BADGE_TWENTYFIFTY_POST_TOOLTIP}"></td>
-				</tr>
-				<tr>
-					<td><font class="emphasis">{BADGE_TWENTYFIFTY_POST}</font><br><small>{BADGE_TWENTYFIFTY_POST_TOOLTIP}<br>({LANG_EARNED_AT}: {BADGE_TWENTYFIFTY_POST_EARNDATE})</small></td>
-				</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td>
-				<table border="0" style="width: 100%">
-				<tr>
-					<td><img src="themes/{THEME_NAME}/{BADGE_FIVEHUNDRED_POST_PIC}" alt="{BADGE_FIVEHUNDRED_POST_TOOLTIP}"></td>
-				</tr>
-				<tr>
-					<td><font class="emphasis">{BADGE_FIVEHUNDRED_POST}</font><br><small>{BADGE_FIVEHUNDRED_POST_TOOLTIP}<br>({LANG_EARNED_AT}: {BADGE_FIVEHUNDRED_POST_EARNDATE})</small></td>
-				</tr>
-				</table>
-			</td>
-			<td colspan="2">
-				<table border="0" style="width: 100%">
-				<tr>
-					<td><img src="themes/{THEME_NAME}/{BADGE_THOUSAND_POST_PIC}" alt="{BADGE_THOUSAND_POST_TOOLTIP}"></td>
-				</tr>
-				<tr>
-					<td><font class="emphasis">{BADGE_THOUSAND_POST}</font><br><small>{BADGE_THOUSAND_POST_TOOLTIP}<br>({LANG_EARNED_AT}: {BADGE_THOUSAND_POST_EARNDATE})</small></td>
-				</tr>
-				</table>
-			</td>
-		</tr>
+		{BADGES_EMBED}
 		</table>
 	</td>
 </tr>
