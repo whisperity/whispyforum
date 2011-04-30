@@ -15,6 +15,9 @@ global $Ctemplate; // Class is global
 $Ctemplate = new class_template;
 /* Libraries */
 
+// Load boot-time localizations (it's a lite edition of the general English localization, only containing strings which are required before initializing the user array)
+include("language/bootlocal.php");
+
 /* Preload checks */
 // Check whether configuration file exists
 if ( file_exists("config.php") == 1 )

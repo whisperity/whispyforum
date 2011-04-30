@@ -28,6 +28,9 @@ $Cmysql = new class_mysql;
 require("includes/functions.php");
 /* Libraries */
 
+// Load boot-time localizations (it's a lite edition of the general English localization, only containing strings which are required before initializing the user array)
+include("language/bootlocal.php");
+
 /* DEVELOPEMENT */
 // PH, workaround: output HTTP POST and GET arrays
 print "<h4>GET</h4>";
@@ -248,7 +251,7 @@ switch ($instPos)
 			`email` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'user e-mail address',
 			`curr_ip` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0.0.0.0' COMMENT 'current session IP address',
 			`curr_sessid` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'current session ID',
-			`regdate` int(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'registration date',
+			`regdate` int(16) NOT NULL COMMENT 'registration date',
 			`loggedin` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1 if user is currently logged in, 0 if not',
 			`userLevel` tinyint(2) NOT NULL DEFAULT '0' COMMENT 'clearance level',
 			`avatar_filename` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'avatar picture filename',
@@ -301,13 +304,13 @@ switch ($instPos)
 		{
 			// Give error
 			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
-				'TABLENAME'	=>	"menu" // Table name
+				'TABLENAME'	=>	"menus" // Table name
 			), FALSE);
 			
 			// We set the creation global error variable to false
 			$tablecreation = FALSE;
 			
-			$tablelist .= ", menu"; // Append menu table name to fail-list
+			$tablelist .= " menus"; // Append menu table name to fail-list
 		} elseif ( ( $dbtables_menu != FALSE )  && ( $dbtables_menu_data != FALSE ) )
 		{
 			// Give success
@@ -344,7 +347,7 @@ switch ($instPos)
 			// We set the creation global error variable to false
 			$tablecreation = FALSE;
 			
-			$tablelist .= ", menu_entries"; // Append menu entries table name to fail-list
+			$tablelist .= " menu_entries"; // Append menu entries table name to fail-list
 		} elseif ( ( $dbtables_menuEntries != FALSE ) && ( $dbtables_menuEntries_data != FALSE ) )
 		{
 			// Give success
@@ -368,7 +371,7 @@ switch ($instPos)
 		
 		$dbtables_forums_data = FALSE; // We failed adding the default data first
 		$dbtables_forums_data = $Cmysql->Query("INSERT INTO forums(title, info, minLevel, createdate) VALUES
-		(1, 'Forum', 'This is an automatically created forum for You', '0', '" .time(). "')"); // $dbtables_forums_data sets to true if we succeeded adding default data
+		('Forum', 'This is an automatically created forum for You', '0', '" .time(). "')"); // $dbtables_forums_data sets to true if we succeeded adding default data
 		
 		// We check forums table creation
 		if ( ( $dbtables_forums == FALSE ) || ( $dbtables_forums_data == FALSE ) )
@@ -381,7 +384,7 @@ switch ($instPos)
 			// We set the creation global error variable to false
 			$tablecreation = FALSE;
 			
-			$tablelist .= ", forums"; // Append forums table name to fail-list
+			$tablelist .= " forums"; // Append forums table name to fail-list
 		} elseif ( ( $dbtables_forums != FALSE ) && ( $dbtables_forums_data != FALSE ) )
 		{
 			// Give success
@@ -420,7 +423,7 @@ switch ($instPos)
 			// We set the creation global error variable to false
 			$tablecreation = FALSE;
 			
-			$tablelist .= ", topics"; // Append topics table name to fail-list
+			$tablelist .= " topics"; // Append topics table name to fail-list
 		} elseif ( ( $dbtables_topics != FALSE ) && ( $dbtables_topics_data != FALSE ) )
 		{
 			// Give success
@@ -459,7 +462,7 @@ switch ($instPos)
 			// We set the creation global error variable to false
 			$tablecreation = FALSE;
 			
-			$tablelist .= ", posts"; // Append posts table name to fail-list
+			$tablelist .= " posts"; // Append posts table name to fail-list
 		} elseif ( ( $dbtables_posts != FALSE ) && ( $dbtables_posts_data != FALSE ) )
 		{
 			// Give success
@@ -493,7 +496,7 @@ switch ($instPos)
 			// We set the creation global error variable to false
 			$tablecreation = FALSE;
 			
-			$tablelist .= ", badges"; // Append badges table name to fail-list
+			$tablelist .= " badges"; // Append badges table name to fail-list
 		} elseif ( ( $dbtables_badges != FALSE ) && ( $dbtables_badges_data != FALSE ) )
 		{
 			// Give success
