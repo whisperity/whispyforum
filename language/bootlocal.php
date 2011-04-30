@@ -24,7 +24,13 @@ global $wf_lang; // Language global array
 /* Boot-time (English) localization */
 $wf_lang = array(
 	/* General */
+	'{LANG_YES}'	=>	"Yes",
+	'{LANG_NO}'	=>	"No",
+	'{LANG_USING_LOWERCASE}'	=>	"using",
+	'{LANG_USERNAME_LOWERCASE}'	=>	"username",
+	'{LANG_PASSWORD_LOWERCASE}'	=>	"password",
 	'{LANG_FILE_UNAVIABLE}'	=>	"File unaviable",
+	'{LANG_COULD_NOT_BE_MADE}'	=>	"could not be made.",
 	
 	/* SQL */
 	'{LANG_SQL_ERROR}'	=>	"mySQL error",
