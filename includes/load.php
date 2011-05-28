@@ -20,21 +20,22 @@ include("language/bootlocal.php");
 
 /* Preload checks */
 // Check whether configuration file exists
-if ( file_exists("config.php") == 1 )
+if ( ( file_exists("config.php") == 1 ) && ( file_exists("config.md5") == 1 ) )
 {
-	require("config.php"); // Require and embed it
-	
-	// Check whether the installation was successful
-	if ( !defined('WHISPYFORUM') ) // There is a "DEFINE()" constant in config.php which is a random UUID generated on install
+	// Check whether the installation was successful and the config file is valid
+	if ( file_get_contents("config.md5") != md5(file_get_contents("config.php")) )
 	{
 		$Ctemplate->useTemplate("errormessage", array(
 			'PICTURE_NAME'	=>	"Nuvola_apps_package_settings.png", // Text file icon
 			'TITLE'	=>	"{LANG_LOAD_CORRUPTION}", // Error title
 			'BODY'	=>	"{LANG_LOAD_CORRUPTION_BODY}", // Error text
 			'ALT'	=>	"{LANG_LOAD_CORRUPTION_ALT}" // Alternate picture text
-	), FALSE ); // We output an error message
-	exit; // Terminate execution
-	} // Else: do nothing
+		), FALSE ); // We output an error message
+		exit; // Terminate execution
+	} elseif ( file_get_contents("config.md5") === md5(file_get_contents("config.php")) )
+	{
+		require("config.php"); // Load the configuration file
+	}
 } elseif ( file_exists("config.php") == 0 ) // If not
 {
 	$Ctemplate->useTemplate("errormessage", array(

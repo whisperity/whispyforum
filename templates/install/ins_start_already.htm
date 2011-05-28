@@ -22,7 +22,17 @@
 <table border="0" class="install-center">
 <tr>
 <td class="install-block-left">
-<br><br>
+
+<!--- Language modifier form -->
+<form method="POST" action="install.php">
+{LANG_INSTALL_LANGUAGE} <select size="1" name="ins_lang">
+{INSTALL_LANGUAGES}
+</select><br>
+<input type="hidden" name="instPos" value="0">
+<input type="submit" value="{LANG_SITEPREF_MODIFY_LANGUAGE}">
+</form>
+<!--- Language modifier form -->
+
 <table class="errorbox"> <!--- copying the errorbox template -->
 	<tr>
 		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_locked.png" alt="Already installed!"></td>

@@ -3,7 +3,7 @@
 <html>
 
 <head>
-<title>Installer - Introduction</title>
+<title>{LANG_INSTALL_INSTALLER} - {LANG_INSTALL_INTRODUCTION}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 
@@ -11,8 +11,8 @@
 
 <table class="install-header" border="0">
 <tr>
-<td class="install-picture"><img src="themes/{THEME_NAME}/Nuvola_apps_package_applications.png" alt="Installer wizard"></td>
-<td><h1 class="install-header" align="center">Installer - Introduction</h1></td>
+<td class="install-picture"><img src="themes/{THEME_NAME}/Nuvola_apps_package_applications.png" alt="{LANG_INSTALL_WIZARD}"></td>
+<td><h1 class="install-header" align="center">{LANG_INSTALL_INSTALLER} - {LANG_INSTALL_INTRODUCTION}</h1></td>
 </tr>
 </table>
 
@@ -21,35 +21,40 @@
 <table border="0" class="install-center">
 <tr>
 <td class="install-block-left">
-<h3>Hello! <img src="themes/{THEME_NAME}/wave.gif" alt="Hello!"></h3>
 
-Thank you for choosing WhispyForum. This version is the successor of the first WhispyForum, a PHP based portal/forum engine. We think you and your users will delight in the use of this system.
+<!--- Language modifier form -->
+<form method="POST" action="install.php">
+{LANG_INSTALL_LANGUAGE} <select size="1" name="ins_lang">
+{INSTALL_LANGUAGES}
+</select><br>
+<input type="hidden" name="instPos" value="0">
+<input type="submit" value="{LANG_INSTALL_MODIFY_LANGUAGE}">
+</form>
+<!--- Language modifier form -->
+
+<h3>{LANG_HELLO} <img src="themes/{THEME_NAME}/wave.gif" alt="{LANG_HELLO}"></h3>
+
+{LANG_INSTALL_START_INTRO}
 <br><br>
 <!--- dev state -->
 <table class="errorbox"> <!--- copying the errorbox template -->
 	<tr>
-		<td class="errorpicture"><img src="themes/{THEME_NAME}/Stop_hand.png" alt="Alert!"></td>
-		<td class="errortitle">Disclaimer!</td>
+		<td class="errorpicture"><img src="themes/{THEME_NAME}/Stop_hand.png" alt="{LANG_WARNING_EXCLAMATION}"></td>
+		<td class="errortitle">{LANG_INSTALL_START_DISCLAIMER_HEAD}</td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="errorbody">This system is in-developement state, hence there are no stable release. There can be unexpected, unforseen and imminent data losses, which can lead to system instability.
-<br><br>
-While using the system, you're well advised to create data backups regurarly, in case if you (unfortunately) have to restore.
-<br><br>
-This package is provided as is. By using this package, you hereby accept our disclaimer. Until we push a stable release, we cannot garantuee that you won't experience any data loss.
-<br><br>
-<small>You've been warned...</small></td>
+		<td class="errorbody">{LANG_INSTALL_START_DISCLAIMER}</td>
 	</tr>
 </table> <!--- copying the errorbox template -->
 <!--- dev state -->
-This step is the installation, where you specify the database login, create tables and set up an administrator user.<br>
+{LANG_INSTALL_START_STEP}<br>
 <br>
-<font class="emphasis">To proceed, please click the button below.</font>
+<font class="emphasis">{LANG_PROCEED_CLICK_BUTTON_BELOW}</font>
 
 <!--- proceed form -->
 <form method="POST" action="install.php">
-<input type="submit" value="Next >>">
+<input type="submit" value="{LANG_NEXT_NN}">
 <input type="hidden" name="instPos" value=1> <!--- Proceeding to step 2 -->
 </form>
 </td>
@@ -57,17 +62,17 @@ This step is the installation, where you specify the database login, create tabl
 <!--- menubox -->
 <div id="menucontainer">
 	<div id="header"><div id="header_left"></div>
-	<div id="header_main">Install menu</div><div id="header_right"></div></div>
+	<div id="header_main">{LANG_INSTALL_MENU}</div><div id="header_right"></div></div>
     <div id="content">
-        <span class="install-menu-actual">1. Introduction</span><br>
-		<span class="install-menu-entries">2. Configuration file</span><br>
-		<span class="install-menu-entries">3. Writing configuration file.</span><br>
-		<span class="install-menu-entries">4. Testing database connection</span><br>
-		<span class="install-menu-entries">5. Creating database</span><br>
-		<span class="install-menu-entries">6. Creating table structure and content</span><br>
-		<span class="install-menu-entries">7. Administrator user</span><br>
-		<span class="install-menu-entries">8. Creating Administrator user</span><br>
-		<span class="install-menu-entries">9. Finish</span>
+        <span class="install-menu-actual">{LANG_INSTALL_STEP_1}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_2}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_3}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_4}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_5}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_6}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_7}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_8}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_9}</span>
     </div>
 </div>
 <!--- menubox -->

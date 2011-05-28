@@ -34,6 +34,7 @@ $wf_lang = array(
 	'{LANG_WELCOME_COMMA}'	=>	"Welcome, ",
 	'{LANG_ERROR_EXCLAMATION}'	=>	"Error!",
 	'{LANG_ERROR_LOWERCASE_EXCLAMATION}'	=>	"error!",
+	'{LANG_WARNING_EXCLAMATION}'	=>	"Warning!",
 	'{LANG_SUCCESS_EXCLAMATION}'	=>	"Success!",
 	'{LANG_PLEASE_CONFIRM_EXCLAMATION}'	=>	"Please confirm!",
 	'{LANG_LEFT}'	=>	"Left",
@@ -102,6 +103,34 @@ $wf_lang = array(
 	'{LANG_ONLINE}'	=>	"Online",
 	'{LANG_EARNED_AT}'	=>	"earned at",
 	'{LANG_NOT_YET}'	=>	"not yet",
+	'{LANG_HELLO}'	=>	"Hello!",
+	
+	/* Install */
+	'{LANG_INSTALL_INSTALLER}'	=>	"Installer",
+	'{LANG_INSTALL_WIZARD}'	=>	"Installer wizard",
+	'{LANG_INSTALL_MENU}'	=>	"Install steps",
+	'{LANG_INSTALL_STEP_1}'	=>	"1. Introduction",
+	'{LANG_INSTALL_STEP_2}'	=>	"2. Configuration file",
+	'{LANG_INSTALL_STEP_3}'	=>	"3. Writing configuration file",
+	'{LANG_INSTALL_STEP_4}'	=>	"4. Testing database connection",
+	'{LANG_INSTALL_STEP_5}'	=>	"5. Creating database",
+	'{LANG_INSTALL_STEP_6}'	=>	"6. Creating table structure and content",
+	'{LANG_INSTALL_STEP_7}'	=>	"7. Administrator user",
+	'{LANG_INSTALL_STEP_8}'	=>	"8. Creating Administrator user",
+	'{LANG_INSTALL_STEP_9}'	=>	"9. Finish",
+	'{LANG_INSTALL_INTRODUCTION}'	=>	"Introduction",
+	'{LANG_INSTALL_LANGUAGE}'	=>	"Installer language:",
+	'{LANG_INSTALL_MODIFY_LANGUAGE}'	=>	"Modify language",
+	'{LANG_INSTALL_START_INTRO}'	=>	"Thank you for choosing WhispyForum. This version is the successor of the first WhispyForum, a PHP based portal/forum engine. We think you and your users will delight in the use of this system.",
+	'{LANG_INSTALL_START_DISCLAIMER_HEAD}'	=>	"Disclaimer! <small>Please read carefully!</small>",
+	'{LANG_INSTALL_START_DISCLAIMER}'	=>	"This system is in-developement state, hence there are no stable release. There can be unexpected, unforseen and imminent data losses, which can lead to system instability.
+<br><br>
+While using the system, you're well advised to create data backups regurarly, in case if you (unfortunately) have to restore.
+<br><br>
+This package is provided as is. By using this package, you hereby accept our disclaimer. Until we push a stable release, we cannot garantuee that you won't experience any data loss.
+<br><br>
+<small>You've been warned...</small>",
+	'{LANG_INSTALL_START_STEP}'	=>	"This step is the installation, where you specify the database login, create tables and set up an administrator user.",
 	
 	/* SQL */
 	'{LANG_SQL_ERROR}'	=>	"mySQL error",
@@ -119,7 +148,7 @@ $wf_lang = array(
 	
 	/* Loader script */
 	'{LANG_LOAD_CORRUPTION}'	=>	"Corruption!",
-	'{LANG_LOAD_CORRUPTION_BODY}'	=>	"WhispyForum appears to be installed, however, the configuration file lacks some important variables. It's advised to reinstall the system. ".'You can install it by clicking <a href="install.php" alt="Install WhispyForum">here</a> and running the install script.',
+	'{LANG_LOAD_CORRUPTION_BODY}'	=>	"WhispyForum appears to be installed, however, the configuration file is corrupted or incosistent. It's advised to reinstall the system. ".'You can install it by clicking <a href="install.php" alt="Install WhispyForum">here</a> and running the install script.',
 	'{LANG_LOAD_CORRUPTION_ALT}'	=>	"Corrupt configuration",
 	'{LANG_LOAD_NOCFG}'	=>	"Configuration file not found!",
 	'{LANG_LOAD_NOCFG_BODY}'	=>	"The site's configuration file is missing. It usally means that the engine isn't installed properly. Without configuration, the engine cannot be used, because it can't connect to the database. ".'You can install it by clicking <a href="install.php" alt="Install WhispyForum">here</a> and running the install script.',

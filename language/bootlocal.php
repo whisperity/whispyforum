@@ -48,7 +48,7 @@ $wf_lang = array(
 	
 	/* Loader script */
 	'{LANG_LOAD_CORRUPTION}'	=>	"Corruption!",
-	'{LANG_LOAD_CORRUPTION_BODY}'	=>	"WhispyForum appears to be installed, however, the configuration file lacks some important variables. It's advised to reinstall the system. ".'You can install it by clicking <a href="install.php" alt="Install WhispyForum">here</a> and running the install script.',
+	'{LANG_LOAD_CORRUPTION_BODY}'	=>	"WhispyForum appears to be installed, however, the configuration file is corrupted or incosistent. It's advised to reinstall the system. ".'You can install it by clicking <a href="install.php" alt="Install WhispyForum">here</a> and running the install script.',
 	'{LANG_LOAD_CORRUPTION_ALT}'	=>	"Corrupt configuration",
 	'{LANG_LOAD_NOCFG}'	=>	"Configuration file not found!",
 	'{LANG_LOAD_NOCFG_BODY}'	=>	"The site's configuration file is missing. It usally means that the engine isn't installed properly. Without configuration, the engine cannot be used, because it can't connect to the database. ".'You can install it by clicking <a href="install.php" alt="Install WhispyForum">here</a> and running the install script.',

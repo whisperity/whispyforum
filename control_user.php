@@ -205,6 +205,8 @@ switch ($site)
 										'SHORT_NAME'	=>	$wf_lang_def['SHORT_NAME'], // The language's English name (so it's German for German)
 										'L_CODE'	=>	$wf_lang_def['LANG_CODE'] // Language code (it's de for German)
 									), FALSE);
+									
+									unset ($wf_lang_def);
 								}
 							}
 						}

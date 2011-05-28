@@ -29,7 +29,19 @@ require("includes/functions.php");
 /* Libraries */
 
 // Load boot-time localizations (it's a lite edition of the general English localization, only containing strings which are required before initializing the user array)
-include("language/bootlocal.php");
+require("language/bootlocal.php");
+
+// Load the language array
+if ( !isset($_POST['ins_lang']) )
+{
+	// If we did not select the installer language, load the English one
+	include("language/english/language.php");
+	$_POST['ins_lang'] = "english"; // Make the English language automatically selected in the language switcher
+} elseif ( isset($_POST['ins_lang']) )
+{
+	// If we set, load the one we set
+	include("language/" .$_POST['ins_lang']. "/language.php");
+}
 
 /* DEVELOPEMENT */
 // PH, workaround: output HTTP POST and GET arrays
@@ -53,15 +65,57 @@ switch ($instPos)
 	case 0:
 		// Introduction
 		
+		// The START pages use a language switcher
+		// we need to generate a list about available languages
+		$langembed = NULL; // Define the container variable
+		$Ldir = "./language/"; // Language home dir
+		$Lexempt = array('.', '..', '.svn', '_svn'); // Do not query these directories
+		
+		if (is_dir($Ldir)) 
+		{
+			if ($Ldh = opendir($Ldir))
+			{
+				while (($Lfile = readdir($Ldh)) !== false)
+				{
+					if(!in_array(strtolower($Lfile),$Lexempt))
+					{
+						if ( filetype($Ldir . $Lfile) == "dir" )
+						{
+							// We're now querying all language directories
+							if ( ( file_exists($Ldir . $Lfile . "/language.php") ) && ( file_exists($Ldir . $Lfile . "/definition.php") ) )
+							{
+								// We only list directories containing the language AND the definition file
+								include($Ldir.$Lfile."/definition.php"); // This will load in $wf_lang_def (containing the definition)
+								
+								$langembed .= $Ctemplate->useTemplate("install/ins_start_lang_option", array(
+									'SELECTED'	=>	($Lfile == $_POST['ins_lang'] ? " selected " : " "), // Selected is ' ' if it's another language, ' selected ' if it's the current. It makes the current language automatically re-selected
+									'DIR_NAME'	=>	$Lfile, // Name of the language's directory
+									'LOCALIZED_NAME'	=>	$wf_lang_def['LOCALIZED_NAME'], // The language's own, localized name (so it's Deutch for German)
+									'SHORT_NAME'	=>	$wf_lang_def['SHORT_NAME'], // The language's English name (so it's German for German)
+									'L_CODE'	=>	$wf_lang_def['LANG_CODE'] // Language code (it's de for German)
+								), TRUE); // $langembed will contain the HTML code for the <select>
+							}
+						}
+					}
+				}
+			closedir($Ldh);
+			}
+		}
+		unset($wf_lang_def);
+		
 		// We check this file existence now, because if we check it in general (before swich() clause)
 		// after the third step (generating config.php) the installation hangs
 		if ( file_exists("config.php") )
 		{
 			// If config.php already exists, give error message
-			$Ctemplate->useStaticTemplate("install/ins_start_already", FALSE);
+			$Ctemplate->useTemplate("install/ins_start_already", array(
+				'INSTALL_LANGUAGES'	=>	$langembed // Insert the embedding <option> content for the language selector
+			), FALSE);
 		} else {
 			// If not, give standard starting screen
-			$Ctemplate->useStaticTemplate("install/ins_start", FALSE); // Use install introduction
+			$Ctemplate->useTemplate("install/ins_start", array(
+				'INSTALL_LANGUAGES'	=>	$langembed // Insert the embedding <option> content for the language selector
+			), FALSE); // Use install introduction
 		}
 		break;
 	case 1:
@@ -162,7 +216,9 @@ switch ($instPos)
 				'DBPASS'	=>	$_POST['dbpass'], // Database password
 				'DBNAME'	=>	$_POST['dbname'] // Database name
 			), FALSE); // We give error output
-		} else { // If there isn't any writing errors, 
+		} else { // If there isn't any writing errors, give success
+			file_put_contents("config.md5", md5($configfile)); // Put the MD5 hash of written content into a seperate file (for later checks)
+			
 			$Ctemplate->useStaticTemplate("install/ins_config_write_success", FALSE);
 		}
 		break;
@@ -239,7 +295,7 @@ switch ($instPos)
 		 */
 		
 		$tablecreation = TRUE; // By default, we can create the tables
-		$tablelist = ""; // Uncreated tables' name list
+		$tablelist = array(); // Uncreated tables' name list
 		
 		/* Users table */
 		// Stores the user's data
@@ -275,7 +331,7 @@ switch ($instPos)
 			// We set the creation global error variable to false
 			$tablecreation = FALSE;
 			
-			$tablelist .= "users"; // Append users table name to fail-list
+			$tablelist[] = "users"; // Append users table name to fail-list
 		} elseif ( $dbtables_user != FALSE )
 		{
 			// Give success
@@ -310,7 +366,7 @@ switch ($instPos)
 			// We set the creation global error variable to false
 			$tablecreation = FALSE;
 			
-			$tablelist .= " menus"; // Append menu table name to fail-list
+			$tablelist[] = "menus"; // Append menu table name to fail-list
 		} elseif ( ( $dbtables_menu != FALSE )  && ( $dbtables_menu_data != FALSE ) )
 		{
 			// Give success
@@ -347,7 +403,7 @@ switch ($instPos)
 			// We set the creation global error variable to false
 			$tablecreation = FALSE;
 			
-			$tablelist .= " menu_entries"; // Append menu entries table name to fail-list
+			$tablelist[] = "menu_entries"; // Append menu entries table name to fail-list
 		} elseif ( ( $dbtables_menuEntries != FALSE ) && ( $dbtables_menuEntries_data != FALSE ) )
 		{
 			// Give success
@@ -384,7 +440,7 @@ switch ($instPos)
 			// We set the creation global error variable to false
 			$tablecreation = FALSE;
 			
-			$tablelist .= " forums"; // Append forums table name to fail-list
+			$tablelist[] = "forums"; // Append forums table name to fail-list
 		} elseif ( ( $dbtables_forums != FALSE ) && ( $dbtables_forums_data != FALSE ) )
 		{
 			// Give success
@@ -423,7 +479,7 @@ switch ($instPos)
 			// We set the creation global error variable to false
 			$tablecreation = FALSE;
 			
-			$tablelist .= " topics"; // Append topics table name to fail-list
+			$tablelist[] = "topics"; // Append topics table name to fail-list
 		} elseif ( ( $dbtables_topics != FALSE ) && ( $dbtables_topics_data != FALSE ) )
 		{
 			// Give success
@@ -462,7 +518,7 @@ switch ($instPos)
 			// We set the creation global error variable to false
 			$tablecreation = FALSE;
 			
-			$tablelist .= " posts"; // Append posts table name to fail-list
+			$tablelist[] = "posts"; // Append posts table name to fail-list
 		} elseif ( ( $dbtables_posts != FALSE ) && ( $dbtables_posts_data != FALSE ) )
 		{
 			// Give success
@@ -496,7 +552,7 @@ switch ($instPos)
 			// We set the creation global error variable to false
 			$tablecreation = FALSE;
 			
-			$tablelist .= " badges"; // Append badges table name to fail-list
+			$tablelist[] = "badges"; // Append badges table name to fail-list
 		} elseif ( ( $dbtables_badges != FALSE ) && ( $dbtables_badges_data != FALSE ) )
 		{
 			// Give success
@@ -510,8 +566,23 @@ switch ($instPos)
 		if ( $tablecreation == FALSE )
 		{
 			// Give error
+			
+			// Generate a human readable list of tables
+			foreach ($tablelist as &$table) // Going through all entries
+			{
+				if ( !isset($tbls) )
+				{
+					// If the variable is undefined (meaning this is the first entry)
+					$tbls = $table; // Add the first errorneous table
+				} elseif ( isset($tbls) )
+				{
+					// If it is defined
+					$tbls .= ", " . $table; // Append the table name with a colon (,)
+				}
+			}
+			
 			$Ctemplate->useTemplate("install/ins_dbtables_global_error", array(
-				'TABLE_LIST'	=>	$tablelist // Tables list
+				'TABLE_LIST'	=>	$tbls // Tables list (human readable form)
 			), FALSE);
 		} elseif ( $tablecreation == TRUE )
 		{
