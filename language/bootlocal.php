@@ -29,6 +29,9 @@ $wf_lang = array(
 	'{LANG_USING_LOWERCASE}'	=>	"using",
 	'{LANG_USERNAME_LOWERCASE}'	=>	"username",
 	'{LANG_PASSWORD_LOWERCASE}'	=>	"password",
+	'{LANG_HOMEPAGE}'	=>	"homepage",
+	'{LANG_REDIRECT_RETURN_LINK}'	=>	"Click here if your browser does not redirect you or if don't want to wait...",
+	'{LANG_GOTOTHE}'	=>	"Go to the",
 	'{LANG_FILE_UNAVAILABLE}'	=>	"File unavailable",
 	'{LANG_COULD_NOT_BE_MADE}'	=>	"could not be made.",
 	
@@ -56,5 +59,12 @@ $wf_lang = array(
 	/* Template system */
 	'{LANG_TEMPLATESYS_TEMP_MISSING}'	=>	"Template missing",
 	'{LANG_TEMPLATESYS_TEMP_MISSING_BODY}'	=>	"The specified template file does not exist. This template cannot be displayed.",
+	
+	/* Login */
+	'{LANG_MULTIPLE_LOGINS}'	=>	"Multiple logins",
+	'{LANG_MULTIPLE_LOGINS_NOSUPPORT}'	=>	"Multiple logins aren't supported",
+	'{LANG_MULTIPLE_LOGIN_BODY}'	=>	"Your IP address or session differs from the ones stored in the database.<br>It usally means that you're logged in elsewhere while you want to login here.<br>(It can mean that your account is hijacked as well...)
+<br><br>Your session data has been purged form the database. All of your other login isntances will get this error.
+<br><br>Please use the login box again to login to your user.",
 );
 ?>
