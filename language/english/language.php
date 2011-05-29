@@ -342,6 +342,9 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_SITEPREF_MODIFY_LANGUAGE_ERROR}'	=>	"Cannot modify the language",
 	'{LANG_SITEPREF_MODIFY_LANGUAGE_SUCCESS}'	=>	"Language modified",
 	'{LANG_SITEPREF_MODIFY_LANGUAGE_SUCCESS_1}'	=>	"You successfully modified your language. The next page you request will load in the language you set.",
+	'{LANG_SITEPREF_THEME_PREVIEW}'	=>	"Preview of theme",
+	'{LANG_SITEPREF_THEME_PREVIEW_NO}'	=>	"Preview not available",
+	'{LANG_SITEPREF_WINKY_THEME_DESC}'	=>	"The default theme for WhispyForum",
 	
 	/* Forum settings */
 	'{LANG_UCP_FORUM}'	=>	"Forum settings",
@@ -461,10 +464,8 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_FORUMS_CREATE_SQL_ERROR}'	=>	"There were errors executing the SQL query to create the new forum. No new forum was created.",
 	'{LANG_FORUMS_CREATE_SUCCESS_HEAD}'	=>	"Created the forum",
 	'{LANG_FORUMS_CREATE_SUCCESS}'	=>	"Creation of forum {TITLE}",
-	
 	'{LANG_FORUMS_PAGES}'	=>	"Pages ({CURRENT_PAGE} out of {PAGE_TOTAL}):",
 	'{LANG_FORUMS_LAST_POST_BY}'	=>	'by <a href="profile.php?id={USERID}" alt="{LANG_PROFILE_VIEW}">{NAME}</a>',
-	
 	'{LANG_FORUMS_EDIT}'	=>	"Edit",
 	'{LANG_FORUMS_EDIT_HEADER}'	=>	"Edit forum: {OTITLE}",
 	'{LANG_FORUMS_EDIT_VAR_ERROR}'	=>	"The forum edition cannot be done until every required variable is entered.",
@@ -472,7 +473,6 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_FORUMS_EDIT_MODERATOR_ERROR}'	=>	"You wanted to lock the forum's minimal level to {LANG_ADMINISTRATOR}, but you have only {LANG_MODERATOR} rights. Only {LANG_ADMINISTRATOR_PLURAL} can restrict forum's access to {LANG_ADMINISTRATOR_PLURAL}.",
 	'{LANG_FORUMS_EDIT_SUCCESS_HEAD}'	=>	"Edited the forum",
 	'{LANG_FORUMS_EDIT_SUCCESS}'	=>	"Edition of forum {TITLE}",
-	
 	'{LANG_FORUMS_DELETE}'	=>	"Delete",
 	'{LANG_FORUMS_DELETE_SQL_ERROR}'	=>	"There were errors executing the SQL query to delete the forum. The forum remains undeleted.",
 	'{LANG_FORUMS_DELETE_SUCCESS_HEAD}'	=>	"Deleted the forum",
@@ -480,7 +480,6 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_FORUMS_DELETE_TOPICS_SUCCESS_HEAD}'	=>	"Deleted the topics from the recently deleted forum",
 	'{LANG_FORUMS_DELETE_POSTS_SQL_ERROR}'	=>	"There were errors executing the SQL query to delete the posts in the recently deleted forum. The posts remain orphan.",
 	'{LANG_FORUMS_DELETE_POSTS_SUCCESS_HEAD}'	=>	"Deleted the posts from the recently deleted forum",
-	
 	'{LANG_TOPICS}'	=>	"Topics",
 	'{LANG_TOPICS_TITLE}'	=>	"Title",
 	'{LANG_TOPICS_POST_TITLE}'	=>	"Post title",
@@ -494,24 +493,19 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_TOPICS_THIS_FORUM_REQUIRES_USER}'	=>	"Viewing this forum requires you to have {LANG_USER} rights.",
 	'{LANG_TOPICS_THIS_FORUM_REQUIRES_MODERATOR}'	=>	"Viewing this forum requires you to have {LANG_MODERATOR} rights.",
 	'{LANG_TOPICS_THIS_FORUM_REQUIRES_ADMINISTRATOR}'	=>	"Viewing this forum requires you to have {LANG_ADMINISTRATOR} rights.",
-	
 	'{LANG_TOPICS_FORUM_DOES_NOT_EXIST}'	=>	"The forum you wanted to view does not exists.",
-	
 	'{LANG_TOPICS_NO_TOPIC}'	=>	"There aren't any topics in this forum.",
-	
 	'{LANG_TOPICS_DELETE}'	=>	"Delete",
 	'{LANG_TOPICS_DELETE_SQL_ERROR}'	=>	"There were errors executing the SQL query to delete the topic. The topic remains undeleted.",
 	'{LANG_TOPICS_DELETE_SUCCESS_HEAD}'	=>	"Deleted the topic",
 	'{LANG_TOPICS_DELETE_POSTS_SQL_ERROR}'	=>	"There were errors executing the SQL query to delete the posts in the recently deleted topic. The posts remain orphan.",
 	'{LANG_TOPICS_DELETE_POSTS_SUCCESS_HEAD}'	=>	"Deleted the posts from the recently deleted topic",
-	
 	'{LANG_TOPICS_EDIT}'	=>	"Edit",
 	'{LANG_TOPICS_EDIT_HEADER}'	=>	"Edit topic: {OTITLE}",
 	'{LANG_TOPICS_EDIT_VAR_ERROR}'	=>	"The topic edition cannot be done until every required variable is entered.",
 	'{LANG_TOPICS_EDIT_SQL_ERROR}'	=>	"There were errors executing the SQL query to edit the topic. The topic remains the same.",
 	'{LANG_TOPICS_EDIT_SUCCESS_HEAD}'	=>	"Edited the topic",
 	'{LANG_TOPICS_EDIT_SUCCESS}'	=>	"Edition of topic {TITLE}",
-	
 	'{LANG_TOPICS_CREATE_NEW}'	=>	"Create new topic",
 	'{LANG_TOPICS_CREATE_GUEST_ERROR}'	=>	"Even though the forum allows you to see it as a guest, you cannot create a topic in it. Please log in or register.",
 	'{LANG_TOPICS_CREATE_HEADER}'	=>	"Create new topic in forum: {FORUM_NAME}",
@@ -522,7 +516,6 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_TOPICS_CREATE_LOCK}'	=>	"Lock (no new posts will be allowed)",
 	'{LANG_TOPICS_CREATE_HIGHLIGHT}'	=>	"Highlight (will be listed on the top)",
 	'{LANG_TOPICS_CREATE_FORUM_DOES_NOT_EXIST}'	=>	"The forum you wanted to create a new topic in does not exists.",
-	
 	'{LANG_POSTS}'	=>	"Posts",
 	'{LANG_POSTS_POST}'	=>	"Post",
 	'{LANG_POSTS_NO}'	=>	"No posts",
@@ -530,7 +523,6 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_POSTS_TITLE}'	=>	"Title",
 	'{LANG_POSTS_BACKTOLIST}'	=>	"<< Back",
 	'{LANG_POSTS_COUNT}'	=>	"Posts",
-	
 	'{LANG_POSTS_CREATE_NEW}'	=>	"New post",
 	'{LANG_POSTS_CREATE_NEW_BTN}'	=>	"Create new post",
 	'{LANG_POSTS_CREATE_GUEST_ERROR}'	=>	"Even though the forum allows you to see it as a guest, you cannot post in it. Please log in or register.",
@@ -540,11 +532,9 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_POSTS_CREATE_SUCCESS_HEAD}'	=>	"Created the post",
 	'{LANG_POSTS_CREATE_SUCCESS}'	=>	"Creation of post {TITLE}",
 	'{LANG_POSTS_CREATE_TOPIC_DOES_NOT_EXIST}'	=>	"The topic you wanted to create a new post in does not exists.",
-	
 	'{LANG_POSTS_DELETE}'	=>	"Delete",
 	'{LANG_POSTS_DELETE_SQL_ERROR}'	=>	"There were errors executing the SQL query to delete the post. The post remains undeleted.",
 	'{LANG_POSTS_DELETE_SUCCESS_HEAD}'	=>	"Deleted the post",
-	
 	'{LANG_POSTS_EDIT}'	=>	"Edit",
 	'{LANG_POSTS_EDIT_HEADER}'	=>	"Edit post: {OTITLE}",
 	'{LANG_POSTS_EDIT_VAR_ERROR}'	=>	"The post edition cannot be done until every required variable is entered.",

@@ -30,7 +30,7 @@ if ( ( file_exists("config.php") == 1 ) && ( file_exists("config.md5") == 1 ) )
 			'TITLE'	=>	"{LANG_LOAD_CORRUPTION}", // Error title
 			'BODY'	=>	"{LANG_LOAD_CORRUPTION_BODY}", // Error text
 			'ALT'	=>	"{LANG_LOAD_CORRUPTION_ALT}" // Alternate picture text
-		), FALSE ); // We output an error message
+		), FALSE); // We output an error message
 		exit; // Terminate execution
 	} elseif ( file_get_contents("config.md5") === md5(file_get_contents("config.php")) )
 	{
@@ -43,7 +43,7 @@ if ( ( file_exists("config.php") == 1 ) && ( file_exists("config.md5") == 1 ) )
 		'TITLE'	=>	"{LANG_LOAD_NOCFG}", // Error title
 		'BODY'	=>	"{LANG_LOAD_NOCFG_BODY}", // Error text
 		'ALT'	=>	"{LANG_FILE_UNAVAILABLE}" // Alternate picture text
-	), FALSE ); // We output an error message
+	), FALSE); // We output an error message
 	exit; // Terminate execution
 }
 

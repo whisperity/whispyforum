@@ -219,11 +219,11 @@ switch ($site)
 			/* Language settings */
 			
 			/* Theme settings */
-/*
 			$Tdir = "./themes/"; // Language home dir
 			$Texempt = array('.', '..', '.svn', '_svn'); // Do not query these directories
 			
-			$Ctemplate->useStaticTemplate("", FALSE); // Theme header
+			$i = 0; // Define a counter on zero
+			$embedder = ""; // Define a container
 			
 			if (is_dir($Tdir)) 
 			{
@@ -236,10 +236,48 @@ switch ($site)
 							if ( filetype($Tdir . $Tfile) == "dir" )
 							{
 								// We're now querying all language directories
-								if ( file_exists($Tdir . $Tfile . "/style.css") )
+								if ( ( file_exists($Tdir . $Tfile . "/style.css") ) &&  ( file_exists($Tdir . $Tfile . "/theme.php") ) )
 								{
 									// We only list directories containing the stylesheet file
+									include($Tdir.$Tfile."/theme.php"); // Load the theme definition array ($theme_def)
 									
+									if ( $i === 0 )
+									{
+										// If the counter is zero, we need to create a new row.
+										$embedder .= "<tr>";
+									}
+									
+									if ( file_exists($Tdir . $Tfile . "/preview.png") )
+									{
+										// If there is a precreated preview image, use it as a preview
+										$preview = $Ctemplate->useTemplate("user/cp_siteprefs_theme_preview", array(
+											'IMAGE'	=>	$Tdir.$Tfile."/preview.png"
+										), TRUE);
+									} elseif ( !file_exists($Tdir. $Tfile . "/preview.png") )
+									{
+										// If there isn't a preview image, use a generated error message as preview
+										$preview = $Ctemplate->useTemplate("errormessage", array(
+											'PICTURE_NAME'	=>	"Nuvola_apps_error.png", // Error cross icon
+											'TITLE'	=>	"{LANG_SITEPREF_THEME_PREVIEW_NO}", // Error title
+											'BODY'	=>	"", // Error text
+											'ALT'	=>	"{LANG_ERROR_EXCLAMATION}" // Alternate picture text
+										), TRUE);
+									}
+									
+									// Output one table cell for the theme
+									$embedder .= $Ctemplate->useTemplate("user/cp_siteprefs_theme_embed", array(
+										'PREVIEW'	=>	$preview, // Embed the preview image
+										'SHORT_NAME'	=>	$theme_def['SHORT_NAME'], // Short name of theme
+										'DESCRIPTION'	=>	$theme_def['DESCRIPTION'] // Long description
+									), TRUE); // Add it to the embedder
+									$i++;
+									
+									if ( $i === 2 )
+									{
+										// If the counter is 2, we need to close the opened row
+										$embedder .= '</tr>';
+										$i = 0; // And we reset the counter
+									}
 								}
 							}
 						}
@@ -247,7 +285,18 @@ switch ($site)
 					closedir($Tdh);
 				}
 			}
-*/
+			
+			if ( $i != 2 )
+			{
+				// After embedding the themes, 
+				// if we haven't filled up a complete row with two entries
+				// we need to close the unclosed row to prevent output errors
+				$embedder .= '</tr>';
+			}
+			
+			$Ctemplate->useTemplate("user/cp_siteprefs_theme_wrapper", array(
+				'EMBED'	=>	$embedder // The previously filled container
+			), FALSE); // Output the table
 			/* Theme settings */
 		}
 		break;
