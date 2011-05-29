@@ -619,7 +619,7 @@ switch ($instPos)
 		if ( $_POST['root_name'] == NULL ) // Database host
 		{
 			$Ctemplate->useTemplate("install/ins_adminusr_variable_error", array(
-				'VARIABLE'	=>	"Root username", // Errornous variable name
+				'VARIABLE'	=>	"{LANG_USERNAME}", // Errornous variable name
 				'ROOT_NAME'	=>	$_POST['root_name'], // Username (should be empty)
 				'ROOT_PASS'	=>	$_POST['root_pass'], // Password
 				'ROOT_EMAIL'	=>	$_POST['root_email'], // E-mail address
@@ -630,7 +630,7 @@ switch ($instPos)
 		if ( $_POST['root_pass'] == NULL ) // Database user
 		{
 			$Ctemplate->useTemplate("install/ins_adminusr_variable_error", array(
-				'VARIABLE'	=>	"Password", // Errornous variable name
+				'VARIABLE'	=>	"{LANG_PASSWORD}", // Errornous variable name
 				'ROOT_NAME'	=>	$_POST['root_name'], // Username
 				'ROOT_PASS'	=>	$_POST['root_pass'], // Password (should be empty)
 				'ROOT_EMAIL'	=>	$_POST['root_email'], // E-mail address
@@ -641,7 +641,7 @@ switch ($instPos)
 		if ( $_POST['root_email'] == NULL ) // Database password
 		{
 			$Ctemplate->useTemplate("install/ins_adminusr_variable_error", array(
-				'VARIABLE'	=>	"E-mail address", // Errornous variable name
+				'VARIABLE'	=>	"{LANG_EMAIL}", // Errornous variable name
 				'ROOT_NAME'	=>	$_POST['root_name'], // Username
 				'ROOT_PASS'	=>	$_POST['root_pass'], // Password
 				'ROOT_EMAIL'	=>	$_POST['root_email'], // E-mail address (should be empty)
