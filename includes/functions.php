@@ -154,7 +154,21 @@ function bbDecode($input)
 		"/\n?\[quote\]\n*/i",
 		'/\n?\[quote=["]?([a-zA-Z0-9\s]*?)["]?\]\n*/i',
 		"/\[\/quote\]/i",
-		"/\n/i"
+		"/\n/i",
+		
+		// Emoticons
+		"/:cry:/i",
+		"/:wave:/i",
+		"/:spam:/i",
+		"/:offtopic:/i",
+		"/:[-]?\)/i",
+		"/:[-]?\(/i",
+		"/:[-]?D/i",
+		"/:[-]?P/i",
+		"/;[-]?\)/i",
+		"/:[-]?S/i",
+		"/:[-]?O/i",
+		"/:[-]?H/i"
 	); 
 	
 	$htmlTags = array(
@@ -172,7 +186,21 @@ function bbDecode($input)
 		"<TABLE BORDER=\"0\" ALIGN=\"CENTER\" CELLPADDING=\"0\" CELLSPACING=\"0\" WIDTH=\"75%\"><TR><TD CLASS=\"quote\" ALIGN=\"LEFT\"><B>{LANG_BB_TAG_QUOTE}</B><BR><HR>",
 		"<TABLE BORDER=\"0\" ALIGN=\"CENTER\" CELLPADDING=\"0\" CELLSPACING=\"0\" WIDTH=\"75%\"><TR><TD CLASS=\"quote\" ALIGN=\"LEFT\"><B>{LANG_BB_TAG_QUOTE_BY} \\1</B><BR><HR>",
 		"<HR></TD></TR></TABLE>",
-		"<br>"
+		"<br>",
+		
+		// Emoticons
+		'<img src="themes/{THEME_NAME}/emoticons/cry.gif">',
+		'<img src="themes/{THEME_NAME}/emoticons/wave.gif">',
+		'<img src="themes/{THEME_NAME}/emoticons/spam.gif">',
+		'<img src="themes/{THEME_NAME}/emoticons/offtopic.gif">',
+		'<img src="themes/{THEME_NAME}/emoticons/smile1.gif">',
+		'<img src="themes/{THEME_NAME}/emoticons/sad.gif">',
+		'<img src="themes/{THEME_NAME}/emoticons/grin.gif">',
+		'<img src="themes/{THEME_NAME}/emoticons/tongue.gif">',
+		'<img src="themes/{THEME_NAME}/emoticons/wink.gif">',
+		'<img src="themes/{THEME_NAME}/emoticons/confused.gif">',
+		'<img src="themes/{THEME_NAME}/emoticons/ohmy.gif">',
+		'<img src="themes/{THEME_NAME}/emoticons/cool.gif">'
 	);
 	
 	$output = htmlspecialchars($input, ENT_QUOTES, 'UTF-8'); // Kill the HTML codes inside

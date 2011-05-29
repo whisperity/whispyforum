@@ -438,6 +438,12 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_BBCODES_CITATED_PERSON}'	=>	"Citated person",
 	'{LANG_BBCODES_PICASSO_QUOTE}'	=>	"Computers are useless. They can only give you answers.",
 	
+	/* Emoticons */
+	'{LANG_EMOTICON}'	=>	"Emoticon",
+	'{LANG_EMOTICON_CODE}'	=>	"Code",
+	'{LANG_EMOTICONS}'	=>	"Emoticons",
+	'{LANG_EMOTICONS_VIEW}'	=>	"View emoticons",
+	
 	/* Forums */
 	'{LANG_FORUMS}'	=>	"Forums",
 	'{LANG_FORUMS_TITLE}'	=>	"Title",
