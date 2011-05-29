@@ -58,7 +58,9 @@ $wf_lang = array(
 	'{LANG_HOMEPAGE_NN}'	=>	"Homepage >>",
 	'{LANG_HOMEPAGE}'	=>	"homepage",
 	'{LANG_TO_RETURN_HOME_CLICK_BUTTON_BELOW}'	=>	"To return to the homepage, please click the button below.",
+	'{LANG_REFRESH}'	=>	"Refresh",
 	'{LANG_TO_RETRY_CLICK_BACK}'	=>	"If you want to retry, click back.",
+	'{LANG_TO_REFRESH_CLICK_BUTTON}'	=>	"To refresh the page, click the button.",
 	'{LANG_CAN_PROCEED_TO_NEXT_STEP}'	=>	"You can proceed to the next step.",
 	'{LANG_REDIRECT_WHERE_LEFTOFF}'	=>	"You're being redirected where you left off...",
 	'{LANG_REDIRECT_THERE}'	=>	"You're being redirected there...",
@@ -77,6 +79,7 @@ $wf_lang = array(
 	'{LANG_TEMPLATE}'	=>	"Template",
 	'{LANG_DOES_NOT_EXIST}'	=>	"does not exist",
 	'{LANG_FILE_UNAVIABLE}'	=>	"File unaviable",
+	'{LANG_ACCESS_DENIED}'	=>	"Access denied!",
 	'{LANG_COULD_NOT_BE_MADE}'	=>	"could not be made.",
 	'{LANG_UPLOAD}'	=>	"Upload",
 	'{LANG_OR}'	=>	"or",
@@ -131,6 +134,24 @@ This package is provided as is. By using this package, you hereby accept our dis
 <br><br>
 <small>You've been warned...</small>",
 	'{LANG_INSTALL_START_STEP}'	=>	"This step is the installation, where you specify the database login, create tables and set up an administrator user.",
+	'{LANG_INSTALL_START_ALREADY}'	=>	"WhispyForum is already installed",
+	'{LANG_INSTALL_START_ALREADY_BODY}'	=>	"It seems that WhispyForum is already installed.
+<br><br>
+Reinstalling the system can produce a lot of stability and incompatibility issues. Primarily, when the installer creates the database table entries, it can truncate/rewrite/append tables that shouldn't be accessed in such ways. On the other hand, the configuration file can get corrupted.
+<br><br>
+Before we can move on installing the system, you have to make your data safe. Create a database backup, and drop every tables from the database. After that, delete <tt>config.php</tt> from the server root directory.
+<br><br>
+<small>Existing configuration detected. Setup process terminated.</small>",
+	
+	'{LANG_INSTALL_CONFIGFILE}'	=>	"Configuration file",
+	'{LANG_INSTALL_CONFIGFILE_INTRO}'	=>	"The configuration file is one of the main runtime-generated files of the engine. The configuration file specifies the database login credentials.",
+	'{LANG_INSTALL_CONFIGFILE_DATA}'	=>	"Configuration data",
+	'{LANG_INSTALL_CONFIGFILE_VARIABLE_ERROR}'	=>	"The installation cannot continue until every required variable is entered.",
+	'{LANG_INSTALL_CONFIGFILE_WRITE_ERROR}'	=>	"The installer cannot access <tt>config.php</tt> for writing. Make sure the file is writable for the web server user. If you cannot do this or access required files, contact your network administrator.",
+	'{LANG_INSTALL_CONFIGFILE_SUCCESS}'	=>	"<tt>config.php</tt> created",
+	'{LANG_INSTALL_CONFIGFILE_SUCCESS_1}'	=>	"The configuration file was written successfully.",
+	'{}'	=>	"",
+	'{}'	=>	"",
 	
 	/* SQL */
 	'{LANG_SQL_ERROR}'	=>	"mySQL error",
@@ -145,6 +166,10 @@ This package is provided as is. By using this package, you hereby accept our dis
 	'{LANG_SQL_COULD_NOT_BE_SELECTED}'	=>	"could not be selected.",
 	'{LANG_SQL_COULD_NOT_BE_PROCESSED}'	=>	"could not be processed.",
 	'{LANG_SQL_ERROR_MSG_WAS}'	=>	"The mySQL error message was",
+	'{LANG_SQL_DB_HOST}'	=>	"Database host",
+	'{LANG_SQL_DB_USER}'	=>	"Database user",
+	'{LANG_SQL_DB_PASS}'	=>	"Database password",
+	'{LANG_SQL_DB_NAME}'	=>	"Database name",
 	
 	/* Loader script */
 	'{LANG_LOAD_CORRUPTION}'	=>	"Corruption!",

@@ -3,7 +3,7 @@
 <html>
 
 <head>
-<title>Installer - Configuration file</title>
+<title>{LANG_INSTALL_INSTALLER} - {LANG_INSTALL_CONFIGFILE}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 
@@ -11,8 +11,8 @@
 
 <table class="install-header" border="0">
 <tr>
-<td class="install-picture"><img src="themes/{THEME_NAME}/Nuvola_devices_nfs_mount.png" alt="Installer wizard"></td>
-<td><h1 class="install-header" align="center">Installer - Configuration file</h1></td>
+<td class="install-picture"><img src="themes/{THEME_NAME}/Nuvola_devices_nfs_mount.png" alt="{LANG_INSTALL_WIZARD}"></td>
+<td><h1 class="install-header" align="center">{LANG_INSTALL_INSTALLER} - {LANG_INSTALL_CONFIGFILE}</h1></td>
 </tr>
 </table>
 
@@ -23,18 +23,18 @@
 <td class="install-block-left">
 <table class="successbox"> <!--- copying the successbox template -->
 	<tr>
-		<td class="successpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_txt.png" alt="Success!"></td>
-		<td class="successtitle"><tt>config.php</tt> created</td>
+		<td class="successpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_txt.png" alt="{LANG_SUCCESS_EXCLAMATION}"></td>
+		<td class="successtitle">{LANG_INSTALL_CONFIGFILE_SUCCESS}</td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="successbody">The configuration file was written successfully.</td>
+		<td class="successbody">{LANG_INSTALL_CONFIGFILE_SUCCESS_1}</td>
 	</tr>
 </table> <!--- copying the successbox template -->
 
-You can proceed to the next step.
+{LANG_CAN_PROCEED_TO_NEXT_STEP}
 <form method="POST" action="install.php">
-<input type="submit" value="Next >>">
+<input type="submit" value="{LANG_NEXT_NN}">
 <input type="hidden" name="instPos" value=3> <!--- Going to step 4 -->
 </form>
 </td>
@@ -42,17 +42,17 @@ You can proceed to the next step.
 <!--- menubox -->
 <div id="menucontainer">
 	<div id="header"><div id="header_left"></div>
-	<div id="header_main">Install menu</div><div id="header_right"></div></div>
+	<div id="header_main">{LANG_INSTALL_MENU}</div><div id="header_right"></div></div>
     <div id="content">
-        <span class="install-menu-entries">1. Introduction</span><br>
-		<span class="install-menu-entries">2. Configuration file</span><br>
-		<span class="install-menu-actual">3. Writing configuration file.</span><br>
-		<span class="install-menu-entries">4. Testing database connection</span><br>
-		<span class="install-menu-entries">5. Creating database</span><br>
-		<span class="install-menu-entries">6. Creating table structure and content</span><br>
-		<span class="install-menu-entries">7. Administrator user</span><br>
-		<span class="install-menu-entries">8. Creating Administrator user</span><br>
-		<span class="install-menu-entries">9. Finish</span>
+        <span class="install-menu-entries">{LANG_INSTALL_STEP_1}</span><br>
+		<span class="install-menu-actual">{LANG_INSTALL_STEP_2}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_3}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_4}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_5}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_6}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_7}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_8}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_9}</span>
     </div>
 </div>
 <!--- menubox -->

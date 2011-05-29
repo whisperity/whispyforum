@@ -3,7 +3,7 @@
 <html>
 
 <head>
-<title>Installer - Configuration file</title>
+<title>{LANG_INSTALL_INSTALLER} - {LANG_INSTALL_CONFIGFILE}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 
@@ -11,8 +11,8 @@
 
 <table class="install-header" border="0">
 <tr>
-<td class="install-picture"><img src="themes/{THEME_NAME}/Nuvola_devices_nfs_mount.png" alt="Installer wizard"></td>
-<td><h1 class="install-header" align="center">Installer - Configuration file</h1></td>
+<td class="install-picture"><img src="themes/{THEME_NAME}/Nuvola_devices_nfs_mount.png" alt="{LANG_INSTALL_WIZARD}"></td>
+<td><h1 class="install-header" align="center">{LANG_INSTALL_INSTALLER} - {LANG_INSTALL_CONFIGFILE}</h1></td>
 </tr>
 </table>
 
@@ -21,35 +21,35 @@
 <table border="0" class="install-center">
 <tr>
 <td class="install-block-left">
-The configuration file is one of the main runtime-generated files of the engine. The configuration file specifies the database login credientals.<br>
-<font class="emphasis">Variables marked with a red star (<span class="red-star">*</span>) are required to be entered.</font>
+{LANG_INSTALL_CONFIGFILE_INTRO}<br>
+<font class="emphasis">{LANG_MANDATORY_VARIABLES_REDSTAR}</font>
 <br><br>
 <form method="POST" action="install.php">
-<span class="form-header">Configuration data</span><br>
-Database host<span class="red-star">*</span>: <input type="text" name="dbhost" value="{DBHOST}" size=35><br>
-Database username<span class="red-star">*</span>: <input type="text" name="dbuser" value="{DBUSER}" size=35><br>
-Database password<span class="red-star">*</span>: <input type="password" name="dbpass" value="{DBPASS}" size=35><br>
-Database name<span class="red-star">*</span>: <input type="text" name="dbname" value="{DBNAME}" size=35><br>
-<input type="submit" value="Next >>">
+<span class="form-header">{LANG_INSTALL_CONFIGFILE_DATA}</span><br>
+{LANG_SQL_DB_HOST}<span class="red-star">*</span>: <input type="text" name="dbhost" value="{DBHOST}" size=35><br>
+{LANG_SQL_DB_USER}<span class="red-star">*</span>: <input type="text" name="dbuser" value="{DBUSER}" size=35><br>
+{LANG_SQL_DB_PASS}<span class="red-star">*</span>: <input type="password" name="dbpass" value="{DBPASS}" size=35><br>
+{LANG_SQL_DB_NAME}<span class="red-star">*</span>: <input type="text" name="dbname" value="{DBNAME}" size=35><br>
+<font class="emphasis">{LANG_PROCEED_CLICK_BUTTON_BELOW}</font><br>
+<input type="submit" value="{LANG_NEXT_NN}">
 <input type="hidden" name="instPos" value=2> <!--- Proceeding to step 3 -->
 </form>
-<font class="emphasis">To proceed, please click the button below.</font>
 </td>
 <td class="install-block-right" valign="top">
 <!--- menubox -->
 <div id="menucontainer">
 	<div id="header"><div id="header_left"></div>
-	<div id="header_main">Install menu</div><div id="header_right"></div></div>
+	<div id="header_main">{LANG_INSTALL_MENU}</div><div id="header_right"></div></div>
     <div id="content">
-        <span class="install-menu-entries">1. Introduction</span><br>
-		<span class="install-menu-actual">2. Configuration file</span><br>
-		<span class="install-menu-entries">3. Writing configuration file.</span><br>
-		<span class="install-menu-entries">4. Testing database connection</span><br>
-		<span class="install-menu-entries">5. Creating database</span><br>
-		<span class="install-menu-entries">6. Creating table structure and content</span><br>
-		<span class="install-menu-entries">7. Administrator user</span><br>
-		<span class="install-menu-entries">8. Creating Administrator user</span><br>
-		<span class="install-menu-entries">9. Finish</span>
+        <span class="install-menu-entries">{LANG_INSTALL_STEP_1}</span><br>
+		<span class="install-menu-actual">{LANG_INSTALL_STEP_2}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_3}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_4}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_5}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_6}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_7}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_8}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_9}</span>
     </div>
 </div>
 <!--- menubox -->
