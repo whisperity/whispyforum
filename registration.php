@@ -21,7 +21,7 @@ if ( $_SESSION['log_bool'] == TRUE )
 		'TITLE'	=>	"{LANG_NO_LOGGEDINS}", // Error title
 		'BODY'	=>	"{LANG_REQUIRES_GUEST}", // Error text
 		'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
-	), FALSE ); // We give an unaviable error
+	), FALSE ); // We give an unavailable error
 } elseif ( $_SESSION['log_bool'] == FALSE)
 {
 // If user is logged out, the registration is accessible

@@ -25,7 +25,7 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "newforum" ) )
 			'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
 			'BODY'	=>	"{LANG_REQUIRES_ADMIN}", // Error text
 			'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
-		), FALSE ); // We give an unaviable error
+		), FALSE ); // We give an unavailable error
 	} elseif ( $uLvl[0] >= 3 )
 	{
 		// Access granted :)
@@ -116,7 +116,7 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "edit" ) && ( isset($_
 			'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
 			'BODY'	=>	"{LANG_REQUIRES_MODERATOR}", // Error text
 			'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
-		), FALSE ); // We give an unaviable error
+		), FALSE ); // We give an unavailable error
 	} elseif ( $uLvl[0] >= 2 )
 	{
 		// Access granted :)
@@ -251,7 +251,7 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "delete" ) && ( isset(
 			'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
 			'BODY'	=>	"{LANG_REQUIRES_ADMIN}", // Error text
 			'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
-		), FALSE ); // We give an unaviable error
+		), FALSE ); // We give an unavailable error
 	} elseif ( $uLvl[0] >= 3 )
 	{
 		// Access granted

@@ -18,7 +18,7 @@ if ( $_SESSION['log_bool'] == FALSE )
 		'TITLE'	=>	"{LANG_NO_GUESTS}", // Error title
 		'BODY'	=>	"{LANG_REQUIRES_LOGGEDIN}", // Error text
 		'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
-	), FALSE ); // We give an unaviable error
+	), FALSE ); // We give an unavailable error
 } elseif ( $_SESSION['log_bool'] == TRUE)
 {
 // If user is logged in, the profile is accessible

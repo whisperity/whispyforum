@@ -24,7 +24,7 @@ if ( $uDBArray['userLevel'] < 3 )
 		'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
 		'BODY'	=>	"{LANG_REQUIRES_ADMIN}", // Error text
 		'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
-	), FALSE ); // We give an unaviable error
+	), FALSE ); // We give an unavailable error
 } elseif ( $uDBArray['userLevel'] >= 3 )
 {
 // If user has the rights, the panel is accessible

@@ -21,7 +21,7 @@ if ( $_SESSION['log_bool'] == FALSE )
 		'TITLE'	=>	"{LANG_NO_GUESTS}", // Error title
 		'BODY'	=>	"{LANG_REQUIRES_LOGGEDIN}", // Error text
 		'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
-	), FALSE ); // We give an unaviable error
+	), FALSE ); // We give an unavailable error
 } elseif ( $_SESSION['log_bool'] == TRUE)
 {
 // If user is logged in, the control panel is accessible
@@ -153,7 +153,7 @@ switch ($site)
 						'TITLE'	=>	"{LANG_SITEPREF_MODIFY_LANGUAGE_ERROR}", // Error title
 						'BODY'	=>	"", // Error text
 						'ALT'	=>	"{LANG_SQL_EXEC_ERROR}" // Alternate picture text
-					), FALSE ); // We give an unaviable error
+					), FALSE ); // We give an unavailable error
 					
 					$Ctemplate->useStaticTemplate("user/cp_siteprefs_back", FALSE); // Back button
 				} elseif ( $Lmod == TRUE )
@@ -270,7 +270,7 @@ switch ($site)
 					'TITLE'	=>	"{LANG_UCP_FORUM_FAIL}", // Error title
 					'BODY'	=>	"", // Error text
 					'ALT'	=>	"{LANG_SQL_EXEC_ERROR}" // Alternate picture text
-				), FALSE ); // We give an unaviable error
+				), FALSE ); // We give an unavailable error
 				
 				$Ctemplate->useStaticTemplate("user/cp_forum_back", FALSE); // Back button
 			} elseif ( $mod == TRUE )

@@ -39,10 +39,10 @@ if ( ( file_exists("config.php") == 1 ) && ( file_exists("config.md5") == 1 ) )
 } elseif ( file_exists("config.php") == 0 ) // If not
 {
 	$Ctemplate->useTemplate("errormessage", array(
-		'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Unaviable file icon
+		'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Unavailable file icon
 		'TITLE'	=>	"{LANG_LOAD_NOCFG}", // Error title
 		'BODY'	=>	"{LANG_LOAD_NOCFG_BODY}", // Error text
-		'ALT'	=>	"{LANG_FILE_UNAVIABLE}" // Alternate picture text
+		'ALT'	=>	"{LANG_FILE_UNAVAILABLE}" // Alternate picture text
 	), FALSE ); // We output an error message
 	exit; // Terminate execution
 }

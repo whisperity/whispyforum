@@ -29,7 +29,7 @@ $wf_lang = array(
 	'{LANG_USING_LOWERCASE}'	=>	"using",
 	'{LANG_USERNAME_LOWERCASE}'	=>	"username",
 	'{LANG_PASSWORD_LOWERCASE}'	=>	"password",
-	'{LANG_FILE_UNAVIABLE}'	=>	"File unaviable",
+	'{LANG_FILE_UNAVAILABLE}'	=>	"File unavailable",
 	'{LANG_COULD_NOT_BE_MADE}'	=>	"could not be made.",
 	
 	/* SQL */

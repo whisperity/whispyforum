@@ -107,7 +107,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 				'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
 				'BODY'	=>	"{LANG_REQUIRES_MODERATOR}", // Error text
 				'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
-			), FALSE ); // We give an unaviable error
+			), FALSE ); // We give an unavailable error
 		} elseif ( $uLvl[0] >= 2 )
 		{
 			// Access granted :)
@@ -219,7 +219,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 				'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
 				'BODY'	=>	"{LANG_REQUIRES_MODERATOR}", // Error text
 				'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
-			), FALSE ); // We give an unaviable error
+			), FALSE ); // We give an unavailable error
 		} elseif ( $uLvl[0] >= 2 )
 		{
 			// Access granted
