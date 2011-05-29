@@ -3,7 +3,7 @@
 <html>
 
 <head>
-<title>Installer - Finish</title>
+<title>{LANG_INSTALL_INSTALLER} - {LANG_INSTALL_FINISH}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 
@@ -11,8 +11,8 @@
 
 <table class="install-header" border="0">
 <tr>
-<td class="install-picture"><img src="themes/{THEME_NAME}/Nuvola_apps_package_settings.png" alt="Installer wizard"></td>
-<td><h1 class="install-header" align="center">Installer - Finish</h1></td>
+<td class="install-picture"><img src="themes/{THEME_NAME}/Nuvola_apps_package_settings.png" alt="{LANG_INSTALL_WIZARD}"></td>
+<td><h1 class="install-header" align="center">{LANG_INSTALL_INSTALLER} - {LANG_INSTALL_FINISH}</h1></td>
 </tr>
 </table>
 
@@ -21,44 +21,42 @@
 <table border="0" class="install-center">
 <tr>
 <td class="install-block-left">
-The installation process have finished!
+{LANG_INSTALL_FINISH_INFO}
 <!--- last steps -->
 <table class="messagebox"> <!--- copying the messagebox template -->
 	<tr>
-		<td class="messagepicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_txt.png" alt="A few steps remained"></td>
-		<td class="messagetitle">Just a few steps...</td>
+		<td class="messagepicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_txt.png" alt="{LANG_INSTALL_FINISH_SECURITY_ALT}"></td>
+		<td class="messagetitle">{LANG_INSTALL_FINISH_SECURITY_HEAD}</td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="messagebody">The installer done everything it could. It made a config file, installed the database and tables, and registered your root user. However, there are a few optional but recommended steps to ensure your safety.<br><br>
-		To make sure externals cannot corrupt your configuration, first, make your configuration file (<tt>/config.php</tt>) read-only. The normal usage of the engine does not require the writing rights.<br><br>
-		Secondly, remove the <tt>install.php</tt> file from the root (/) directory. If you do so, entering the install file's path into the browser give a 404 error.</td>
+		<td class="messagebody">{LANG_INSTALL_FINISH_SECURITY_BODY}</td>
 	</tr>
 </table> <!--- copying the message template -->
 <!--- last steps -->
-This is the end of the installation. Have a nice upcoming year or more with engine.<br>
-<font class="emphasis">To return to the homepage, please click the button below.</font>
+{LANG_INSTALL_FINISH_FAREWELL}<br>
+<font class="emphasis">{LANG_TO_RETURN_HOME_CLICK_BUTTON_BELOW}</font>
 
 <!--- proceed form -->
 <form method="POST" action="index.php">
-<input type="submit" value="Homepage >>">
+<input type="submit" value="{LANG_HOMEPAGE_NN}">
 </form>
 </td>
 <td class="install-block-right" valign="top">
 <!--- menubox -->
 <div id="menucontainer">
 	<div id="header"><div id="header_left"></div>
-	<div id="header_main">Install menu</div><div id="header_right"></div></div>
+	<div id="header_main">{LANG_INSTALL_MENU}</div><div id="header_right"></div></div>
     <div id="content">
-        <span class="install-menu-entries">1. Introduction</span><br>
-		<span class="install-menu-entries">2. Configuration file</span><br>
-		<span class="install-menu-entries">3. Writing configuration file.</span><br>
-		<span class="install-menu-entries">4. Testing database connection</span><br>
-		<span class="install-menu-entries">5. Creating database</span><br>
-		<span class="install-menu-entries">6. Creating table structure and content</span><br>
-		<span class="install-menu-entries">7. Administrator user</span><br>
-		<span class="install-menu-entries">8. Creating Administrator user</span><br>
-		<span class="install-menu-actual">9. Finish</span>
+        <span class="install-menu-entries">{LANG_INSTALL_STEP_1}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_2}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_3}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_4}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_5}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_6}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_7}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_8}</span><br>
+		<span class="install-menu-actual">{LANG_INSTALL_STEP_9}</span>
     </div>
 </div>
 <!--- menubox -->

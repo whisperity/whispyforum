@@ -3,7 +3,7 @@
 <html>
 
 <head>
-<title>Installer - Introduction</title>
+<title>{LANG_INSTALL_INSTALLER} - {LANG_INSTALL_INTRODUCTION}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 
@@ -12,8 +12,8 @@
 
 <table class="install-header" border="0">
 <tr>
-<td class="install-picture"><img src="themes/{THEME_NAME}/Nuvola_apps_package_applications.png" alt="Installer wizard"></td>
-<td><h1 class="install-header" align="center">Installer - Introduction</h1></td>
+<td class="install-picture"><img src="themes/{THEME_NAME}/Nuvola_apps_package_applications.png" alt="{LANG_INSTALL_WIZARD}"></td>
+<td><h1 class="install-header" align="center">{LANG_INSTALL_INSTALLER} - {LANG_INSTALL_INTRODUCTION}</h1></td>
 </tr>
 </table>
 
@@ -35,41 +35,35 @@
 
 <table class="errorbox"> <!--- copying the errorbox template -->
 	<tr>
-		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_locked.png" alt="Already installed!"></td>
-		<td class="errortitle">WhispyForum is already installed</td>
+		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_locked.png" alt="{LANG_INSTALL_START_ALREADY}"></td>
+		<td class="errortitle">{LANG_INSTALL_START_ALREADY}</td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="errorbody">It seems that WhispyForum is already installed.
-<br><br>
-Reinstalling the system can produce a lot of stability and incompatibility issues. Primarily, when the installer creates the database table entries, it can truncate/rewrite/append tables that shouldn't be accessed in such ways. On the other hand, the configuration file can get corrupted.
-<br><br>
-Before we can move on installing the system, you have to make your data safe. Create a database backup, and drop every tables from the database. After that, delete <tt>config.php</tt> from the server root directory.
-<br><br>
-<small>Existing configuration detected. Setup process terminated.</small></td>
+		<td class="errorbody">{LANG_INSTALL_START_ALREADY_BODY}</td>
 	</tr>
 </table> <!--- copying the errorbox template -->
-To refresh the page, click the button.
+{LANG_TO_REFRESH_CLICK_BUTTON}
 <!--- refresh form -->
 <form method="POST" action="install.php">
-<input type="submit" value="Refresh">
+<input type="submit" value="{LANG_REFRESH}">
 </form>
 </td>
 <td class="install-block-right" valign="top">
 <!--- menubox -->
 <div id="menucontainer">
 	<div id="header"><div id="header_left"></div>
-	<div id="header_main">Install menu</div><div id="header_right"></div></div>
+	<div id="header_main">{LANG_INSTALL_MENU}</div><div id="header_right"></div></div>
     <div id="content">
-        <span class="install-menu-actual">1. Introduction</span><br>
-		<span class="install-menu-entries">2. Configuration file</span><br>
-		<span class="install-menu-entries">3. Writing configuration file.</span><br>
-		<span class="install-menu-entries">4. Testing database connection</span><br>
-		<span class="install-menu-entries">5. Creating database</span><br>
-		<span class="install-menu-entries">6. Creating table structure and content</span><br>
-		<span class="install-menu-entries">7. Administrator user</span><br>
-		<span class="install-menu-entries">8. Creating Administrator user</span><br>
-		<span class="install-menu-entries">9. Finish</span>
+        <span class="install-menu-actual">{LANG_INSTALL_STEP_1}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_2}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_3}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_4}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_5}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_6}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_7}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_8}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_9}</span>
     </div>
 </div>
 <!--- menubox -->

@@ -3,7 +3,7 @@
 <html>
 
 <head>
-<title>Installer - Database</title>
+<title>{LANG_INSTALL_INSTALLER} - {LANG_INSTALL_DBTEST}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 
@@ -11,8 +11,8 @@
 
 <table class="install-header" border="0">
 <tr>
-<td class="install-picture"><img src="themes/{THEME_NAME}/Nuvola_devices_raid.png" alt="Installer wizard"></td>
-<td><h1 class="install-header" align="center">Installer - Database</h1></td>
+<td class="install-picture"><img src="themes/{THEME_NAME}/Nuvola_devices_raid.png" alt="{LANG_INSTALL_WIZARD}"></td>
+<td><h1 class="install-header" align="center">{LANG_INSTALL_INSTALLER} - {LANG_INSTALL_DBTEST}</h1></td>
 </tr>
 </table>
 
@@ -23,26 +23,26 @@
 <td class="install-block-left">
 <table class="errorbox"> <!--- copying the errorbox template -->
 	<tr>
-		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_devices_raid.png" alt="Connection error!"></td>
-		<td class="errortitle">Unable to connect!</td>
+		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_devices_raid.png" alt="{LANG_SQL_CONNECTION_ERROR}"></td>
+		<td class="errortitle">{LANG_SQL_NOCONNECTION}</td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="errorbody">Database connection to <tt>{DBHOST}</tt> (user <tt>{DBUSER}</tt>, using password: <tt>{USE_PASS}</tt>) could not be made.</td>
+		<td class="errorbody">{LANG_SQL_DBCONN_TO} <tt>{DBHOST}</tt> ({LANG_USER} <tt>{DBUSER}</tt>, {LANG_SQL_USING_PASSWORD} <tt>{USE_PASS}</tt>) {LANG_COULD_NOT_BE_MADE}</td>
 	</tr>
 </table> <!--- copying the errorbox template -->
 
-If you want to retry the connection, click retry.
+{LANG_TO_RETRY_CLICK_BUTTON}
 <!--- refresh form -->
 <form method="POST" action="install.php">
-<input type="submit" value="Refresh">
+<input type="submit" value="{LANG_REFRESH}">
 <input type="hidden" name="instPos" value=3> <!--- same step -->
 </form>
 
-You can try re-entering the configuration details. Click 'Back to step 2' to re-enter these values.
+{LANG_INSTALL_DBTEST_CONFIG_REENTER}
 <!--- config file return form -->
 <form method="POST" action="install.php">
-<input type="submit" value="<<Back to step 2">
+<input type="submit" value="{LANG_BB_BACK}">
 <input type="hidden" name="error_goback" value="no"> <!--- this isn't true because we aren't returning config values -->
 <input type="hidden" name="instPos" value=1> <!--- back to step 2 -->
 </form>
@@ -52,17 +52,17 @@ You can try re-entering the configuration details. Click 'Back to step 2' to re-
 <!--- menubox -->
 <div id="menucontainer">
 	<div id="header"><div id="header_left"></div>
-	<div id="header_main">Install menu</div><div id="header_right"></div></div>
+	<div id="header_main">{LANG_INSTALL_MENU}</div><div id="header_right"></div></div>
     <div id="content">
-        <span class="install-menu-entries">1. Introduction</span><br>
-		<span class="install-menu-entries">2. Configuration file</span><br>
-		<span class="install-menu-entries">3. Writing configuration file.</span><br>
-		<span class="install-menu-actual">4. Testing database connection</span><br>
-		<span class="install-menu-entries">5. Creating database</span><br>
-		<span class="install-menu-entries">6. Creating table structure and content</span><br>
-		<span class="install-menu-entries">7. Administrator user</span><br>
-		<span class="install-menu-entries">8. Creating Administrator user</span><br>
-		<span class="install-menu-entries">9. Finish</span>
+        <span class="install-menu-entries">{LANG_INSTALL_STEP_1}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_2}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_3}</span><br>
+		<span class="install-menu-actual">{LANG_INSTALL_STEP_4}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_5}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_6}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_7}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_8}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_9}</span>
     </div>
 </div>
 <!--- menubox -->

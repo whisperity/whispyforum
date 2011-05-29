@@ -2,18 +2,18 @@
 <!--- Usage: database tables creator error box -->
 <table class="errorbox"> <!--- copying the errorbox template -->
 	<tr>
-		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_devices_raid.png" alt="Database table creation"></td>
-		<td class="errortitle">One or more of the tables could not be created</td>
+		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_devices_raid.png" alt="{LANG_INSTALL_DBTABLES_ALT}"></td>
+		<td class="errortitle">{LANG_INSTALL_DBTABELS_GLOBAL_ERROR}</td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="errorbody">There were errors creating tables <tt>{TABLE_LIST}</tt>. You cannot proceed to the next step.</td>
+		<td class="errorbody">{LANG_INSTALL_DBTABLES_GLOBAL_ERROR_BODY}</td>
 	</tr>
 </table> <!--- copying the errorbox template -->
 <!--- retry form -->
-If you want to retry, click the button below.
+{LANG_TO_RETRY_CLICK_BUTTON}
 <form method="POST" action="install.php">
-<input type="submit" value="Retry">
+<input type="submit" value="{LANG_REFRESH}">
 <input type="hidden" name="instPos" value=5> <!--- same step -->
 </form>
 <!--- END install database tables creator error -->
