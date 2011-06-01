@@ -109,12 +109,14 @@ switch ($instPos)
 		{
 			// If config.php already exists, give error message
 			$Ctemplate->useTemplate("install/ins_start_already", array(
-				'INSTALL_LANGUAGES'	=>	$langembed // Insert the embedding <option> content for the language selector
+				'INSTALL_LANGUAGES'	=>	$langembed, // Insert the embedding <option> content for the language selector
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
 			), FALSE);
 		} else {
 			// If not, give standard starting screen
 			$Ctemplate->useTemplate("install/ins_start", array(
-				'INSTALL_LANGUAGES'	=>	$langembed // Insert the embedding <option> content for the language selector
+				'INSTALL_LANGUAGES'	=>	$langembed, // Insert the embedding <option> content for the language selector
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
 			), FALSE); // Use install introduction
 		}
 		break;
@@ -128,7 +130,8 @@ switch ($instPos)
 				'DBHOST'	=>	$_POST['dbhost'], // Database host
 				'DBUSER'	=>	$_POST['dbuser'], // Database user
 				'DBPASS'	=>	$_POST['dbpass'], // Database password
-				'DBNAME'	=>	$_POST['dbname'] // Database name
+				'DBNAME'	=>	$_POST['dbname'], // Database name
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
 			), FALSE);
 		} else {
 			// We output general form
@@ -136,7 +139,8 @@ switch ($instPos)
 				'DBHOST'	=>	"localhost", // Database host (default)
 				'DBUSER'	=>	"", // Database user
 				'DBPASS'	=>	"", // Database password
-				'DBNAME'	=>	"winky_db" // Database name (default)
+				'DBNAME'	=>	"winky_db", // Database name (default)
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
 			), FALSE); // Config file generator
 		}
 		break;
@@ -147,11 +151,12 @@ switch ($instPos)
 		if ( $_POST['dbhost'] == NULL ) // Database host
 		{
 			$Ctemplate->useTemplate("install/ins_config_variable_error", array(
-				'VARIABLE'	=>	"Database host", // Errornous variable name
+				'VARIABLE'	=>	"{LANG_SQL_DB_HOST}", // Errornous variable name
 				'DBHOST'	=>	$_POST['dbhost'], // Database host (should be empty)
 				'DBUSER'	=>	$_POST['dbuser'], // Database user
 				'DBPASS'	=>	$_POST['dbpass'], // Database password
-				'DBNAME'	=>	$_POST['dbname'] // Database name
+				'DBNAME'	=>	$_POST['dbname'], // Database name
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
 			), FALSE);
 			exit; // We terminate the script
 		}
@@ -159,11 +164,12 @@ switch ($instPos)
 		if ( $_POST['dbuser'] == NULL ) // Database user
 		{
 			$Ctemplate->useTemplate("install/ins_config_variable_error", array(
-				'VARIABLE'	=>	"Database user", // Errornous variable name
+				'VARIABLE'	=>	"{LANG_SQL_DB_USER}", // Errornous variable name
 				'DBHOST'	=>	$_POST['dbhost'], // Database host
 				'DBUSER'	=>	$_POST['dbuser'], // Database user (should be empty)
 				'DBPASS'	=>	$_POST['dbpass'], // Database password
-				'DBNAME'	=>	$_POST['dbname'] // Database name
+				'DBNAME'	=>	$_POST['dbname'], // Database name
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
 				), FALSE);
 			exit; // We terminate the script
 		}
@@ -171,11 +177,12 @@ switch ($instPos)
 		if ( $_POST['dbpass'] == NULL ) // Database password
 		{
 			$Ctemplate->useTemplate("install/ins_config_variable_error", array(
-				'VARIABLE'	=>	"Database password", // Errornous variable name
+				'VARIABLE'	=>	"{LANG_SQL_DB_PASS}", // Errornous variable name
 				'DBHOST'	=>	$_POST['dbhost'], // Database host
 				'DBUSER'	=>	$_POST['dbuser'], // Database user
 				'DBPASS'	=>	$_POST['dbpass'], // Database password (should be empty)
-				'DBNAME'	=>	$_POST['dbname'] // Database name
+				'DBNAME'	=>	$_POST['dbname'], // Database name
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
 			), FALSE);
 			exit; // We terminate the script
 		}
@@ -183,11 +190,12 @@ switch ($instPos)
 		if ( $_POST['dbname'] == NULL ) // Database name
 		{
 			$Ctemplate->useTemplate("install/ins_config_variable_error", array(
-				'VARIABLE'	=>	"Database name", // Errornous variable name
+				'VARIABLE'	=>	"{LANG_SQL_DB_NAME}", // Errornous variable name
 				'DBHOST'	=>	$_POST['dbhost'], // Database host
 				'DBUSER'	=>	$_POST['dbuser'], // Database user
 				'DBPASS'	=>	$_POST['dbpass'], // Database password
-				'DBNAME'	=>	$_POST['dbname'] // Database name (should be empty)
+				'DBNAME'	=>	$_POST['dbname'], // Database name (should be empty)
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
 			), FALSE);
 			exit; // We terminate the script
 		}
@@ -214,12 +222,15 @@ switch ($instPos)
 				'DBHOST'	=>	$_POST['dbhost'], // Database host
 				'DBUSER'	=>	$_POST['dbuser'], // Database user
 				'DBPASS'	=>	$_POST['dbpass'], // Database password
-				'DBNAME'	=>	$_POST['dbname'] // Database name
+				'DBNAME'	=>	$_POST['dbname'], // Database name
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
 			), FALSE); // We give error output
 		} else { // If there isn't any writing errors, give success
 			file_put_contents("config.md5", md5($configfile)); // Put the MD5 hash of written content into a seperate file (for later checks)
 			
-			$Ctemplate->useStaticTemplate("install/ins_config_write_success", FALSE);
+			$Ctemplate->useTemplate("install/ins_config_write_success", array(
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+			), FALSE);
 		}
 		break;
 	case 3:
@@ -239,7 +250,8 @@ switch ($instPos)
 			$Ctemplate->useTemplate("install/ins_dbtest_error", array(
 				'DBHOST'	=>	$cfg['dbhost'], // Database host
 				'DBUSER'	=>	$cfg['dbuser'], // Database user
-				'USE_PASS'	=>	( ($cfg['dbpass'] != NULL) ? 'yes' : 'no' ) // Whether there's a password set.
+				'USE_PASS'	=>	( ($cfg['dbpass'] != NULL) ? 'yes' : 'no' ), // Whether there's a password set.
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
 			), FALSE);
 		} elseif ( $dbconnection == TRUE )
 		{
@@ -247,7 +259,8 @@ switch ($instPos)
 			$Ctemplate->useTemplate("install/ins_dbtest_success", array(
 				'DBHOST'	=>	$cfg['dbhost'], // Database host
 				'DBUSER'	=>	$cfg['dbuser'], // Database user
-				'USE_PASS'	=>	( ($cfg['dbpass'] != NULL) ? 'yes' : 'no' ) // Whether there's a password set.
+				'USE_PASS'	=>	( ($cfg['dbpass'] != NULL) ? 'yes' : 'no' ), // Whether there's a password set.
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
 			), FALSE);
 		}
 		
@@ -269,13 +282,15 @@ switch ($instPos)
 		{
 			// Give error
 			$Ctemplate->useTemplate("install/ins_dbcreate_error", array(
-				'DBNAME'	=>	$cfg['dbname'] // Database name
+				'DBNAME'	=>	$cfg['dbname'], // Database name
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
 			), FALSE);
 		} elseif ( $dbcreate != FALSE )
 		{
 			// Give success and proceed
 			$Ctemplate->useTemplate("install/ins_dbcreate_success", array(
-				'DBNAME'	=>	$cfg['dbname'] // Database name
+				'DBNAME'	=>	$cfg['dbname'], // Database name
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
 			), FALSE);
 		}
 		
@@ -299,7 +314,7 @@ switch ($instPos)
 		
 		/* Users table */
 		// Stores the user's data
-		$dbtables_user = FALSE; // We failed creating the tables first
+		$dbtables_user = FALSE; // We failed creating the table first
 		$dbtables_user = $Cmysql->Query("CREATE TABLE IF NOT EXISTS users (
 			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
 			`username` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'user loginname',
@@ -343,7 +358,7 @@ switch ($instPos)
 		
 		/* Menus table */
 		// Stores the menu's data
-		$dbtables_menu = FALSE; // We failed creating the tables first
+		$dbtables_menu = FALSE; // We failed creating the table first
 		$dbtables_menu = $Cmysql->Query("CREATE TABLE IF NOT EXISTS menus (
 			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
 			`header` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'menu header',
@@ -378,7 +393,7 @@ switch ($instPos)
 		
 		/* Menu entries table */
 		// Stores the menu entries' data
-		$dbtables_menuEntries = FALSE; // We failed creating the tables first
+		$dbtables_menuEntries = FALSE; // We failed creating the table first
 		$dbtables_menuEntries = $Cmysql->Query("CREATE TABLE IF NOT EXISTS menu_entries (
 			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
 			`menu_id` int(10) NOT NULL COMMENT 'menu id (menus.id)',
@@ -415,7 +430,7 @@ switch ($instPos)
 		
 		/* Forums table */
 		// Stores the data of forums
-		$dbtables_forums = FALSE; // We failed creating the tables first
+		$dbtables_forums = FALSE; // We failed creating the table first
 		$dbtables_forums = $Cmysql->Query("CREATE TABLE IF NOT EXISTS forums (
 			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
 			`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'title for the forum',
@@ -452,7 +467,7 @@ switch ($instPos)
 		
 		/* Topics table */
 		// Stores the data of topics
-		$dbtables_topics = FALSE; // We failed creating the tables first
+		$dbtables_topics = FALSE; // We failed creating the table first
 		$dbtables_topics = $Cmysql->Query("CREATE TABLE IF NOT EXISTS topics (
 			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
 			`forumid` int(10) NOT NULL COMMENT 'id of the forum the topic is in (forums.id)',
@@ -491,7 +506,7 @@ switch ($instPos)
 		
 		/* Posts table */
 		// Stores the data of posts
-		$dbtables_posts = FALSE; // We failed creating the tables first
+		$dbtables_posts = FALSE; // We failed creating the table first
 		$dbtables_posts = $Cmysql->Query("CREATE TABLE IF NOT EXISTS posts (
 			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
 			`topicid` int(10) NOT NULL COMMENT 'id of the topic the post is in (topics.id)',
@@ -530,7 +545,7 @@ switch ($instPos)
 		
 		/* Badges table */
 		// Stores the data of earned badges
-		$dbtables_badges = FALSE; // We failed creating the tables first
+		$dbtables_badges = FALSE; // We failed creating the table first
 		$dbtables_badges = $Cmysql->Query("CREATE TABLE IF NOT EXISTS badges (
 			`userid` int(10) NOT NULL COMMENT 'id of the user who earned the badge',
 			`badgename` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'name of the badge the user earned (refers badge class badge_array)',
@@ -560,7 +575,7 @@ switch ($instPos)
 				'TABLENAME'	=>	"badges" // Table name
 			), FALSE);
 		}
-		/* Menu entries table */
+		/* Badges table */
 		
 		// Check global variable status
 		if ( $tablecreation == FALSE )
@@ -582,12 +597,15 @@ switch ($instPos)
 			}
 			
 			$Ctemplate->useTemplate("install/ins_dbtables_global_error", array(
-				'TABLE_LIST'	=>	$tbls // Tables list (human readable form)
+				'TABLE_LIST'	=>	$tbls, // Tables list (human readable form)
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
 			), FALSE);
 		} elseif ( $tablecreation == TRUE )
 		{
 			// Give success and proceed form
-			$Ctemplate->useStaticTemplate("install/ins_dbtables_global_success", FALSE);
+			$Ctemplate->useTemplate("install/ins_dbtables_global_success", array(
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+			), FALSE);
 		}
 		
 		$Ctemplate->useStaticTemplate("install/ins_fw_dbtables_foot", FALSE); // Frame footer
@@ -601,15 +619,17 @@ switch ($instPos)
 			$Ctemplate->useTemplate("install/ins_adminusr", array(
 				'ROOT_NAME'	=>	$_POST['root_name'], // Root username
 				'ROOT_PASS'	=>	$_POST['root_pass'], // Password
-				'ROOT_EMAIL'	=>	$_POST['root_email']  // E-mail address
-				), FALSE);
+				'ROOT_EMAIL'	=>	$_POST['root_email'],  // E-mail address
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+			), FALSE);
 		} else {
 			// We output general form
 			$Ctemplate->useTemplate("install/ins_adminusr", array(
 				'ROOT_NAME'	=>	"root", // Root username (default)
 				'ROOT_PASS'	=>	"", // Root password
 				'ROOT_EMAIL'	=>	$_SERVER['SERVER_ADMIN'], // Root e-mail address (default)
-				), FALSE); // Config file generator
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+			), FALSE); // Config file generator
 		}
 		break;
 	case 7:
@@ -623,7 +643,8 @@ switch ($instPos)
 				'ROOT_NAME'	=>	$_POST['root_name'], // Username (should be empty)
 				'ROOT_PASS'	=>	$_POST['root_pass'], // Password
 				'ROOT_EMAIL'	=>	$_POST['root_email'], // E-mail address
-				), FALSE);
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+			), FALSE);
 			exit; // We terminate the script
 		}
 		
@@ -634,7 +655,8 @@ switch ($instPos)
 				'ROOT_NAME'	=>	$_POST['root_name'], // Username
 				'ROOT_PASS'	=>	$_POST['root_pass'], // Password (should be empty)
 				'ROOT_EMAIL'	=>	$_POST['root_email'], // E-mail address
-				), FALSE);
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+			), FALSE);
 			exit; // We terminate the script
 		}
 		
@@ -645,7 +667,8 @@ switch ($instPos)
 				'ROOT_NAME'	=>	$_POST['root_name'], // Username
 				'ROOT_PASS'	=>	$_POST['root_pass'], // Password
 				'ROOT_EMAIL'	=>	$_POST['root_email'], // E-mail address (should be empty)
-				), FALSE);
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+			), FALSE);
 			exit; // We terminate the script
 		}
 		
@@ -670,13 +693,15 @@ switch ($instPos)
 			$Ctemplate->useTemplate("install/ins_adminusr_reg_error", array(
 				'ROOT_NAME'	=>	$_POST['root_name'], // Username
 				'ROOT_PASS'	=>	$_POST['root_pass'], // Password
-				'ROOT_EMAIL'	=>	$_POST['root_email'] // E-mail address
+				'ROOT_EMAIL'	=>	$_POST['root_email'], // E-mail address
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
 			), FALSE);
 		} elseif ( $adminreg != FALSE )
 		{
 			// Give success and proceed
 			$Ctemplate->useTemplate("install/ins_adminusr_reg_success", array(
-				'ROOT_NAME'	=>	$_POST['root_name'] // Username
+				'ROOT_NAME'	=>	$_POST['root_name'], // Username
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
 			), FALSE);
 		}
 		

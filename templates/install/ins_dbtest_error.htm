@@ -36,6 +36,7 @@
 <!--- refresh form -->
 <form method="POST" action="install.php">
 <input type="submit" value="{LANG_REFRESH}">
+<input type="hidden" name="ins_lang" value="{INSTALL_LANGUAGE}">
 <input type="hidden" name="instPos" value=3> <!--- same step -->
 </form>
 
@@ -43,6 +44,7 @@
 <!--- config file return form -->
 <form method="POST" action="install.php">
 <input type="submit" value="{LANG_BB_BACK}">
+<input type="hidden" name="ins_lang" value="{INSTALL_LANGUAGE}">
 <input type="hidden" name="error_goback" value="no"> <!--- this isn't true because we aren't returning config values -->
 <input type="hidden" name="instPos" value=1> <!--- back to step 2 -->
 </form>
