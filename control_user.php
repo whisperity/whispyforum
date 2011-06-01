@@ -316,7 +316,7 @@ switch ($site)
 										
 										$themeSetButton = $Ctemplate->useTemplate("user/cp_siteprefs_theme_button", array(
 											'THEME_FILE'	=>	$Tfile, // Name of theme
-											'SUBMIT_CAPTION'	=>	"{LANG_SITEPREF_MODIFY_THEME_}", // Button caption
+											'SUBMIT_CAPTION'	=>	"{LANG_SITEPREF_MODIFY_THEME}", // Button caption
 											'DISABLED'	=>	"" // Don't make the button unclickable
 										), TRUE);
 									}
