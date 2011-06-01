@@ -173,6 +173,41 @@ switch ($site)
 					$_SESSION['usr_language'] = $_POST['new_lang'];
 				}
 			}
+			
+			if ( ( $_POST['set_type'] == "theme" ) && ( isset($_POST['new_theme']) ) )
+			{
+				// Change the theme in the database
+				$Tmod = $Cmysql->Query("UPDATE users SET theme='" .$Cmysql->EscapeString($_POST['new_theme']). "' WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'");
+				
+				// $Tmod is TRUE if we succeed and FALSE if we fail
+				if ( $Tmod == FALSE )
+				{
+					// If we failed
+					$Ctemplate->useTemplate("errormessage", array(
+						'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
+						'TITLE'	=>	"{LANG_SITEPREF_MODIFY_THEME_ERROR}", // Error title
+						'BODY'	=>	"", // Error text
+						'ALT'	=>	"{LANG_SQL_EXEC_ERROR}" // Alternate picture text
+					), FALSE ); // We give an unavailable error
+					
+					$Ctemplate->useStaticTemplate("user/cp_siteprefs_back", FALSE); // Back button
+				} elseif ( $Tmod == TRUE )
+				{
+					// If we succeeded
+					$Ctemplate->useTemplate("successbox", array(
+						'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_home.png", // House (user CP header)
+						'TITLE'	=>	"{LANG_SITEPREF_MODIFY_THEME_SUCCESS}", // Success title
+						'BODY'	=>	"{LANG_SITEPREF_MODIFY_THEME_SUCCESS_1}", // Success text
+						'ALT'	=>	"{LANG_SQL_EXEC_SUCCESS}" // Alternate picture text
+					), FALSE ); // We give a success message
+					
+					$Ctemplate->useStaticTemplate("user/cp_siteprefs_back", FALSE); // Back button
+					
+					// Modify the session so the next page load
+					// will load the new theme
+					$_SESSION['theme_name'] = $_POST['new_theme'];
+				}
+			}
 		} else {
 			$Ctemplate->useStaticTemplate("user/cp_siteprefs", FALSE);
 			
@@ -264,11 +299,34 @@ switch ($site)
 										), TRUE);
 									}
 									
+									if ( $_SESSION['theme_name'] == $Tfile )
+									{
+										// If the current theme is the one we want to output button for
+										// Disable the theme button
+										
+										$themeSetButton = $Ctemplate->useTemplate("user/cp_siteprefs_theme_button", array(
+											'THEME_FILE'	=>	$Tfile, // Name of theme
+											'SUBMIT_CAPTION'	=>	"{LANG_SITEPREF_MODIFY_THEME_CURRENT}", // Button caption
+											'DISABLED'	=>	" disabled" // Make the button unclickable
+										), TRUE);
+									} elseif ( $_SESSION['theme_name'] != $Tfile )
+									{
+										// If the current theme is NOT the one we want to output button for
+										// Make the set button
+										
+										$themeSetButton = $Ctemplate->useTemplate("user/cp_siteprefs_theme_button", array(
+											'THEME_FILE'	=>	$Tfile, // Name of theme
+											'SUBMIT_CAPTION'	=>	"{LANG_SITEPREF_MODIFY_THEME_}", // Button caption
+											'DISABLED'	=>	"" // Don't make the button unclickable
+										), TRUE);
+									}
+									
 									// Output one table cell for the theme
 									$embedder .= $Ctemplate->useTemplate("user/cp_siteprefs_theme_embed", array(
 										'PREVIEW'	=>	$preview, // Embed the preview image
 										'SHORT_NAME'	=>	$theme_def['SHORT_NAME'], // Short name of theme
-										'DESCRIPTION'	=>	$theme_def['DESCRIPTION'] // Long description
+										'DESCRIPTION'	=>	$theme_def['DESCRIPTION'], // Long description
+										'BUTTON'	=>	$themeSetButton
 									), TRUE); // Add it to the embedder
 									$i++;
 									

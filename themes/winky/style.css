@@ -66,6 +66,12 @@ input:focus {
 	border: 1px dashed #000000;
 }
 
+input:disabled {
+	border: 1px dotted #FF0000;
+	background-color: #AAAAAA;
+	color: #000000;
+}
+
 textarea {
 	border: 1px solid #CCCCCC;
 	background-color: #FFFFFF;

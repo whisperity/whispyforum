@@ -32,7 +32,7 @@ class class_users
 			include('language/' .$_SESSION['usr_language']. '/language.php'); // Load set language file
 		} elseif ( !isset($_SESSION['usr_language']) )
 		{
-			// If the index isn't defined,
+			// If the directory isn't defined,
 			include('language/english/language.php'); // Load English language file
 		}
 	}
@@ -221,7 +221,7 @@ class class_users
 			$_SESSION['uid'] = $userDBArray['id'];
 			$_SESSION['log_status'] = "user";
 			$_SESSION['log_bool'] = TRUE;
-			$_SESSION['theme_name'] = "winky"; // Default theme name
+			$_SESSION['theme_name'] = $userDBArray['theme'];
 			$_SESSION['usr_language'] = $userDBArray['language'];
 			
 			if ( $userDBArray['avatar_filename'] == NULL )
