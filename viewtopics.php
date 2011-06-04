@@ -50,7 +50,7 @@ if ( $uLvl == FALSE )
 {
 	// If the user does not have a return value (meaning the user is a guest)
 	// Set the level to 0
-	$uLvl = array(0	=>	'0');
+	$uLvl = array(0	=> '0');
 }
 
 // Query the minimal level for the forum

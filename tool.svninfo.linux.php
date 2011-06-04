@@ -68,27 +68,23 @@ if ( isset($_GET['repo']) && ($_GET['repo'] != ".") )
     <div id="footer">Generated using Subversion binaries</div>
 </div>
 <br style="clear: both">
-<?php
-	// Get the number of revision from 'svn info' output ($svninfo[4] is the line we have to trim)
-	$rev = str_replace("Revision: ", "", $svninfo[4]);
-?>
 <div id="menucontainer" style="width: 95%">
 	<div id="header"><div id="header_left"></div>
-	<div id="header_main"><?php echo $divhead ?> subversion log (last 50 commits)</div><div id="header_right"></div></div>
+	<div id="header_main"><?php echo $divhead ?> subversion log (last 25 commits)</div><div id="header_right"></div></div>
     <div id="content">
     	<table border="0" style="width: 94%">
     	<tr>
     	<td><pre>
 <?php
-		// Generate 'log' (using the latest 50 revisions, based on repo setting)
+		// Generate 'log' (using the latest 25 revisions, based on repo setting)
 		if ( isset($_GET['repo']) && ($_GET['repo'] != ".") )
 		{
 			// If we set repo and it isn't "."
-			exec("svn log " .$_GET['repo']. " -r " .$rev. ":" .($rev-50), $svnlog); // Get the output of 'svn log' into an array
+			exec("svn log " .$_GET['repo']. " -l 25", $svnlog); // Get the output of 'svn log' into an array
 		} elseif (!isset($_GET['repo']) || ($_GET['repo'] == ".") )
 		{
 			// If we didn't set repo or it is "."
-			exec("svn log -r " .$rev. ":" .($rev-50), $svnlog); // Get the output of 'svn log' into an array
+			exec("svn log -l 25", $svnlog); // Get the output of 'svn log' into an array
 		}
 		
 		// The array contains each lines

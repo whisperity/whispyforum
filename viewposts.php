@@ -46,6 +46,13 @@ if ( !isset($id) )
 // Get the current user's level
 $uLvl = mysql_fetch_row($Cmysql->Query("SELECT userLevel FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'"));
 
+if ( $uLvl == FALSE )
+{
+	// If the user does not have a return value (meaning the user is a guest)
+	// Set the level to 0
+	$uLvl = array(0	=> '0');
+}
+
 // Query the minimal level for the forum
 $fMLvl = mysql_fetch_row($Cmysql->Query("SELECT minLevel FROM forums WHERE id='" .$Cmysql->EscapeString($id). "'"));
 
@@ -260,7 +267,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 		
 		$tName = $topic_array['title']; // Name of the topic
 		
-		if ( $uLvl == FALSE )
+		if ( $uLvl[0] == "0" )
 		{
 			// If the user is a guest, give no option to post
 			$new_post_button = "<br>"; // We need to set the variable to avoid errors
