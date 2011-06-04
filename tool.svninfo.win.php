@@ -1,6 +1,6 @@
 <?php
 /**
- * WhispyForum svn info script
+ * WhispyForum svn info script (windows)
  * 
  * This file uses TortoiseSVN SubWCRev application
  * to generate an SVN info file.
