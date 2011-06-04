@@ -13,7 +13,6 @@
 // it will result in errors due ot preinstallation state.
 
 // Rather, we use copied bits from there.
-echo '<link rel="stylesheet" type="text/css" href="themes/winky/style.css">'."\n"; // We load the default stylesheet
 
 /* Libraries */
 // Template conductor (we load it before everything because templates are needed to get error messages)
@@ -43,6 +42,18 @@ if ( !isset($_POST['ins_lang']) )
 	include("language/" .$_POST['ins_lang']. "/language.php");
 }
 
+// Load the theme stylesheet
+if ( !isset($_POST['ins_thm']) )
+{
+	// If we did not select the installer theme, load the default one
+	echo '<link rel="stylesheet" type="text/css" href="themes/winky/style.css">';
+	$_POST['ins_thm'] = "winky"; // Make the default theme automatically selected in the theme switcher
+} elseif ( isset($_POST['ins_thm']) )
+{
+	// If we set, load the one we set
+	echo '<link rel="stylesheet" type="text/css" href="themes/' .$_POST['ins_thm']. '/style.css">';
+}
+
 /* DEVELOPEMENT */
 // PH, workaround: output HTTP POST and GET arrays
 print "<h4>GET</h4>";
@@ -65,6 +76,7 @@ switch ($instPos)
 	case 0:
 		// Introduction
 		
+		/* Language settings */
 		// The START pages use a language switcher
 		// we need to generate a list about available languages
 		$langembed = NULL; // Define the container variable
@@ -97,11 +109,54 @@ switch ($instPos)
 							}
 						}
 					}
+				unset($wf_lang_def); // Free array memory
 				}
 			closedir($Ldh);
 			}
 		}
-		unset($wf_lang_def);
+		/* Language settings */
+		
+		/* Theme settings */
+		// The START pages use a theme switcher
+		// we need to generate a list about available themes
+		$Tdir = "./themes/"; // Language home dir
+		$Texempt = array('.', '..', '.svn', '_svn'); // Do not query these directories
+		
+		$i = 0; // Define a counter on zero
+		$embedder = ""; // Define a container
+		
+		if (is_dir($Tdir)) 
+		{
+			if ($Tdh = opendir($Tdir))
+			{
+				while (($Tfile = readdir($Tdh)) !== false)
+				{
+					if(!in_array(strtolower($Tfile),$Texempt))
+					{
+						if ( filetype($Tdir . $Tfile) == "dir" )
+						{
+							// We're now querying all language directories
+							if ( ( file_exists($Tdir . $Tfile . "/style.css") ) &&  ( file_exists($Tdir . $Tfile . "/theme.php") ) )
+							{
+								// We only list directories containing the stylesheet file
+								include($Tdir.$Tfile."/theme.php"); // Load the theme definition array ($theme_def)
+								
+								// Output one table cell for the theme
+								$embedder .= $Ctemplate->useTemplate("install/ins_start_theme_option", array(
+									'SELECTED'	=>	($Lfile == $_POST['ins_thm'] ? " selected " : " "), // Selected is ' ' if it's another theme, ' selected ' if it's the current. It makes the current theme automatically re-selected
+									'THEME'	=>	$theme_def['SHORT_NAME'], // Short name of theme
+									'DESCRIPTION'	=>	$theme_def['DESCRIPTION'], // Extended description
+									'DIR_NAME'	=>	$Tfile // Name of the theme's directory (containing CSS)
+								), TRUE); // Add it to the embedder
+							}
+						}
+					}
+				unset($theme_def); // Free array memory
+				}
+				closedir($Tdh);
+			}
+		}
+		/* Theme settings */
 		
 		// We check this file existence now, because if we check it in general (before swich() clause)
 		// after the third step (generating config.php) the installation hangs
@@ -110,12 +165,14 @@ switch ($instPos)
 			// If config.php already exists, give error message
 			$Ctemplate->useTemplate("install/ins_start_already", array(
 				'INSTALL_LANGUAGES'	=>	$langembed, // Insert the embedding <option> content for the language selector
+				'INSTALL_THEMES'	=>	$embedder, // Embed the themes into the output wrapper
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
 			), FALSE);
 		} else {
 			// If not, give standard starting screen
 			$Ctemplate->useTemplate("install/ins_start", array(
 				'INSTALL_LANGUAGES'	=>	$langembed, // Insert the embedding <option> content for the language selector
+				'INSTALL_THEMES'	=>	$embedder, // Embed the themes into the output wrapper
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
 			), FALSE); // Use install introduction
 		}
@@ -131,7 +188,8 @@ switch ($instPos)
 				'DBUSER'	=>	$_POST['dbuser'], // Database user
 				'DBPASS'	=>	$_POST['dbpass'], // Database password
 				'DBNAME'	=>	$_POST['dbname'], // Database name
-				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
 		} else {
 			// We output general form
@@ -140,7 +198,8 @@ switch ($instPos)
 				'DBUSER'	=>	"", // Database user
 				'DBPASS'	=>	"", // Database password
 				'DBNAME'	=>	"winky_db", // Database name (default)
-				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE); // Config file generator
 		}
 		break;
@@ -156,7 +215,8 @@ switch ($instPos)
 				'DBUSER'	=>	$_POST['dbuser'], // Database user
 				'DBPASS'	=>	$_POST['dbpass'], // Database password
 				'DBNAME'	=>	$_POST['dbname'], // Database name
-				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
 			exit; // We terminate the script
 		}
@@ -169,7 +229,8 @@ switch ($instPos)
 				'DBUSER'	=>	$_POST['dbuser'], // Database user (should be empty)
 				'DBPASS'	=>	$_POST['dbpass'], // Database password
 				'DBNAME'	=>	$_POST['dbname'], // Database name
-				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
 				), FALSE);
 			exit; // We terminate the script
 		}
@@ -182,7 +243,8 @@ switch ($instPos)
 				'DBUSER'	=>	$_POST['dbuser'], // Database user
 				'DBPASS'	=>	$_POST['dbpass'], // Database password (should be empty)
 				'DBNAME'	=>	$_POST['dbname'], // Database name
-				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
 			exit; // We terminate the script
 		}
@@ -195,7 +257,8 @@ switch ($instPos)
 				'DBUSER'	=>	$_POST['dbuser'], // Database user
 				'DBPASS'	=>	$_POST['dbpass'], // Database password
 				'DBNAME'	=>	$_POST['dbname'], // Database name (should be empty)
-				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
 			exit; // We terminate the script
 		}
@@ -223,13 +286,15 @@ switch ($instPos)
 				'DBUSER'	=>	$_POST['dbuser'], // Database user
 				'DBPASS'	=>	$_POST['dbpass'], // Database password
 				'DBNAME'	=>	$_POST['dbname'], // Database name
-				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE); // We give error output
 		} else { // If there isn't any writing errors, give success
 			file_put_contents("config.md5", md5($configfile)); // Put the MD5 hash of written content into a seperate file (for later checks)
 			
 			$Ctemplate->useTemplate("install/ins_config_write_success", array(
-				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
 		}
 		break;
@@ -251,7 +316,8 @@ switch ($instPos)
 				'DBHOST'	=>	$cfg['dbhost'], // Database host
 				'DBUSER'	=>	$cfg['dbuser'], // Database user
 				'USE_PASS'	=>	( ($cfg['dbpass'] != NULL) ? 'yes' : 'no' ), // Whether there's a password set.
-				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
 		} elseif ( $dbconnection == TRUE )
 		{
@@ -260,7 +326,8 @@ switch ($instPos)
 				'DBHOST'	=>	$cfg['dbhost'], // Database host
 				'DBUSER'	=>	$cfg['dbuser'], // Database user
 				'USE_PASS'	=>	( ($cfg['dbpass'] != NULL) ? 'yes' : 'no' ), // Whether there's a password set.
-				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
 		}
 		
@@ -283,14 +350,16 @@ switch ($instPos)
 			// Give error
 			$Ctemplate->useTemplate("install/ins_dbcreate_error", array(
 				'DBNAME'	=>	$cfg['dbname'], // Database name
-				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
 		} elseif ( $dbcreate != FALSE )
 		{
 			// Give success and proceed
 			$Ctemplate->useTemplate("install/ins_dbcreate_success", array(
 				'DBNAME'	=>	$cfg['dbname'], // Database name
-				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
 		}
 		
@@ -578,6 +647,36 @@ switch ($instPos)
 		}
 		/* Badges table */
 		
+		/* Configuration table */
+		// Stores the user's data
+		$dbtables_config = FALSE; // We failed creating the table first
+		$dbtables_config = $Cmysql->Query("CREATE TABLE IF NOT EXISTS config (
+			`variable` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'variable name',
+			`value` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'value for variable',
+			UNIQUE KEY `variable` (`variable`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'configuration'"); // $dbtables_config sets to true if we succeeded creating a table
+		
+		// We check config table creation
+		if ( $dbtables_config == FALSE )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
+				'TABLENAME'	=>	"config" // Table name
+			), FALSE);
+			
+			// We set the creation global error variable to false
+			$tablecreation = FALSE;
+			
+			$tablelist[] = "config"; // Append users table name to fail-list
+		} elseif ( $dbtables_config != FALSE )
+		{
+			// Give success
+			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
+				'TABLENAME'	=>	"config" // Table name
+			), FALSE);
+		}
+		/* Configuration table */
+		
 		// Check global variable status
 		if ( $tablecreation == FALSE )
 		{
@@ -599,29 +698,32 @@ switch ($instPos)
 			
 			$Ctemplate->useTemplate("install/ins_dbtables_global_error", array(
 				'TABLE_LIST'	=>	$tbls, // Tables list (human readable form)
-				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
 		} elseif ( $tablecreation == TRUE )
 		{
 			// Give success and proceed form
 			$Ctemplate->useTemplate("install/ins_dbtables_global_success", array(
-				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
 		}
 		
-		$Ctemplate->useStaticTemplate("install/ins_fw_dbtables_foot", FALSE); // Frame footer
+		$Ctemplate->useStaticTemplate("install/ins_fw_dbtables_foot"); // Frame footer
 		break;
 	case 6:
 		// Administrator user generator - getting data
 		
-		if ( @$_POST['error_goback'] == "yes" ) // If user is redirected from step 2 because of an error
+		if ( @$_POST['error_goback'] == "yes" ) // If user is redirected from step 7 because of an error
 		{
 			// We output the form with data returned (user doesn't have to enter it again)
 			$Ctemplate->useTemplate("install/ins_adminusr", array(
 				'ROOT_NAME'	=>	$_POST['root_name'], // Root username
 				'ROOT_PASS'	=>	$_POST['root_pass'], // Password
 				'ROOT_EMAIL'	=>	$_POST['root_email'],  // E-mail address
-				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
 		} else {
 			// We output general form
@@ -629,7 +731,8 @@ switch ($instPos)
 				'ROOT_NAME'	=>	"root", // Root username (default)
 				'ROOT_PASS'	=>	"", // Root password
 				'ROOT_EMAIL'	=>	$_SERVER['SERVER_ADMIN'], // Root e-mail address (default)
-				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE); // Config file generator
 		}
 		break;
@@ -644,7 +747,8 @@ switch ($instPos)
 				'ROOT_NAME'	=>	$_POST['root_name'], // Username (should be empty)
 				'ROOT_PASS'	=>	$_POST['root_pass'], // Password
 				'ROOT_EMAIL'	=>	$_POST['root_email'], // E-mail address
-				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
 			exit; // We terminate the script
 		}
@@ -656,7 +760,8 @@ switch ($instPos)
 				'ROOT_NAME'	=>	$_POST['root_name'], // Username
 				'ROOT_PASS'	=>	$_POST['root_pass'], // Password (should be empty)
 				'ROOT_EMAIL'	=>	$_POST['root_email'], // E-mail address
-				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
 			exit; // We terminate the script
 		}
@@ -668,7 +773,8 @@ switch ($instPos)
 				'ROOT_NAME'	=>	$_POST['root_name'], // Username
 				'ROOT_PASS'	=>	$_POST['root_pass'], // Password
 				'ROOT_EMAIL'	=>	$_POST['root_email'], // E-mail address (should be empty)
-				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
 			exit; // We terminate the script
 		}
@@ -695,20 +801,87 @@ switch ($instPos)
 				'ROOT_NAME'	=>	$_POST['root_name'], // Username
 				'ROOT_PASS'	=>	$_POST['root_pass'], // Password
 				'ROOT_EMAIL'	=>	$_POST['root_email'], // E-mail address
-				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
 		} elseif ( $adminreg != FALSE )
 		{
 			// Give success and proceed
 			$Ctemplate->useTemplate("install/ins_adminusr_reg_success", array(
 				'ROOT_NAME'	=>	$_POST['root_name'], // Username
-				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang']
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
 		}
 		
 		$Cmysql->Disconnect(); // Close connection
 		break;
 	case 8:
+		// Site configuration
+		
+		// Load the definition files of the current theme and language
+		include("themes/" .$_POST['ins_thm']. "/theme.php");
+		include("language/" .$_POST['ins_lang']. "/definition.php");
+		
+		if ( @$_POST['error_goback'] == "yes" ) // If user is redirected from step 10 because of an error
+		{
+			// We output the form with data returned (user doesn't have to enter it again)
+			$Ctemplate->useTemplate("install/ins_siteconfig", array(
+				/* Appearance */
+				'LANGS_LOCALIZED_NAME'	=>	$wf_lang_def['LOCALIZED_NAME'], // The language's own, localized name (so it's Deutch for German)
+				'LANGS_SHORT_NAME'	=>	$wf_lang_def['SHORT_NAME'], // The language's English name (so it's German for German)
+				'LANGS_CODE'	=>	$wf_lang_def['LANG_CODE'], // Language code (it's de for German)
+				'THEMES_THEME'	=>	$theme_def['SHORT_NAME'], // Short name of theme
+				'THEMES_DESCRIPTION'	=>	$theme_def['DESCRIPTION'], // Extended description
+				
+				// Passing install theme and language directory values
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
+		), FALSE); // Output template
+		} else {
+			// We output general form
+			$Ctemplate->useTemplate("install/ins_siteconfig", array(
+				/* Appearance */
+				'LANGS_LOCALIZED_NAME'	=>	$wf_lang_def['LOCALIZED_NAME'], // The language's own, localized name (so it's Deutch for German)
+				'LANGS_SHORT_NAME'	=>	$wf_lang_def['SHORT_NAME'], // The language's English name (so it's German for German)
+				'LANGS_CODE'	=>	$wf_lang_def['LANG_CODE'], // Language code (it's de for German)
+				'THEMES_THEME'	=>	$theme_def['SHORT_NAME'], // Short name of theme
+				'THEMES_DESCRIPTION'	=>	$theme_def['DESCRIPTION'], // Extended description
+				
+				// Passing install theme and language directory values
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
+			), FALSE); // Output template
+		}
+		break;
+	case 9:
+		// Write site configuration
+		require('config.php'); // Recall config array (it is unloaded, but it's needed to connect to database)
+		$Cmysql->Connect(); // We can use the generic connect
+		
+		// Store the site configuration
+		$sConfig = $Cmysql->Query("INSERT INTO config(variable, value) VALUES
+			('language', '" .$Cmysql->EscapeString($_POST['ins_lang']). "'),
+			('theme', '" .$Cmysql->EscapeString($_POST['ins_thm']). "')"); // $sConfig is true if we are successful
+		
+		// Give return or proceed forms based on success
+		if ( $sConfig == FALSE )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_siteconfig_error", array(
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
+			), FALSE);
+		} elseif ( $sConfig != FALSE )
+		{
+			// Give success and proceed
+			$Ctemplate->useTemplate("install/ins_siteconfig_success", array(
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
+			), FALSE);
+		}
+		break;
+	case 10:
 		// Finish
 		$Ctemplate->useStaticTemplate("install/ins_finish", FALSE); // Use install finish template
 		break;

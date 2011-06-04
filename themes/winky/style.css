@@ -82,6 +82,22 @@ textarea:focus {
 	border: 1px dashed #000000;
 }
 
+select {
+	border: 1px solid #CCCCCC;
+	background-color: #FFFFFF;
+	color: #000000;
+}
+
+select:focus {
+	border: 1px dashed #000000;
+}
+
+select:disabled {
+	border: 1px dotted #FF0000;
+	background-color: #AAAAAA;
+	color: #000000;
+}
+
 span.form-header { 
 	font-family: Times New Roman;
 	font-size: 14pt;
@@ -169,9 +185,21 @@ table.install-header {
 } /* Do not remove width: 100% */
 
 h1.install-header {
+	border: solid black;
+	border-width: 1px 0px;
+	padding: 1px 3px;
+	font-family: "Times New Roman", Geneva, Arial, Helvetica, sans-serif;
+	font-size: 28px;
+	margin: 0px;
 }
 
 h2.install-header {
+	border: solid black;
+	border-width: 1px 0px;
+	padding: 1px 3px;
+	font-family: "Trebuchet MS", Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	margin: 0px;
 }
 
 td.install-picture {

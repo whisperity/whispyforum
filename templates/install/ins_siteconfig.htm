@@ -1,9 +1,9 @@
-<!--- BEGIN install adminuser -->
-<!--- Usage: administrator registration form - getting user data -->
+<!--- BEGIN install siteconfig -->
+<!--- Usage: site configuration page -->
 <html>
 
 <head>
-<title>{LANG_INSTALL_INSTALLER} - {LANG_INSTALL_ADMIN}</title>
+<title>{LANG_INSTALL_INSTALLER} - {LANG_INSTALL_SITECONFIG}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 
@@ -11,8 +11,8 @@
 
 <table class="install-header" border="0">
 <tr>
-<td class="install-picture"><img src="themes/{THEME_NAME}/Nuvola_apps_kgpg.png" alt="{LANG_INSTALL_WIZARD}"></td>
-<td><h1 class="install-header" align="center">{LANG_INSTALL_INSTALLER} - {LANG_INSTALL_ADMIN}</h1></td>
+<td class="install-picture"><img src="themes/{THEME_NAME}/Nuvola_apps_terminal.png" alt="{LANG_INSTALL_WIZARD}"></td>
+<td><h1 class="install-header" align="center">{LANG_INSTALL_INSTALLER} - {LANG_INSTALL_SITECONFIG}</h1></td>
 </tr>
 </table>
 
@@ -21,20 +21,22 @@
 <table border="0" class="install-center">
 <tr>
 <td class="install-block-left">
-{LANG_INSTALL_ADMIN_INFO}<br>
+{LANG_INSTALL_SITECONFIG_INTRO}<br>
 <font class="emphasis">{LANG_MANDATORY_VARIABLES_REDSTAR}</font>
 <br><br>
 <form method="POST" action="install.php">
-<span class="form-header">{LANG_REG_DATA_FORM_HEADER}</span><br>
-{LANG_USERNAME}<span class="red-star">*</span>: <input type="text" name="root_name" value="{ROOT_NAME}" size=35><br>
-{LANG_PASSWORD}<span class="red-star">*</span>: <input type="password" name="root_pass" value="{ROOT_PASS}" size=35><br>
-{LANG_EMAIL}<span class="red-star">*</span>: <input type="text" name="root_email" value="{ROOT_EMAIL}" size=35><br>
+<span class="form-header">{LANG_INSTALL_SITECONFIG_DATA}</span><br>
+<h2 class="install-header">{LANG_INSTALL_SITECONFIG_APPEARANCE}</h2>
+<!--- The <select>s for LANGUAGE and THEME is disabled because those settings are specified at the begin of install -->
+<!--- The <select>s does not parameters also -->
+{LANG_INSTALL_SITECONFIG_LANGUAGE} <select size="1" disabled><option value="{INSTALL_LANGUAGE}" selected>{LANGS_LOCALIZED_NAME} ({LANGS_SHORT_NAME}) [{LANGS_CODE}]</option></select><br>
+{LANG_INSTALL_SITECONFIG_THEME} <select size="1" disabled><option value="{INSTALL_THEME}" selected>{THEMES_THEME} - {THEMES_DESCRIPTION}</option></select><br>
+<font class="emphasis">{LANG_PROCEED_CLICK_BUTTON_BELOW}</font><br>
 <input type="submit" value="{LANG_NEXT_NN}">
 <input type="hidden" name="ins_lang" value="{INSTALL_LANGUAGE}">
 <input type="hidden" name="ins_thm" value="{INSTALL_THEME}">
-<input type="hidden" name="instPos" value=7> <!--- Proceeding to step 8 -->
+<input type="hidden" name="instPos" value=9> <!--- Proceeding to step 10 -->
 </form>
-<font class="emphasis">{LANG_PROCEED_CLICK_BUTTON_BELOW}</font>
 </td>
 <td class="install-block-right" valign="top">
 <!--- menubox -->
@@ -48,9 +50,9 @@
 		<span class="install-menu-entries">{LANG_INSTALL_STEP_4}</span><br>
 		<span class="install-menu-entries">{LANG_INSTALL_STEP_5}</span><br>
 		<span class="install-menu-entries">{LANG_INSTALL_STEP_6}</span><br>
-		<span class="install-menu-actual">{LANG_INSTALL_STEP_7}</span><br>
+		<span class="install-menu-entries">{LANG_INSTALL_STEP_7}</span><br>
 		<span class="install-menu-entries">{LANG_INSTALL_STEP_8}</span><br>
-		<span class="install-menu-entries">{LANG_INSTALL_STEP_9}</span><br>
+		<span class="install-menu-actual">{LANG_INSTALL_STEP_9}</span><br>
 		<span class="install-menu-entries">{LANG_INSTALL_STEP_10}</span><br>
 		<span class="install-menu-entries">{LANG_INSTALL_STEP_11}</span>
     </div>
@@ -62,4 +64,4 @@
 
 </body>
 </html>
-<!--- END install adminuser -->
+<!--- END install siteconfig -->

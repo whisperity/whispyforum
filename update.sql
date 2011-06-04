@@ -165,3 +165,12 @@ CREATE TABLE IF NOT EXISTS badges (
 # Revision 649 (adding theme setting)
 #
 ALTER TABLE `users` ADD `theme` VARCHAR( 32 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'winky' COMMENT 'user preferred theme' AFTER `language`;
+
+#
+# Revision 654 (adding the ability to set default settings for language and theme)
+#
+CREATE TABLE IF NOT EXISTS config (
+	`variable` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'variable name',
+	`value` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'value for variable',
+	UNIQUE KEY `variable` (`variable`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'configuration';
