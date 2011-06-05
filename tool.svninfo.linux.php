@@ -22,6 +22,27 @@ if ( isset($_GET['repo']) && ($_GET['repo'] != ".") )
 	$divhead = "Working copy";
 }
 
+function opFormat($line)
+{
+	/*
+	 * This function formats the output lines
+	 * @inputs: $line -- input line
+	 * @outputs: returns formatted line
+	 */
+	
+	$wrong = array(
+		"<",
+		">"
+	); // Array containing strings that must be formatted
+	
+	$right = array(
+		"&lt;",
+		"&gt;"
+	); // Array containing the proper output format 
+	
+	return str_replace($wrong, $right, $line);
+}
+
 // Begin HTML output
 ?>
 
@@ -57,7 +78,7 @@ if ( isset($_GET['repo']) && ($_GET['repo'] != ".") )
 		foreach ($svninfo as &$infoline)
 		{
 			// Output each line with breakline at end
-			echo str_replace(array("<", ">"), array("&lt;", "&gt;"), $infoline) ."<br>";
+			echo opFormat($infoline)."<br>";
 		}
 ?>
 </pre>
@@ -92,7 +113,7 @@ if ( isset($_GET['repo']) && ($_GET['repo'] != ".") )
 		foreach ($svnlog as &$logline)
 		{
 			// Output each line with breakline at end
-			echo str_replace(array("<", ">"), array("&lt;", "&gt;"), $logline) ."<br>";
+			echo opFormat($logline) ."<br>";
 		}
 ?>
 </pre>
@@ -104,7 +125,7 @@ if ( isset($_GET['repo']) && ($_GET['repo'] != ".") )
 </div>
 <br style="clear: both">
 <div id="menucontainer" style="width: 95%">
-	<div id="header"><div id="header_left"></div>
+	<div id="header"><div id="header_left"===================================================================></div>
 	<div id="header_main"><?php echo $divhead ?> subversion diff</div><div id="header_right"></div></div>
     <div id="content">
     	<table border="0" style="width: 94%">
@@ -127,7 +148,42 @@ if ( isset($_GET['repo']) && ($_GET['repo'] != ".") )
 		foreach ($svndiff as &$diffline)
 		{
 			// Output each line with breakline at end
-			echo str_replace(array("<", ">"), array("&lt;", "&gt;"), $diffline) ."<br>";
+			echo opFormat($diffline) ."<br>";
+		}
+?>
+</pre>
+	</tr>
+	</td>
+	</table>
+    </div>
+    <div id="footer">Generated using Subversion binaries</div>
+</div>
+<br style="clear: both">
+<div id="menucontainer" style="width: 95%">
+	<div id="header"><div id="header_left"></div>
+	<div id="header_main"><?php echo $divhead ?> subversion status</div><div id="header_right"></div></div>
+    <div id="content">
+    	<table border="0" style="width: 94%">
+    	<tr>
+    	<td><pre>
+<?php
+		// Generate 'diff' (based on REPO setting)
+		if ( isset($_GET['repo']) && ($_GET['repo'] != ".") )
+		{
+			// If we set repo and it isn't "."
+			exec("svn status " .$_GET['repo'], $svnstatus); // Get the output of 'svn status' into an array
+		} elseif (!isset($_GET['repo']) || ($_GET['repo'] == ".") )
+		{
+			// If we didn't set repo or it is "."
+			exec("svn status", $svnstatus); // Get the output of 'svn status' into an array
+		}
+		
+		// The array contains each lines
+		
+		foreach ($svnstatus as &$statusline)
+		{
+			// Output each line with breakline at end
+			echo opFormat($statusline) ."<br>";
 		}
 ?>
 </pre>
