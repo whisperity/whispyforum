@@ -24,6 +24,9 @@ if ( ( file_exists("config.php") == 1 ) && ( file_exists("config.md5") == 1 ) )
 	// Check whether the installation was successful and the config file is valid
 	if ( file_get_contents("config.md5") != md5(file_get_contents("config.php")) )
 	{
+		// We embed the default (winky) stylesheet so the error message will appear properly
+		echo '<link rel="stylesheet" type="text/css" href="themes/winky/style.css">';
+		
 		$Ctemplate->useTemplate("errormessage", array(
 			'PICTURE_NAME'	=>	"Nuvola_apps_package_settings.png", // Text file icon
 			'TITLE'	=>	"{LANG_LOAD_CORRUPTION}", // Error title
@@ -37,6 +40,9 @@ if ( ( file_exists("config.php") == 1 ) && ( file_exists("config.md5") == 1 ) )
 	}
 } elseif ( file_exists("config.php") == 0 ) // If not
 {
+	// We embed the default (winky) stylesheet so the error message will appear properly
+	echo '<link rel="stylesheet" type="text/css" href="themes/winky/style.css">';
+	
 	$Ctemplate->useTemplate("errormessage", array(
 		'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Unavailable file icon
 		'TITLE'	=>	"{LANG_LOAD_NOCFG}", // Error title

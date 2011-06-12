@@ -71,7 +71,7 @@ class class_mysql
 			'TITLE'	=>	"{LANG_SQL_NOCONNECTION}", // Error title
 			'BODY'	=>	'{LANG_SQL_DBCONN_TO} <tt>' .$cfg['dbhost']. '</tt> ({LANG_USERNAME_LOWERCASE} <tt>' .$cfg['dbuser']. '</tt>, {LANG_USING_LOWERCASE} {LANG_PASSWORD_LOWERCASE}: <tt>'. ( ($cfg['dbpass'] != NULL) ? '{LANG_YES}' : '{LANG_NO}' ) .'</tt>) {LANG_COULD_NOT_BE_MADE}', // Error text
 			'ALT'	=>	"{LANG_SQL_ERROR}" // Alternate picture text
-	), FALSE ); // We output an error message
+		), FALSE ); // We output an error message
 	}
 	
 	private function __giveDBSelectError()
@@ -88,7 +88,7 @@ class class_mysql
 			'TITLE'	=>	"{LANG_SQL_DBSELECT_ERROR}", // Error title
 			'BODY'	=>	'{LANG_SQL_THEDATABASE} <tt>' .$cfg['dbname']. '</tt> {LANG_SQL_COULD_NOT_BE_SELECTED}', // Error text
 			'ALT'	=>	"{LANG_SQL_ERROR}" // Alternate picture text
-	), FALSE ); // We output an error message
+		), FALSE ); // We output an error message
 	}
 	
 	function Disconnect()
@@ -142,7 +142,7 @@ class class_mysql
 			'TITLE'	=>	"{LANG_SQL_EXEC_ERROR}", // Error title
 			'BODY'	=>	'{LANG_SQL_THEQUERY} <tt>' .$sQuery. '</tt> {LANG_SQL_COULD_NOT_BE_PROCESSED}<br>{LANG_SQL_ERROR_MSG_WAS} <tt>' .mysql_error(). '</tt>', // Error text
 			'ALT'	=>	"{LANG_SQL_EXEC_ERROR}" // Alternate picture text
-	), FALSE ); // We output an error message
+		), FALSE ); // We output an error message
 	}
 	
 	function EscapeString($sString)
@@ -185,7 +185,7 @@ class class_mysql
 			'TITLE'	=>	"String failed to escape!", // Error title
 			'BODY'	=>	'There were errors escaping string <tt>' .htmlspecialchars($sString). '</tt>.<br>The mySQL error message was <tt>' .mysql_error(). '</tt>', // Error text
 			'ALT'	=>	"{LANG_SQL_ERROR}" // Alternate picture text
-	), FALSE ); // We output an error message
+		), FALSE ); // We output an error message
 	}
 }
 ?>

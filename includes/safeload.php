@@ -9,11 +9,6 @@
  * 
  * WhispyForum
  */
-echo '<head>
-	<title>{GLOBAL_TITLE}</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	</head>
-<link rel="stylesheet" type="text/css" href="themes/winky/style.css">'."\n"; // We load the default stylesheet
 
 /* Libraries */
 // Template conductor (we load it before everything because templates are needed to get error messages)
@@ -32,6 +27,9 @@ if ( ( file_exists("config.php") == 1 ) && ( file_exists("config.md5") == 1 ) )
 	// Check whether the installation was successful and the config file is valid
 	if ( file_get_contents("config.md5") != md5(file_get_contents("config.php")) )
 	{
+		// We embed the default (winky) stylesheet so the error message will appear properly
+		echo '<link rel="stylesheet" type="text/css" href="themes/winky/style.css">';
+		
 		$Ctemplate->useTemplate("errormessage", array(
 			'PICTURE_NAME'	=>	"Nuvola_apps_package_settings.png", // Text file icon
 			'TITLE'	=>	"{LANG_LOAD_CORRUPTION}", // Error title
@@ -45,6 +43,9 @@ if ( ( file_exists("config.php") == 1 ) && ( file_exists("config.md5") == 1 ) )
 	}
 } elseif ( file_exists("config.php") == 0 ) // If not
 {
+	// We embed the default (winky) stylesheet so the error message will appear properly
+	echo '<link rel="stylesheet" type="text/css" href="themes/winky/style.css">';
+	
 	$Ctemplate->useTemplate("errormessage", array(
 		'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Unavailable file icon
 		'TITLE'	=>	"{LANG_LOAD_NOCFG}", // Error title
@@ -102,7 +103,12 @@ print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_SESSION,t
 //print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($wf_lang,true))."<br>";
 
 /* FRAMEWORK */
-
+// Load a lite version of head (will load the title and the stylesheet)
+echo '<head>
+	<title>{GLOBAL_TITLE}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	</head>
+	<link rel="stylesheet" type="text/css" href="themes/' .$_SESSION['theme_name']. '/style.css">'."\n";
 function DoFooter()
 {
 	global $Cmysql; // Load classes
