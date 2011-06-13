@@ -1,5 +1,5 @@
-<!--- BEGIN install siteconfig write error -->
-<!--- Usage: config writing error box -->
+<!--- BEGIN install siteconfig variable error -->
+<!--- Usage: site config writing error box (missing variable) -->
 <html>
 
 <head>
@@ -24,11 +24,11 @@
 <table class="errorbox"> <!--- copying the errorbox template -->
 	<tr>
 		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_txt.png" alt="{LANG_ERROR_EXCLAMATION}"></td>
-		<td class="errortitle">{LANG_ACCESS_DENIED}</td>
+		<td class="errortitle">{LANG_ERROR_EXCLAMATION}</td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="errorbody">{LANG_INSTALL_SITECONFIG_WRITE_ERROR}</td>
+		<td class="errorbody">{LANG_VAR_REQ_NOT_ENTERED} {LANG_INSTALL_SITECONFIG_VARIABLE_ERROR}</td>
 	</tr>
 </table> <!--- copying the errorbox template -->
 

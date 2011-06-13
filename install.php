@@ -827,6 +827,9 @@ switch ($instPos)
 		{
 			// We output the form with data returned (user doesn't have to enter it again)
 			$Ctemplate->useTemplate("install/ins_siteconfig", array(
+				/* General */
+				'GLOBAL_TITLE'	=>	$_POST['global_title'],
+				
 				/* Appearance */
 				'LANGS_LOCALIZED_NAME'	=>	$wf_lang_def['LOCALIZED_NAME'], // The language's own, localized name (so it's Deutch for German)
 				'LANGS_SHORT_NAME'	=>	$wf_lang_def['SHORT_NAME'], // The language's English name (so it's German for German)
@@ -841,6 +844,9 @@ switch ($instPos)
 		} else {
 			// We output general form
 			$Ctemplate->useTemplate("install/ins_siteconfig", array(
+				/* General */
+				'GLOBAL_TITLE'	=>	$wf_lang['{LANG_INSTALL_SITECONFIG_DEFAULT_TITLE}'],
+				
 				/* Appearance */
 				'LANGS_LOCALIZED_NAME'	=>	$wf_lang_def['LOCALIZED_NAME'], // The language's own, localized name (so it's Deutch for German)
 				'LANGS_SHORT_NAME'	=>	$wf_lang_def['SHORT_NAME'], // The language's English name (so it's German for German)
@@ -859,10 +865,23 @@ switch ($instPos)
 		require('config.php'); // Recall config array (it is unloaded, but it's needed to connect to database)
 		$Cmysql->Connect(); // We can use the generic connect
 		
+		// First, we do a check whether any of the mandatory variables are NULL
+		if ( $_POST['global_title'] == NULL ) // Database host
+		{
+			$Ctemplate->useTemplate("install/ins_siteconfig_variable_error", array(
+				'VARIABLE'	=>	"{LANG_INSTALL_SITECONFIG_TITLE}", // Errornous variable name
+				'GLOBAL_TITLE'	=>	$_POST['global_title'],
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
+			), FALSE);
+			exit; // We terminate the script
+		}
+		
 		// Store the site configuration
 		$sConfig = $Cmysql->Query("INSERT INTO config(variable, value) VALUES
 			('language', '" .$Cmysql->EscapeString($_POST['ins_lang']). "'),
-			('theme', '" .$Cmysql->EscapeString($_POST['ins_thm']). "')"); // $sConfig is true if we are successful
+			('theme', '" .$Cmysql->EscapeString($_POST['ins_thm']). "'),
+			('global_title', '" .$Cmysql->EscapeString($_POST['global_title']). "')"); // $sConfig is true if we are successful
 		
 		// Give return or proceed forms based on success
 		if ( $sConfig == FALSE )
