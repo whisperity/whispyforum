@@ -432,6 +432,26 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_MENUS_ENTRY_DELETE_1}'	=>	"The entry was deleted successfully.",
 	'{LANG_MENUS_BACKTO_ENTRY_LIST}'	=>	"<< Return to entry list",
 	
+	/* Site configuration */
+	'{LANG_ADMINCFG}'	=>	"Site preferences",
+	'{LANG_ADMINCFG_TOOLTIP}'	=>	"Set the default preferences of the system",
+	'{LANG_ADMINCFG_TITLE}'	=>	"Here you can site your preferences on the site (language/theme). These preferences are global. All guest and freshly registered users will view the site with these settings.",
+	'{LANG_ADMINCFG_LANGUAGE_EMPHASIS}'	=>	"To modify the language, select it from the drop-down list and click Modify language.",
+	'{LANG_ADMINCFG_MODIFY_LANGUAGE_NOTICE}'	=>	"The current language is automatically selected.",
+	'{LANG_ADMINCFG_MODIFY_LANGUAGE}'	=>	"Modify language",
+	'{LANG_ADMINCFG_MODIFY_LANGUAGE_ERROR}'	=>	"Cannot modify the language",
+	'{LANG_ADMINCFG_MODIFY_LANGUAGE_SUCCESS}'	=>	"Language modified",
+	'{LANG_ADMINCFG_MODIFY_LANGUAGE_SUCCESS_1}'	=>	"You successfully modified the language.",
+	'{LANG_ADMINCFG_THEME_PREVIEW}'	=>	"Preview of theme",
+	'{LANG_ADMINCFG_THEME_PREVIEW_NO}'	=>	"Preview not available",
+	'{LANG_ADMINCFG_THEME_EMPHASIS}'	=>	"To modify the theme, click the Modify theme button for the desired theme.",
+	'{LANG_ADMINCFG_MODIFY_THEME}'	=>	"Modify theme",
+	'{LANG_ADMINCFG_MODIFY_THEME_CURRENT}'	=>	"This is the current theme",
+	'{LANG_ADMINCFG_MODIFY_THEME_ERROR}'	=>	"Cannot modify the theme",
+	'{LANG_ADMINCFG_MODIFY_THEME_SUCCESS}'	=>	"Theme modified",
+	'{LANG_ADMINCFG_MODIFY_THEME_SUCCESS_1}'	=>	"You successfully modified the theme.",
+	'{LANG_ADMINCFG_MODIFY_THEME_NOTICE}'	=>	"The current theme is marked.",
+	
 	/* Variable error boxes */
 	'{LANG_VAR_REQ_NOT_ENTERED}'	=>	"You didn't entered one of the required variables, {VARIABLE} cannot be empty.",
 	

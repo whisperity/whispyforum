@@ -799,6 +799,229 @@ switch ($site) // Outputs and scripts are based on the site variable
 		break;
 	/* * MENU MANAGING * */
 	/* --------------------------- */
+	/* * CONFIGURATION * */
+	case "config":
+		// Setting site preferences (theme, language)
+		// Parsing form input
+		if ( isset($_POST['set_type']) )
+		{
+			if ( ( $_POST['set_type'] == "language" ) && ( isset($_POST['new_lang']) ) )
+			{
+				// Change the language in the database
+				$Lmod = $Cmysql->Query("UPDATE config SET value='" .$Cmysql->EscapeString($_POST['new_lang']). "' WHERE variable='language'");
+				
+				// $Lmod is TRUE if we succeed and FALSE if we fail
+				if ( $Lmod == FALSE )
+				{
+					// If we failed
+					$Ctemplate->useTemplate("errormessage", array(
+						'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
+						'TITLE'	=>	"{LANG_ADMINCFG_MODIFY_LANGUAGE_ERROR}", // Error title
+						'BODY'	=>	"", // Error text
+						'ALT'	=>	"{LANG_SQL_EXEC_ERROR}" // Alternate picture text
+					), FALSE ); // We give an unavailable error
+					
+					$Ctemplate->useStaticTemplate("admin/siteprefs_back", FALSE); // Back button
+				} elseif ( $Lmod == TRUE )
+				{
+					// If we succeeded
+					$Ctemplate->useTemplate("successbox", array(
+						'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_home.png", // House (user CP header)
+						'TITLE'	=>	"{LANG_ADMINCFG_MODIFY_LANGUAGE_SUCCESS}", // Success title
+						'BODY'	=>	"{LANG_ADMINCFG_MODIFY_LANGUAGE_SUCCESS_1}", // Success text
+						'ALT'	=>	"{LANG_SQL_EXEC_SUCCESS}" // Alternate picture text
+					), FALSE ); // We give a success message
+					
+					$Ctemplate->useStaticTemplate("admin/siteprefs_back", FALSE); // Back button
+				}
+			}
+			
+			if ( ( $_POST['set_type'] == "theme" ) && ( isset($_POST['new_theme']) ) )
+			{
+				// Change the theme in the database
+				$Tmod = $Cmysql->Query("UPDATE config SET value='" .$Cmysql->EscapeString($_POST['new_theme']). "' WHERE variable='theme'");
+				
+				// $Tmod is TRUE if we succeed and FALSE if we fail
+				if ( $Tmod == FALSE )
+				{
+					// If we failed
+					$Ctemplate->useTemplate("errormessage", array(
+						'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
+						'TITLE'	=>	"{LANG_ADMINCFG_MODIFY_THEME_ERROR}", // Error title
+						'BODY'	=>	"", // Error text
+						'ALT'	=>	"{LANG_SQL_EXEC_ERROR}" // Alternate picture text
+					), FALSE ); // We give an unavailable error
+					
+					$Ctemplate->useStaticTemplate("admin/siteprefs_back", FALSE); // Back button
+				} elseif ( $Tmod == TRUE )
+				{
+					// If we succeeded
+					$Ctemplate->useTemplate("successbox", array(
+						'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_home.png", // House (user CP header)
+						'TITLE'	=>	"{LANG_ADMINCFG_MODIFY_THEME_SUCCESS}", // Success title
+						'BODY'	=>	"{LANG_ADMINCFG_MODIFY_THEME_SUCCESS_1}", // Success text
+						'ALT'	=>	"{LANG_SQL_EXEC_SUCCESS}" // Alternate picture text
+					), FALSE ); // We give a success message
+					
+					$Ctemplate->useStaticTemplate("admin/siteprefs_back", FALSE); // Back button
+				}
+			}
+		} else {
+			$Ctemplate->useStaticTemplate("admin/siteprefs", FALSE);
+			
+			/* Language settings */
+			$Ldir = "./language/"; // Language home dir
+			$Lexempt = array('.', '..', '.svn', '_svn'); // Do not query these directories
+			
+			$current_language = mysql_fetch_row($Cmysql->Query("SELECT value FROM config WHERE variable='language'"));
+			
+			$Ctemplate->useStaticTemplate("admin/siteprefs_lang_form", FALSE); // Opening the form
+			
+			if (is_dir($Ldir)) 
+			{
+				if ($Ldh = opendir($Ldir))
+				{
+					while (($Lfile = readdir($Ldh)) !== false)
+					{
+						if(!in_array(strtolower($Lfile),$Lexempt))
+						{
+							if ( filetype($Ldir . $Lfile) == "dir" )
+							{
+								// We're now querying all language directories
+								if ( ( file_exists($Ldir . $Lfile . "/language.php") ) && ( file_exists($Ldir . $Lfile . "/definition.php") ) )
+								{
+									// We only list directories containing the language AND the definition file
+									include($Ldir.$Lfile."/definition.php"); // This will load in $wf_lang_def (containing the definition)
+									
+									$Ctemplate->useTemplate("admin/siteprefs_lang_option", array(
+										'SELECTED'	=>	($Lfile == $current_language[0] ? " selected " : " "), // Selected is ' ' if it's another language, ' selected ' if it's the current. It makes the current language automatically re-selected
+										'DIR_NAME'	=>	$Lfile, // Name of the language's directory
+										'LOCALIZED_NAME'	=>	$wf_lang_def['LOCALIZED_NAME'], // The language's own, localized name (so it's Deutch for German)
+										'SHORT_NAME'	=>	$wf_lang_def['SHORT_NAME'], // The language's English name (so it's German for German)
+										'L_CODE'	=>	$wf_lang_def['LANG_CODE'] // Language code (it's de for German)
+									), FALSE);
+									
+									unset ($wf_lang_def);
+								}
+							}
+						}
+					}
+					closedir($Ldh);
+				}
+			}
+			
+			$Ctemplate->useStaticTemplate("admin/siteprefs_lang_foot", FALSE); // Closing the form
+			/* Language settings */
+			
+			/* Theme settings */
+			$Tdir = "./themes/"; // Language home dir
+			$Texempt = array('.', '..', '.svn', '_svn'); // Do not query these directories
+			
+			$i = 0; // Define a counter on zero
+			$embedder = ""; // Define a container
+			
+			$current_theme = mysql_fetch_row($Cmysql->Query("SELECT value FROM config WHERE variable='theme'"));
+			
+			if (is_dir($Tdir)) 
+			{
+				if ($Tdh = opendir($Tdir))
+				{
+					while (($Tfile = readdir($Tdh)) !== false)
+					{
+						if(!in_array(strtolower($Tfile),$Texempt))
+						{
+							if ( filetype($Tdir . $Tfile) == "dir" )
+							{
+								// We're now querying all language directories
+								if ( ( file_exists($Tdir . $Tfile . "/style.css") ) &&  ( file_exists($Tdir . $Tfile . "/theme.php") ) )
+								{
+									// We only list directories containing the stylesheet file
+									include($Tdir.$Tfile."/theme.php"); // Load the theme definition array ($theme_def)
+									
+									if ( $i === 0 )
+									{
+										// If the counter is zero, we need to create a new row.
+										$embedder .= "<tr>";
+									}
+									
+									if ( file_exists($Tdir . $Tfile . "/preview.png") )
+									{
+										// If there is a precreated preview image, use it as a preview
+										$preview = $Ctemplate->useTemplate("admin/siteprefs_theme_preview", array(
+											'IMAGE'	=>	$Tdir.$Tfile."/preview.png"
+										), TRUE);
+									} elseif ( !file_exists($Tdir. $Tfile . "/preview.png") )
+									{
+										// If there isn't a preview image, use a generated error message as preview
+										$preview = $Ctemplate->useTemplate("errormessage", array(
+											'PICTURE_NAME'	=>	"Nuvola_apps_error.png", // Error cross icon
+											'TITLE'	=>	"{LANG_ADMINCFG_THEME_PREVIEW_NO}", // Error title
+											'BODY'	=>	"", // Error text
+											'ALT'	=>	"{LANG_ERROR_EXCLAMATION}" // Alternate picture text
+										), TRUE);
+									}
+									
+									if ( $current_theme[0] == $Tfile )
+									{
+										// If the current theme is the one we want to output button for
+										// Disable the theme button
+										
+										$themeSetButton = $Ctemplate->useTemplate("admin/siteprefs_theme_button", array(
+											'THEME_FILE'	=>	$Tfile, // Name of theme
+											'SUBMIT_CAPTION'	=>	"{LANG_ADMINCFG_MODIFY_THEME_CURRENT}", // Button caption
+											'DISABLED'	=>	" disabled" // Make the button unclickable
+										), TRUE);
+									} elseif ( $current_theme[0] != $Tfile )
+									{
+										// If the current theme is NOT the one we want to output button for
+										// Make the set button
+										
+										$themeSetButton = $Ctemplate->useTemplate("admin/siteprefs_theme_button", array(
+											'THEME_FILE'	=>	$Tfile, // Name of theme
+											'SUBMIT_CAPTION'	=>	"{LANG_ADMINCFG_MODIFY_THEME}", // Button caption
+											'DISABLED'	=>	"" // Don't make the button unclickable
+										), TRUE);
+									}
+									
+									// Output one table cell for the theme
+									$embedder .= $Ctemplate->useTemplate("admin/siteprefs_theme_embed", array(
+										'PREVIEW'	=>	$preview, // Embed the preview image
+										'SHORT_NAME'	=>	$theme_def['SHORT_NAME'], // Short name of theme
+										'DESCRIPTION'	=>	$theme_def['DESCRIPTION'], // Long description
+										'BUTTON'	=>	$themeSetButton
+									), TRUE); // Add it to the embedder
+									$i++;
+									
+									if ( $i === 2 )
+									{
+										// If the counter is 2, we need to close the opened row
+										$embedder .= '</tr>';
+										$i = 0; // And we reset the counter
+									}
+								}
+							}
+						}
+					}
+					closedir($Tdh);
+				}
+			}
+			
+			if ( $i != 2 )
+			{
+				// After embedding the themes, 
+				// if we haven't filled up a complete row with two entries
+				// we need to close the unclosed row to prevent output errors
+				$embedder .= '</tr>';
+			}
+			
+			$Ctemplate->useTemplate("admin/siteprefs_theme_wrapper", array(
+				'EMBED'	=>	$embedder // The previously filled container
+			), FALSE); // Output the table
+			/* Theme settings */
+		}
+		break;
+	/* * CONFIGURATION * */
+	/* --------------------------- */
 }
 }
 $Ctemplate->useStaticTemplate("admin/admin_foot", FALSE); // Footer
