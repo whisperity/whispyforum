@@ -7,7 +7,7 @@
  */
 
 // chr(92) generates a \ (backslash) without escaping strings
-define('WC_PATH', "D:" .chr(92). "xampp" .chr(92). "htdocs"); // Working copy path
+define('WC_PATH', "C:" .chr(92). "xampp" .chr(92). "htdocs"); // Working copy path
 define('svnInfoFN', "cached.swcr-info.php"); // Subversion info file name (output file)
 define('TSVNpath', "C:" .chr(92). "Program Files" .chr(92). "TortoiseSVN"); // Tortoise SVN Windows shell extension SVN client path
 define('tplFN', "cached.swcr-template.php"); // Template file name
@@ -114,7 +114,7 @@ include(svnInfoFN);
 <br>
 <?php
 // chr(92) generates a \ (backslash) without escaping strings
-define('WC_PATH_S', "D:" .chr(92). "xampp" .chr(92). "wiki"); // Second working copy path
+define('WC_PATH_S', "C:" .chr(92). "xampp" .chr(92). "wiki"); // Second working copy path
 define('svnInfoFN_S', "cached.swcr-info-second.php"); // Second subversion info file name (output file)
 define('tplFN_S', "cached.swcr-template-second.php"); // Second template file name
 
