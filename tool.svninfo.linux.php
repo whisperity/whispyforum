@@ -355,7 +355,14 @@ function statusButtons($line)
 		file_put_contents("commit.log", $_GET['message']);
 		
 		// * COMMIT * //
-		exec('svn commit --file "commit.log"', $svncommit); // Get the output of 'svn commit' into an array
+		if ( (isset($_GET['username'])) && (isset($_GET['password'])) )
+		{
+			// If we set a username and a password
+			passthru('svn commit --file commit.log --username ' .$_GET['username']. ' --password ' .$_GET['password'], $svncommit); // Get the output of 'svn commit' into an array
+		} else {
+			// If we commit anonymously
+			exec('svn commit --file commit.log', $svncommit); // Get the output of 'svn commit' into an array
+		}
 		// The array contains each lines
 		
 		echo "<pre>";
@@ -638,6 +645,8 @@ function statusButtons($line)
 ?>
 <form method="GET" action="tool.svninfo.linux.php">
 <textarea name="message" cols="55" rows="18">Commited some changes via tool.svninfo.linux.php</textarea><br>
+Username: <input type="text" name="username" value="" size="35"><br>
+Password: <input type="text" name="password" value="" size="35"><br>
 <input type="hidden" name="repo" value=".">
 <input type="hidden" name="command" value="commit">
 <input type="submit" value="Commit">
