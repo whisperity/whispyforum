@@ -358,7 +358,7 @@ function statusButtons($line)
 		if ( (isset($_GET['username'])) && (isset($_GET['password'])) )
 		{
 			// If we set a username and a password
-			passthru('svn commit --file commit.log --username ' .$_GET['username']. ' --password ' .$_GET['password'], $svncommit); // Get the output of 'svn commit' into an array
+			exec('svn commit --file commit.log --username ' .$_GET['username']. ' --password ' .$_GET['password'], $svncommit); // Get the output of 'svn commit' into an array
 		} else {
 			// If we commit anonymously
 			exec('svn commit --file commit.log', $svncommit); // Get the output of 'svn commit' into an array
