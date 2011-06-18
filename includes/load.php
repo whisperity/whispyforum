@@ -90,7 +90,9 @@ $Cbadges = new class_badges;
 $Cbadges->Init(); // Load and define the badge array
 
 // Generate framework header
-$Ctemplate->useStaticTemplate("framework/header", FALSE);
+$Ctemplate->useTemplate("framework/header", array(
+	'GLOBAL_TITLE'	=>	config("global_title")
+), FALSE);
 /* HEADER */
 
 /* DEVELOPEMENT */

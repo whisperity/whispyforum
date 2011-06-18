@@ -57,7 +57,7 @@ function statusButt_UNKNOWN($file)
 	 * @outputs: returns formatted line
 	 */
 	
-	print("?       " .$file. " " . '<a href="tool.svninfo.linux.php?repo=.&filename=' .$file. '&command=add">Add</a> <a href="tool.svninfo.linux.php?repo=.&filename=' .$file. '&command=delete">Delete file</a> <a href="tool.svninfo.linux.php?repo=.&filename=' .$file. '&command=explore">Explore</a>');
+	print("?       " .$file. " " . '<a href="tool.svninfo.linux.php?repo=.&filename=' .$file. '&command=add">Add</a> <a href="tool.svninfo.linux.php?repo=.&filename=' .$file. '&command=delete">Delete file</a>');
 }
 
 function statusButt_MODIFIED($file)
@@ -72,7 +72,7 @@ function statusButt_MODIFIED($file)
 	 * @outputs: returns formatted line
 	 */
 	
-	print("M       " .$file. " " . '<a href="tool.svninfo.linux.php?repo=.&filename=' .$file. '&command=revert">Revert (lose local changes)</a> <a href="tool.svninfo.linux.php?repo=.&filename=' .$file. '&command=explore">Explore</a>');
+	print("M       " .$file. " " . '<a href="tool.svninfo.linux.php?repo=.&filename=' .$file. '&command=revert">Revert (lose local changes)</a> <a href="tool.svninfo.linux.php?repo=.&filename=' .$file. '&command=diff">Diff</a>');
 }
 
 function statusButt_ADDED($file)
@@ -87,7 +87,7 @@ function statusButt_ADDED($file)
 	 * @outputs: returns formatted line
 	 */
 	
-	print("A       " .$file. " " . '<a href="tool.svninfo.linux.php?repo=.&filename=' .$file. '&command=revert">Remove from version control</a> <a href="tool.svninfo.linux.php?repo=.&filename=' .$file. '&command=explore">Explore</a>');
+	print("A       " .$file. " " . '<a href="tool.svninfo.linux.php?repo=.&filename=' .$file. '&command=revert">Remove from version control</a>');
 }
 
 function statusButtons($line)
@@ -160,11 +160,13 @@ function statusButtons($line)
 		exec("svn update", $svnupdate); // Get the output of 'svn update' into an array
 		// The array contains each lines
 		
+		echo "<pre>";
 		foreach ($svnupdate as &$updateline)
 		{
 			// Output each line with breakline at end
 			echo opFormat($updateline)."<br>";
 		}
+		echo "</pre>";
 	}
 ?>
 	<form method="GET" action="tool.svninfo.linux.php">
@@ -348,11 +350,10 @@ function statusButtons($line)
 	} elseif (!isset($_GET['repo']) || ($_GET['repo'] == ".") )
 	{
 		echo '<font class="emphasis">Commit message:</font><br>'.
-		str_replace("\n", "<br>", opFormat($_GET['message']))
-		."<br>";;
+		str_replace("\n", "<br>", opFormat($_GET['message']));
 		
 		// Put the commit message into a file
-		file_put_contents("commit.log", $_GET['message']);
+		file_put_contents("commit.log", $_GET['message']."\n(via tool.svninfo.linux.php)");
 		
 		// * COMMIT * //
 		if ( (isset($_GET['username'])) && (isset($_GET['password'])) )
@@ -392,11 +393,11 @@ function statusButtons($line)
 <?php
 				exit;
 				break;
-			case "explore":
+			case "diff":
 				?>
 <div id="menucontainer" style="width: 95%">
 	<div id="header"><div id="header_left"></div>
-	<div id="header_main"><?php echo @$_GET['filename'] ?> explore</div><div id="header_right"></div></div>
+	<div id="header_main"><?php echo @$_GET['filename'] ?> diff</div><div id="header_right"></div></div>
     <div id="content">
     	<table border="0" style="width: 94%">
     	<tr>
@@ -411,11 +412,20 @@ function statusButtons($line)
 	if ( isset($_GET['repo']) && ($_GET['repo'] != ".") )
 	{
 ?>
-	<span class="red-star">Remote repositories could not be explored.</span>
+	<span class="red-star">Remote repositories could not be diff'd.</span>
 <?php
 	} elseif (!isset($_GET['repo']) || ($_GET['repo'] == ".") )
 	{
-		echo file_get_contents($_GET['filename']);
+		exec("svn diff " .@$_GET['filename'], $svnFdiff); // Get the output of 'svn diff' into an array
+		// The array contains each lines
+		
+		echo "<pre>";
+		foreach ($svnFdiff as &$Fdiffline)
+		{
+			// Output each line with breakline at end
+			echo opFormat($Fdiffline)."<br>";
+		}
+		echo "</pre>";
 	}
 	}
 ?>

@@ -866,8 +866,43 @@ switch ($site) // Outputs and scripts are based on the site variable
 					$Ctemplate->useStaticTemplate("admin/siteprefs_back", FALSE); // Back button
 				}
 			}
+			
+			if ( $_POST['set_type'] == "other" )
+			{
+				// If we are setting the rest of the option
+				
+				// Check for missing but mandatory variables
+				if ( $_POST['global_title'] == NULL )
+				{
+					$Ctemplate->useTemplate("admin/siteprefs_variable_error", array(
+						'VARIABLE'	=>	"{LANG_ADMINCFG_TITLE}",
+						'GLOBAL_TITLE'	=>	@$_POST['global_title']
+					), FALSE); // Output error box
+					
+					// Terminate the script
+					$Ctemplate->useStaticTemplate("admin/admin_foot", FALSE); // Footer
+					DoFooter();
+					exit;
+				}
+				
+				// Every variable is entered, do update
+				$scUpdate_global_title = $Cmysql->Query("UPDATE config SET value='" .$Cmysql->EscapeString($_POST['global_title']). "' WHERE variable='global_title'"); // $scUpdate_global_title is TRUE if we succeed, FALSE if we fail
+				
+				if ( $scUpdate_global_title == TRUE )
+				{
+					// If we succeeded, output success message, return form
+					$Ctemplate->useStaticTemplate("admin/siteprefs_success", FALSE);
+				} elseif ( $scUpdate_global_title == FALSE )
+				{
+					// If we failed, output return form and error message
+					$Ctemplate->useTemplate("admin/siteprefs_error", array(
+						'VARIABLE'	=>	"{LANG_ADMINCFG_TITLE}",
+						'GLOBAL_TITLE'	=>	@$_POST['global_title']
+					), FALSE); // Output error box
+				}
+			}
 		} else {
-			$Ctemplate->useStaticTemplate("admin/siteprefs", FALSE);
+			$Ctemplate->useStaticTemplate("admin/siteprefs_title", FALSE);
 			
 			/* Language settings */
 			$Ldir = "./language/"; // Language home dir
@@ -1018,6 +1053,20 @@ switch ($site) // Outputs and scripts are based on the site variable
 				'EMBED'	=>	$embedder // The previously filled container
 			), FALSE); // Output the table
 			/* Theme settings */
+			
+			/* General */
+			if ( @$_POST['error_goback'] == "yes" ) // If user is redirected because of an error
+			{
+				// We output the form with data returned (user doesn't have to enter it again)
+				$Ctemplate->useTemplate("admin/siteprefs", array(
+					'GLOBAL_TITLE'	=>	$_POST['global_title']
+				), FALSE);
+			} else {
+				// We output general form
+				$Ctemplate->useTemplate("admin/siteprefs", array(
+					'GLOBAL_TITLE'	=>	config('global_title')
+				), FALSE);
+			} 
 		}
 		break;
 	/* * CONFIGURATION * */

@@ -46,10 +46,6 @@ class class_users
 		
 		global $Cmysql; // Hook the SQL class
 		
-		// Get the default theme and localization name from the database
-		$theme = mysql_fetch_row($Cmysql->Query("SELECT value FROM config WHERE variable='theme'"));
-		$lang = mysql_fetch_row($Cmysql->Query("SELECT value FROM config WHERE variable='language'"));
-		
 		$_SESSION['username'] = ""; // Empty username
 		$_SESSION['pwd'] = ""; // Empty password
 		$_SESSION['uid'] = ""; // Empty user id
@@ -58,8 +54,8 @@ class class_users
 		$_SESSION['log_status'] = "guest"; // Guest login
 		$_SESSION['log_bool'] = FALSE; // Logged out
 		$_SESSION['avatar_filename'] = ""; // Guests does not have avatars
-		$_SESSION['theme_name'] = $theme[0]; // Default theme name
-		$_SESSION['usr_language'] = $lang[0]; // Default language name
+		$_SESSION['theme_name'] = config("theme"); // Default theme name
+		$_SESSION['usr_language'] = config("language"); // Default language name
 		
 		/* Forum */
 		$_SESSION['forum_topic_count_per_page'] = 15; // Default number of topics appearing on one page

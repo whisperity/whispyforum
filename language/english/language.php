@@ -455,6 +455,13 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_ADMINCFG_MODIFY_THEME_SUCCESS}'	=>	"Theme modified",
 	'{LANG_ADMINCFG_MODIFY_THEME_SUCCESS_1}'	=>	"You successfully modified the theme.",
 	'{LANG_ADMINCFG_MODIFY_THEME_NOTICE}'	=>	"The current theme is marked.",
+	'{LANG_ADMINCFG_GENERAL}'	=>	"General",
+	'{LANG_ADMINCFG_TITLE}'	=>	"Title",
+	'{LANG_ADMINCFG_DEFAULT_TITLE}'	=>	"New WhispyForum site",
+	'{LANG_ADMINCFG_VARIABLE_ERROR}'	=>	"Cannot modify the settings until every required variable is entered.",
+	'{LANG_ADMINCFG_WRITE_ERROR}'	=>	"Unable to store the configuration.",
+	'{LANG_ADMINCFG_SUCCESS}'	=>	"Configuration saved",
+	'{LANG_ADMINCFG_SUCCESS_1}'	=>	"The configuration was stored successfully.",
 	
 	/* Variable error boxes */
 	'{LANG_VAR_REQ_NOT_ENTERED}'	=>	"You didn't entered one of the required variables, {VARIABLE} cannot be empty.",

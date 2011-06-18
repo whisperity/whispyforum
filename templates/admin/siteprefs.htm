@@ -1,4 +1,13 @@
-<!--- BEGIN admin controlpanel site preferences -->
-<!--- Usage: acp site preference -->
-{LANG_ADMINCFG_TITLE}
-<!--- END admin site preferences -->
+<!--- BEGIN admin siteconfig -->
+<!--- Usage: acp site configuration page -->
+<font class="emphasis">{LANG_MANDATORY_VARIABLES_REDSTAR}</font>
+<br><br>
+<form method="POST" action="control_admin.php">
+<h2 class="install-header">{LANG_ADMINCFG_GENERAL}</h2>
+{LANG_ADMINCFG_TITLE}<span class="red-star">*</span>: <input type="text" name="global_title" value="{GLOBAL_TITLE}" size="35"><br>
+<input type="submit" value="{LANG_NEXT_NN}">
+<input type="hidden" name="site" value="config">
+<input type="hidden" name="set_type" value="other">
+</form>
+
+<!--- END admin siteconfig -->

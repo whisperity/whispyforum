@@ -105,7 +105,7 @@ print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_SESSION,t
 /* FRAMEWORK */
 // Load a lite version of head (will load the title and the stylesheet)
 echo '<head>
-	<title>{GLOBAL_TITLE}</title>
+	<title>' .config("global_title"). '</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	</head>
 	<link rel="stylesheet" type="text/css" href="themes/' .$_SESSION['theme_name']. '/style.css">'."\n";

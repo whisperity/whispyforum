@@ -245,4 +245,22 @@ function fDate($date = "current")
 	// Format the date with the date(format, epoch); function and return it
 	return date("F j, Y, H:i", $date);
 }
+
+function config($variable = NULL)
+{
+	/**
+	* This function returns the global configuration variable
+	* $variable value.
+	* 
+	* @inputs: $variable - name of the variable
+	* @outputs: return value of variable (from database table `config`)
+	*/
+	
+	global $Cmysql; // We need the SQL class
+	
+	// Get the value array from database
+	$value = mysql_fetch_row($Cmysql->Query("SELECT value FROM config WHERE variable='" .$Cmysql->EscapeString($variable). "'"));
+	
+	return $value[0]; // Return the value
+}
 ?>
