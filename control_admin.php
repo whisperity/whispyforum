@@ -876,7 +876,22 @@ switch ($site) // Outputs and scripts are based on the site variable
 				{
 					$Ctemplate->useTemplate("admin/siteprefs_variable_error", array(
 						'VARIABLE'	=>	"{LANG_ADMINCFG_TITLE}",
-						'GLOBAL_TITLE'	=>	@$_POST['global_title']
+						'GLOBAL_TITLE'	=>	$_POST['global_title'],
+						'SITE_HOST'	=>	$_POST['site_host']	
+					), FALSE); // Output error box
+					
+					// Terminate the script
+					$Ctemplate->useStaticTemplate("admin/admin_foot", FALSE); // Footer
+					DoFooter();
+					exit;
+				}
+				
+				if ( $_POST['site_host'] == NULL )
+				{
+					$Ctemplate->useTemplate("admin/siteprefs_variable_error", array(
+						'VARIABLE'	=>	"{LANG_ADMINCFG_HOST}",
+						'GLOBAL_TITLE'	=>	$_POST['global_title'],
+						'SITE_HOST'	=>	$_POST['site_host']
 					), FALSE); // Output error box
 					
 					// Terminate the script
@@ -887,17 +902,19 @@ switch ($site) // Outputs and scripts are based on the site variable
 				
 				// Every variable is entered, do update
 				$scUpdate_global_title = $Cmysql->Query("UPDATE config SET value='" .$Cmysql->EscapeString($_POST['global_title']). "' WHERE variable='global_title'"); // $scUpdate_global_title is TRUE if we succeed, FALSE if we fail
+				$scUpdate_site_host = $Cmysql->Query("UPDATE config SET value='" .$Cmysql->EscapeString($_POST['site_host']). "' WHERE variable='site_host'"); // $scUpdate_site_host is TRUE if we succeed, FALSE if we fail
 				
-				if ( $scUpdate_global_title == TRUE )
+				if ( ( $scUpdate_global_title == TRUE ) && ( $scUpdate_site_host == TRUE ) )
 				{
 					// If we succeeded, output success message, return form
 					$Ctemplate->useStaticTemplate("admin/siteprefs_success", FALSE);
-				} elseif ( $scUpdate_global_title == FALSE )
+				} elseif ( ( $scUpdate_global_title == FALSE ) || ( $scUpdate_site_host == FALSE ) )
 				{
 					// If we failed, output return form and error message
 					$Ctemplate->useTemplate("admin/siteprefs_error", array(
 						'VARIABLE'	=>	"{LANG_ADMINCFG_TITLE}",
-						'GLOBAL_TITLE'	=>	@$_POST['global_title']
+						'GLOBAL_TITLE'	=>	$_POST['global_title'],
+						'SITE_HOST'	=>	$_POST['site_host'],
 					), FALSE); // Output error box
 				}
 			}
@@ -1059,12 +1076,14 @@ switch ($site) // Outputs and scripts are based on the site variable
 			{
 				// We output the form with data returned (user doesn't have to enter it again)
 				$Ctemplate->useTemplate("admin/siteprefs", array(
-					'GLOBAL_TITLE'	=>	$_POST['global_title']
+					'GLOBAL_TITLE'	=>	$_POST['global_title'],
+					'SITE_HOST'	=>	$_POST['site_host']
 				), FALSE);
 			} else {
 				// We output general form
 				$Ctemplate->useTemplate("admin/siteprefs", array(
-					'GLOBAL_TITLE'	=>	config('global_title')
+					'GLOBAL_TITLE'	=>	config('global_title'),
+					'SITE_HOST'	=>	config('site_host')
 				), FALSE);
 			} 
 		}

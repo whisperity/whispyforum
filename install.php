@@ -393,6 +393,8 @@ switch ($instPos)
 			`curr_sessid` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'current session ID',
 			`regdate` int(16) NOT NULL COMMENT 'registration date',
 			`loggedin` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1 if user is currently logged in, 0 if not',
+			`activated` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1 if user is activated, 0 if not',
+			`token` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'token for activation or password restore',
 			`userLevel` tinyint(2) NOT NULL DEFAULT '0' COMMENT 'clearance level',
 			`avatar_filename` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'avatar picture filename',
 			`language` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'english' COMMENT 'user preferred language',
@@ -789,10 +791,10 @@ switch ($instPos)
 		// $adminreg isn't FALSE if the admin user was registered
 		// $adminreg is FALSE if the admin user registration failed
 		
-		$adminreg = $Cmysql->Query("INSERT INTO users(username, pwd, email, regdate, userLevel, post_count) VALUES ('" .
+		$adminreg = $Cmysql->Query("INSERT INTO users(username, pwd, email, regdate, activated, userLevel, post_count) VALUES ('" .
 			$Cmysql->EscapeString($_POST['root_name']). "'," .
 			"'" .md5($Cmysql->EscapeString($_POST['root_pass'])). "'," .
-			"'" .$Cmysql->EscapeString($_POST['root_email']). "', " .time(). ", 4, 1)"); // Will be true if we succeed
+			"'" .$Cmysql->EscapeString($_POST['root_email']). "', " .time(). ", 1, 4, 1)"); // Will be true if we succeed
 		
 		if ( $adminreg == FALSE )
 		{
@@ -829,6 +831,7 @@ switch ($instPos)
 			$Ctemplate->useTemplate("install/ins_siteconfig", array(
 				/* General */
 				'GLOBAL_TITLE'	=>	$_POST['global_title'],
+				'SITE_HOST'	=>	$_POST['site_host'],
 				
 				/* Appearance */
 				'LANGS_LOCALIZED_NAME'	=>	$wf_lang_def['LOCALIZED_NAME'], // The language's own, localized name (so it's Deutch for German)
@@ -846,6 +849,7 @@ switch ($instPos)
 			$Ctemplate->useTemplate("install/ins_siteconfig", array(
 				/* General */
 				'GLOBAL_TITLE'	=>	$wf_lang['{LANG_INSTALL_SITECONFIG_DEFAULT_TITLE}'],
+				'SITE_HOST'	=>	$_SEVER['HTTP_HOST'],
 				
 				/* Appearance */
 				'LANGS_LOCALIZED_NAME'	=>	$wf_lang_def['LOCALIZED_NAME'], // The language's own, localized name (so it's Deutch for German)
@@ -866,11 +870,24 @@ switch ($instPos)
 		$Cmysql->Connect(); // We can use the generic connect
 		
 		// First, we do a check whether any of the mandatory variables are NULL
-		if ( $_POST['global_title'] == NULL ) // Database host
+		if ( $_POST['global_title'] == NULL ) // Global title
 		{
 			$Ctemplate->useTemplate("install/ins_siteconfig_variable_error", array(
 				'VARIABLE'	=>	"{LANG_INSTALL_SITECONFIG_TITLE}", // Errornous variable name
 				'GLOBAL_TITLE'	=>	$_POST['global_title'],
+				'SITE_HOST'	=>	$_POST['site_host'],
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
+			), FALSE);
+			exit; // We terminate the script
+		}
+		
+		if ( $_POST['site_host'] == NULL ) // HTTP HOST
+		{
+			$Ctemplate->useTemplate("install/ins_siteconfig_variable_error", array(
+				'VARIABLE'	=>	"{LANG_INSTALL_SITECONFIG_HOST}", // Errornous variable name
+				'GLOBAL_TITLE'	=>	$_POST['global_title'],
+				'SITE_HOST'	=>	$_POST['site_host'],
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
 				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
@@ -881,7 +898,8 @@ switch ($instPos)
 		$sConfig = $Cmysql->Query("INSERT INTO config(variable, value) VALUES
 			('language', '" .$Cmysql->EscapeString($_POST['ins_lang']). "'),
 			('theme', '" .$Cmysql->EscapeString($_POST['ins_thm']). "'),
-			('global_title', '" .$Cmysql->EscapeString($_POST['global_title']). "')"); // $sConfig is true if we are successful
+			('global_title', '" .$Cmysql->EscapeString($_POST['global_title']). "'),
+			('site_host', '" .$Cmysql->EscapeString($_POST['site_host']). "')"); // $sConfig is true if we are successful
 		
 		// Give return or proceed forms based on success
 		if ( $sConfig == FALSE )

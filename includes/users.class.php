@@ -214,43 +214,26 @@ class class_users
 		
 		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .$Cmysql->EscapeString($username). "' AND pwd='" .md5($Cmysql->EscapeString($password)). "'")); // We query the user's data
 		
-		if ( $userDBArray == TRUE )
+		if  ( $userDBArray == TRUE ) 
 		{
-			// If the login info was correct
-			// we fill up the session
-			$_SESSION['username'] = $userDBArray['username'];
-			$_SESSION['pwd'] = $userDBArray['pwd'];
-			$_SESSION['uid'] = $userDBArray['id'];
-			$_SESSION['log_status'] = "user";
-			$_SESSION['log_bool'] = TRUE;
-			$_SESSION['theme_name'] = $userDBArray['theme'];
-			$_SESSION['usr_language'] = $userDBArray['language'];
+			// If the login info was correct and the user is activated
 			
-			if ( $userDBArray['avatar_filename'] == NULL )
+			// Check wether the user is activated
+			if ( $userDBArray['activated'] == "1" )
 			{
-				// If the user does not have an avatar set, make a default avatar for him/her
-				$fnToken = generateHexTokenNoDC(); // Generate token
+				// If yes
+				// we fill up the session
+				$_SESSION['username'] = $userDBArray['username'];
+				$_SESSION['pwd'] = $userDBArray['pwd'];
+				$_SESSION['uid'] = $userDBArray['id'];
+				$_SESSION['log_status'] = "user";
+				$_SESSION['log_bool'] = TRUE;
+				$_SESSION['theme_name'] = $userDBArray['theme'];
+				$_SESSION['usr_language'] = $userDBArray['language'];
 				
-				// We need to copy it to user upload directory to prevent
-				// the file in the theme directory to be deleted if the user wants to
-				// modify his/her avatar
-				
-				copy("themes/" .$_SESSION['theme_name']. "/default_avatar.png", "upload/usr_avatar/temporary_" .$fnToken. ".png"); // Copy the default file from the themeset
-				
-				// Make the user's avatar the temporary one
-				$_SESSION['avatar_filename'] = "temporary_" .$fnToken. ".png";
-				
-				// Update the database to make the system remove the temporary file at logout
-				$Cmysql->Query("UPDATE users SET avatar_filename='temporary' WHERE id='" .$userDBArray['id']. "'");
-			} else {
-				// If the user have a defined avatar, make it his SESSION avatar
-				$_SESSION['avatar_filename'] = $userDBArray['avatar_filename'];
-				
-				if ( !file_exists("upload/usr_avatar/" .$userDBArray['avatar_filename']) )
+				if ( $userDBArray['avatar_filename'] == NULL )
 				{
-					// If the user have an avatar previously set, but
-					// the file does not exists, set a temporary avatar for the user
-					
+					// If the user does not have an avatar set, make a default avatar for him/her
 					$fnToken = generateHexTokenNoDC(); // Generate token
 					
 					// We need to copy it to user upload directory to prevent
@@ -262,21 +245,49 @@ class class_users
 					// Make the user's avatar the temporary one
 					$_SESSION['avatar_filename'] = "temporary_" .$fnToken. ".png";
 					
-					// Remove the user's avatar setting from the database
-					// to make the system remove the temporary file at logout
+					// Update the database to make the system remove the temporary file at logout
 					$Cmysql->Query("UPDATE users SET avatar_filename='temporary' WHERE id='" .$userDBArray['id']. "'");
+				} else {
+					// If the user have a defined avatar, make it his SESSION avatar
+					$_SESSION['avatar_filename'] = $userDBArray['avatar_filename'];
+					
+					if ( !file_exists("upload/usr_avatar/" .$userDBArray['avatar_filename']) )
+					{
+						// If the user have an avatar previously set, but
+						// the file does not exists, set a temporary avatar for the user
+						
+						$fnToken = generateHexTokenNoDC(); // Generate token
+						
+						// We need to copy it to user upload directory to prevent
+						// the file in the theme directory to be deleted if the user wants to
+						// modify his/her avatar
+						
+						copy("themes/" .$_SESSION['theme_name']. "/default_avatar.png", "upload/usr_avatar/temporary_" .$fnToken. ".png"); // Copy the default file from the themeset
+						
+						// Make the user's avatar the temporary one
+						$_SESSION['avatar_filename'] = "temporary_" .$fnToken. ".png";
+						
+						// Remove the user's avatar setting from the database
+						// to make the system remove the temporary file at logout
+						$Cmysql->Query("UPDATE users SET avatar_filename='temporary' WHERE id='" .$userDBArray['id']. "'");
+					}
 				}
+				
+				/* Forum */
+				$_SESSION['forum_topic_count_per_page'] = $userDBArray['forum_topic_count_per_page']; // Number of topics appearing on one page
+				$_SESSION['forum_post_count_per_page'] = $userDBArray['forum_post_count_per_page']; // Number of topics appearing on one page
+				
+				$Cmysql->Query("UPDATE users SET curr_ip='" .$_SESSION['curr_ip']. "', curr_sessid='" .$_SESSION['curr_sessid']. "', loggedin=1 WHERE id='" .$userDBArray['id']. "'"); // We update the database to enter the current session data
+				return TRUE; // Then return TRUE
+			} elseif ( $userDBArray['activated'] == "0" )
+			{
+				// If the login informations are OK, but the user is not activated, 
+				return "activate";
 			}
-			
-			/* Forum */
-			$_SESSION['forum_topic_count_per_page'] = $userDBArray['forum_topic_count_per_page']; // Number of topics appearing on one page
-			$_SESSION['forum_post_count_per_page'] = $userDBArray['forum_post_count_per_page']; // Number of topics appearing on one page
-			
-			$Cmysql->Query("UPDATE users SET curr_ip='" .$_SESSION['curr_ip']. "', curr_sessid='" .$_SESSION['curr_sessid']. "', loggedin=1 WHERE id='" .$userDBArray['id']. "'"); // We update the database to enter the current session data
-			return TRUE; // Then return TRUE
 		} elseif ( $userDBArray == FALSE )
 		{
 			// If there was errors during the query (wrong name/password)
+			// or the user is not activated
 			return FALSE; // We return false
 		}
 	}

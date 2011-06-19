@@ -1,0 +1,16 @@
+<!--- This is the template for the email sent out
+      after the user has successfully registered -->
+Dear {USERNAME},<br>
+<br>
+If you receive this message it means that you have successfully registered at {GLOBAL_TITLE} site (<a href="{SITE_HOST}" target="_blank">{SITE_HOST}</a>). You must activate your account before you can begin unleashing it.<br>
+<br>
+To complete your registration, you must follow this link: <a href="{ACTIVATION_LINK}" target="_blank">{ACTIVATION_LINK}</a>.<br>
+<br>
+If you cannot follow this link, please open <a href="{ACTIVATION_SITE}" target="_blank">the user activation site</a>.<br>
+In the appearing site, please enter the details as follow.<br>
+<br>
+Username: <b>{USERNAME}</b><br>
+Activation token: <b>{TOKEN}</b><br>
+<br>
+Yours sincerely,<br>
+the Administrators.

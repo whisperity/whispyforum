@@ -263,4 +263,18 @@ function config($variable = NULL)
 	
 	return $value[0]; // Return the value
 }
+
+function prettyVar($variable = NULL)
+{
+	/**
+	* This function returns the var_export($variable) output
+	* in both machine and human readable format
+	* 
+	* @inputs: $variable - name of the variable
+	* @outputs: formatted text
+	*/
+	
+	
+	return str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($variable,true))."<br>";
+}
 ?>

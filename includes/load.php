@@ -72,11 +72,11 @@ require("includes/functions.php");
 /* DEVELOPEMENT */
 // PH, workaround: output HTTP POST and GET arrays
 print "<h4>GET</h4>";
-print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_GET,true))."<br>";
+print prettyVar($_GET);
 print "<h4>POST</h4>";
-print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_POST,true))."<br>";
+print prettyVar($_POST);
 print "<h4>FILES</h4>";
-print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_FILES,true))."<br>";
+print prettyVar($_FILES);
 
 /* START GENERATION */
 $Cmysql->Connect(); // Connect to database
@@ -97,19 +97,19 @@ $Ctemplate->useTemplate("framework/header", array(
 
 /* DEVELOPEMENT */
 print "<h4>SESSION</h4>";
-print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_SESSION,true))."<br>";
+print prettyVar($_SESSION);
 // print "<h4>SERVER</h4>";
-// print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_SERVER,true))."<br>";
+// print prettyVar($_SERVER);
 // print "<h4>REQUEST</h4>";
-// print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_REQUEST,true))."<br>";
+// print prettyVar($_REQUEST);
 // print "<h4>ENVIRONMENT</h4>";
-// print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_ENV,true))."<br>";
+// print prettyVar($_ENV);
 // print "<h4>COOKIES</h4>";
-// print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_COOKIE,true))."<br>";
+// print prettyVar($_COOKIE);
 // print "<h4>Configuration</h4>";
-// print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($cfg,true))."<br>";
+// print prettyVar($cfg);
 // print "<h4>Localization</h4>";
-// print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($wf_lang,true))."<br>";
+// print prettyVar($wf_lang);
 
 /* FRAMEWORK */
 

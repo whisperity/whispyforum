@@ -61,17 +61,23 @@ $logsuccess = $Cusers->Login($_POST['user_loginname'], $_POST['user_password']);
 // $logsuccess is TRUE if the user successfully logged in
 // $logsuccess is FALSE if there were errors during login
 
-if ( $logsuccess == FALSE )
+if ( $logsuccess === FALSE )
 {
 	// We output an error message
 	$Ctemplate->useTemplate("user/login_error", array(
-		'RETURN_TO_URL'	=>	$returnURI, // Return URI
+		'RETURN_TO_URL'	=>	$returnURI // Return URI
 	), FALSE);
-} elseif ( $logsuccess == TRUE )
+} elseif ( $logsuccess === "activate" )
+{
+	// If the user is not activated
+	$Ctemplate->useTemplate("user/login_error_activate", array(
+		'RETURN_TO_URL'	=>	$returnURI
+	), FALSE); // Output specific error message
+} elseif ( $logsuccess === TRUE )
 {
 	// We give success
 	$Ctemplate->useTemplate("user/login_success", array(
-		'RETURN_TO_URL'	=>	$returnURI, // Return URI
+		'RETURN_TO_URL'	=>	$returnURI // Return URI
 	), FALSE);
 }
 

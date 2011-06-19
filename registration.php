@@ -183,11 +183,14 @@ switch ($regPos)
 			exit;
 		}
 		
+		// Generate an activation token
+		$token = generateHexTokenNoDC(); // Use 32 character length generator (without doublecolons (:))
+		
 		// Everything is fine, we register the user.
-		$regQuery = $Cmysql->Query("INSERT INTO users(username, pwd, email, regdate, userLevel) VALUES ('" .
+		$regQuery = $Cmysql->Query("INSERT INTO users(username, pwd, email, regdate, userLevel, activated, token) VALUES ('" .
 			$Cmysql->EscapeString($_POST['username']). "'," .
 			"'" .md5($Cmysql->EscapeString($_POST['password'])). "'," .
-			"'" .$Cmysql->EscapeString($_POST['email']). "', " .time(). ", 1)"); // Will be true if we succeed
+			"'" .$Cmysql->EscapeString($_POST['email']). "', " .time(). ", 1, 0, '" .$token. "')"); // Will be true if we succeed
 		
 		if ( $regQuery == FALSE )
 		{
@@ -200,6 +203,23 @@ switch ($regPos)
 			), FALSE); // Give error message and retry form
 		} elseif ( $regQuery == TRUE )
 		{
+			// Mail body (content)
+			$email = $Ctemplate->useTemplate("user/reg_activation_email", array(
+				'GLOBAL_TITLE'	=>	config("global_title"),
+				'SITE_HOST'	=>	"http://" . config("site_host"),
+				'ACTIVATION_LINK'	=>	"http://" .config("site_host"). "/activate.php?username=" .$_POST['username']. "&token=" .$token,
+				'ACTIVATION_SITE'	=>	"http://" .config("site_host"). "/activate.php",
+				'USERNAME'	=>	$_POST['username'],
+				'TOKEN'	=>	$token		
+			), TRUE);
+			
+			// Mail headers
+			$headers  = 'MIME-Version: 1.0' . "\r\n" . 'Content-type: text/html; charset=utf-8' . "\r\n";
+                        $headers .= 'X-Mailer: PHP/' . phpversion() . "\r\n" . 'Website-domain: ' .config("site_host");
+			
+			// Send out the mail
+			mail($_POST['email'], $wf_lang['{LANG_REG_ACTIVATION_EMAIL_SUBJECT}'], $email, $headers);
+			
 			// If registration completed successfully
 			$Ctemplate->useStaticTemplate("user/reg_userdata_reg_success", FALSE); // Give success
 		}

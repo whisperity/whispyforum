@@ -25,6 +25,12 @@
  *  *********************************************************
  */
 
+// Directory this language file is in
+// Please make sure you update this because
+// if you don't, the embedding will not work
+// for example: the activation email text ({LANG_REG_ACTIVATION_EMAIL})
+define('LANGUAGE_DIR', "english");
+
 global $wf_lang; // Language global array
 
 /* English localization */
@@ -190,6 +196,7 @@ Before we can move on installing the system, you have to make your data safe. Cr
 	'{LANG_INSTALL_SITECONFIG_DATA}'	=>	"Site configuration values",
 	'{LANG_INSTALL_SITECONFIG_GENERAL}'	=>	"General",
 	'{LANG_INSTALL_SITECONFIG_TITLE}'	=>	"Title",
+	'{LANG_INSTALL_SITECONFIG_HOST}'	=>	"Host",
 	'{LANG_INSTALL_SITECONFIG_DEFAULT_TITLE}'	=>	"New WhispyForum site",
 	'{LANG_INSTALL_SITECONFIG_APPEARANCE}'	=>	"Appearance",
 	'{LANG_INSTALL_SITECONFIG_LANGUAGE}'	=>	"Language:",
@@ -245,6 +252,7 @@ Before we can move on installing the system, you have to make your data safe. Cr
 	'{LANG_LOGIN_SUCCESS}'	=>	"Login success!",
 	'{LANG_LOGIN_PLEASEUSEBOX}'	=>	"Please use the login box to login to the site.",
 	'{LANG_LOGIN_WRONGPASSWORD}'	=>	"The user you entered does not exist, or you supplied wrong login credentials.",
+	'{LANG_LOGIN_ACTIVATE}'	=>	"The user you wanted to log in to haven't been activated yet. Please follow the details which were sent to you via email to activate your account.",
 	'{LANG_LOGIN_CRITICAL_FOR}'	=>	"You did not enter {VARIABLE_BODY}. This variable is critical to properly log you in.",
 	'{LANG_LOGIN_DIRECT_OPENING}'	=>	"It seems to be a direct opening of the login page.<br>
 When you login, you're automatically redirected through this page by the engine passing vital variables. Those variables cannot be get.",
@@ -278,11 +286,13 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_REG_SQL_ERROR}'	=>	"There were errors executing the SQL query to register you. Your new user isn't registered.",
 	'{LANG_REG_SUCCESS_TITLE}'	=>	"Register successful!",
 	'{LANG_REG_SUCCESS_BODY}'	=>	"You've been registered successfully.",
-	'{LANG_REG_ENDED}'	=>	"The registration ended!",
+	'{LANG_REG_ENDED}'	=>	"The registration has ended! Please follow the instructions we sent to you via email to finish your activation.",
 	'{LANG_REG_DATA_INFO}'	=>	"To register a new user, you must enter it's login credentials into the boxes below. Further user information (like sign, profile box, avatar) could be set in the Control Panel after login.",
 	'{LANG_REG_DATA_FORM_HEADER}'	=>	"New user's login information",
 	'{LANG_REG_NAME_ALLOCATED}'	=>	"The username you wanted to register is in use. Please choose another!",
 	'{LANG_REG_EMAIL_ALLOCATED}'	=>	"The e-mail address you wanted to register is in use.",
+	'{LANG_REG_ACTIVATION_EMAIL_SUBJECT}'	=>	"Registration notification",
+	'{LANG_REG_ACTIVATION_EMAIL}'	=>	file_get_contents("language/" .LANGUAGE_DIR. "/email.activate.txt"), // Embed the text file here
 	
 	/* User levels */
 	'{LANG_INSUFFICIENT_RIGHTS}'	=>	"Insufficient rights",
@@ -457,6 +467,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_ADMINCFG_MODIFY_THEME_NOTICE}'	=>	"The current theme is marked.",
 	'{LANG_ADMINCFG_GENERAL}'	=>	"General",
 	'{LANG_ADMINCFG_TITLE}'	=>	"Title",
+	'{LANG_ADMINCFG_HOST}'	=>	"Host",
 	'{LANG_ADMINCFG_DEFAULT_TITLE}'	=>	"New WhispyForum site",
 	'{LANG_ADMINCFG_VARIABLE_ERROR}'	=>	"Cannot modify the settings until every required variable is entered.",
 	'{LANG_ADMINCFG_WRITE_ERROR}'	=>	"Unable to store the configuration.",

@@ -174,3 +174,9 @@ CREATE TABLE IF NOT EXISTS config (
 	`value` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'value for variable',
 	UNIQUE KEY `variable` (`variable`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'configuration';
+
+#
+# Revision 669 (adding user activation)
+#
+ALTER TABLE `users` ADD `activated` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1 if the user is activated, 0 if not' AFTER `loggedin`;
+ALTER TABLE `users` ADD `token` VARCHAR( 32 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'token for activation or password restore' AFTER `activated`;
