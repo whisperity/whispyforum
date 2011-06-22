@@ -207,8 +207,8 @@ switch ($regPos)
 			$email = $Ctemplate->useTemplate("user/reg_activation_email", array(
 				'GLOBAL_TITLE'	=>	config("global_title"),
 				'SITE_HOST'	=>	"http://" . config("site_host"),
-				'ACTIVATION_LINK'	=>	"http://" .config("site_host"). "/activate.php?username=" .$_POST['username']. "&token=" .$token,
-				'ACTIVATION_SITE'	=>	"http://" .config("site_host"). "/activate.php",
+				'ACTIVATION_LINK'	=>	"http://" .config("site_host"). "/activate_user.php?username=" .$_POST['username']. "&token=" .$token,
+				'ACTIVATION_SITE'	=>	"http://" .config("site_host"). "/activate_user.php",
 				'USERNAME'	=>	$_POST['username'],
 				'TOKEN'	=>	$token		
 			), TRUE);

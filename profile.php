@@ -154,7 +154,10 @@ if ( $i != 4 )
 
 $Ctemplate->useTemplate("user/profile_body", array(
 	'USERNAME'	=>	$userData['username'],
-	'EMAIL'	=>	$userData['email'],
+	'EMAIL'	=>	str_replace(
+		array("@", "."),
+		array(" (at) ", " (dot) "),
+		$userData['email']), // Email message is formatted: "john@doe.com" becomes "john (at) doe (dot) com"
 	'REGDATE'	=>	fDate($userData['regdate']),
 	'IMGSRC'	=>	$avatar,
 	'LOG_STATUS'	=>	($userData['loggedin'] == 1 ? "online" : "offline"),

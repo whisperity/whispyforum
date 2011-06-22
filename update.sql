@@ -180,3 +180,8 @@ CREATE TABLE IF NOT EXISTS config (
 #
 ALTER TABLE `users` ADD `activated` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1 if the user is activated, 0 if not' AFTER `loggedin`;
 ALTER TABLE `users` ADD `token` VARCHAR( 32 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'token for activation or password restore' AFTER `activated`;
+
+#
+# Revision 670 (adding user activation)
+#
+UPDATE `users` SET `activated`='1';

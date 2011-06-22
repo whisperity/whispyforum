@@ -115,6 +115,7 @@ $wf_lang = array(
 	'{LANG_EARNED_AT}'	=>	"earned at",
 	'{LANG_NOT_YET}'	=>	"not yet",
 	'{LANG_HELLO}'	=>	"Hello!",
+	'{LANG_TOKEN}'	=>	"Token",
 	
 	/* Install */
 	'{LANG_INSTALL_INSTALLER}'	=>	"Installer",
@@ -294,6 +295,15 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_REG_ACTIVATION_EMAIL_SUBJECT}'	=>	"Registration notification",
 	'{LANG_REG_ACTIVATION_EMAIL}'	=>	file_get_contents("language/" .LANGUAGE_DIR. "/email.activate.txt"), // Embed the text file here
 	
+	/* User activation */
+	'{LANG_ACTIVATE_INFO}'	=>	"Before you can begin using your new account, you must activate it. The token you will need to do this is provided to you via email.",
+	'{LANG_ACTIVATE_FORM_HEADER}'	=>	"Activation details",
+	'{LANG_ACTIVATE_BUTTON}'	=>	"Activate",
+	'{LANG_ACTIVATE_ERROR}'	=>	"The username or token you entered is invalid. Please check your e-mail message for the proper information. Your account wasn't activated.",
+	'{LANG_ACTIVATE_ERROR_SQL}'	=>	"There were errors activating your account. The details are OK, but the database could not be contacted or other error occured.",
+	'{LANG_ACTIVATE_SUCCESS}'	=>	"Your account have been activated.",
+	'{LANG_ACTIVATE_PRESS_TO_RETURN_TO_EMPTY_FORM}'	=>	"Press the button below to return to the form.",
+		
 	/* User levels */
 	'{LANG_INSUFFICIENT_RIGHTS}'	=>	"Insufficient rights",
 	'{LANG_PERMISSIONS_ERROR}'	=>	"User permissions error",

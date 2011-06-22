@@ -1,0 +1,20 @@
+<!--- BEGIN activate sql error -->
+<!--- Usage: activation error box (sql error) -->
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_txt.png" alt="{LANG_ERROR_EXCLAMATION}"></td>
+		<td class="errortitle">{LANG_ERROR_EXCLAMATION}</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">{LANG_ACTIVATE_ERROR_SQL}</td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+
+{LANG_TO_RETRY_CLICK_BACK}
+<form method="GET" action="activate_user.php">
+<input type="hidden" name="username" value="{USERNAME}">
+<input type="hidden" name="token" value="{TOKEN}">
+<input type="submit" value="{LANG_BB_BACK}">
+</form>
+<!--- END activate error -->
