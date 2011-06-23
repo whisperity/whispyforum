@@ -62,6 +62,9 @@ Functions</h4>
 <li>
 <img border="0" src="../style-data/public.gif" width="15" height="15" alt="public">
 <a href="#prettyVar">prettyVar</a></li>
+<li>
+<img border="0" src="../style-data/public.gif" width="15" height="15" alt="public">
+<a href="#sendTemplateMail">sendTemplateMail</a></li>
 </ul>
 <h3>Details</h3>
 <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber1" height="43">
@@ -190,6 +193,7 @@ Functions</h4>
   <tr>
     <td width="10%" height="14">Parameters</td>
 
+
     <td width="90%" height="14">input - text in BB code format</td>
   </tr>
   <tr>
@@ -258,7 +262,7 @@ Functions</h4>
 <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber5" height="43">
   <tr>
     <td width="100%" colspan="2" height="1">
-    <h4><a name="config"></a>
+    <h4><a name="prettyVar"></a>
 <img border="0" src="../style-data/function.gif" width="10" height="9" alt="function">
 <img border="0" src="../style-data/public.gif" width="15" height="15" alt="public"> 
     prettyVar(variable)</h4>
@@ -275,6 +279,29 @@ Functions</h4>
   <tr>
     <td width="10%" height="7">Return value</td>
     <td width="90%" height="7">Formatted output</td>
+  </tr>
+  </table>
+
+<p>&nbsp;</p>
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber5" height="43">
+  <tr>
+    <td width="100%" colspan="2" height="1">
+    <h4><a name="sendTemplateMail"></a>
+<img border="0" src="../style-data/function.gif" width="10" height="9" alt="function">
+<img border="0" src="../style-data/public.gif" width="15" height="15" alt="public"> 
+    sendTemplateMail(address, subject, template_name, variable_array)</h4>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%" height="15">Description</td>
+    <td width="90%" height="15">This function sends an email message to a set recipient (<i>address</i>) using a set template (<i>template_name</i>) and a set array (<i>variable_array</i>) of replaced variables (in template)</td>
+  </tr>
+  <tr>
+    <td width="10%" height="14">Parameters</td>
+    <td width="90%" height="14">address (string) - recipient address<br>
+    subject (string) - mail subject<br>
+    template_name (string) - name of the template to use<br>
+    variable_array (array) - array containing variable content</td>
   </tr>
   </table>
 

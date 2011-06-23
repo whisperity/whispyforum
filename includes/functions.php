@@ -277,4 +277,29 @@ function prettyVar($variable = NULL)
 	
 	return str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($variable,true))."<br>";
 }
+
+function sendTemplateMail($address, $subject, $template_name, $variable_array)
+{
+	/**
+	* This function sends an email message to a set recipient
+	* using a set template and a set array of replaced variables (in template)
+	*
+	* @inputs: $address - recipient address
+	* 	   $subject - mail subject
+	* 	   $template_name - name of the template file
+	* 	   $variable_array - array of the variables have to be replaced
+	*/
+	
+	global $Ctemplate; // Hook template conductor
+	
+	// Mail body (content)
+	$message = $Ctemplate->useTemplate($template_name, $variable_array, TRUE);
+	
+	// Mail headers
+	$headers  = 'MIME-Version: 1.0' . "\r\n" . 'Content-type: text/html; charset=utf-8' . "\r\n";
+        $headers .= 'X-Mailer: PHP/' . phpversion() . "\r\n" . 'Website-domain: ' .config("site_host");
+	
+	// Send out the mail
+	mail($address, $subject, $message, $headers);
+}
 ?>
