@@ -66,6 +66,7 @@ $wf_lang = array(
 	'{LANG_HOMEPAGE}'	=>	"homepage",
 	'{LANG_TO_RETURN_HOME_CLICK_BUTTON_BELOW}'	=>	"To return to the homepage, please click the button below.",
 	'{LANG_REFRESH}'	=>	"Refresh",
+	'{LANG_PRESS_TO_RETURN_TO_EMPTY_FORM}'	=>	"Press the button below to return to the form.",
 	'{LANG_TO_RETRY_CLICK_BACK}'	=>	"If you want to retry, click back.",
 	'{LANG_TO_RETRY_CLICK_BUTTON}'	=>	"If you want to retry, click the button.",
 	'{LANG_TO_REFRESH_CLICK_BUTTON}'	=>	"To refresh the page, click the button.",
@@ -287,7 +288,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_REG_SQL_ERROR}'	=>	"There were errors executing the SQL query to register you. Your new user isn't registered.",
 	'{LANG_REG_SUCCESS_TITLE}'	=>	"Register successful!",
 	'{LANG_REG_SUCCESS_BODY}'	=>	"You've been registered successfully.",
-	'{LANG_REG_ENDED}'	=>	"The registration has ended! Please follow the instructions we sent to you via email to finish your activation.",
+	'{LANG_REG_ENDED}'	=>	"The registration has ended! Please follow the instructions we sent to you via email to finish your activation. If you didn't receive it, please check your Spam folder.",
 	'{LANG_REG_DATA_INFO}'	=>	"To register a new user, you must enter it's login credentials into the boxes below. Further user information (like sign, profile box, avatar) could be set in the Control Panel after login.",
 	'{LANG_REG_DATA_FORM_HEADER}'	=>	"New user's login information",
 	'{LANG_REG_NAME_ALLOCATED}'	=>	"The username you wanted to register is in use. Please choose another!",
@@ -296,14 +297,27 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_REG_ACTIVATION_EMAIL}'	=>	file_get_contents("language/" .LANGUAGE_DIR. "/email.activate.txt"), // Embed the text file here
 	
 	/* User activation */
-	'{LANG_ACTIVATE_INFO}'	=>	"Before you can begin using your new account, you must activate it. The token you will need to do this is provided to you via email.",
+	'{LANG_ACTIVATE_INFO}'	=>	"Before you can begin using your new account, you must activate it. The token you will need to do this is provided to you via email. If you didn't receive it, please check your Spam folder.",
 	'{LANG_ACTIVATE_FORM_HEADER}'	=>	"Activation details",
 	'{LANG_ACTIVATE_BUTTON}'	=>	"Activate",
 	'{LANG_ACTIVATE_ERROR}'	=>	"The username or token you entered is invalid. Please check your e-mail message for the proper information. Your account wasn't activated.",
 	'{LANG_ACTIVATE_ERROR_SQL}'	=>	"There were errors activating your account. The details are OK, but the database could not be contacted or other error occured.",
+	'{LANG_ACTIVATE_ERROR_ALREADY}'	=>	"Your user has been already activated. You cannot activate an account twice.",
 	'{LANG_ACTIVATE_SUCCESS}'	=>	"Your account have been activated.",
-	'{LANG_ACTIVATE_PRESS_TO_RETURN_TO_EMPTY_FORM}'	=>	"Press the button below to return to the form.",
-		
+	
+	/* Password recovery */
+	'{LANG_PWDRECOVER_LINK}'	=>	"Lost password",
+	'{LANG_PWDRECOVER_TOOLTIP}'	=>	"Click here if you have lost your password and want to recover it.",
+	'{LANG_PWDRECOVER_BEGIN_INFO}'	=>	"To recover your password, you must enter your username. An email will be sent to you containing the further instructions.",
+	'{LANG_PWDRECOVER_BEGIN_FORM_HEADER}'	=>	"Password recovery details",
+	'{LANG_PWDRECOVER_BEGIN_BUTTON}'	=>	"Send details",
+	'{LANG_PWDRECOVER_BEGIN_NOUSER_ERROR}'	=>	"The username you entered is invalid.",
+	'{LANG_PWDRECOVER_BEGIN_ACTIVATE_ERROR}'	=>	"You tried to recover the password for an inactivated user. This is not possible. Please activate the account first.",
+	'{LANG_PWDRECOVER_BEGIN_TOKENSQL_ERROR}'	=>	"Failed to set the recovery token in the database.",
+	'{LANG_PWDRECOVER_EMAIL_SUBJECT}'	=>	"Password recovery",
+	'{LANG_PWDRECOVER_EMAIL}'	=>	file_get_contents("language/" .LANGUAGE_DIR. "/email.recover.txt"), // Embed the text file here
+	'{LANG_PWDRECOVER_BEGIN_SUCCESS}'	=>	"An email has been sent to the contact email of the account. Please follow the details in that e-mail. If you didn't receive it, please check your Spam folder.",
+	
 	/* User levels */
 	'{LANG_INSUFFICIENT_RIGHTS}'	=>	"Insufficient rights",
 	'{LANG_PERMISSIONS_ERROR}'	=>	"User permissions error",

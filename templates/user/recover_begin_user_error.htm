@@ -1,5 +1,5 @@
-<!--- BEGIN activate error -->
-<!--- Usage: activation error box (invalid token or username) -->
+<!--- BEGIN recover begin user error -->
+<!--- Usage: password recovery (first step) error box (invalid username) -->
 <table class="errorbox"> <!--- copying the errorbox template -->
 	<tr>
 		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_txt.png" alt="{LANG_ERROR_EXCLAMATION}"></td>
@@ -7,12 +7,12 @@
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="errorbody">{LANG_ACTIVATE_ERROR}</td>
+		<td class="errorbody">{LANG_PWDRECOVER_BEGIN_NOUSER_ERROR}</td>
 	</tr>
 </table> <!--- copying the errorbox template -->
 
 {LANG_PRESS_TO_RETURN_TO_EMPTY_FORM}
-<form method="GET" action="activate_user.php">
+<form method="GET" action="pwd_recover_begin.php">
 <input type="submit" value="{LANG_BB_BACK}">
 </form>
 <!--- END activate error -->

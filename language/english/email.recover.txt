@@ -1,0 +1,15 @@
+<!--- This is the template for the email sent out
+      containing password recovery instructions -->
+Dear {USERNAME},<br>
+<br>
+If you receive this message it means that you have requested a password recovery. For security reasons. we do not send the password to you, but we provide you a temporary token that can be used to create a new password.<br>
+<br>
+Please open the password recovery page by <a href="{RECOVERY_SITE}" target="_blank">clicking this link</a>.<br>
+In the appearing site, please enter the details as follow.<br>
+<br>
+Username: <b>{USERNAME}</b><br>
+Recovery token: <b>{TOKEN}</b><br>
+You must also enter your new password <b>twice</b>. Then follow the on-screen instructions.<br>
+<br>
+Yours sincerely,<br>
+the Administrators.

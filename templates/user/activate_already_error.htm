@@ -1,5 +1,5 @@
-<!--- BEGIN activate error -->
-<!--- Usage: activation error box (invalid token or username) -->
+<!--- BEGIN activate already error -->
+<!--- Usage: activation error box (user was activated) -->
 <table class="errorbox"> <!--- copying the errorbox template -->
 	<tr>
 		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_txt.png" alt="{LANG_ERROR_EXCLAMATION}"></td>
@@ -7,12 +7,12 @@
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="errorbody">{LANG_ACTIVATE_ERROR}</td>
+		<td class="errorbody">{LANG_ACTIVATE_ERROR_ALREADY}</td>
 	</tr>
 </table> <!--- copying the errorbox template -->
 
-{LANG_PRESS_TO_RETURN_TO_EMPTY_FORM}
-<form method="GET" action="activate_user.php">
-<input type="submit" value="{LANG_BB_BACK}">
+{LANG_TO_RETURN_HOME_CLICK_BUTTON_BELOW}
+<form method="GET" action="index.php">
+<input type="submit" value="{LANG_HOMEPAGE_NN}">
 </form>
 <!--- END activate error -->

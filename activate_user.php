@@ -26,7 +26,7 @@ if ( ( @$_GET['username'] == NULL ) || ( @$_GET['token'] == NULL ) )
 	// Do the activation
 	
 	// First, select the user from database
-	$check = mysql_fetch_assoc($Cmysql->Query("SELECT id FROM users WHERE username='" .$Cmysql->EscapeString($_GET['username']). "' AND token='" .$Cmysql->EscapeString($_GET['token']). "'")); // This will be FALSE if the username is unknown or the token is invalid, and TRUE if we're successful to find the user
+	$check = mysql_fetch_assoc($Cmysql->Query("SELECT id, activated FROM users WHERE username='" .$Cmysql->EscapeString($_GET['username']). "' AND token='" .$Cmysql->EscapeString($_GET['token']). "'")); // This will be FALSE if the username is unknown or the token is invalid, and TRUE if we're successful to find the user
 	
 	if ( $check == FALSE )
 	{
@@ -36,21 +36,30 @@ if ( ( @$_GET['username'] == NULL ) || ( @$_GET['token'] == NULL ) )
 	} elseif ( $check == TRUE )
 	{
 		// If the user exists
-		// Do activation
 		
-		$activate = $Cmysql->Query("UPDATE users SET activated='1', token=NULL WHERE id='" .$Cmysql->EscapeString($check['id']). "'");		
-		
-		if ( $activate == FALSE )
+		// Check for activation
+		if ( $check['activated'] == 1 )
 		{
-			// If we failed activating, output an error message
-			$Ctemplate->useTemplate("user/activate_error", array(
-				'USERNAME'	=>	$_GET['username'],
-				'TOKEN'	=>	$_GET['token']
-			), FALSE);
-		} elseif ( $activate == TRUE )
+			// If the user is already activated, output an error message
+			$Ctemplate->useStaticTemplate("user/activate_already_error", FALSE);
+		} elseif ( $check['activated'] == 0 )
 		{
-			// If we succeeded, output success message (forwarding the user to the homepage)
-			$Ctemplate->useStaticTemplate("user/activate_success", FALSE);
+			// If the user has not been activated yet
+			// Do activation
+			$activate = $Cmysql->Query("UPDATE users SET activated='1', token=NULL WHERE id='" .$Cmysql->EscapeString($check['id']). "'");		
+			
+			if ( $activate == FALSE )
+			{
+				// If we failed activating, output an error message
+				$Ctemplate->useTemplate("user/activate_error", array(
+					'USERNAME'	=>	$_GET['username'],
+					'TOKEN'	=>	$_GET['token']
+				), FALSE);
+			} elseif ( $activate == TRUE )
+			{
+				// If we succeeded, output success message (forwarding the user to the homepage)
+				$Ctemplate->useStaticTemplate("user/activate_success", FALSE);
+			}
 		}
 	}
 }
