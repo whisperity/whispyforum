@@ -9,6 +9,22 @@
 
 include("includes/safeload.php"); // We load the environment without framework
 
+// Logged in users cannot access this page
+if ( $_SESSION['log_bool'] == TRUE )
+{
+	// If the user is logged in
+	$Ctemplate->useTemplate("errormessage", array(
+		'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
+		'TITLE'	=>	"{LANG_NO_LOGGEDINS}", // Error title
+		'BODY'	=>	"{LANG_REQUIRES_GUEST}", // Error text
+		'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
+	), FALSE ); // We give an unavailable error
+	
+	// Terminate execution
+	DoFooter();
+	exit;
+}
+
 // This script does the activation of fresh users
 // It needs to have two input from HTTP GET
 
