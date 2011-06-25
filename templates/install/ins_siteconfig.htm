@@ -27,13 +27,16 @@
 <form method="POST" action="install.php">
 <span class="form-header">{LANG_INSTALL_SITECONFIG_DATA}</span><br>
 <h2 class="install-header">{LANG_INSTALL_SITECONFIG_GENERAL}</h2>
-{LANG_INSTALL_SITECONFIG_TITLE}<span class="red-star">*</span>: <input type="text" name="global_title" value="{GLOBAL_TITLE}" size="35">
+{LANG_INSTALL_SITECONFIG_TITLE}<span class="red-star">*</span>: <input type="text" name="global_title" value="{GLOBAL_TITLE}" size="35"><br>
 {LANG_INSTALL_SITECONFIG_HOST}<span class="red-star">*</span>: <input type="text" name="site_host" value="{SITE_HOST}" size="35">
 <h2 class="install-header">{LANG_INSTALL_SITECONFIG_APPEARANCE}</h2>
 <!--- The <select>s for LANGUAGE and THEME is disabled because those settings are specified at the begin of install -->
 <!--- The <select>s does not parameters also -->
 {LANG_INSTALL_SITECONFIG_LANGUAGE} <select size="1" disabled><option value="{INSTALL_LANGUAGE}" selected>{LANGS_LOCALIZED_NAME} ({LANGS_SHORT_NAME}) [{LANGS_CODE}]</option></select><br>
-{LANG_INSTALL_SITECONFIG_THEME} <select size="1" disabled><option value="{INSTALL_THEME}" selected>{THEMES_THEME} - {THEMES_DESCRIPTION}</option></select><br>
+{LANG_INSTALL_SITECONFIG_THEME} <select size="1" disabled><option value="{INSTALL_THEME}" selected>{THEMES_THEME} - {THEMES_DESCRIPTION}</option></select>
+<h2 class="install-header">{LANG_INSTALL_SITECONFIG_MODULES}</h2>
+<input type="checkbox" name="module_core" value="on" checked disabled> {LANG_MODULE_CORE}<br><small>{LANG_MODULE_CORE_DESCRIPTION} <font class="emphasis">{LANG_MODULE_CANNOT_BE_DISABLED}</font></small><br>
+<input type="checkbox" name="module_forum" value="on"{MODULE_FORUM_CHECK}> {LANG_MODULE_FORUM}<br><small>{LANG_MODULE_FORUM_DESCRIPTION}</small><br>
 <font class="emphasis">{LANG_PROCEED_CLICK_BUTTON_BELOW}</font><br>
 <input type="submit" value="{LANG_NEXT_NN}">
 <input type="hidden" name="ins_lang" value="{INSTALL_LANGUAGE}">

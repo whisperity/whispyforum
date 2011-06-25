@@ -840,6 +840,9 @@ switch ($instPos)
 				'THEMES_THEME'	=>	$theme_def['SHORT_NAME'], // Short name of theme
 				'THEMES_DESCRIPTION'	=>	$theme_def['DESCRIPTION'], // Extended description
 				
+				/* Modules */
+				'MODULE_FORUM_CHECK'	=>	(@$_POST['module_forum'] == "on" ? " checked" : ""), // Automatically check forum module if it was selected
+				
 				// Passing install theme and language directory values
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
 				'INSTALL_THEME'	=>	$_POST['ins_thm']
@@ -849,7 +852,7 @@ switch ($instPos)
 			$Ctemplate->useTemplate("install/ins_siteconfig", array(
 				/* General */
 				'GLOBAL_TITLE'	=>	$wf_lang['{LANG_INSTALL_SITECONFIG_DEFAULT_TITLE}'],
-				'SITE_HOST'	=>	$_SEVER['HTTP_HOST'],
+				'SITE_HOST'	=>	$_SERVER['HTTP_HOST'],
 				
 				/* Appearance */
 				'LANGS_LOCALIZED_NAME'	=>	$wf_lang_def['LOCALIZED_NAME'], // The language's own, localized name (so it's Deutch for German)
@@ -857,6 +860,9 @@ switch ($instPos)
 				'LANGS_CODE'	=>	$wf_lang_def['LANG_CODE'], // Language code (it's de for German)
 				'THEMES_THEME'	=>	$theme_def['SHORT_NAME'], // Short name of theme
 				'THEMES_DESCRIPTION'	=>	$theme_def['DESCRIPTION'], // Extended description
+				
+				/* Modules */
+				'MODULE_FORUM_CHECK'	=>	" checked", // Automatically check forum module
 				
 				// Passing install theme and language directory values
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
@@ -877,7 +883,8 @@ switch ($instPos)
 				'GLOBAL_TITLE'	=>	$_POST['global_title'],
 				'SITE_HOST'	=>	$_POST['site_host'],
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
-				'INSTALL_THEME'	=>	$_POST['ins_thm']
+				'INSTALL_THEME'	=>	$_POST['ins_thm'],
+				'MODULE_FORUM_CHECK'	=>	@$_POST['module_forum']
 			), FALSE);
 			exit; // We terminate the script
 		}
@@ -889,7 +896,8 @@ switch ($instPos)
 				'GLOBAL_TITLE'	=>	$_POST['global_title'],
 				'SITE_HOST'	=>	$_POST['site_host'],
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
-				'INSTALL_THEME'	=>	$_POST['ins_thm']
+				'INSTALL_THEME'	=>	$_POST['ins_thm'],
+				'MODULE_FORUM_CHECK'	=>	@$_POST['module_forum']
 			), FALSE);
 			exit; // We terminate the script
 		}
@@ -899,7 +907,8 @@ switch ($instPos)
 			('language', '" .$Cmysql->EscapeString($_POST['ins_lang']). "'),
 			('theme', '" .$Cmysql->EscapeString($_POST['ins_thm']). "'),
 			('global_title', '" .$Cmysql->EscapeString($_POST['global_title']). "'),
-			('site_host', '" .$Cmysql->EscapeString($_POST['site_host']). "')"); // $sConfig is true if we are successful
+			('site_host', '" .$Cmysql->EscapeString($_POST['site_host']). "'),
+			('module_forum', '" .(@$_POST['module_forum'] == "on" ? "on" : "off"). "')"); // $sConfig is true if we are successful
 		
 		// Give return or proceed forms based on success
 		if ( $sConfig == FALSE )

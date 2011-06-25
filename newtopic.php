@@ -8,6 +8,8 @@
  */
 
 include("includes/load.php"); // Load webpage
+dieOnModule("forum"); // Die if FORUM is disabled
+
 $Ctemplate->useStaticTemplate("forum/topics_create_head", FALSE); // Header
 
 if ( !isset($_POST['forum_id']) )

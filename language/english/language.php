@@ -203,6 +203,7 @@ Before we can move on installing the system, you have to make your data safe. Cr
 	'{LANG_INSTALL_SITECONFIG_APPEARANCE}'	=>	"Appearance",
 	'{LANG_INSTALL_SITECONFIG_LANGUAGE}'	=>	"Language:",
 	'{LANG_INSTALL_SITECONFIG_THEME}'	=>	"Theme:",
+	'{LANG_INSTALL_SITECONFIG_MODULES}'	=>	"Modules",
 	'{LANG_INSTALL_SITECONFIG_VARIABLE_ERROR}'	=>	"The installation cannot continue until every required variable is entered.",
 	'{LANG_INSTALL_SITECONFIG_WRITE_ERROR}'	=>	"The installer was unable to store the configuration.",
 	'{LANG_INSTALL_SITECONFIG_SUCCESS}'	=>	"Configuration saved",
@@ -498,10 +499,22 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_ADMINCFG_TITLE}'	=>	"Title",
 	'{LANG_ADMINCFG_HOST}'	=>	"Host",
 	'{LANG_ADMINCFG_DEFAULT_TITLE}'	=>	"New WhispyForum site",
+	'{LANG_ADMINCFG_MODULES}'	=>	"Modules",
+	'{LANG_ADMINCFG_MODULES_HEAD}'	=>	"Here you can set the enabled and disabled modules. The engine is broken up to modules like forum, news and so on. Please note that disabling a module only restricts accessing it, is does not remove previously present content. For example, disabling the forum module will not purge posts. After reenabling it, you can view posts again.",
 	'{LANG_ADMINCFG_VARIABLE_ERROR}'	=>	"Cannot modify the settings until every required variable is entered.",
 	'{LANG_ADMINCFG_WRITE_ERROR}'	=>	"Unable to store the configuration.",
 	'{LANG_ADMINCFG_SUCCESS}'	=>	"Configuration saved",
 	'{LANG_ADMINCFG_SUCCESS_1}'	=>	"The configuration was stored successfully.",
+	
+	/* Modules */
+	'{LANG_MODULE_DISABLED}'	=>	"A required module is disabled",
+	'{LANG_MODULE_DISABLED_BODY}'	=>	"This page couldn't be displayed because it requires a module which is disabled by the Administrator. You have to contact them in order to have this action lifted.",
+	'{LANG_MODULE_DISABLED_BODY_ITSNAMEIS}'	=>	"The required module's name is: <tt>{MOD_NAME}</tt>.",
+	'{LANG_MODULE_CANNOT_BE_DISABLED}'	=>	"This module cannot be disabled.",
+	'{LANG_MODULE_CORE}'	=>	"Core",
+	'{LANG_MODULE_CORE_DESCRIPTION}'	=>	"The core module set consists the essential parts of the framework and some basic features like administrator and user control panels, registartion, user activation, password recovery helpers, profile pages, BB code parser and an emoticon subsystem.",
+	'{LANG_MODULE_FORUM}'	=>	"Forum",
+	'{LANG_MODULE_FORUM_DESCRIPTION}'	=>	"The forum module is a three-level forum system (forum-topics-posts) with moderational features.",
 	
 	/* Variable error boxes */
 	'{LANG_VAR_REQ_NOT_ENTERED}'	=>	"You didn't entered one of the required variables, {VARIABLE} cannot be empty.",

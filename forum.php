@@ -8,6 +8,8 @@
  */
 
 include("includes/load.php"); // Load webpage
+dieOnModule("forum"); // Die if FORUM is disabled
+
 $Ctemplate->useStaticTemplate("forum/forums_head", FALSE); // Header
 
 // Get the current user's level

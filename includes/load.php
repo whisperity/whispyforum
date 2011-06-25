@@ -136,6 +136,31 @@ function DoFooter()
 	
 }
 
+function dieOnModule($moduleName)
+{
+	/**
+	 * This function halts execution if the user requests a page
+	 * requiring a disabled module.
+	 * 
+	 * @inputs: $moduleName - name of the module
+	 * 
+	 * This function could be called multiple times but the execution will
+	 * ultimately fail when it gets to the first disabled and required module.
+	*/
+	
+	global $Ctemplate; // Load template conductor
+	
+	if ( config("module_" .$moduleName) == "off" )
+	{
+		// If the requested module is set to disabled
+		$Ctemplate->useTemplate("module_err", array(
+			'MOD_NAME'	=>	"{LANG_MODULE_" .strToUpper($moduleName). "}" // Name of the required module (from localization)
+		), FALSE); // Output an error message
+		
+		DoFooter(); // Create footers
+		exit; // Terminate execution
+	}
+}
 /* FRAMEWORK */
 
 /* END GENERATION */

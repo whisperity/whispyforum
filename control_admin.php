@@ -901,14 +901,16 @@ switch ($site) // Outputs and scripts are based on the site variable
 				}
 				
 				// Every variable is entered, do update
-				$scUpdate_global_title = $Cmysql->Query("UPDATE config SET value='" .$Cmysql->EscapeString($_POST['global_title']). "' WHERE variable='global_title'"); // $scUpdate_global_title is TRUE if we succeed, FALSE if we fail
-				$scUpdate_site_host = $Cmysql->Query("UPDATE config SET value='" .$Cmysql->EscapeString($_POST['site_host']). "' WHERE variable='site_host'"); // $scUpdate_site_host is TRUE if we succeed, FALSE if we fail
+				// All update query takes a return value of TRUE if it was successful or FALSE if it failed
+				$scUpdate_global_title = $Cmysql->Query("UPDATE config SET value='" .$Cmysql->EscapeString($_POST['global_title']). "' WHERE variable='global_title'");
+				$scUpdate_site_host = $Cmysql->Query("UPDATE config SET value='" .$Cmysql->EscapeString($_POST['site_host']). "' WHERE variable='site_host'");
+				$scUpdate_module_forum = $Cmysql->Query("UPDATE config SET value='" .(@$_POST['module_forum'] == "on" ? "on" : "off"). "' WHERE variable='module_forum'");
 				
-				if ( ( $scUpdate_global_title == TRUE ) && ( $scUpdate_site_host == TRUE ) )
+				if ( ( $scUpdate_global_title == TRUE ) && ( $scUpdate_site_host == TRUE ) && ( $scUpdate_module_forum == TRUE ) )
 				{
 					// If we succeeded, output success message, return form
 					$Ctemplate->useStaticTemplate("admin/siteprefs_success", FALSE);
-				} elseif ( ( $scUpdate_global_title == FALSE ) || ( $scUpdate_site_host == FALSE ) )
+				} elseif ( ( $scUpdate_global_title == FALSE ) || ( $scUpdate_site_host == FALSE ) || ( $scUpdate_module_forum == FALSE ) )
 				{
 					// If we failed, output return form and error message
 					$Ctemplate->useTemplate("admin/siteprefs_error", array(
@@ -919,8 +921,6 @@ switch ($site) // Outputs and scripts are based on the site variable
 				}
 			}
 		} else {
-			$Ctemplate->useStaticTemplate("admin/siteprefs_title", FALSE);
-			
 			/* Language settings */
 			$Ldir = "./language/"; // Language home dir
 			$Lexempt = array('.', '..', '.svn', '_svn'); // Do not query these directories
@@ -1077,15 +1077,17 @@ switch ($site) // Outputs and scripts are based on the site variable
 				// We output the form with data returned (user doesn't have to enter it again)
 				$Ctemplate->useTemplate("admin/siteprefs", array(
 					'GLOBAL_TITLE'	=>	$_POST['global_title'],
-					'SITE_HOST'	=>	$_POST['site_host']
+					'SITE_HOST'	=>	$_POST['site_host'],
+					'MODULE_FORUM_CHECK'	=>	(@$_POST['module_forum'] == "on" ? " checked" : "")
 				), FALSE);
 			} else {
 				// We output general form
 				$Ctemplate->useTemplate("admin/siteprefs", array(
 					'GLOBAL_TITLE'	=>	config('global_title'),
-					'SITE_HOST'	=>	config('site_host')
+					'SITE_HOST'	=>	config('site_host'),
+					'MODULE_FORUM_CHECK'	=>	(config('module_forum') == "on" ? " checked" : "")
 				), FALSE);
-			} 
+			}
 		}
 		break;
 	/* * CONFIGURATION * */

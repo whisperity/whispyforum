@@ -8,6 +8,8 @@
  */
 
 include("includes/load.php"); // Load webpage
+dieOnModule("forum"); // Die if FORUM is disabled
+
 $Ctemplate->useStaticTemplate("forum/posts_head", FALSE); // Header
 
 /* Generate the global POST or GET id variable */
