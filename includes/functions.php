@@ -297,7 +297,7 @@ function sendTemplateMail($address, $subject, $template_name, $variable_array)
 	
 	// Mail headers
 	$headers  = 'MIME-Version: 1.0' . "\r\n" . 'Content-type: text/html; charset=utf-8' . "\r\n";
-        $headers .= 'X-Mailer: PHP/' . phpversion() . "\r\n" . 'Website-domain: ' .config("site_host");
+	$headers .= 'X-Mailer: PHP/' . phpversion() . "\r\n" . 'Website-domain: ' .config("site_host");
 	
 	// Send out the mail
 	mail($address, $subject, $message, $headers);
