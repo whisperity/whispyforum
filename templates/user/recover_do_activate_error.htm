@@ -1,0 +1,22 @@
+<!--- BEGIN recover do activate error -->
+<!--- Usage: password recovery (second step) error box (inactivated account) -->
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_txt.png" alt="{LANG_ERROR_EXCLAMATION}"></td>
+		<td class="errortitle">{LANG_ERROR_EXCLAMATION}</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">{LANG_PWDRECOVER_ACTIVATE_ERROR}</td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+
+{LANG_TO_RETRY_CLICK_BACK}
+<form method="POST" action="pwd_recover_do.php">
+<input type="hidden" name="username" value="{USERNAME}">
+<input type="hidden" name="token" value="{TOKEN}">
+<input type="hidden" name="error_goback" value="yes"> <!--- Returning from an error -->
+<input type="hidden" name="step" value="start">
+<input type="submit" value="{LANG_BB_BACK}">
+</form>
+<!--- END recover do activate error -->

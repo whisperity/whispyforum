@@ -309,14 +309,19 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_PWDRECOVER_LINK}'	=>	"Lost password",
 	'{LANG_PWDRECOVER_TOOLTIP}'	=>	"Click here if you have lost your password and want to recover it.",
 	'{LANG_PWDRECOVER_BEGIN_INFO}'	=>	"To recover your password, you must enter your username. An email will be sent to you containing the further instructions.",
-	'{LANG_PWDRECOVER_BEGIN_FORM_HEADER}'	=>	"Password recovery details",
+	'{LANG_PWDRECOVER_FORM_HEADER}'	=>	"Password recovery details",
 	'{LANG_PWDRECOVER_BEGIN_BUTTON}'	=>	"Send details",
-	'{LANG_PWDRECOVER_BEGIN_NOUSER_ERROR}'	=>	"The username you entered is invalid.",
-	'{LANG_PWDRECOVER_BEGIN_ACTIVATE_ERROR}'	=>	"You tried to recover the password for an inactivated user. This is not possible. Please activate the account first.",
+	'{LANG_PWDRECOVER_NOUSER_ERROR}'	=>	"The username you entered is invalid.",
+	'{LANG_PWDRECOVER_ACTIVATE_ERROR}'	=>	"You tried to recover the password for an inactivated user. This is not possible. Please activate the account first.",
 	'{LANG_PWDRECOVER_BEGIN_TOKENSQL_ERROR}'	=>	"Failed to set the recovery token in the database.",
 	'{LANG_PWDRECOVER_EMAIL_SUBJECT}'	=>	"Password recovery",
 	'{LANG_PWDRECOVER_EMAIL}'	=>	file_get_contents("language/" .LANGUAGE_DIR. "/email.recover.txt"), // Embed the text file here
 	'{LANG_PWDRECOVER_BEGIN_SUCCESS}'	=>	"An email has been sent to the contact email of the account. Please follow the details in that e-mail. If you didn't receive it, please check your Spam folder.",
+	'{LANG_PWDRECOVER_DO_INFO}'	=>	"To recover your password, you must enter your username and the token you received via e-mail. If you didn't receive it, please check your Spam folder.",
+	'{LANG_PWDRECOVER_DO_BUTTON}'	=>	"Change password",
+	'{LANG_PWDRECOVER_DO_NOPASS_ERROR}'	=>	"You didn't enter your new password. You must enter it twice!",
+	'{LANG_PWDRECOVER_DO_UPDATE_ERROR}'	=>	"Failed to set the new password in database.",
+	'{LANG_PWDRECOVER_DO_SUCCESS}'	=>	"Successfully set the new token in database. You can now login with your new password",
 	
 	/* User levels */
 	'{LANG_INSUFFICIENT_RIGHTS}'	=>	"Insufficient rights",
