@@ -1,169 +1,301 @@
-<html>
-
-<head>
-<title>User levels</title>
-</head>
-
-<body>
-
-<h2 align="center">User levels</h2>
-
-<h3>Usage</h3>
-<p>User levels define the clearance of the user, what he/she can and cannot do.</p>
-<h3>Set in</h3>
-<p>Database (<a href="dbstructure.htm#users_userLevel">users.userLevel</a>)</p>
-<h3>User levels</h3>
-<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="1158" height="263">
-  <tr>
-    <th width="128" rowspan="3" height="58">Level</th>
-    <th width="128" rowspan="3" height="58">Name</th>
-    <th width="259" colspan="3" height="19">Basic user management</th>
-    <th width="255" colspan="2" height="19">Control panel (and submodules) 
-    access</th>
-    <th width="1143" height="19" colspan="9">Forum system</th>
-  </tr>
-  <tr>
-    <th width="128" rowspan="2" height="38">Register</th>
-    <th width="64" rowspan="2" height="38">Login / logout</th>
-    <th width="64" rowspan="2" height="38">Viewing profile</th>
-    <th width="128" rowspan="2" height="38">User version</th>
-    <th width="129" rowspan="2" height="38">Admin version</th>
-    <th width="381" height="19" colspan="3">Forums</th>
-    <th width="381" height="19" colspan="3">Topics</th>
-    <th width="381" height="19" colspan="3">Posts</th>
-  </tr>
-  <tr>
-    <th width="129" height="18">List forum</th>
-    <th width="129" height="18">Add, delete</th>
-    <th width="129" height="18">Edit</th>
-    <th width="129" height="18">List topics</th>
-    <th width="129" height="18">Add</th>
-    <th width="129" height="18">Edit, delete</th>
-    <th width="129" height="18">List posts</th>
-    <th width="129" height="18">Add</th>
-    <th width="129" height="18">Edit, delete</th>
-  </tr>
-  <tr>
-    <th width="128" height="32">0</th>
-    <th width="128" height="32">Guest</th>
-    <td width="128" height="32">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-    <td width="64" height="32">
-    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
-    <td width="64" height="32">
-    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
-    <td width="128" height="32">
-    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
-    <td width="129" height="32">
-    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
-    <td width="129" height="202" rowspan="4">
-    <img border="0" src="../style-data/info.gif" alt="Information" width="32" height="32"> 
-    The minimal right required to list a forum is forum-based (<a href="dbstructure.htm#forums_minLevel">forums.minLevel</a>).</td>
-    <td width="129" height="32">
-    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
-    <td width="129" height="32">
-    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
-    <td width="129" height="202" rowspan="4">
-    <img border="0" src="../style-data/info.gif" alt="Information" width="32" height="32"> 
-    The minimal right required to list topics in a forum is forum-based (<a href="dbstructure.htm#forums_minLevel">forums.minLevel</a>).</td>
-    <td width="129" height="32">
-    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
-    <td width="129" height="32">
-    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
-    <td width="129" height="202" rowspan="4">
-    <img border="0" src="../style-data/info.gif" alt="Information" width="32" height="32"> 
-    The minimal right required to list posts in a topic is forum-based (<a href="dbstructure.htm#forums_minLevel">forums.minLevel</a>).</td>
-    <td width="129" height="32">
-    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
-    <td width="129" height="32">
-    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
-  </tr>
-  <tr>
-    <th width="128" height="29">1</th>
-    <th width="128" height="29">Normal user</th>
-    <td width="128" height="29">
-    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
-    <td width="64" height="29">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-    <td width="64" height="29">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-    <td width="128" height="29">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-    <td width="129" height="29">
-    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
-    <td width="129" height="29">
-    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
-    <td width="129" height="29">
-    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
-    <td width="129" height="29">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-    <td width="129" height="29">
-    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
-    <td width="129" height="29">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-    <td width="129" height="29">
-    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"><p>
-    <img border="0" src="../style-data/info.gif" alt="Information" width="32" height="32"> 
-    Normal users can only edit their own posts.</td>
-  </tr>
-  <tr>
-    <th width="128" height="27">2</th>
-    <th width="128" height="27">Moderator</th>
-    <td width="128" height="27">
-    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
-    <td width="64" height="27">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-    <td width="64" height="27">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-    <td width="128" height="27">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-    <td width="129" height="27">
-    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
-    <td width="129" height="27">
-    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
-    <td width="129" height="27">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"><p>
-    <img border="0" src="../style-data/exclam.gif" alt="Attention!" width="32" height="32"> 
-    Moderators can only limit the required level to their own level. A moderator 
-    cannot lock a forum administrator-only.</td>
-    <td width="129" height="27">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-    <td width="129" height="27">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-    <td width="129" height="27">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-    <td width="129" height="27">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-  </tr>
-  <tr>
-    <th width="128" height="114">3<p>4</th>
-    <th width="128" height="114">Administrator<p>Root user (only the <a href="dbstructure.htm#users_id">user 
-    ID</a> #1 user have these right, who is registered when installing)</th>
-    <td width="128" height="114">
-    <img border="0" src="../style-data/no.gif" alt="Can't / Don't have rights" width="32" height="32"></td>
-    <td width="64" height="114">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-    <td width="64" height="114">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-    <td width="128" height="114">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-    <td width="129" height="114">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-    <td width="129" height="114">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-    <td width="129" height="114">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-    <td width="129" height="114">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-    <td width="129" height="114">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-    <td width="129" height="114">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-    <td width="129" height="114">
-    <img border="0" src="../style-data/yes.gif" alt="Can / Have rights" width="32" height="32"></td>
-  </tr>
-</table>
-
-</body>
-
-</html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE>User levels</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.2  (Unix)">
+	<META NAME="CREATED" CONTENT="0;0">
+	<META NAME="CHANGEDBY" CONTENT="Richard Lakatos">
+	<META NAME="CHANGED" CONTENT="20110628;10555000">
+	<STYLE TYPE="text/css">
+	<!--
+		H2.ctl { font-family: "Lohit Hindi" }
+		H3.ctl { font-family: "Lohit Hindi" }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<H2 CLASS="western" ALIGN=CENTER>User levels</H2>
+<H3 CLASS="western">Usage</H3>
+<P>User levels define the clearance of the user, what he/she can and
+cannot do.</P>
+<H3 CLASS="western">Set in</H3>
+<P>Database (<A HREF="dbstructure.htm#users_userLevel">users.userLevel</A>)</P>
+<H3 CLASS="western">User levels</H3>
+<TABLE WIDTH=1158 CELLPADDING=2 CELLSPACING=0>
+	<COL WIDTH=41>
+	<COL WIDTH=100>
+	<COL WIDTH=61>
+	<COL WIDTH=53>
+	<COL WIDTH=58>
+	<COL WIDTH=54>
+	<COL WIDTH=54>
+	<COL WIDTH=120>
+	<COL WIDTH=39>
+	<COL WIDTH=121>
+	<COL WIDTH=120>
+	<COL WIDTH=36>
+	<COL WIDTH=38>
+	<COL WIDTH=120>
+	<COL WIDTH=36>
+	<COL WIDTH=42>
+	<TR>
+		<TH ROWSPAN=3 WIDTH=41 HEIGHT=15 STYLE="border-top: 1.00pt solid #111111; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0.02in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>Level</P>
+		</TH>
+		<TH ROWSPAN=3 WIDTH=100 STYLE="border-top: 1.00pt solid #111111; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0.02in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>Name</P>
+		</TH>
+		<TH COLSPAN=3 WIDTH=180 STYLE="border-top: 1.00pt solid #111111; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0.02in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>Basic user management</P>
+		</TH>
+		<TH COLSPAN=2 WIDTH=111 STYLE="border-top: 1.00pt solid #111111; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0.02in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>Control panel (and submodules) access</P>
+		</TH>
+		<TH COLSPAN=9 WIDTH=704 STYLE="border: 1.00pt solid #111111; padding: 0.02in">
+			<P>Forum system</P>
+		</TH>
+	</TR>
+	<TR>
+		<TH ROWSPAN=2 WIDTH=61 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>Register</P>
+		</TH>
+		<TH ROWSPAN=2 WIDTH=53 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>Login / logout</P>
+		</TH>
+		<TH ROWSPAN=2 WIDTH=58 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>Viewing profile</P>
+		</TH>
+		<TH ROWSPAN=2 WIDTH=54 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>User version</P>
+		</TH>
+		<TH ROWSPAN=2 WIDTH=54 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>Admin version</P>
+		</TH>
+		<TH COLSPAN=3 WIDTH=288 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>Forums</P>
+		</TH>
+		<TH COLSPAN=3 WIDTH=202 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>Topics</P>
+		</TH>
+		<TH COLSPAN=3 WIDTH=206 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: 1.00pt solid #111111; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in">
+			<P>Posts</P>
+		</TH>
+	</TR>
+	<TR>
+		<TH WIDTH=120 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>List forum</P>
+		</TH>
+		<TH WIDTH=39 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>Add, delete</P>
+		</TH>
+		<TH WIDTH=121 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>Edit</P>
+		</TH>
+		<TH WIDTH=120 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>List topics</P>
+		</TH>
+		<TH WIDTH=36 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>Add</P>
+		</TH>
+		<TH WIDTH=38 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>Edit, delete</P>
+		</TH>
+		<TH WIDTH=120 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>List posts</P>
+		</TH>
+		<TH WIDTH=36 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>Add</P>
+		</TH>
+		<TH WIDTH=42 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: 1.00pt solid #111111; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in">
+			<P>Edit, delete</P>
+		</TH>
+	</TR>
+	<TR>
+		<TH WIDTH=41 HEIGHT=28 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>0</P>
+		</TH>
+		<TH WIDTH=100 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>Guest</P>
+		</TH>
+		<TD WIDTH=61 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/yes.gif" NAME="graphics1" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=53 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/no.gif" NAME="graphics2" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=58 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/no.gif" NAME="graphics3" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=54 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/no.gif" NAME="graphics4" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=54 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/no.gif" NAME="graphics5" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD ROWSPAN=4 WIDTH=120 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/info.gif" NAME="graphics6" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0>
+			The minimal right required to list a forum is forum-based
+			(<A HREF="dbstructure.htm#forums_minLevel">forums.minLevel</A>).</P>
+		</TD>
+		<TD WIDTH=39 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/no.gif" NAME="graphics7" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=121 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/no.gif" NAME="graphics8" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD ROWSPAN=4 WIDTH=120 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/info.gif" NAME="graphics9" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0>
+			The minimal right required to list topics in a forum is
+			forum-based (<A HREF="dbstructure.htm#forums_minLevel">forums.minLevel</A>).</P>
+		</TD>
+		<TD WIDTH=36 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/no.gif" NAME="graphics10" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=38 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/no.gif" NAME="graphics11" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD ROWSPAN=4 WIDTH=120 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/info.gif" NAME="graphics12" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0>
+			The minimal right required to list posts in a topic is forum-based
+			(<A HREF="dbstructure.htm#forums_minLevel">forums.minLevel</A>).</P>
+		</TD>
+		<TD WIDTH=36 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/no.gif" NAME="graphics13" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=42 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: 1.00pt solid #111111; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in">
+			<P><IMG SRC="../style-data/no.gif" NAME="graphics14" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+	</TR>
+	<TR>
+		<TH WIDTH=41 HEIGHT=25 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>1</P>
+		</TH>
+		<TH WIDTH=100 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>Normal user</P>
+		</TH>
+		<TD WIDTH=61 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/no.gif" NAME="graphics15" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=53 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/yes.gif" NAME="graphics16" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=58 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/yes.gif" NAME="graphics17" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=54 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/yes.gif" NAME="graphics18" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=54 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/no.gif" NAME="graphics19" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=39 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/no.gif" NAME="graphics20" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=121 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/no.gif" NAME="graphics21" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=36 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/yes.gif" NAME="graphics22" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=38 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/no.gif" NAME="graphics23" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD ROWSPAN=3 WIDTH=36 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/yes.gif" NAME="graphics37" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+			<P><IMG SRC="../style-data/info.gif" NAME="graphics51" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0>
+			(Only if the topic is open)</P>
+		</TD>
+		<TD WIDTH=42 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: 1.00pt solid #111111; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in">
+			<P><IMG SRC="../style-data/no.gif" NAME="graphics25" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+			<P><IMG SRC="../style-data/info.gif" NAME="graphics26" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0>
+			Normal users can only edit their own posts. (Only if the post is
+			the last in the topic)</P>
+		</TD>
+	</TR>
+	<TR>
+		<TH WIDTH=41 HEIGHT=23 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>2</P>
+		</TH>
+		<TH WIDTH=100 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>Moderator</P>
+		</TH>
+		<TD WIDTH=61 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/no.gif" NAME="graphics27" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=53 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/yes.gif" NAME="graphics28" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=58 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/yes.gif" NAME="graphics29" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=54 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/yes.gif" NAME="graphics30" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=54 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/no.gif" NAME="graphics31" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=39 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/no.gif" NAME="graphics32" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=121 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/yes.gif" NAME="graphics33" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+			<P><IMG SRC="../style-data/exclam.gif" NAME="graphics34" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0>
+			Moderators can only limit the required level to their own level. A
+			moderator cannot lock a forum administrator-only.</P>
+		</TD>
+		<TD WIDTH=36 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/yes.gif" NAME="graphics35" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=38 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/yes.gif" NAME="graphics36" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD ROWSPAN=2 WIDTH=42 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: 1.00pt solid #111111; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0.02in">
+			<P><IMG SRC="../style-data/yes.gif" NAME="graphics38" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+			<P><IMG SRC="../style-data/info.gif" NAME="graphics50" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0>
+			(Only if the topic is open)</P>
+		</TD>
+	</TR>
+	<TR>
+		<TH WIDTH=41 HEIGHT=110 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>3</P>
+			<P>4</P>
+		</TH>
+		<TH WIDTH=100 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P>Administrator</P>
+			<P>Root user (only the <A HREF="dbstructure.htm#users_id">user ID</A>
+			#1 user have these right, who is registered when installing)</P>
+		</TH>
+		<TD WIDTH=61 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/no.gif" NAME="graphics39" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=53 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/yes.gif" NAME="graphics40" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=58 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/yes.gif" NAME="graphics41" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=54 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/yes.gif" NAME="graphics42" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=54 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/yes.gif" NAME="graphics43" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=39 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/yes.gif" NAME="graphics44" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=121 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/yes.gif" NAME="graphics45" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=36 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/yes.gif" NAME="graphics46" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+		<TD WIDTH=38 STYLE="border-top: none; border-bottom: 1.00pt solid #111111; border-left: 1.00pt solid #111111; border-right: none; padding-top: 0in; padding-bottom: 0.02in; padding-left: 0.02in; padding-right: 0in">
+			<P><IMG SRC="../style-data/yes.gif" NAME="graphics47" ALIGN=BOTTOM WIDTH=32 HEIGHT=32 BORDER=0></P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR><BR>
+</P>
+</BODY>
+</HTML>

@@ -27,7 +27,7 @@ if ( !isset($_POST['id']) )
 	exit;
 }
 
-$tName = mysql_fetch_row($Cmysql->Query("SELECT title, forumid FROM topics WHERE id='" .$Cmysql->EscapeString($_POST['id']). "'")); // Title of the topic the posts are in
+$tName = mysql_fetch_row($Cmysql->Query("SELECT title, forumid, locked FROM topics WHERE id='" .$Cmysql->EscapeString($_POST['id']). "'")); // Title of the topic the posts are in
 		
 if ( $tName == FALSE )
 {
@@ -97,114 +97,125 @@ if ( ( $uLvl[0] < $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
 {
 	// The user has the rights to view the post list, thus has rights to create one
 	
-	if ( !isset($_POST['post_do']) )
+	if ( $tName[2] == "1" )
 	{
-		$fTitle = mysql_fetch_row($Cmysql->Query("SELECT title FROM forums WHERE id='" .$tName[1]. "'")); // Query the title of the forum
+		// If the topic is locked, output an error message and prevent execution
+		$Ctemplate->useTemplate("forum/topic_locked_error", array(
+			'TOPIC_ID'	=>	$_POST['id']
+		), FALSE);
+	} elseif ( $tName[2] == "0" )
+	{
+		// If the topic is open
 		
-		if ( @$_POST['error_goback'] == "yes" ) // If user is redirected because of an error
+		if ( !isset($_POST['post_do']) )
 		{
-			// We output the form with data returned (user doesn't have to enter it again)
-			$Ctemplate->useTemplate("forum/posts_create_form", array(
-				'FORUMID'	=>	$tName[1], // ID of the forum
-				'FORUM_NAME'	=>	$fTitle[0], // Header of the forum
-				'TOPICID'	=>	$_POST['id'], // ID of the topic
-				'TOPIC_NAME'	=>	$tName[0], // Title of the topic
-				'POST_TITLE'	=>	$_POST['post_title'], // Post title
-				'POST_CONTENT'	=>	$_POST['post_content'], // Post content
-			), FALSE);
-		} else {
-			// We output general form
-			$Ctemplate->useTemplate("forum/posts_create_form", array(
-				'FORUMID'	=>	$tName[1], // ID of the forum
-				'FORUM_NAME'	=>	$fTitle[0], // Header of the forum
-				'TOPICID'	=>	$_POST['id'], // ID of the topic
-				'TOPIC_NAME'	=>	$tName[0], // Title of the topic
-				'POST_TITLE'	=>	"", // Post title (nothing)
-				'POST_CONTENT'	=>	"", // Post content (nothing)
-			), FALSE);
+			$fTitle = mysql_fetch_row($Cmysql->Query("SELECT title FROM forums WHERE id='" .$tName[1]. "'")); // Query the title of the forum
+			
+			if ( @$_POST['error_goback'] == "yes" ) // If user is redirected because of an error
+			{
+				// We output the form with data returned (user doesn't have to enter it again)
+				$Ctemplate->useTemplate("forum/posts_create_form", array(
+					'FORUMID'	=>	$tName[1], // ID of the forum
+					'FORUM_NAME'	=>	$fTitle[0], // Header of the forum
+					'TOPICID'	=>	$_POST['id'], // ID of the topic
+					'TOPIC_NAME'	=>	$tName[0], // Title of the topic
+					'POST_TITLE'	=>	$_POST['post_title'], // Post title
+					'POST_CONTENT'	=>	$_POST['post_content'], // Post content
+				), FALSE);
+			} else {
+				// We output general form
+				$Ctemplate->useTemplate("forum/posts_create_form", array(
+					'FORUMID'	=>	$tName[1], // ID of the forum
+					'FORUM_NAME'	=>	$fTitle[0], // Header of the forum
+					'TOPICID'	=>	$_POST['id'], // ID of the topic
+					'TOPIC_NAME'	=>	$tName[0], // Title of the topic
+					'POST_TITLE'	=>	"", // Post title (nothing)
+					'POST_CONTENT'	=>	"", // Post content (nothing)
+				), FALSE);
+			}
 		}
-	}
+		
+		if ( @$_POST['post_do'] == "do" )
+		{
+			// Check for missing mandatory variables...
 	
-	if ( @$_POST['post_do'] == "do" )
-	{
-		// Check for missing mandatory variables...
-
-		if ( $_POST['post_content'] == NULL ) // Post body
-		{
-			$Ctemplate->useTemplate("forum/posts_create_variable_error", array(
-				'VARIABLE'	=>	"{LANG_POSTS_POST}", // Missing variable's name
-				'TOPICID'	=>	$_POST['id'],
-				'POST_TITLE'	=>	$_POST['post_title'], // Title of the post
-				'POST_CONTENT'	=>	$_POST['post_content'], // Post body (should be empty)
-			), FALSE);
+			if ( $_POST['post_content'] == NULL ) // Post body
+			{
+				$Ctemplate->useTemplate("forum/posts_create_variable_error", array(
+					'VARIABLE'	=>	"{LANG_POSTS_POST}", // Missing variable's name
+					'TOPICID'	=>	$_POST['id'],
+					'POST_TITLE'	=>	$_POST['post_title'], // Title of the post
+					'POST_CONTENT'	=>	$_POST['post_content'], // Post body (should be empty)
+				), FALSE);
+				
+				// We terminate the script
+				$Ctemplate->useStaticTemplate("forum/posts_create_foot", FALSE); // Footer
+				DoFooter();
+				exit;
+			}
 			
-			// We terminate the script
-			$Ctemplate->useStaticTemplate("forum/posts_create_foot", FALSE); // Footer
-			DoFooter();
-			exit;
-		}
-		
-		// Every variable is entered, doing SQL work
-		
-		$post_create = $Cmysql->Query("INSERT INTO posts(topicid, forumid, title, createuser, createdate, content) VALUES (
-			'" .$Cmysql->EscapeString($_POST['id']). "',
-			'" .$Cmysql->EscapeString($tName[1]). "',
-			'" .$Cmysql->EscapeString($_POST['post_title']). "',
-			'" .$Cmysql->EscapeString($_SESSION['uid']). "', '" .time(). "',
-			'" .$Cmysql->EscapeString($_POST['post_content']). "')"); // Post adding (to the previously created topic)
-		
-		if  ( $post_create == FALSE )
-		{
-			$Ctemplate->useTemplate("forum/posts_create_error", array(
-				'TOPICID'	=>	$_POST['id'],
-				'POST_TITLE'	=>	$_POST['post_title'], // Title of the post
-				'POST_CONTENT'	=>	$_POST['post_content'] // Post body
-			), FALSE); // Give error if we failed the creation
-		} elseif ( $post_create == TRUE )
-		{
-			// Apend one to the user's post count
-			$post_count = mysql_fetch_row($Cmysql->Query("SELECT post_count FROM users WHERE id='" .$_SESSION['uid']. "'")); // Query the current post count
-			$Cmysql->Query("UPDATE users SET post_count='" .($post_count[0] + 1). "' WHERE id='" .$_SESSION['uid']. "'"); // Append +1 post
+			// Every variable is entered, doing SQL work
 			
-			/* Badge giving */
-			// We do seperate IFs here, because if the system couldn't give the previous badge, we allow the user to earn it again (at the next post count level)
-			if ( ($post_count[0] + 1) >= 1 )
-			{
-				// If the user's new post count is greater or equal than 1
-				// (funny, because this is the users first post)
-				
-				$Cbadges->GrantBadge("FIRSTPOST"); // give the user the FIRSTPOST badge
-			}
-			if ( ($post_count[0] +1 ) >= 50 )
-			{
-				// If the user's new post count is greater or equal than 50
-				
-				$Cbadges->GrantBadge("FIFTY_POST"); // give the user the FIFTY_POST badge
-			}
-			if ( ($post_count[0] +1 ) >= 250 )
-			{
-				// If the user's new post count is greater or equal than 250
-				
-				$Cbadges->GrantBadge("TWENTYFIFTY_POST"); // give the user the TWENTYFIFTY_POST badge
-			}
-			if ( ($post_count[0] +1 ) >= 500 )
-			{
-				// If the user's new post count is greater or equal than 500
-				
-				$Cbadges->GrantBadge("FIVEHUNDRED_POST"); // give the user the FIVEHUNDRED_POST badge
-			}
-			if ( ($post_count[0] +1 ) >= 1000 )
-			{
-				// If the user's new post count is greater or equal than 1000
-				
-				$Cbadges->GrantBadge("THOUSAND_POST"); // give the user the THOUSAND_POST badge
-			}
-			/* Badge giving */
+			$post_create = $Cmysql->Query("INSERT INTO posts(topicid, forumid, title, createuser, createdate, content) VALUES (
+				'" .$Cmysql->EscapeString($_POST['id']). "',
+				'" .$Cmysql->EscapeString($tName[1]). "',
+				'" .$Cmysql->EscapeString($_POST['post_title']). "',
+				'" .$Cmysql->EscapeString($_SESSION['uid']). "', '" .time(). "',
+				'" .$Cmysql->EscapeString($_POST['post_content']). "')"); // Post adding (to the previously created topic)
 			
-			$Ctemplate->useTemplate("forum/posts_create_success", array(
-				'TOPICID'	=>	$_POST['id'],
-				'TITLE'	=>	(@$_POST['post_title'] == NULL ? "No title" : @$_POST['post_title']), // Title of the post
-			), FALSE); // Give success if we did it!
+			if  ( $post_create == FALSE )
+			{
+				$Ctemplate->useTemplate("forum/posts_create_error", array(
+					'TOPICID'	=>	$_POST['id'],
+					'POST_TITLE'	=>	$_POST['post_title'], // Title of the post
+					'POST_CONTENT'	=>	$_POST['post_content'] // Post body
+				), FALSE); // Give error if we failed the creation
+			} elseif ( $post_create == TRUE )
+			{
+				// Apend one to the user's post count
+				$post_count = mysql_fetch_row($Cmysql->Query("SELECT post_count FROM users WHERE id='" .$_SESSION['uid']. "'")); // Query the current post count
+				$Cmysql->Query("UPDATE users SET post_count='" .($post_count[0] + 1). "' WHERE id='" .$_SESSION['uid']. "'"); // Append +1 post
+				
+				/* Badge giving */
+				// We do seperate IFs here, because if the system couldn't give the previous badge, we allow the user to earn it again (at the next post count level)
+				if ( ($post_count[0] + 1) >= 1 )
+				{
+					// If the user's new post count is greater or equal than 1
+					// (funny, because this is the users first post)
+					
+					$Cbadges->GrantBadge("FIRSTPOST"); // give the user the FIRSTPOST badge
+				}
+				if ( ($post_count[0] +1 ) >= 50 )
+				{
+					// If the user's new post count is greater or equal than 50
+					
+					$Cbadges->GrantBadge("FIFTY_POST"); // give the user the FIFTY_POST badge
+				}
+				if ( ($post_count[0] +1 ) >= 250 )
+				{
+					// If the user's new post count is greater or equal than 250
+					
+					$Cbadges->GrantBadge("TWENTYFIFTY_POST"); // give the user the TWENTYFIFTY_POST badge
+				}
+				if ( ($post_count[0] +1 ) >= 500 )
+				{
+					// If the user's new post count is greater or equal than 500
+					
+					$Cbadges->GrantBadge("FIVEHUNDRED_POST"); // give the user the FIVEHUNDRED_POST badge
+				}
+				if ( ($post_count[0] +1 ) >= 1000 )
+				{
+					// If the user's new post count is greater or equal than 1000
+					
+					$Cbadges->GrantBadge("THOUSAND_POST"); // give the user the THOUSAND_POST badge
+				}
+				/* Badge giving */
+				
+				$Ctemplate->useTemplate("forum/posts_create_success", array(
+					'TOPICID'	=>	$_POST['id'],
+					'TITLE'	=>	(@$_POST['post_title'] == NULL ? "No title" : @$_POST['post_title']), // Title of the post
+				), FALSE); // Give success if we did it!
+			}
 		}
 	}
 } elseif ( $uLvl[0] == "0" )

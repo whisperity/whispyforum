@@ -112,84 +112,95 @@ if ( $uLvl[0] < $fMLvl[0] )
 			), FALSE ); // We give an unavailable error
 		} elseif ( $uLvl[0] >= 2 )
 		{
-			// Access granted :)
-			if ( !isset($_POST['edit_do']) )
+			// Access granted
+			$pData = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM posts WHERE id='" .$Cmysql->EscapeString($_POST['post_id']). "'")); // Query post data
+			$topic_array = mysql_fetch_assoc($Cmysql->Query("SELECT title, forumid, locked FROM topics WHERE id='" .$pData['topicid']. "'")); // Data of the topic
+				
+			if ( $topic_array['locked'] == "1" )
 			{
-				// If we requested the form to edit the post
-				
-				$pData = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM posts WHERE id='" .$Cmysql->EscapeString($_POST['post_id']). "'"));
-				
-				if ( @$_POST['error_goback'] == "yes" ) // If user is redirected because of an error
-				{
-					// We output the form with data returned (user doesn't have to enter it again)
-					$Ctemplate->useTemplate("forum/posts_edit_form", array(
-						'TOPIC_ID'	=>	$id,
-						'POST_ID'	=>	$_POST['post_id'], // ID of the topic
-						'OTITLE'	=>	$pData['title'], // Post's title (original)
-						'POST_TITLE'	=>	$_POST['post_title'], // Post's title (new, returned from error)
-						'POST_CONTENT'	=>	$_POST['post_content'], // Post's content
-						'START_AT'	=>	$_POST['start_at']
-					), FALSE);
-				} else {
-					// We output general form
-					$Ctemplate->useTemplate("forum/posts_edit_form", array(
-						'TOPIC_ID'	=>	$id,
-						'POST_ID'	=>	$_POST['post_id'], // ID of the topic
-						'OTITLE'	=>	$pData['title'], // Post's title (original)
-						'POST_TITLE'	=>	$pData['title'], // Post's title (same as original)
-						'POST_CONTENT'	=>	$pData['content'],
-						'START_AT'	=>	$_POST['start_at']
-					), FALSE);
-				}
-			} elseif ( ( isset($_POST['edit_do']) ) && ( $_POST['edit_do'] == "yes") )
+				// If the topic is locked, output an error message and prevent execution
+				$Ctemplate->useTemplate("forum/topic_locked_error", array(
+					'TOPIC_ID'	=>	$id
+				), FALSE);
+			} elseif ( $topic_array['locked'] == "0" )
 			{
-				// If we added the data and requested SQL query
-				
-				// First, we check whether every required variables were entered
-				if ( $_POST['post_content'] == NULL ) // Post's contet
+				// If the topic is open
+				if ( !isset($_POST['edit_do']) )
 				{
-					$Ctemplate->useTemplate("forum/posts_edit_variable_error", array(
-						'VARIABLE'	=>	"{LANG_POSTS_POST}", // Errornous variable name
-						'TOPIC_ID'	=>	$id,
-						'POST_ID'	=>	$_POST['post_id'], // ID of the post
-						'POST_TITLE'	=>	$_POST['post_title'], // Post's title
-						'POST_CONTENT'	=>	$_POST['post_content'], // Post content (should be empty)
-						'START_AT'	=>	$_POST['start_at']
-					), FALSE);
+					// If we requested the form to edit the post
 					
-					// We terminate the script
-					$Ctemplate->useStaticTemplate("forum/posts_foot", FALSE); // Footer
-					DoFooter();
-					exit;
-				}
-				
-				// Every variable has value, do the SQL query.
-				$pEdit = $Cmysql->Query("UPDATE posts SET ".
-					"title='" .$Cmysql->EscapeString($_POST['post_title']). "',
-					content='" .$Cmysql->EscapeString($_POST['post_content']). "' WHERE " .
-					"id='" .$Cmysql->EscapeString($_POST['post_id']). "'");
-				
-				// $pEdit is TRUE if we succeeded
-				// $pEdit is FALSE if we failed
-				
-				if ( $pEdit == FALSE )
+					if ( @$_POST['error_goback'] == "yes" ) // If user is redirected because of an error
+					{
+						// We output the form with data returned (user doesn't have to enter it again)
+						$Ctemplate->useTemplate("forum/posts_edit_form", array(
+							'TOPIC_ID'	=>	$id,
+							'POST_ID'	=>	$_POST['post_id'], // ID of the topic
+							'OTITLE'	=>	$pData['title'], // Post's title (original)
+							'POST_TITLE'	=>	$_POST['post_title'], // Post's title (new, returned from error)
+							'POST_CONTENT'	=>	$_POST['post_content'], // Post's content
+							'START_AT'	=>	$_POST['start_at']
+						), FALSE);
+					} else {
+						// We output general form
+						$Ctemplate->useTemplate("forum/posts_edit_form", array(
+							'TOPIC_ID'	=>	$id,
+							'POST_ID'	=>	$_POST['post_id'], // ID of the topic
+							'OTITLE'	=>	$pData['title'], // Post's title (original)
+							'POST_TITLE'	=>	$pData['title'], // Post's title (same as original)
+							'POST_CONTENT'	=>	$pData['content'],
+							'START_AT'	=>	$_POST['start_at']
+						), FALSE);
+					}
+				} elseif ( ( isset($_POST['edit_do']) ) && ( $_POST['edit_do'] == "yes") )
 				{
-					// Failed to edit the post
-					$Ctemplate->useTemplate("forum/posts_edit_error", array(
-						'TOPIC_ID'	=>	$id,
-						'POST_ID'	=>	$_POST['post_id'], // ID of the post
-						'POST_TITLE'	=>	$_POST['post_title'], // Post's title
-						'POST_CONTENT'	=>	$_POST['post_content'], // Post content
-						'START_AT'	=>	$_POST['start_at']
-					), FALSE); // Output a retry form
-				} elseif ( $pEdit == TRUE )
-				{
-					// Edited the post
-					$Ctemplate->useTemplate("forum/posts_edit_success", array(
-						'TOPIC_ID'	=>	$id,
-						'TITLE'	=>	(@$_POST['post_title'] == NULL ? "No title" : @$_POST['post_title']), // Post's title
-						'START_AT'	=>	$_POST['start_at']
-					), FALSE); // Output a success form
+					// If we added the data and requested SQL query
+					
+					// First, we check whether every required variables were entered
+					if ( $_POST['post_content'] == NULL ) // Post's contet
+					{
+						$Ctemplate->useTemplate("forum/posts_edit_variable_error", array(
+							'VARIABLE'	=>	"{LANG_POSTS_POST}", // Errornous variable name
+							'TOPIC_ID'	=>	$id,
+							'POST_ID'	=>	$_POST['post_id'], // ID of the post
+							'POST_TITLE'	=>	$_POST['post_title'], // Post's title
+							'POST_CONTENT'	=>	$_POST['post_content'], // Post content (should be empty)
+							'START_AT'	=>	$_POST['start_at']
+						), FALSE);
+						
+						// We terminate the script
+						$Ctemplate->useStaticTemplate("forum/posts_foot", FALSE); // Footer
+						DoFooter();
+						exit;
+					}
+					
+					// Every variable has value, do the SQL query.
+					$pEdit = $Cmysql->Query("UPDATE posts SET ".
+						"title='" .$Cmysql->EscapeString($_POST['post_title']). "',
+						content='" .$Cmysql->EscapeString($_POST['post_content']). "' WHERE " .
+						"id='" .$Cmysql->EscapeString($_POST['post_id']). "'");
+					
+					// $pEdit is TRUE if we succeeded
+					// $pEdit is FALSE if we failed
+					
+					if ( $pEdit == FALSE )
+					{
+						// Failed to edit the post
+						$Ctemplate->useTemplate("forum/posts_edit_error", array(
+							'TOPIC_ID'	=>	$id,
+							'POST_ID'	=>	$_POST['post_id'], // ID of the post
+							'POST_TITLE'	=>	$_POST['post_title'], // Post's title
+							'POST_CONTENT'	=>	$_POST['post_content'], // Post content
+							'START_AT'	=>	$_POST['start_at']
+						), FALSE); // Output a retry form
+					} elseif ( $pEdit == TRUE )
+					{
+						// Edited the post
+						$Ctemplate->useTemplate("forum/posts_edit_success", array(
+							'TOPIC_ID'	=>	$id,
+							'TITLE'	=>	(@$_POST['post_title'] == NULL ? "No title" : @$_POST['post_title']), // Post's title
+							'START_AT'	=>	$_POST['start_at']
+						), FALSE); // Output a success form
+					}
 				}
 			}
 		}
@@ -200,9 +211,8 @@ if ( $uLvl[0] < $fMLvl[0] )
 	if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "delete" ) && ( isset($_POST['post_id']) ) )
 	{
 		// Get poster's userID
-		$pUID = mysql_fetch_row($Cmysql->Query("SELECT createuser FROM posts WHERE id='" .$Cmysql->EscapeString($_POST['post_id']). "'"));
+		$pUID = mysql_fetch_row($Cmysql->Query("SELECT createuser, topicid FROM posts WHERE id='" .$Cmysql->EscapeString($_POST['post_id']). "'"));
 		
-		// Deleting a topic
 		if ( ( $uLvl[0] < 2 ) && ( $pUID[0] != $_SESSION['uid'] ) )
 		{
 			// If the user does not have rights to delete the post
@@ -216,45 +226,58 @@ if ( $uLvl[0] < $fMLvl[0] )
 		{
 			// Access granted
 			
-			// Delete the post
-			$pDel = $Cmysql->Query("DELETE FROM posts WHERE id='" .$Cmysql->EscapeString($_POST['post_id']). "'");
-			
-			// $pDel is TRUE if we succeeded
-			// $pDel is FALSE if we failed
-			
-			if ( $pDel == FALSE )
+			$topic_array = mysql_fetch_assoc($Cmysql->Query("SELECT locked FROM topics WHERE id='" .$pUID[1]. "'")); // Data of the topic
+				
+			if ( $topic_array['locked'] == "1" )
 			{
-				// Failed to delete the post
-				$Ctemplate->useTemplate("errormessage", array(
-					'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
-					'TITLE'	=>	"{LANG_ERROR_EXCLAMATION}", // Error title
-					'BODY'	=>	"{LANG_POSTS_DELETE_SQL_ERROR}", // Error text
-					'ALT'	=>	"{LANG_ERROR_EXCLAMATION}" // Alternate picture text
-				), FALSE ); // We give an error
-				
-				$Ctemplate->useTemplate("forum/posts_backtolist", array(
-					'TOPIC_ID'	=>	$id,
-					'START_AT'	=>	$_POST['start_at']
-				), FALSE); // Return button
-			} elseif ( $pDel == TRUE )
+				// If the topic is locked, output an error message and prevent execution
+				$Ctemplate->useTemplate("forum/topic_locked_error", array(
+					'TOPIC_ID'	=>	$id
+				), FALSE);
+			} elseif ( $topic_array['locked'] == "0" )
 			{
-				// Deleted the post
+				// If the topic is open
 				
-				// Remove one from the user's post count
-				$uPostCount = mysql_fetch_row($Cmysql->Query("SELECT post_count FROM users WHERE id='" .$pUID[0]. "'"));
-				$Cmysql->Query("UPDATE users SET post_count=" .($uPostCount[0] - 1). " WHERE id='" .$pUID[0]. "'");
+				// Delete the post
+				$pDel = $Cmysql->Query("DELETE FROM posts WHERE id='" .$Cmysql->EscapeString($_POST['post_id']). "'");
 				
-				$Ctemplate->useTemplate("successbox", array(
-					'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_txt.png", // Folder with pencil icon
-					'TITLE'	=>	"{LANG_SUCCESS_EXCLAMATION}", // Success title
-					'BODY'	=>	"{LANG_POSTS_DELETE_SUCCESS_HEAD}", // Success text
-					'ALT'	=>	"{LANG_SUCCESS_EXCLAMATION}" // Alternate picture text
-				), FALSE ); // We give success
+				// $pDel is TRUE if we succeeded
+				// $pDel is FALSE if we failed
 				
-				$Ctemplate->useTemplate("forum/posts_backtolist", array(
-					'TOPIC_ID'	=>	$id,
-					'START_AT'	=>	$_POST['start_at']
-				), FALSE); // Return button
+				if ( $pDel == FALSE )
+				{
+					// Failed to delete the post
+					$Ctemplate->useTemplate("errormessage", array(
+						'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
+						'TITLE'	=>	"{LANG_ERROR_EXCLAMATION}", // Error title
+						'BODY'	=>	"{LANG_POSTS_DELETE_SQL_ERROR}", // Error text
+						'ALT'	=>	"{LANG_ERROR_EXCLAMATION}" // Alternate picture text
+					), FALSE ); // We give an error
+					
+					$Ctemplate->useTemplate("forum/posts_backtolist", array(
+						'TOPIC_ID'	=>	$id,
+						'START_AT'	=>	$_POST['start_at']
+					), FALSE); // Return button
+				} elseif ( $pDel == TRUE )
+				{
+					// Deleted the post
+					
+					// Remove one from the user's post count
+					$uPostCount = mysql_fetch_row($Cmysql->Query("SELECT post_count FROM users WHERE id='" .$pUID[0]. "'"));
+					$Cmysql->Query("UPDATE users SET post_count=" .($uPostCount[0] - 1). " WHERE id='" .$pUID[0]. "'");
+					
+					$Ctemplate->useTemplate("successbox", array(
+						'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_txt.png", // Folder with pencil icon
+						'TITLE'	=>	"{LANG_SUCCESS_EXCLAMATION}", // Success title
+						'BODY'	=>	"{LANG_POSTS_DELETE_SUCCESS_HEAD}", // Success text
+						'ALT'	=>	"{LANG_SUCCESS_EXCLAMATION}" // Alternate picture text
+					), FALSE ); // We give success
+					
+					$Ctemplate->useTemplate("forum/posts_backtolist", array(
+						'TOPIC_ID'	=>	$id,
+						'START_AT'	=>	$_POST['start_at']
+					), FALSE); // Return button
+				}
 			}
 		}
 	}
@@ -287,7 +310,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 			} elseif ( $topic_array['locked'] == 1 )
 			{
 				// If the topic is locked
-				$new_post_button = $Ctemplate->useStaticTemplate("forum/posts_new_locked", TRUE); // Set an error picture to a variable for later use
+				$new_post_button = NULL; // Set the variable for later use
 			}
 		}
 		
@@ -325,6 +348,9 @@ if ( $uLvl[0] < $fMLvl[0] )
 		
 		$post_result = $Cmysql->Query("SELECT * FROM posts WHERE topicid='" .$Cmysql->EscapeString($id). "' ORDER BY createdate ASC LIMIT " .$post_start.", " .$Cmysql->EscapeString($usr_post_split_value)); // Query "normal" tables in the set forum (splitted)
 		
+		// Select the newest post's ID in the topic
+		$lastPost_inTopic = mysql_fetch_row($Cmysql->Query("SELECT id FROM posts WHERE topicid='" .$Cmysql->EscapeString($id). "' ORDER BY id DESC LIMIT 1"));
+		
 		while ( $row = mysql_fetch_assoc($post_result) )
 		{
 			// Query poster's data
@@ -351,6 +377,29 @@ if ( $uLvl[0] < $fMLvl[0] )
 				$WithOrWithout = "with"; // Use template with title
 			}
 			
+			// Check whether the user has the rights to edit a post
+			// The user has rights to edit a post if:
+			// * the topic is open
+			// * AND the post is his/her post
+			// * OR he/she is a moderator+ user
+			// * AND the post is the last post of the topic
+			$editRight = FALSE; // By default, the user does not have the right to edit a post
+			if ( ( $row['id'] == $lastPost_inTopic[0] ) && ( ( ( $row['createuser'] == $_SESSION['uid'] ) || ( $uLvl[0] >= 2 ) ) && ( $topic_array['locked'] == 0 ) ) )
+			{
+				$editRight = TRUE; // If the conditions are OK, the user will have the right	
+			}
+			
+			// Check whether the user has rights to delete a post
+			// The user has rights to delete a post if:
+			// * the topic is open
+			// * AND the post is his/her post
+			// * OR he/she is a moderator+ user
+			$deleteRight = FALSE; // By default, the user does not have the right to delete a post
+			if ( ( ( $row['createuser'] == $_SESSION['uid'] ) || ( $uLvl[0] >= 2 ) ) && ( $topic_array['locked'] == 0 ) )
+			{
+				$deleteRight = TRUE; // If the conditions are OK, the user will have the right	
+			}
+			
 			$Ctemplate->useTemplate("forum/posts_row_" .$WithOrWithout. "_title", array(
 				'ID'	=>	$row['id'], // Post ID
 				'USERID'	=>	$row['createuser'], // Poster's ID
@@ -363,12 +412,12 @@ if ( $uLvl[0] < $fMLvl[0] )
 				'TITLE'	=>	$row['title'], // Post title
 				'DATE'	=>	fDate($row['createdate']), // Post date
 				'TEXT'	=>	bbDecode($row['content']), // The post itself
-				'EDIT'	=>	( ($row['createuser'] == $_SESSION['uid']) || ($uLvl[0] >= 2) ? $Ctemplate->useTemplate("forum/posts_edit", array(
+				'EDIT'	=>	( $editRight === TRUE ? $Ctemplate->useTemplate("forum/posts_edit", array(
 					'POST_ID'	=>	$row['id'],
 					'TOPIC_ID'	=>	$id,
 					'START_AT'	=>	(@$_GET['start_at'] == NULL ? '0' : $_GET['start_at'])
 				), TRUE) : NULL ),
-				'DELETE'	=>	( ($row['createuser'] == $_SESSION['uid']) || ($uLvl[0] >= 2) ? $Ctemplate->useTemplate("forum/posts_delete", array(
+				'DELETE'	=>	( $deleteRight === TRUE ? $Ctemplate->useTemplate("forum/posts_delete", array(
 					'POST_ID'	=>	$row['id'],
 					'TOPIC_ID'	=>	$id,
 					'START_AT'	=>	(@$_GET['start_at'] == NULL ? '0' : $_GET['start_at'])

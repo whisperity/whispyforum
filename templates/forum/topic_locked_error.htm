@@ -1,0 +1,19 @@
+<!--- BEGIN topic locked error -->
+<!--- Usage: error box to shows whether a user wants to violate a locked topic -->
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_locked.png" alt="{LANG_ERROR_EXCLAMATION}"></td>
+		<td class="errortitle">{LANG_ERROR_EXCLAMATION}</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">{LANG_TOPIC_IS_LOCKED}</td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+
+<form method="GET" action="viewposts.php">
+<input type="hidden" name="id" value="{TOPIC_ID}">
+<input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
+<input type="submit" value="{LANG_BB_BACK}">
+</form>
+<!--- END topic locked error -->

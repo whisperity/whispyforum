@@ -585,6 +585,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_FORUMS_DELETE_POSTS_SQL_ERROR}'	=>	"There were errors executing the SQL query to delete the posts in the recently deleted forum. The posts remain orphan.",
 	'{LANG_FORUMS_DELETE_POSTS_SUCCESS_HEAD}'	=>	"Deleted the posts from the recently deleted forum",
 	'{LANG_TOPICS}'	=>	"Topics",
+	'{LANG_TOPIC_IS_LOCKED}'	=>	"This topic is locked. You cannot edit/delete the posts of a locked topic and you cannot add posts to a locked topic.",
 	'{LANG_TOPICS_TITLE}'	=>	"Title",
 	'{LANG_TOPICS_POST_TITLE}'	=>	"Post title",
 	'{LANG_TOPICS_NORMAL}'	=>	"Normal thread",
