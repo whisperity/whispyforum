@@ -1092,6 +1092,71 @@ switch ($site) // Outputs and scripts are based on the site variable
 		break;
 	/* * CONFIGURATION * */
 	/* --------------------------- */
+	/* * FORUM SETTINGS * */
+	case "forum":
+		// If the FORUM module is disabled, prevent execution
+		if ( config("module_forum") == "off" )
+		{
+			$Ctemplate->useStaticTemplate("admin/admin_foot", FALSE); // Output footer
+			dieOnModule("forum"); // The DoFooter and the rest is issued by dieOnModule
+		}
+		
+		if ( isset($_POST['set_do']) )
+		{
+			// Change the preferences
+			$updateTopicPerPage = $Cmysql->Query("UPDATE config SET ".
+				"value='" .$Cmysql->EscapeString($_POST['new_topic_switch_value']). "' WHERE variable='forum_topic_count_per_page'");
+			$updatePostPerPage = $Cmysql->Query("UPDATE config SET ".
+				"value='" .$Cmysql->EscapeString($_POST['new_post_switch_value']). "' WHERE variable='forum_post_count_per_page'");
+			
+			// The return values are TRUE if we succeed and FALSE if we fail
+			if ( ( $updateTopicPerPage == FALSE ) || ( $updatePostPerPage == FALSE ) )
+			{
+				// If we failed
+				$Ctemplate->useTemplate("errormessage", array(
+					'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
+					'TITLE'	=>	"{LANG_UCP_FORUM_FAIL}", // Error title
+					'BODY'	=>	"", // Error text
+					'ALT'	=>	"{LANG_SQL_EXEC_ERROR}" // Alternate picture text
+				), FALSE ); // We give an unavailable error
+				
+				$Ctemplate->useStaticTemplate("admin/forum_back", FALSE); // Back button
+			} elseif ( ( $updateTopicPerPage == TRUE ) && ( $updatePostPerPage == TRUE ) )
+			{
+				// If we succeeded
+				$Ctemplate->useTemplate("successbox", array(
+					'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_home.png", // House (user CP header)
+					'TITLE'	=>	"{LANG_UCP_FORUM_SUCCESS}", // Success title
+					'BODY'	=>	"{LANG_ACP_FORUM_SUCCESS_1}", // Success text
+					'ALT'	=>	"{LANG_SQL_EXEC_SUCCESS}" // Alternate picture text
+				), FALSE ); // We give a success message
+				
+				$Ctemplate->useStaticTemplate("admin/forum_back", FALSE); // Back button
+			}
+		} else {
+			// Get the two values into a variable
+			$topicPerPage = config("forum_topic_count_per_page");
+			$postPerPage = config("forum_post_count_per_page");
+			
+			$Ctemplate->useTemplate("admin/forum", array(
+				// Topic switch
+				'T_5_SELECT'	=>	($topicPerPage == 5 ? " selected" : ""),
+				'T_15_SELECT'	=>	($topicPerPage == 15 ? " selected" : ""),
+				'T_30_SELECT'	=>	($topicPerPage == 30 ? " selected" : ""),
+				'T_50_SELECT'	=>	($topicPerPage == 50 ? " selected" : ""),
+				'T_100_SELECT'	=>	($topicPerPage == 100 ? " selected" : ""),
+				
+				// Post switch
+				'P_5_SELECT'	=>	($postPerPage == 5 ? " selected" : ""),
+				'P_15_SELECT'	=>	($postPerPage == 15 ? " selected" : ""),
+				'P_30_SELECT'	=>	($postPerPage == 30 ? " selected" : ""),
+				'P_50_SELECT'	=>	($postPerPage == 50 ? " selected" : ""),
+				'P_100_SELECT'	=>	($postPerPage == 100 ? " selected" : "")
+			), FALSE); // Output panel
+		}
+		break;
+	/* * FORUM SETTINGS * */
+	/* --------------------------- */
 }
 }
 $Ctemplate->useStaticTemplate("admin/admin_foot", FALSE); // Footer

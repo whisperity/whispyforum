@@ -516,6 +516,10 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_MODULE_FORUM}'	=>	"Forum",
 	'{LANG_MODULE_FORUM_DESCRIPTION}'	=>	"The forum module is a three-level forum system (forum-topics-posts) with moderational features.",
 	
+	/* Admin forum settings */
+	'{LANG_ACP_FORUM_TITLE}'	=>	"Here you can set the preferences about how the forum should operate.<br>".'<font class="emphasis">To modify something, set the new value and click Modify.</font>'." The actual preference is automatically selected.<br>These preferences will only affect guests and new users.",
+	'{LANG_ACP_FORUM_SUCCESS_1}'	=>	"You successfully modified the preferences.",
+	
 	/* Variable error boxes */
 	'{LANG_VAR_REQ_NOT_ENTERED}'	=>	"You didn't entered one of the required variables, {VARIABLE} cannot be empty.",
 	

@@ -58,8 +58,8 @@ class class_users
 		$_SESSION['usr_language'] = config("language"); // Default language name
 		
 		/* Forum */
-		$_SESSION['forum_topic_count_per_page'] = 15; // Default number of topics appearing on one page
-		$_SESSION['forum_post_count_per_page'] = 15; // Default number of posts appearing on one page
+		$_SESSION['forum_topic_count_per_page'] = config("forum_topic_count_per_page"); // Default number of topics appearing on one page
+		$_SESSION['forum_post_count_per_page'] = config("forum_post_count_per_page"); // Default number of posts appearing on one page
 	}
 	
 	private function __destroySession()
