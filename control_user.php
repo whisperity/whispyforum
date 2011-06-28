@@ -360,6 +360,14 @@ switch ($site)
 		break;
 	case "forum":
 		// Forum settings
+		
+		// If the FORUM module is disabled, prevent execution
+		if ( config("module_forum") == "off" )
+		{
+			$Ctemplate->useStaticTemplate("user/cp_foot", FALSE); // Output footer
+			dieOnModule("forum"); // The DoFooter and the rest is issued by dieOnModule
+		}
+		
 		if ( isset($_POST['set_do']) )
 		{
 			// Change the preference

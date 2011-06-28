@@ -161,7 +161,7 @@ if ( ( $uLvl[0] < $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
 				'" .$Cmysql->EscapeString($tName[1]). "',
 				'" .$Cmysql->EscapeString($_POST['post_title']). "',
 				'" .$Cmysql->EscapeString($_SESSION['uid']). "', '" .time(). "',
-				'" .$Cmysql->EscapeString($_POST['post_content']). "')"); // Post adding (to the previously created topic)
+				'" .$Cmysql->EscapeString(str_replace("'", "\'", $_POST['post_content'])). "')"); // Post adding (to the previously created topic)
 			
 			if  ( $post_create == FALSE )
 			{

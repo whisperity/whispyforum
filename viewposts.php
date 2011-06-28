@@ -97,11 +97,35 @@ if ( $uLvl[0] < $fMLvl[0] )
 {
 	// The user has the rights to view the topic list
 	
+	// Select the newest post's ID in the topic
+	$lastPost_inTopic = mysql_fetch_row($Cmysql->Query("SELECT id FROM posts WHERE topicid='" .$Cmysql->EscapeString($id). "' ORDER BY id DESC LIMIT 1"));
+	
 	/* Editing a post */
 	if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "edit" ) && ( isset($_POST['post_id']) ) )
 	{
 		// Editing a post
-		if ( $uLvl[0] < 2 )
+		
+		$pData = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM posts WHERE id='" .$Cmysql->EscapeString($_POST['post_id']). "'")); // Query post data
+		$topic_array = mysql_fetch_assoc($Cmysql->Query("SELECT title, forumid, locked FROM topics WHERE id='" .$pData['topicid']. "'")); // Data of the topic
+		
+		// Check whether the user has the rights to edit a post
+		// The user has rights to edit a post if:
+		// * the topic is open
+		// * AND the post is his/her post
+		// * OR he/she is a moderator+ user
+		// * AND the post is the last post of the topic (if the user is not mod+)
+		$editRight = FALSE; // By default, the user does not have the right to edit a post
+		if ( ( $pData['createuser'] == $_SESSION['uid'] ) && ( $pData['id'] == $lastPost_inTopic[0] ) && ( $topic_array['locked'] == 0 ) )
+		{
+			$editRight = TRUE;
+		}
+		
+		if ( ( $uLvl[0] >= 2 ) && ( $topic_array['locked'] == 0 ) )
+		{
+			$editRight = TRUE;
+		}
+		
+		if ( $editRight === FALSE )
 		{
 			// If the user does not have rights to add new forum
 			$Ctemplate->useTemplate("errormessage", array(
@@ -110,11 +134,9 @@ if ( $uLvl[0] < $fMLvl[0] )
 				'BODY'	=>	"{LANG_REQUIRES_MODERATOR}", // Error text
 				'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
 			), FALSE ); // We give an unavailable error
-		} elseif ( $uLvl[0] >= 2 )
+		} elseif ( $editRight === TRUE )
 		{
 			// Access granted
-			$pData = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM posts WHERE id='" .$Cmysql->EscapeString($_POST['post_id']). "'")); // Query post data
-			$topic_array = mysql_fetch_assoc($Cmysql->Query("SELECT title, forumid, locked FROM topics WHERE id='" .$pData['topicid']. "'")); // Data of the topic
 				
 			if ( $topic_array['locked'] == "1" )
 			{
@@ -176,7 +198,7 @@ if ( $uLvl[0] < $fMLvl[0] )
 					// Every variable has value, do the SQL query.
 					$pEdit = $Cmysql->Query("UPDATE posts SET ".
 						"title='" .$Cmysql->EscapeString($_POST['post_title']). "',
-						content='" .$Cmysql->EscapeString($_POST['post_content']). "' WHERE " .
+						content='" .$Cmysql->EscapeString(str_replace("'", "\'", $_POST['post_content'])). "' WHERE " .
 						"id='" .$Cmysql->EscapeString($_POST['post_id']). "'");
 					
 					// $pEdit is TRUE if we succeeded
@@ -211,9 +233,27 @@ if ( $uLvl[0] < $fMLvl[0] )
 	if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "delete" ) && ( isset($_POST['post_id']) ) )
 	{
 		// Get poster's userID
-		$pUID = mysql_fetch_row($Cmysql->Query("SELECT createuser, topicid FROM posts WHERE id='" .$Cmysql->EscapeString($_POST['post_id']). "'"));
+		$pUID = mysql_fetch_row($Cmysql->Query("SELECT createuser, topicid, id FROM posts WHERE id='" .$Cmysql->EscapeString($_POST['post_id']). "'"));
+		$topic_array = mysql_fetch_assoc($Cmysql->Query("SELECT locked FROM topics WHERE id='" .$pUID[1]. "'")); // Data of the topic
+			
+		// Check whether the user has rights to delete a post
+		// The user has rights to delete a post if:
+		// * the topic is open
+		// * AND the post is his/her post
+		// * OR he/she is a moderator+ user
+		// * AND the post is the last post of the topic (if the user is not mod+)
+		$deleteRight = FALSE; // By default, the user does not have the right to delete a post
+		if ( ( $pUID[0] == $_SESSION['uid'] ) && ( $pUID[2] == $lastPost_inTopic[0] ) && ( $topic_array['locked'] == 0 ) )
+		{
+			$deleteRight = TRUE;
+		}
 		
-		if ( ( $uLvl[0] < 2 ) && ( $pUID[0] != $_SESSION['uid'] ) )
+		if ( ( $uLvl[0] >= 2 ) && ( $topic_array['locked'] == 0 ) )
+		{
+			$deleteRight = TRUE;
+		}
+		
+		if ( $deleteRight === FALSE )
 		{
 			// If the user does not have rights to delete the post
 			$Ctemplate->useTemplate("errormessage", array(
@@ -222,11 +262,9 @@ if ( $uLvl[0] < $fMLvl[0] )
 				'BODY'	=>	"{LANG_REQUIRES_MODERATOR}", // Error text
 				'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
 			), FALSE ); // We give an unavailable error
-		} elseif ( ( $uLvl[0] >= 2 ) || ( $pUID[0] == $_SESSION['uid'] ) )
+		} elseif ( $deleteRight === TRUE )
 		{
 			// Access granted
-			
-			$topic_array = mysql_fetch_assoc($Cmysql->Query("SELECT locked FROM topics WHERE id='" .$pUID[1]. "'")); // Data of the topic
 				
 			if ( $topic_array['locked'] == "1" )
 			{
@@ -348,9 +386,6 @@ if ( $uLvl[0] < $fMLvl[0] )
 		
 		$post_result = $Cmysql->Query("SELECT * FROM posts WHERE topicid='" .$Cmysql->EscapeString($id). "' ORDER BY createdate ASC LIMIT " .$post_start.", " .$Cmysql->EscapeString($usr_post_split_value)); // Query "normal" tables in the set forum (splitted)
 		
-		// Select the newest post's ID in the topic
-		$lastPost_inTopic = mysql_fetch_row($Cmysql->Query("SELECT id FROM posts WHERE topicid='" .$Cmysql->EscapeString($id). "' ORDER BY id DESC LIMIT 1"));
-		
 		while ( $row = mysql_fetch_assoc($post_result) )
 		{
 			// Query poster's data
@@ -382,11 +417,16 @@ if ( $uLvl[0] < $fMLvl[0] )
 			// * the topic is open
 			// * AND the post is his/her post
 			// * OR he/she is a moderator+ user
-			// * AND the post is the last post of the topic
+			// * AND the post is the last post of the topic (if the user is not mod+)
 			$editRight = FALSE; // By default, the user does not have the right to edit a post
-			if ( ( $row['id'] == $lastPost_inTopic[0] ) && ( ( ( $row['createuser'] == $_SESSION['uid'] ) || ( $uLvl[0] >= 2 ) ) && ( $topic_array['locked'] == 0 ) ) )
+			if ( ( $row['createuser'] == $_SESSION['uid'] ) && ( $row['id'] == $lastPost_inTopic[0] ) && ( $topic_array['locked'] == 0 ) )
 			{
-				$editRight = TRUE; // If the conditions are OK, the user will have the right	
+				$editRight = TRUE;
+			}
+			
+			if ( ( $uLvl[0] >= 2 ) && ( $topic_array['locked'] == 0 ) )
+			{
+				$editRight = TRUE;
 			}
 			
 			// Check whether the user has rights to delete a post
@@ -394,10 +434,16 @@ if ( $uLvl[0] < $fMLvl[0] )
 			// * the topic is open
 			// * AND the post is his/her post
 			// * OR he/she is a moderator+ user
+			// * AND the post is the last post of the topic (if the user is not mod+)
 			$deleteRight = FALSE; // By default, the user does not have the right to delete a post
-			if ( ( ( $row['createuser'] == $_SESSION['uid'] ) || ( $uLvl[0] >= 2 ) ) && ( $topic_array['locked'] == 0 ) )
+			if ( ( $row['createuser'] == $_SESSION['uid'] ) && ( $row['id'] == $lastPost_inTopic[0] ) && ( $topic_array['locked'] == 0 ) )
 			{
-				$deleteRight = TRUE; // If the conditions are OK, the user will have the right	
+				$deleteRight = TRUE;
+			}
+			
+			if ( ( $uLvl[0] >= 2 ) && ( $topic_array['locked'] == 0 ) )
+			{
+				$deleteRight = TRUE;
 			}
 			
 			$Ctemplate->useTemplate("forum/posts_row_" .$WithOrWithout. "_title", array(

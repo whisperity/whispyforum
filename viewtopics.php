@@ -127,12 +127,10 @@ if ( $uLvl[0] < $fMLvl[0] )
 						'TOPIC_ID'	=>	$_POST['topic_id'], // ID of the topic
 						'OTITLE'	=>	$tData['title'], // Topic's title (original)
 						'TITLE'	=>	$_POST['title'], // Topic's title (new, returned from error)
-						// The topic 'Lock' button will be get it's previous state
-						'LOCK_NO'	=>	($_POST['lock'] == 0 ? " checked" : ""),
-						'LOCK_YES'	=>	($_POST['lock'] == 1 ? " checked" : ""),
-						// The topic 'Highlight' button will be get it's previous state
-						'HIGHLIGHT_NO'	=>	($_POST['highlight'] == 0 ? " checked" : ""),
-						'HIGHLIGHT_YES'	=>	($_POST['highlight'] == 1 ? " checked" : ""),
+						// The topic 'Lock' checkbox will be get it's previous state
+						'LOCK_CHECK'	=>	($_POST['lock'] == 1 ? " checked" : ""),
+						// The topic 'Highlight' checkbox will be get it's previous state
+						'HIGHLIGHT_CHECK'	=>	($_POST['highlight'] == 1 ? " checked" : ""),
 						'START_AT'	=>	$_POST['start_at']
 					), FALSE);
 				} else {
@@ -142,12 +140,10 @@ if ( $uLvl[0] < $fMLvl[0] )
 						'TOPIC_ID'	=>	$_POST['topic_id'], // ID of the topic
 						'OTITLE'	=>	$tData['title'], // Topic's title (original)
 						'TITLE'	=>	$tData['title'], // Topic's title (same as original)
-						// The topic 'Lock' button will be get it's previous state
-						'LOCK_NO'	=>	($tData['locked'] == 0 ? " checked" : ""),
-						'LOCK_YES'	=>	($tData['locked'] == 1 ? " checked" : ""),
-						// The topic 'Highlight' button will be get it's previous state
-						'HIGHLIGHT_NO'	=>	($tData['highlighted'] == 0 ? " checked" : ""),
-						'HIGHLIGHT_YES'	=>	($tData['highlighted'] == 1 ? " checked" : ""),
+						// The topic 'Lock' checkbox will be get it's previous state
+						'LOCK_CHECK'	=>	($tData['locked'] == 1 ? " checked" : ""),
+						// The topic 'Highlight' checkbox will be get it's previous state
+						'HIGHLIGHT_CHECK'	=>	($tData['highlighted'] == 1 ? " checked" : ""),
 						'START_AT'	=>	$_POST['start_at']
 					), FALSE);
 				}
@@ -163,8 +159,8 @@ if ( $uLvl[0] < $fMLvl[0] )
 						'FORUM_ID'	=>	$id,
 						'TOPIC_ID'	=>	$_POST['topic_id'], // ID of the topic
 						'TITLE'	=>	$_POST['title'], // Topic's title (should be empty)
-						'LOCK'	=>	$_POST['lock'], // Description
-						'HIGHLIGHT'	=>	$_POST['highlight'], // Minimal user level
+						'LOCK'	=>	(!isset($_POST['lock']) ? "0" : "1"),
+						'HIGHLIGHT'	=>	(!isset($_POST['highlight']) ? "0" : "1"),
 						'START_AT'	=>	$_POST['start_at']
 					), FALSE);
 					
@@ -176,9 +172,9 @@ if ( $uLvl[0] < $fMLvl[0] )
 				
 				// Every variable has value, do the SQL query.
 				$tEdit = $Cmysql->Query("UPDATE topics SET ".
-					"title='" .$Cmysql->EscapeString($_POST['title']). "',
-					locked='" .$Cmysql->EscapeString($_POST['lock']). "',
-					highlighted='" .$Cmysql->EscapeString($_POST['highlight']). "' WHERE " .
+					"title='" .$Cmysql->EscapeString(str_replace("'", "\'", $_POST['title'])). "',
+					locked='" .$Cmysql->EscapeString( (!isset($_POST['lock']) ? "0" : "1") ). "',
+					highlighted='" .$Cmysql->EscapeString( (!isset($_POST['highlight']) ? "0" : "1") ). "' WHERE " .
 					"id='" .$Cmysql->EscapeString($_POST['topic_id']). "'");
 				
 				// $tEdit is TRUE if we succeeded
@@ -191,8 +187,8 @@ if ( $uLvl[0] < $fMLvl[0] )
 						'FORUM_ID'	=>	$id,
 						'TOPIC_ID'	=>	$_POST['topic_id'], // ID of the topic
 						'TITLE'	=>	$_POST['title'], // Topic's title
-						'LOCK'	=>	$_POST['lock'], // Description
-						'HIGHLIGHT'	=>	$_POST['highlight'], // Minimal user level
+						'LOCK'	=>	@$_POST['lock'], // Description
+						'HIGHLIGHT'	=>	@$_POST['highlight'], // Minimal user level
 						'START_AT'	=>	$_POST['start_at']
 					), FALSE); // Output a retry form
 				} elseif ( $tEdit == TRUE )

@@ -110,12 +110,10 @@ if ( ( $uLvl[0] < $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
 				'TITLE'	=>	$_POST['title'], // Title of the topic
 				'POST_TITLE'	=>	$_POST['post_title'], // Title of the post
 				'POST_CONTENT'	=>	$_POST['post_content'], // Post body
-				// The topic 'Lock' button will be get it's previous state
-				'LOCK_NO'	=>	($_POST['lock'] == 0 ? " checked" : ""),
-				'LOCK_YES'	=>	($_POST['lock'] == 1 ? " checked" : ""),
-				// The topic 'Highlight' button will be get it's previous state
-				'HIGHLIGHT_NO'	=>	($_POST['highlight'] == 0 ? " checked" : ""),
-				'HIGHLIGHT_YES'	=>	($_POST['highlight'] == 1 ? " checked" : ""),
+				// The topic 'Lock' checkbox will be get it's previous state
+				'LOCK_CHECK'	=>	($_POST['lock'] == 1 ? " checked" : ""),
+				// The topic 'Highlight' checkbox will be get it's previous state
+				'HIGHLIGHT_CHECK'	=>	($_POST['highlight'] == 1 ? " checked" : ""),
 			), FALSE);
 		} else {
 			// We output general form
@@ -126,11 +124,9 @@ if ( ( $uLvl[0] < $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
 				'POST_TITLE'	=>	"", // Title of the post
 				'POST_CONTENT'	=>	"", // Post body
 				// The topic will not be locked by default
-				'LOCK_NO'	=>	" checked",
-				'LOCK_YES'	=>	"",
+				'LOCK_CHECKED'	=>	"",
 				// The topic will not be highlighted by default
-				'HIGHLIGHT_NO'	=>	" checked",
-				'HIGHLIGHT_YES'	=>	"",
+				'HIGHLIGHT_CHECK'	=>	"",
 			), FALSE);
 		}
 	}
@@ -147,8 +143,8 @@ if ( ( $uLvl[0] < $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
 				'TITLE'	=>	$_POST['title'], // Title of the topic (should be empty)
 				'POST_TITLE'	=>	$_POST['post_title'], // Title of the post
 				'POST_CONTENT'	=>	$_POST['post_content'], // Post body
-				'LOCK'	=>	$_POST['lock'],
-				'HIGHLIGHT'	=>	$_POST['highlight']
+				'LOCK'	=>	(!isset($_POST['lock']) ? "0" : "1"),
+				'HIGHLIGHT'	=>	(!isset($_POST['highlight']) ? "0" : "1")
 			), FALSE);
 			
 			// We terminate the script
@@ -165,8 +161,8 @@ if ( ( $uLvl[0] < $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
 				'TITLE'	=>	$_POST['title'], // Title of the topic
 				'POST_TITLE'	=>	$_POST['post_title'], // Title of the post
 				'POST_CONTENT'	=>	$_POST['post_content'], // Post body (should be empty)
-				'LOCK'	=>	$_POST['lock'],
-				'HIGHLIGHT'	=>	$_POST['highlight']
+				'LOCK'	=>	(!isset($_POST['lock']) ? "0" : "1"),
+				'HIGHLIGHT'	=>	(!isset($_POST['highlight']) ? "0" : "1")
 			), FALSE);
 			
 			// We terminate the script
@@ -180,17 +176,10 @@ if ( ( $uLvl[0] < $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
 			'" .$Cmysql->EscapeString($_POST['forum_id']). "',
 			'" .$Cmysql->EscapeString($_POST['title']). "',
 			'" .$Cmysql->EscapeString($_SESSION['uid']). "', '" .time(). "',
-			'" .$Cmysql->EscapeString($_POST['lock']). "',
-			'" .$Cmysql->EscapeString($_POST['highlight']). "')"); // Topic creation
+			'" .$Cmysql->EscapeString((!isset($_POST['lock']) ? "0" : "1")). "',
+			'" .$Cmysql->EscapeString((!isset($_POST['highlight']) ? "0" : "1")). "')"); // Topic creation
 		
-		$post_create = $Cmysql->Query("INSERT INTO posts(topicid, forumid, title, createuser, createdate, content) VALUES (
-			'" .mysql_insert_id(). "',
-			'" .$Cmysql->EscapeString($_POST['forum_id']). "',
-			'" .$Cmysql->EscapeString($_POST['post_title']). "',
-			'" .$Cmysql->EscapeString($_SESSION['uid']). "', '" .time(). "',
-			'" .$Cmysql->EscapeString($_POST['post_content'], ENT_QUOTES, 'UTF-8'). "')"); // Post adding (to the previously created topic)
-		
-		if ( ( $topic_create == FALSE ) && ( $post_create == FALSE ) )
+		if ( $topic_create == FALSE )
 		{
 			$Ctemplate->useTemplate("forum/topics_create_error", array(
 				'FORUM_ID'	=>	$_POST['forum_id'],
@@ -198,51 +187,74 @@ if ( ( $uLvl[0] < $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
 				'POST_TITLE'	=>	$_POST['post_title'], // Title of the post
 				'POST_CONTENT'	=>	$_POST['post_content'] // Post body
 			), FALSE); // Give error if we failed the creation
-		} elseif ( ( $topic_create == TRUE ) && ( $post_create == TRUE ) )
+		} elseif ( $topic_create == TRUE )
 		{
-			// Apend one to the user's post count
-			$post_count = mysql_fetch_row($Cmysql->Query("SELECT post_count FROM users WHERE id='" .$_SESSION['uid']. "'")); // Query the current post count
-			$Cmysql->Query("UPDATE users SET post_count='" .($post_count[0] + 1). "' WHERE id='" .$_SESSION['uid']. "'"); // Append +1 post
+			$post_create = $Cmysql->Query("INSERT INTO posts(topicid, forumid, title, createuser, createdate, content) VALUES (
+				'" .mysql_insert_id(). "',
+				'" .$Cmysql->EscapeString($_POST['forum_id']). "',
+				'" .$Cmysql->EscapeString($_POST['post_title']). "',
+				'" .$Cmysql->EscapeString($_SESSION['uid']). "', '" .time(). "',
+				'" .$Cmysql->EscapeString(str_replace("'", "\'", $_POST['post_content'])). "')"); // Post adding (to the previously created topic)
 			
-			/* Badge giving */
-			// We do seperate IFs here, because if the system couldn't give the previous badge, we allow the user to earn it again (at the next post count level)
-			if ( ($post_count[0] + 1) >= 1 )
+			if ( $post_create == FALSE )
 			{
-				// If the user's new post count is greater or equal than 1
-				// (funny, because this is the users first post)
+				// Failed to create the post
+				$Ctemplate->useTemplate("forum/topics_create_error", array(
+					'FORUM_ID'	=>	$_POST['forum_id'],
+					'TITLE'	=>	$_POST['title'], // Title of the topic
+					'POST_TITLE'	=>	$_POST['post_title'], // Title of the post
+					'POST_CONTENT'	=>	$_POST['post_content'] // Post body
+				), FALSE); // Give error
 				
-				$Cbadges->GrantBadge("FIRSTPOST"); // give the user the FIRSTPOST badge
-			}
-			if ( ($post_count[0] +1 ) >= 50 )
+				$Cmysql->Query("DELETE FROM topics WHERE id='" .mysql_insert_id(). "'"); // Remove the topic
+			} elseif ( $post_create == TRUE )
 			{
-				// If the user's new post count is greater or equal than 50
+				// Created the post as well
+					
+				// Apend one to the user's post count
+				$post_count = mysql_fetch_row($Cmysql->Query("SELECT post_count FROM users WHERE id='" .$_SESSION['uid']. "'")); // Query the current post count
+				$Cmysql->Query("UPDATE users SET post_count='" .($post_count[0] + 1). "' WHERE id='" .$_SESSION['uid']. "'"); // Append +1 post
 				
-				$Cbadges->GrantBadge("FIFTY_POST"); // give the user the FIFTY_POST badge
-			}
-			if ( ($post_count[0] +1 ) >= 250 )
-			{
-				// If the user's new post count is greater or equal than 250
+				/* Badge giving */
+				// We do seperate IFs here, because if the system couldn't give the previous badge, we allow the user to earn it again (at the next post count level)
+				if ( ($post_count[0] + 1) >= 1 )
+				{
+					// If the user's new post count is greater or equal than 1
+					// (funny, because this is the users first post)
+					
+					$Cbadges->GrantBadge("FIRSTPOST"); // give the user the FIRSTPOST badge
+				}
+				if ( ($post_count[0] +1 ) >= 50 )
+				{
+					// If the user's new post count is greater or equal than 50
+					
+					$Cbadges->GrantBadge("FIFTY_POST"); // give the user the FIFTY_POST badge
+				}
+				if ( ($post_count[0] +1 ) >= 250 )
+				{
+					// If the user's new post count is greater or equal than 250
+					
+					$Cbadges->GrantBadge("TWENTYFIFTY_POST"); // give the user the TWENTYFIFTY_POST badge
+				}
+				if ( ($post_count[0] +1 ) >= 500 )
+				{
+					// If the user's new post count is greater or equal than 500
+					
+					$Cbadges->GrantBadge("FIVEHUNDRED_POST"); // give the user the FIVEHUNDRED_POST badge
+				}
+				if ( ($post_count[0] +1 ) >= 1000 )
+				{
+					// If the user's new post count is greater or equal than 1000
+					
+					$Cbadges->GrantBadge("THOUSAND_POST"); // give the user the THOUSAND_POST badge
+				}
+				/* Badge giving */
 				
-				$Cbadges->GrantBadge("TWENTYFIFTY_POST"); // give the user the TWENTYFIFTY_POST badge
+				$Ctemplate->useTemplate("forum/topics_create_success", array(
+					'FORUM_ID'	=>	$_POST['forum_id'],
+					'TITLE'	=>	$_POST['title'], // Title of the topic
+				), FALSE); // Give success if we did it!
 			}
-			if ( ($post_count[0] +1 ) >= 500 )
-			{
-				// If the user's new post count is greater or equal than 500
-				
-				$Cbadges->GrantBadge("FIVEHUNDRED_POST"); // give the user the FIVEHUNDRED_POST badge
-			}
-			if ( ($post_count[0] +1 ) >= 1000 )
-			{
-				// If the user's new post count is greater or equal than 1000
-				
-				$Cbadges->GrantBadge("THOUSAND_POST"); // give the user the THOUSAND_POST badge
-			}
-			/* Badge giving */
-			
-			$Ctemplate->useTemplate("forum/topics_create_success", array(
-				'FORUM_ID'	=>	$_POST['forum_id'],
-				'TITLE'	=>	$_POST['title'], // Title of the topic
-			), FALSE); // Give success if we did it!
 		}
 	}
 } elseif ( $uLvl[0] == "0" )
