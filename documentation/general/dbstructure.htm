@@ -1,2135 +1,974 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML>
-<HEAD>
-	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
-	<TITLE>Database structure</TITLE>
-	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.2  (Unix)">
-	<META NAME="CREATED" CONTENT="0;0">
-	<META NAME="CHANGEDBY" CONTENT="RichÃ¡rd Lakatos">
-	<META NAME="CHANGED" CONTENT="20110619;10375200">
-	<STYLE TYPE="text/css">
-	<!--
-		H2.ctl { font-family: "Lohit Hindi" }
-		H3.ctl { font-family: "Lohit Hindi" }
-	-->
-	</STYLE>
-</HEAD>
-<BODY LANG="en-US" DIR="LTR">
-<H2 CLASS="western" ALIGN=CENTER>Database structure</H2>
-<P>(Generated with <A HREF="http://phpmyadmin.net/">phpMyAdmin</A>)</P>
-<H1>Tables</H1>
-<TABLE CELLPADDING=2 CELLSPACING=2>
-	<THEAD>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Table</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Comments</P>
-			</TH>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P><A HREF="#tbl_badges">badges</A></P>
-			</TH>
-			<TD STYLE="border: none; padding: 0in">
-				<P>badge information</P>
-			</TD>
-		</TR>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P><A HREF="#tbl_config">config</A></P>
-			</TH>
-			<TD STYLE="border: none; padding: 0in">
-				<P>configuration</P>
-			</TD>
-		</TR>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P><A HREF="#tbl_forums">forums</A></P>
-			</TH>
-			<TD STYLE="border: none; padding: 0in">
-				<P>data for forums</P>
-			</TD>
-		</TR>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P><A HREF="#tbl_menus">menus</A></P>
-			</TH>
-			<TD STYLE="border: none; padding: 0in">
-				<P>menu information</P>
-			</TD>
-		</TR>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P><A HREF="#tbl_menu_entries">menu_entries</A></P>
-			</TH>
-			<TD STYLE="border: none; padding: 0in">
-				<P>menu entry information</P>
-			</TD>
-		</TR>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P><A HREF="#tbl_posts">posts</A></P>
-			</TH>
-			<TD STYLE="border: none; padding: 0in">
-				<P>data for posts</P>
-			</TD>
-		</TR>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P><A HREF="#tbl_topics">topics</A></P>
-			</TH>
-			<TD STYLE="border: none; padding: 0in">
-				<P>data for topics</P>
-			</TD>
-		</TR>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P><A HREF="#tbl_users">users</A></P>
-			</TH>
-			<TD STYLE="border: none; padding: 0in">
-				<P>userdata</P>
-			</TD>
-		</TR>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P ALIGN=CENTER>8 table</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TH>
-		</TR>
-	</TBODY>
-</TABLE>
-<H2 CLASS="western"><A NAME="tbl_badges"></A>badges</H2>
-<P><B>Table comments:</B> badge information</P>
-<H3 CLASS="western">Fields</H3>
-<TABLE CELLPADDING=2 CELLSPACING=2>
-	<THEAD>
-		<TR>
-			<TH HEIGHT=20 STYLE="border: none; padding: 0in">
-				<P>Field</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Types</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Null</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Default</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Comments</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>MIME</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TH>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR>
-			<TD HEIGHT=19 STYLE="border: none; padding: 0in">
-				<P>userid</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>int(10)</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><A HREF="#users_id">id of the user</A> who earned the badge</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-		<TR>
-			<TD HEIGHT=19 STYLE="border: none; padding: 0in">
-				<P>badgename</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>varchar(255)</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>Yes</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><I>NULL</I></P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>name of the badge the user earned (refers <A HREF="../includes/badges.class.php.htm">badge
-				class</A> <A HREF="../includes/badges.class.php.htm#pub_var_badge_array">badge_array</A>)</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-		<TR>
-			<TD HEIGHT=20 STYLE="border: none; padding: 0in">
-				<P>earndate</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>int(16)</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in" SDVAL="0" SDNUM="1033;">
-				<P>0</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>timestamp when the user earned the badge</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-	</TBODY>
-</TABLE>
-<H3 CLASS="western">Indexes</H3>
-<TABLE CELLPADDING=2 CELLSPACING=2>
-	<THEAD>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Keyname</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Type</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Unique</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Packed</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Field</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Cardinality</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Collation</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Null</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Comment</P>
-			</TH>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR>
-			<TH ROWSPAN=2 STYLE="border: none; padding: 0in">
-				<P>userid AND badgename</P>
-			</TH>
-			<TD ROWSPAN=2 STYLE="border: none; padding: 0in">
-				<P>BTREE</P>
-			</TD>
-			<TD ROWSPAN=2 STYLE="border: none; padding: 0in">
-				<P>Yes</P>
-			</TD>
-			<TD ROWSPAN=2 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>userid</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>0</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>A</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD ROWSPAN=2 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-		<TR>
-			<TD STYLE="border: none; padding: 0in">
-				<P>badgename</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>0</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>A</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>YES</P>
-			</TD>
-		</TR>
-	</TBODY>
-</TABLE>
-<H2 CLASS="western"><A NAME="tbl_config"></A>config</H2>
-<P><B>Table comments:</B> configuration</P>
-<H3 CLASS="western">Fields</H3>
-<TABLE CELLPADDING=2 CELLSPACING=2>
-	<THEAD>
-		<TR>
-			<TH HEIGHT=20 STYLE="border: none; padding: 0in">
-				<P>Field</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Types</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Null</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Default</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Comments</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>MIME</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TH>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR>
-			<TD HEIGHT=19 STYLE="border: none; padding: 0in">
-				<P>variable</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>varchar(64)</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>variable name</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-		<TR>
-			<TD HEIGHT=20 STYLE="border: none; padding: 0in">
-				<P>value</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>varchar(32)</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>value for variable</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-	</TBODY>
-</TABLE>
-<H3 CLASS="western">Indexes</H3>
-<TABLE CELLPADDING=2 CELLSPACING=2>
-	<THEAD>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Keyname</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Type</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Unique</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Packed</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Field</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Cardinality</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Collation</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Null</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Comment</P>
-			</TH>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P>variable</P>
-			</TH>
-			<TD STYLE="border: none; padding: 0in">
-				<P>BTREE</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>Yes</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>variable</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>0</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>A</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-	</TBODY>
-</TABLE>
-<H2 CLASS="western"><A NAME="tbl_forums"></A>forums</H2>
-<P><B>Table comments:</B> data for forums</P>
-<H3 CLASS="western">Fields</H3>
-<TABLE WIDTH=655 CELLPADDING=2 CELLSPACING=0>
-	<COL WIDTH=67>
-	<COL WIDTH=84>
-	<COL WIDTH=32>
-	<COL WIDTH=53>
-	<COL WIDTH=333>
-	<COL WIDTH=50>
-	<COL WIDTH=8>
-	<THEAD>
-		<TR>
-			<TH WIDTH=67 HEIGHT=22 STYLE="border: none; padding: 0in">
-				<P>Field</P>
-			</TH>
-			<TH WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>Types</P>
-			</TH>
-			<TH WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>Null</P>
-			</TH>
-			<TH WIDTH=53 STYLE="border: none; padding: 0in">
-				<P>Default</P>
-			</TH>
-			<TH WIDTH=333 STYLE="border: none; padding: 0in">
-				<P>Comments</P>
-			</TH>
-			<TH WIDTH=50 STYLE="border: none; padding: 0in">
-				<P>MIME</P>
-			</TH>
-			<TH WIDTH=8 STYLE="border: none; padding: 0in"></TH>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR>
-			<TD WIDTH=67 HEIGHT=3 STYLE="; border: none; padding: 0in">
-				<P><A NAME="forums_id"></A>id</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>int(10)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in"></TD>
-			<TD WIDTH=333 STYLE="; border: none; padding: 0in">
-				<P>auto increasing ID</P>
-			</TD>
-			<TD WIDTH=50 STYLE="border: none; padding: 0in"></TD>
-			<TD WIDTH=8 STYLE="; border: none; padding: 0in"></TD>
-		</TR>
-		<TR>
-			<TD WIDTH=67 HEIGHT=54 STYLE="; border: none; padding: 0in">
-				<P>title</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>varchar(128)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=333 STYLE="border: none; padding: 0in">
-				<P>title for the forum</P>
-			</TD>
-			<TD WIDTH=50 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=8 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH=67 HEIGHT=3 STYLE="border: none; padding: 0in">
-				<P>info</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>varchar(512)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>Yes</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in">
-				<P><I>NULL</I></P>
-			</TD>
-			<TD WIDTH=333 STYLE="border: none; padding: 0in">
-				<P>little description appearing under forum title</P>
-			</TD>
-			<TD WIDTH=50 STYLE="border: none; padding: 0in"></TD>
-			<TD WIDTH=8 STYLE="; border: none; padding: 0in"></TD>
-		</TR>
-		<TR>
-			<TD WIDTH=67 HEIGHT=3 STYLE="; border: none; padding: 0in">
-				<P><A NAME="forums_minLevel"></A>minLevel</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>tinyint(2)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in"></TD>
-			<TD WIDTH=333 STYLE="; border: none; padding: 0in">
-				<P>minimal user level to list the forum (<A HREF="#users_userLevel">users.userLevel</A>)</P>
-			</TD>
-			<TD WIDTH=50 STYLE="border: none; padding: 0in"></TD>
-			<TD WIDTH=8 STYLE="; border: none; padding: 0in"></TD>
-		</TR>
-		<TR>
-			<TD WIDTH=67 HEIGHT=4 STYLE="; border: none; padding: 0in">
-				<P>createdate</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>int(16)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in"></TD>
-			<TD WIDTH=333 STYLE="; border: none; padding: 0in">
-				<P>creation date</P>
-			</TD>
-			<TD WIDTH=50 STYLE="border: none; padding: 0in"></TD>
-			<TD WIDTH=8 STYLE="; border: none; padding: 0in"></TD>
-		</TR>
-	</TBODY>
-</TABLE>
-<H3 CLASS="western">Indexes</H3>
-<TABLE CELLPADDING=2 CELLSPACING=2>
-	<THEAD>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Keyname</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Type</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Unique</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Packed</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Field</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Cardinality</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Collation</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Null</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Comment</P>
-			</TH>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P>PRIMARY</P>
-			</TH>
-			<TD STYLE="border: none; padding: 0in">
-				<P>BTREE</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>Yes</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>id</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>0</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>A</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-	</TBODY>
-</TABLE>
-<H2 CLASS="western"><A NAME="tbl_menus"></A>menus</H2>
-<P><B>Table comments:</B> menu information</P>
-<H3 CLASS="western">Fields</H3>
-<TABLE WIDTH=469 CELLPADDING=2 CELLSPACING=0>
-	<COL WIDTH=46>
-	<COL WIDTH=117>
-	<COL WIDTH=32>
-	<COL WIDTH=53>
-	<COL WIDTH=133>
-	<COL WIDTH=50>
-	<COL WIDTH=10>
-	<THEAD>
-		<TR>
-			<TH WIDTH=46 STYLE="border: none; padding: 0in">
-				<P>Field</P>
-			</TH>
-			<TH WIDTH=117 STYLE="border: none; padding: 0in">
-				<P>Types</P>
-			</TH>
-			<TH WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>Null</P>
-			</TH>
-			<TH WIDTH=53 STYLE="border: none; padding: 0in">
-				<P>Default</P>
-			</TH>
-			<TH WIDTH=133 STYLE="border: none; padding: 0in">
-				<P>Comments</P>
-			</TH>
-			<TH WIDTH=50 STYLE="border: none; padding: 0in">
-				<P>MIME</P>
-			</TH>
-			<TH WIDTH=10 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TH>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR>
-			<TD WIDTH=46 STYLE="border: none; padding: 0in">
-				<P><A NAME="menus_id"></A>id</P>
-			</TD>
-			<TD WIDTH=117 STYLE="border: none; padding: 0in">
-				<P>int(10)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=133 STYLE="border: none; padding: 0in">
-				<P>auto increasing ID</P>
-			</TD>
-			<TD WIDTH=50 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=10 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH=46 STYLE="border: none; padding: 0in">
-				<P>header</P>
-			</TD>
-			<TD WIDTH=117 STYLE="border: none; padding: 0in">
-				<P>varchar(64)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=133 STYLE="border: none; padding: 0in">
-				<P>menu header</P>
-			</TD>
-			<TD WIDTH=50 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=10 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH=46 STYLE="border: none; padding: 0in">
-				<P>align</P>
-			</TD>
-			<TD WIDTH=117 STYLE="border: none; padding: 0in">
-				<P>tinyint(2)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in" SDVAL="0" SDNUM="1033;">
-				<P>0</P>
-			</TD>
-			<TD WIDTH=133 STYLE="border: none; padding: 0in">
-				<P>sidebar vertical align</P>
-			</TD>
-			<TD WIDTH=50 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=10 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH=46 STYLE="border: none; padding: 0in">
-				<P>side</P>
-			</TD>
-			<TD WIDTH=117 STYLE="border: none; padding: 0in">
-				<P>enum('left', 'right')</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in">
-				<P>left</P>
-			</TD>
-			<TD WIDTH=133 STYLE="border: none; padding: 0in">
-				<P>sidebar choice</P>
-			</TD>
-			<TD WIDTH=50 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=10 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-	</TBODY>
-</TABLE>
-<H3 CLASS="western">Indexes</H3>
-<TABLE CELLPADDING=2 CELLSPACING=2>
-	<THEAD>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Keyname</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Type</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Unique</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Packed</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Field</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Cardinality</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Collation</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Null</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Comment</P>
-			</TH>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P>PRIMARY</P>
-			</TH>
-			<TD STYLE="border: none; padding: 0in">
-				<P>BTREE</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>Yes</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>id</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>0</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>A</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-	</TBODY>
-</TABLE>
-<H2 CLASS="western"><A NAME="tbl_menu_entries"></A>menu_entries</H2>
-<P><B>Table comments: </B>menu entry information</P>
-<H3 CLASS="western">Fields</H3>
-<TABLE CELLPADDING=2 CELLSPACING=2>
-	<THEAD>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Field</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Types</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Null</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Default</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Comments</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>MIME</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TH>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR>
-			<TD STYLE="border: none; padding: 0in">
-				<P>id</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>int(10)</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>auto increasing ID</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-		<TR>
-			<TD STYLE="border: none; padding: 0in">
-				<P>menu_id</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>int(10)</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>menu id (<A HREF="#menus_id">menus.id</A>)</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-		<TR>
-			<TD STYLE="border: none; padding: 0in">
-				<P>label</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>varchar(64)</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>text to show</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-		<TR>
-			<TD STYLE="border: none; padding: 0in">
-				<P>href</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>varchar(255)</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>link data</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-	</TBODY>
-</TABLE>
-<H3 CLASS="western">Indexes</H3>
-<TABLE CELLPADDING=2 CELLSPACING=2>
-	<THEAD>
-		<TR>
-			<TH HEIGHT=16 STYLE="border: none; padding: 0in">
-				<P>Keyname</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Type</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Unique</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Packed</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Field</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Cardinality</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Collation</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Null</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Comment</P>
-			</TH>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR>
-			<TH HEIGHT=20 STYLE="border: none; padding: 0in">
-				<P>PRIMARY</P>
-			</TH>
-			<TD STYLE="border: none; padding: 0in">
-				<P>BTREE</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>Yes</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>id</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>0</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>A</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-	</TBODY>
-</TABLE>
-<H2 CLASS="western"><A NAME="tbl_posts"></A>posts</H2>
-<P><B>Table comments:</B> data for posts</P>
-<H3 CLASS="western">Fields</H3>
-<TABLE CELLPADDING=2 CELLSPACING=2>
-	<THEAD>
-		<TR>
-			<TH HEIGHT=18 STYLE="border: none; padding: 0in">
-				<P>Field</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Types</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Null</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Default</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Comments</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>MIME</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in"></TH>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR>
-			<TD HEIGHT=1 STYLE="; border: none; padding: 0in">
-				<P>id</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>int(10)</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in"></TD>
-			<TD STYLE="; border: none; padding: 0in">
-				<P>auto increasing ID</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in"></TD>
-			<TD STYLE="; border: none; padding: 0in"></TD>
-		</TR>
-		<TR>
-			<TD HEIGHT=52 STYLE="; border: none; padding: 0in">
-				<P>topicid</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>int(10)</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>id o the topic the post is in (<A HREF="#topics_id">topics.id</A>)</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-		<TR>
-			<TD HEIGHT=52 STYLE="border: none; padding: 0in">
-				<P>forumid</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>int(10)</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>id of the forum the topic containing the post is in
-				(<A HREF="#forums_id">forums.id</A>)</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-		<TR>
-			<TD HEIGHT=1 STYLE="border: none; padding: 0in">
-				<P>title</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>varchar(128)</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in"></TD>
-			<TD STYLE="; border: none; padding: 0in">
-				<P>title for the post</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in"></TD>
-			<TD STYLE="; border: none; padding: 0in"></TD>
-		</TR>
-		<TR>
-			<TD HEIGHT=1 STYLE="; border: none; padding: 0in">
-				<P>createuser</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>int(10)</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in"></TD>
-			<TD STYLE="; border: none; padding: 0in">
-				<P>the ID of the user who created the topic (<A HREF="#users_id">users.id</A>)</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in"></TD>
-			<TD STYLE="; border: none; padding: 0in"></TD>
-		</TR>
-		<TR>
-			<TD HEIGHT=1 STYLE="; border: none; padding: 0in">
-				<P>createdate</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>int(16)</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in" SDVAL="0" SDNUM="1033;">
-				<P>0</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>creation date</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in"></TD>
-			<TD STYLE="; border: none; padding: 0in"></TD>
-		</TR>
-		<TR>
-			<TD STYLE="; border: none; padding: 0in">
-				<P>content</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>text</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>Yes</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><I>NULL</I></P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>text of the post</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-	</TBODY>
-</TABLE>
-<H3 CLASS="western">Indexes</H3>
-<TABLE CELLPADDING=2 CELLSPACING=2>
-	<THEAD>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Keyname</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Type</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Unique</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Packed</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Field</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Cardinality</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Collation</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Null</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Comment</P>
-			</TH>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P>PRIMARY</P>
-			</TH>
-			<TD STYLE="border: none; padding: 0in">
-				<P>BTREE</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>Yes</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>id</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>0</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>A</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-	</TBODY>
-</TABLE>
-<H2 CLASS="western"><BR><BR>
-</H2>
-<H2 CLASS="western"><A NAME="tbl_topics"></A>topics</H2>
-<P><B>Table comments:</B> data for topics</P>
-<H3 CLASS="western">Fields</H3>
-<TABLE WIDTH=823 CELLPADDING=2 CELLSPACING=0>
-	<COL WIDTH=75>
-	<COL WIDTH=84>
-	<COL WIDTH=32>
-	<COL WIDTH=53>
-	<COL WIDTH=493>
-	<COL WIDTH=50>
-	<COL WIDTH=8>
-	<THEAD>
-		<TR>
-			<TH WIDTH=75 HEIGHT=22 STYLE="border: none; padding: 0in">
-				<P>Field</P>
-			</TH>
-			<TH WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>Types</P>
-			</TH>
-			<TH WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>Null</P>
-			</TH>
-			<TH WIDTH=53 STYLE="border: none; padding: 0in">
-				<P>Default</P>
-			</TH>
-			<TH WIDTH=493 STYLE="border: none; padding: 0in">
-				<P>Comments</P>
-			</TH>
-			<TH WIDTH=50 STYLE="border: none; padding: 0in">
-				<P>MIME</P>
-			</TH>
-			<TH WIDTH=8 STYLE="border: none; padding: 0in"></TH>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR>
-			<TD WIDTH=75 HEIGHT=3 STYLE="; border: none; padding: 0in">
-				<P><A NAME="topics_id"></A>id</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>int(10)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in"></TD>
-			<TD WIDTH=493 STYLE="; border: none; padding: 0in">
-				<P>auto increasing ID</P>
-			</TD>
-			<TD WIDTH=50 STYLE="border: none; padding: 0in"></TD>
-			<TD WIDTH=8 STYLE="; border: none; padding: 0in"></TD>
-		</TR>
-		<TR>
-			<TD WIDTH=75 HEIGHT=54 STYLE="; border: none; padding: 0in">
-				<P>forumid</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>int(10)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=493 STYLE="border: none; padding: 0in">
-				<P>id of the forum the topic is in (<A HREF="#forums_id">forums.id</A>)</P>
-			</TD>
-			<TD WIDTH=50 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=8 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH=75 HEIGHT=3 STYLE="border: none; padding: 0in">
-				<P>title</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>varchar(128)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in"></TD>
-			<TD WIDTH=493 STYLE="; border: none; padding: 0in">
-				<P>title for the topic</P>
-			</TD>
-			<TD WIDTH=50 STYLE="border: none; padding: 0in"></TD>
-			<TD WIDTH=8 STYLE="; border: none; padding: 0in"></TD>
-		</TR>
-		<TR>
-			<TD WIDTH=75 HEIGHT=3 STYLE="; border: none; padding: 0in">
-				<P>createuser</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>int(10)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in"></TD>
-			<TD WIDTH=493 STYLE="; border: none; padding: 0in">
-				<P>the ID of the user who created the topic (<A HREF="#users_id">users.id</A>)</P>
-			</TD>
-			<TD WIDTH=50 STYLE="border: none; padding: 0in"></TD>
-			<TD WIDTH=8 STYLE="; border: none; padding: 0in"></TD>
-		</TR>
-		<TR>
-			<TD WIDTH=75 HEIGHT=3 STYLE="; border: none; padding: 0in">
-				<P>createdate</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>int(16)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in" SDVAL="0" SDNUM="1033;">
-				<P>0</P>
-			</TD>
-			<TD WIDTH=493 STYLE="border: none; padding: 0in">
-				<P>creation date</P>
-			</TD>
-			<TD WIDTH=50 STYLE="border: none; padding: 0in"></TD>
-			<TD WIDTH=8 STYLE="; border: none; padding: 0in"></TD>
-		</TR>
-		<TR>
-			<TD WIDTH=75 STYLE="; border: none; padding: 0in">
-				<P>locked</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>enum('0', '1')</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in">
-				<P>0</P>
-			</TD>
-			<TD WIDTH=493 STYLE="border: none; padding: 0in">
-				<P>whether the topic is locked (no new posts allowed): 1 -
-				locked, 0 - not locked</P>
-			</TD>
-			<TD WIDTH=50 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=8 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH=75 STYLE="border: none; padding: 0in">
-				<P>highlighted</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>enum('0', '1')</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in">
-				<P>0</P>
-			</TD>
-			<TD WIDTH=493 STYLE="border: none; padding: 0in">
-				<P>topic is highlighted at the top of the list if value is 1</P>
-			</TD>
-			<TD WIDTH=50 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=8 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-	</TBODY>
-</TABLE>
-<H3 CLASS="western">Indexes</H3>
-<TABLE CELLPADDING=2 CELLSPACING=2>
-	<THEAD>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Keyname</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Type</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Unique</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Packed</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Field</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Cardinality</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Collation</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Null</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Comment</P>
-			</TH>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P>PRIMARY</P>
-			</TH>
-			<TD STYLE="border: none; padding: 0in">
-				<P>BTREE</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>Yes</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>id</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>0</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>A</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-	</TBODY>
-</TABLE>
-<H2 CLASS="western"><A NAME="tbl_users"></A>users</H2>
-<P><B>Table comments:</B> userdata</P>
-<H3 CLASS="western">Fields</H3>
-<TABLE WIDTH=955 CELLPADDING=2 CELLSPACING=0>
-	<COL WIDTH=190>
-	<COL WIDTH=84>
-	<COL WIDTH=32>
-	<COL WIDTH=53>
-	<COL WIDTH=361>
-	<COL WIDTH=48>
-	<COL WIDTH=159>
-	<THEAD>
-		<TR>
-			<TH WIDTH=190 HEIGHT=24 STYLE="border: none; padding: 0in">
-				<P>Field</P>
-			</TH>
-			<TH WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>Type</P>
-			</TH>
-			<TH WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>Null</P>
-			</TH>
-			<TH WIDTH=53 STYLE="border: none; padding: 0in">
-				<P>Default</P>
-			</TH>
-			<TH WIDTH=361 STYLE="border: none; padding: 0in">
-				<P>Comments</P>
-			</TH>
-			<TH WIDTH=48 STYLE="border: none; padding: 0in">
-				<P>MIME</P>
-			</TH>
-			<TH WIDTH=159 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TH>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR>
-			<TD WIDTH=190 HEIGHT=21 STYLE="border: none; padding: 0in">
-				<P><A NAME="users_id"></A>id</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>int(10)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=361 STYLE="border: none; padding: 0in">
-				<P>auto increasing ID</P>
-			</TD>
-			<TD WIDTH=48 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=159 STYLE="border: none; padding: 0in">
-				<P><A HREF="../globals/session.htm#uid">Cached in session</A></P>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH=190 HEIGHT=21 STYLE="border: none; padding: 0in">
-				<P><A NAME="users_username"></A>username</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>varchar(64)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=361 STYLE="border: none; padding: 0in">
-				<P>user loginname</P>
-			</TD>
-			<TD WIDTH=48 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=159 STYLE="border: none; padding: 0in">
-				<P ALIGN=LEFT><A HREF="../globals/session.htm#username">Cached in
-				session</A></P>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH=190 HEIGHT=21 STYLE="border: none; padding: 0in">
-				<P><A NAME="users_pwd"></A>pwd</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>varchar(32)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=361 STYLE="border: none; padding: 0in">
-				<P>user password (md5 hashed)</P>
-			</TD>
-			<TD WIDTH=48 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=159 STYLE="border: none; padding: 0in">
-				<P><A HREF="../globals/session.htm#pwd">Cached in session</A></P>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH=190 HEIGHT=21 STYLE="border: none; padding: 0in">
-				<P>email</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>varchar(128)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=361 STYLE="border: none; padding: 0in">
-				<P>user e-mail address</P>
-			</TD>
-			<TD WIDTH=48 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=159 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH=190 HEIGHT=21 STYLE="border: none; padding: 0in">
-				<P><A NAME="users_curr_ip"></A>curr_ip</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>varchar(16)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in">
-				<P>0.0.0.0</P>
-			</TD>
-			<TD WIDTH=361 STYLE="border: none; padding: 0in">
-				<P>current session IP address</P>
-			</TD>
-			<TD WIDTH=48 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=159 STYLE="border: none; padding: 0in">
-				<P><A HREF="../globals/session.htm#curr_ip">Cached in session</A></P>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH=190 HEIGHT=21 STYLE="border: none; padding: 0in">
-				<P><A NAME="users_curr_sessid"></A>curr_sessid</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>varchar(32)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=361 STYLE="border: none; padding: 0in">
-				<P>current session ID</P>
-			</TD>
-			<TD WIDTH=48 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=159 STYLE="border: none; padding: 0in">
-				<P><A HREF="../globals/session.htm#curr_sessid">Cached in session</A></P>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH=190 HEIGHT=21 STYLE="border: none; padding: 0in">
-				<P>regdate</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>int(16)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=361 STYLE="border: none; padding: 0in">
-				<P>registration date</P>
-			</TD>
-			<TD WIDTH=48 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=159 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH=190 HEIGHT=21 STYLE="border: none; padding: 0in">
-				<P>loggedin</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>tinyint(1)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in" SDVAL="0" SDNUM="1033;">
-				<P>0</P>
-			</TD>
-			<TD WIDTH=361 STYLE="border: none; padding: 0in">
-				<P>1 if user is currently logged in, 0 if not</P>
-			</TD>
-			<TD WIDTH=48 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=159 STYLE="border: none; padding: 0in">
-				<P><A HREF="../globals/session.htm#log_status">Cached in session</A></P>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH=190 HEIGHT=21 STYLE="border: none; padding: 0in">
-				<P>activated</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>tinyint(1)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in" SDVAL="0" SDNUM="1033;">
-				<P>0</P>
-			</TD>
-			<TD WIDTH=361 STYLE="border: none; padding: 0in">
-				<P>1 if user is activated, 0 if not</P>
-			</TD>
-			<TD WIDTH=48 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=159 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH=190 HEIGHT=21 STYLE="border: none; padding: 0in">
-				<P>token</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>varchar(32)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>Yes</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in">
-				<P><I>NULL</I></P>
-			</TD>
-			<TD WIDTH=361 STYLE="border: none; padding: 0in">
-				<P>token for activation or password restore</P>
-			</TD>
-			<TD WIDTH=48 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=159 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH=190 HEIGHT=20 STYLE="border: none; padding: 0in">
-				<P><A NAME="users_userLevel"></A>userLevel</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>tinyint(2)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in" SDVAL="0" SDNUM="1033;">
-				<P>0</P>
-			</TD>
-			<TD WIDTH=361 STYLE="border: none; padding: 0in">
-				<P>clearance level</P>
-			</TD>
-			<TD WIDTH=48 STYLE="border: none; padding: 0in"></TD>
-			<TD WIDTH=159 STYLE="; border: none; padding: 0in">
-				<P><A HREF="user-levels.htm">Related info</A></P>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH=190 HEIGHT=21 STYLE="border: none; padding: 0in">
-				<P><A NAME="users_avatar_filename"></A>avatar_filename</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>varchar(36)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=361 STYLE="border: none; padding: 0in">
-				<P>avatar picture filename</P>
-			</TD>
-			<TD WIDTH=48 STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD WIDTH=159 STYLE="border: none; padding: 0in">
-				<P><A HREF="../globals/session.htm#avatar_filename">Cached in
-				session</A></P>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH=190 HEIGHT=12 STYLE="border: none; padding: 0in">
-				<P><A NAME="users_language"></A>language</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>varchar(32)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in">
-				<P>english</P>
-			</TD>
-			<TD WIDTH=361 STYLE="border: none; padding: 0in">
-				<P>user preferred language</P>
-			</TD>
-			<TD WIDTH=48 STYLE="border: none; padding: 0in"></TD>
-			<TD WIDTH=159 STYLE="; border: none; padding: 0in">
-				<P><A HREF="../globals/languages.htm">Related info</A><BR><A HREF="../globals/session.htm#usr_language">Cached
-				in session</A></P>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH=190 HEIGHT=12 STYLE="border: none; padding: 0in">
-				<P><A NAME="users_theme"></A>theme</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>varchar(32)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in">
-				<P>winky</P>
-			</TD>
-			<TD WIDTH=361 STYLE="border: none; padding: 0in">
-				<P>user preferred theme</P>
-			</TD>
-			<TD WIDTH=48 STYLE="border: none; padding: 0in"></TD>
-			<TD WIDTH=159 STYLE="; border: none; padding: 0in">
-				<P><A HREF="../globals/session.htm#theme_name">Cached in session</A></P>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH=190 HEIGHT=11 STYLE="border: none; padding: 0in">
-				<P><A NAME="users_forum_topic_count_per_page"></A>forum_topic_count_per_page</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>smallint(3)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in">
-				<P>15</P>
-			</TD>
-			<TD WIDTH=361 STYLE="border: none; padding: 0in">
-				<P>user preference: how many topics appear on one page</P>
-			</TD>
-			<TD WIDTH=48 STYLE="border: none; padding: 0in"></TD>
-			<TD WIDTH=159 STYLE="; border: none; padding: 0in">
-				<P><A HREF="../globals/session.htm#forum_topic_count_per_page">Cached
-				in session</A></P>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH=190 HEIGHT=9 STYLE="border: none; padding: 0in">
-				<P><A NAME="users_forum_post_count_per_page"></A>forum_post_count_per_page</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>smallint(3)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in">
-				<P>15</P>
-			</TD>
-			<TD WIDTH=361 STYLE="border: none; padding: 0in">
-				<P>user preference: how many posts appear on one page</P>
-			</TD>
-			<TD WIDTH=48 STYLE="border: none; padding: 0in"></TD>
-			<TD WIDTH=159 STYLE="; border: none; padding: 0in">
-				<P><A HREF="../globals/session.htm#forum_post_count_per_page">Cached
-				in session</A></P>
-			</TD>
-		</TR>
-		<TR>
-			<TD WIDTH=190 HEIGHT=12 STYLE="border: none; padding: 0in">
-				<P>post_count</P>
-			</TD>
-			<TD WIDTH=84 STYLE="border: none; padding: 0in">
-				<P>int(6)</P>
-			</TD>
-			<TD WIDTH=32 STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD WIDTH=53 STYLE="border: none; padding: 0in">
-				<P>0</P>
-			</TD>
-			<TD WIDTH=361 STYLE="border: none; padding: 0in">
-				<P>number of posts from the user</P>
-			</TD>
-			<TD WIDTH=48 STYLE="border: none; padding: 0in"></TD>
-			<TD WIDTH=159 STYLE="; border: none; padding: 0in"></TD>
-		</TR>
-	</TBODY>
-</TABLE>
-<H3 CLASS="western">Indexes</H3>
-<TABLE CELLPADDING=2 CELLSPACING=2>
-	<THEAD>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Keyname</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Type</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Unique</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Packed</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Field</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Cardinality</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Collation</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Null</P>
-			</TH>
-			<TH STYLE="border: none; padding: 0in">
-				<P>Comment</P>
-			</TH>
-		</TR>
-	</THEAD>
-	<TBODY>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P>PRIMARY</P>
-			</TH>
-			<TD STYLE="border: none; padding: 0in">
-				<P>BTREE</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>Yes</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>id</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>0</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>A</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in"></TD>
-		</TR>
-		<TR>
-			<TH STYLE="; border: none; padding: 0in">
-				<P>username</P>
-			</TH>
-			<TD STYLE="border: none; padding: 0in">
-				<P>BTREE</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>Yes</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>username</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>0</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>A</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-		<TR>
-			<TH STYLE="border: none; padding: 0in">
-				<P>email</P>
-			</TH>
-			<TD STYLE="border: none; padding: 0in">
-				<P>BTREE</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>Yes</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>No</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>email</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>0</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P>A</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-			<TD STYLE="border: none; padding: 0in">
-				<P><BR>
-				</P>
-			</TD>
-		</TR>
-	</TBODY>
-</TABLE>
-<P><BR><BR>
-</P>
-</BODY>
-</HTML>
+<html>
+
+<head>
+<title>Database structure</title>
+</head>
+
+<body>
+
+<h2 align="center">Database structure</h2>
+<p>(Generated with <a href="http://phpmyadmin.net">phpMyAdmin</a>)</p>
+<h1>Tables</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Table</th>
+      <th>Comments</th>
+    </tr>
+  </thead>
+  <tr>
+    <th><a href="#tbl_badges">badges</a></th>
+    <td>badge information</td>
+  </tr>
+  <tr>
+    <th><a href="#tbl_config">config</a></th>
+    <td>configuration</td>
+  </tr>
+  <tr>
+    <th><a href="#tbl_forums">forums</a></th>
+    <td>data for forums</td>
+  </tr>
+  <tr>
+    <th><a href="#tbl_menus">menus</a></th>
+    <td>menu information</td>
+  </tr>
+  <tr>
+    <th><a href="#tbl_menu_entries">menu_entries</a></th>
+    <td>menu entry information</td>
+  </tr>
+  <tr>
+    <th><a href="#tbl_posts">posts</a></th>
+    <td>data for posts</td>
+  </tr>
+  <tr>
+    <th><a href="#tbl_topics">topics</a></th>
+    <td>data for topics</td>
+  </tr>
+  <tr>
+    <th><a href="#tbl_users">users</a></th>
+    <td>userdata</td>
+  </tr>
+  <tr>
+    <th align="center">8 table</th>
+    <th>&nbsp;</th>
+  </tr>
+</table>
+<h2><a name="tbl_badges"></a>badges</h2>
+<p><b>Table comments:</b> badge information</p>
+<h3>Fields</h3>
+<table style="width: 100%;" height="92">
+  <thead>
+    <tr>
+      <th height="19">Field</th>
+      <th height="19">Types</th>
+      <!--<th>Tulajdonságok</th>-->
+      <th height="19">Null</th>
+      <th height="19">Default</th>
+      <!--<th>Extra</th>-->
+      <th height="19">Comments</th>
+      <th height="19">MIME</th>
+      <th height="19">&nbsp;</th>
+    </tr>
+  </thead>
+  <tr>
+    <td height="19">userid</td>
+    <td height="19">int(10)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">No</td>
+    <td height="19">&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19"><a href="#users_id">id of the user</a> who earned the badge</td>
+    <td height="19">&nbsp;</td>
+    <td height="19">&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="19">badgename</td>
+    <td height="19">varchar(255)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">Yes</td>
+    <td height="19"><i>NULL</i></td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">name of the badge the user earned (refers
+    <a href="../includes/badges.class.php.htm">badge class</a>
+    <a href="../includes/badges.class.php.htm#pub_var_badge_array">badge_array</a>)</td>
+    <td height="19">&nbsp;</td>
+    <td height="19">&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="19">earndate</td>
+    <td height="19">int(16)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">No</td>
+    <td height="19">0</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">timestamp when the user earned the badge</td>
+    <td height="19">&nbsp;</td>
+    <td height="19">&nbsp;</td>
+  </tr>
+</table>
+<h3>Indexes</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Keyname</th>
+      <th>Type</th>
+      <th>Unique</th>
+      <th>Packed</th>
+      <th>Field</th>
+      <th>Cardinality</th>
+      <th>Collation</th>
+      <th>Null</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+  <tr class="odd">
+    <th rowspan="2">userid AND badgename</th>
+    <td rowspan="2">BTREE</td>
+    <td rowspan="2">Yes</td>
+    <td rowspan="2">No</td>
+    <td>userid</td>
+    <td>0</td>
+    <td>A</td>
+    <td>&nbsp;</td>
+    <td rowspan="2">&nbsp;</td>
+  </tr>
+  <tr class="odd">
+    <td>badgename</td>
+    <td>0</td>
+    <td>A</td>
+    <td>YES</td>
+  </tr>
+</table>
+<h2><a name="tbl_config"></a>config</h1>
+<p><b>Table comments:</b> configuration</p>
+<h3>Fields</h3>
+<table style="width: 100%;" height="92">
+  <thead>
+    <tr>
+      <th height="19">Field</th>
+      <th height="19">Types</th>
+      <!--<th>Tulajdonságok</th>-->
+      <th height="19">Null</th>
+      <th height="19">Default</th>
+      <!--<th>Extra</th>-->
+      <th height="19">Comments</th>
+      <th height="19">MIME</th>
+      <th height="19">&nbsp;</th>
+    </tr>
+  </thead>
+  <tr>
+    <td height="19">variable</td>
+    <td height="19">varchar(64)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">No</td>
+    <td height="19">&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">variable name</td>
+    <td height="19">&nbsp;</td>
+    <td height="19">&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="19">value</td>
+    <td height="19">varchar(32)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">No</td>
+    <td height="19">&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">value for variable</td>
+    <td height="19">&nbsp;</td>
+    <td height="19">&nbsp;</td>
+  </tr>
+</table>
+<h3>Indexes</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Keyname</th>
+      <th>Type</th>
+      <th>Unique</th>
+      <th>Packed</th>
+      <th>Field</th>
+      <th>Cardinality</th>
+      <th>Collation</th>
+      <th>Null</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+  <tr class="odd">
+    <th rowspan="2">variable</th>
+    <td rowspan="2">BTREE</td>
+    <td rowspan="2">Yes</td>
+    <td rowspan="2">No</td>
+    <td>variable</td>
+    <td>0</td>
+    <td>A</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<h2><a name="tbl_forums"></a>forums</h2>
+<p><b>Table comments:</b> data for forums</p>
+<h3>Fields</h3>
+<table style="width: 100%;" height="84">
+  <thead>
+    <tr>
+      <th height="17">Field</th>
+      <th height="17">Types</th>
+      <th height="17">Null</th>
+      <th height="17">Default</th>
+      <th height="17">Comments</th>
+      <th height="17">MIME</th>
+      <th height="17"></th>
+    </tr>
+    <tr>
+      <!--<th>Tulajdonságok</th>-->
+      <!--<th>Extra</th>-->
+    </tr>
+  </thead>
+  <tr>
+    <td height="1"><a name="forums_id"></a>id</td>
+    <td height="1">int(10)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="1">No</td>
+    <td height="1"></td>
+    <!--<td>auto_increment&nbsp;</td>-->
+    <td height="1">auto increasing ID</td>
+    <td height="1"></td>
+    <td height="1"></td>
+  </tr>
+  <tr>
+    <td height="52">title</td>
+    <td height="52">varchar(128)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="52">No</td>
+    <td height="52">&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="52">title for the forum</td>
+    <td height="52">&nbsp;</td>
+    <td height="52">&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="1">info</td>
+    <td height="1">varchar(512)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="1">Yes</td>
+    <td height="1"><i>NULL</i></td>
+    <!--<td>&nbsp;</td>-->
+    <td height="1">little description appearing under forum title</td>
+    <td height="1"></td>
+    <td height="1"></td>
+  </tr>
+  <tr>
+    <td height="1"><a name="forums_minLevel"></a>minLevel</td>
+    <td height="1">tinyint(2)</td>
+    <td height="1">No</td>
+    <td height="1"></td>
+    <td height="1">minimal user level to list the forum (<a href="#users_userLevel">users.userLevel</a>)</td>
+    <td height="1"></td>
+    <td height="1"></td>
+  </tr>
+  <tr>
+    <td height="1">createdate</td>
+    <td height="1">int(16)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="1">No</td>
+    <td height="1"></td>
+    <!--<td>&nbsp;</td>-->
+    <td height="1">creation date</td>
+    <td height="1"></td>
+    <td height="1"></td>
+  </tr>
+</table>
+<h3>Indexes</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Keyname</th>
+      <th>Type</th>
+      <th>Unique</th>
+      <th>Packed</th>
+      <th>Field</th>
+      <th>Cardinality</th>
+      <th>Collation</th>
+      <th>Null</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+  <tr class="odd">
+    <th rowspan="1">PRIMARY</th>
+    <td rowspan="1">BTREE</td>
+    <td rowspan="1">Yes</td>
+    <td rowspan="1">No</td>
+    <td>id</td>
+    <td>0</td>
+    <td>A</td>
+    <td>&nbsp;</td>
+    <td rowspan="1">&nbsp;</td>
+  </tr>
+</table>
+<h2><a name="tbl_menus"></a>menus</h2>
+<p><b>Table comments:</b> menu information</p>
+<h3>Fields</h3>
+<table style="width: 100%;">
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Types</th>
+      <th>Null</th>
+      <th>Default</th>
+      <th>Comments</th>
+      <th>MIME</th>
+      <th>&nbsp;</th>
+    </tr>
+    <tr>
+      <!--<th>Tulajdonságok</th>-->
+      <!--<th>Extra</th>-->
+    </tr>
+  </thead>
+  <tr>
+    <td><a name="menus_id"></a>id</td>
+    <td>int(10)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No</td>
+    <td>&nbsp;</td>
+    <!--<td>auto_increment&nbsp;</td>-->
+    <td>auto increasing ID</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>header</td>
+    <td>varchar(64)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No</td>
+    <td>&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>menu header</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>align</td>
+    <td>tinyint(2)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No</td>
+    <td>0</td>
+    <!--<td>&nbsp;</td>-->
+    <td>sidebar vertical align</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>side</td>
+    <td>enum('left', 'right')</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No</td>
+    <td>left</td>
+    <!--<td>&nbsp;</td>-->
+    <td>sidebar choice</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<h3>Indexes</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Keyname</th>
+      <th>Type</th>
+      <th>Unique</th>
+      <th>Packed</th>
+      <th>Field</th>
+      <th>Cardinality</th>
+      <th>Collation</th>
+      <th>Null</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+  <tr class="odd">
+    <th rowspan="1">PRIMARY</th>
+    <td rowspan="1">BTREE</td>
+    <td rowspan="1">Yes</td>
+    <td rowspan="1">No</td>
+    <td>id</td>
+    <td>0</td>
+    <td>A</td>
+    <td>&nbsp;</td>
+    <td rowspan="1">&nbsp;</td>
+  </tr>
+</table>
+<h2><a name="tbl_menu_entries"></a>menu_entries</h2>
+<p><b>Table comments: </b>menu entry information</p>
+<h3>Fields</h3>
+<table style="width: 100%;">
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Types</th>
+      <!--<th>Tulajdonságok</th>-->
+      <th>Null</th>
+      <th>Default</th>
+      <!--<th>Extra</th>-->
+      <th>Comments</th>
+      <th>MIME</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tr>
+    <td>id</td>
+    <td>int(10)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No</td>
+    <td>&nbsp;</td>
+    <!--<td>auto_increment&nbsp;</td>-->
+    <td>auto increasing ID&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>menu_id</td>
+    <td>int(10)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No</td>
+    <td>&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>menu id (<a href="#menus_id">menus.id</a>)&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>label</td>
+    <td>varchar(64)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No</td>
+    <td>&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>text to show&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>href</td>
+    <td>varchar(255)</td>
+    <!--<td>&nbsp;</td>-->
+    <td>No</td>
+    <td>&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td>link data&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<h3>Indexes</h3>
+<table height="42">
+  <thead>
+    <tr>
+      <th height="15">Keyname</th>
+      <th height="15">Type</th>
+      <th height="15">Unique</th>
+      <th height="15">Packed</th>
+      <th height="15">Field</th>
+      <th height="15">Cardinality</th>
+      <th height="15">Collation</th>
+      <th height="15">Null</th>
+      <th height="15">Comment</th>
+    </tr>
+  </thead>
+  <tr class="odd">
+    <th rowspan="1" height="19">PRIMARY</th>
+    <td rowspan="1" height="19">BTREE</td>
+    <td rowspan="1" height="19">Yes</td>
+    <td rowspan="1" height="19">No</td>
+    <td height="19">id</td>
+    <td height="19">0</td>
+    <td height="19">A</td>
+    <td height="19">&nbsp;</td>
+    <td rowspan="1" height="19">&nbsp;</td>
+  </tr>
+</table>
+<h2><a name="tbl_posts"></a>posts</h2>
+<p><b>Table comments:</b> data for posts</p>
+<h3>Fields</h3>
+<table style="width: 100%;" height="84">
+  <thead>
+    <tr>
+      <th height="17">Field</th>
+      <th height="17">Types</th>
+      <th height="17">Null</th>
+      <th height="17">Default</th>
+      <th height="17">Comments</th>
+      <th height="17">MIME</th>
+      <th height="17"></th>
+    </tr>
+    <tr>
+      <!--<th>Tulajdonságok</th>-->
+      <!--<th>Extra</th>-->
+    </tr>
+  </thead>
+  <tr>
+    <td height="1">id</td>
+    <td height="1">int(10)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="1">No</td>
+    <td height="1"></td>
+    <!--<td>auto_increment&nbsp;</td>-->
+    <td height="1">auto increasing ID</td>
+    <td height="1"></td>
+    <td height="1"></td>
+  </tr>
+  <tr>
+    <td height="52">topicid</td>
+    <td height="52">int(10)</td>
+    <td height="52">No</td>
+    <td height="52">&nbsp;</td>
+    <td height="52">id o the topic the post is in (<a href="#topics_id">topics.id</a>)</td>
+    <td height="52">&nbsp;</td>
+    <td height="52">&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="52">forumid</td>
+    <td height="52">int(10)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="52">No</td>
+    <td height="52">&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="52">id of the forum the topic containing the post is in (<a href="#forums_id">forums.id</a>)</td>
+    <td height="52">&nbsp;</td>
+    <td height="52">&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="1">title</td>
+    <td height="1">varchar(128)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="1">No</td>
+    <td height="1"></td>
+    <!--<td>&nbsp;</td>-->
+    <td height="1">title for the post</td>
+    <td height="1"></td>
+    <td height="1"></td>
+  </tr>
+  <tr>
+    <td height="1">createuser</td>
+    <td height="1">int(10)</td>
+    <td height="1">No</td>
+    <td height="1"></td>
+    <td height="1">the ID of the user who created the topic (<a href="#users_id">users.id</a>)</td>
+    <td height="1"></td>
+    <td height="1"></td>
+  </tr>
+  <tr>
+    <td height="1">createdate</td>
+    <td height="1">int(16)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="1">No</td>
+    <td height="1">0</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="1">creation date</td>
+    <td height="1"></td>
+    <td height="1"></td>
+  </tr>
+  <tr>
+    <td height="0">content</td>
+    <td height="0">text</td>
+    <td height="0">Yes</td>
+    <td height="0"><i>NULL</i></td>
+    <td height="0">text of the post</td>
+    <td height="0">&nbsp;</td>
+    <td height="0">&nbsp;</td>
+  </tr>
+</table>
+<h3>Indexes</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Keyname</th>
+      <th>Type</th>
+      <th>Unique</th>
+      <th>Packed</th>
+      <th>Field</th>
+      <th>Cardinality</th>
+      <th>Collation</th>
+      <th>Null</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+  <tr class="odd">
+    <th rowspan="1">PRIMARY</th>
+    <td rowspan="1">BTREE</td>
+    <td rowspan="1">Yes</td>
+    <td rowspan="1">No</td>
+    <td>id</td>
+    <td>0</td>
+    <td>A</td>
+    <td>&nbsp;</td>
+    <td rowspan="1">&nbsp;</td>
+  </tr>
+</table>
+<h2><a name="tbl_topics"></a>topics</h2>
+<p><b>Table comments:</b> data for topics</p>
+<h3>Fields</h3>
+<table style="width: 100%;" height="84">
+  <thead>
+    <tr>
+      <th height="17">Field</th>
+      <th height="17">Types</th>
+      <th height="17">Null</th>
+      <th height="17">Default</th>
+      <th height="17">Comments</th>
+      <th height="17">MIME</th>
+      <th height="17"></th>
+    </tr>
+    <tr>
+      <!--<th>Tulajdonságok</th>-->
+      <!--<th>Extra</th>-->
+    </tr>
+  </thead>
+  <tr>
+    <td height="1"><a name="topics_id"></a>id</td>
+    <td height="1">int(10)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="1">No</td>
+    <td height="1"></td>
+    <!--<td>auto_increment&nbsp;</td>-->
+    <td height="1">auto increasing ID</td>
+    <td height="1"></td>
+    <td height="1"></td>
+  </tr>
+  <tr>
+    <td height="52">forumid</td>
+    <td height="52">int(10)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="52">No</td>
+    <td height="52">&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="52">id of the forum the topic is in (<a href="#forums_id">forums.id</a>)</td>
+    <td height="52">&nbsp;</td>
+    <td height="52">&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="1">title</td>
+    <td height="1">varchar(128)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="1">No</td>
+    <td height="1"></td>
+    <!--<td>&nbsp;</td>-->
+    <td height="1">title for the topic</td>
+    <td height="1"></td>
+    <td height="1"></td>
+  </tr>
+  <tr>
+    <td height="1">createuser</td>
+    <td height="1">int(10)</td>
+    <td height="1">No</td>
+    <td height="1"></td>
+    <td height="1">the ID of the user who created the topic (<a href="#users_id">users.id</a>)</td>
+    <td height="1"></td>
+    <td height="1"></td>
+  </tr>
+  <tr>
+    <td height="1">createdate</td>
+    <td height="1">int(16)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="1">No</td>
+    <td height="1">0</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="1">creation date</td>
+    <td height="1"></td>
+    <td height="1"></td>
+  </tr>
+  <tr>
+    <td height="0">locked</td>
+    <td height="0">enum('0', '1')</td>
+    <td height="0">No</td>
+    <td height="0">0</td>
+    <td height="0">whether the topic is locked (no new posts allowed): 1 - 
+    locked, 0 - not locked&nbsp;</td>
+    <td height="0">&nbsp;</td>
+    <td height="0">&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="0">highlighted</td>
+    <td height="0">enum('0', '1')</td>
+    <td height="0">No</td>
+    <td height="0">0</td>
+    <td height="0">topic is highlighted at the top of the list if value is 1</td>
+    <td height="0">&nbsp;</td>
+    <td height="0">&nbsp;</td>
+  </tr>
+</table>
+<h3>Indexes</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Keyname</th>
+      <th>Type</th>
+      <th>Unique</th>
+      <th>Packed</th>
+      <th>Field</th>
+      <th>Cardinality</th>
+      <th>Collation</th>
+      <th>Null</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+  <tr class="odd">
+    <th rowspan="1">PRIMARY</th>
+    <td rowspan="1">BTREE</td>
+    <td rowspan="1">Yes</td>
+    <td rowspan="1">No</td>
+    <td>id</td>
+    <td>0</td>
+    <td>A</td>
+    <td>&nbsp;</td>
+    <td rowspan="1">&nbsp;</td>
+  </tr>
+</table>
+<h2><a name="tbl_users"></a>users</h2>
+<p><b>Table comments:</b> userdata</p>
+<h3>Fields</h3>
+<table style="width: 100%;" height="273">
+  <thead>
+    <tr>
+      <th height="19">Field</th>
+      <th height="19">Type</th>
+      <!--<th>Attributes</th>-->
+      <th height="19">Null</th>
+      <th height="19">Default</th>
+      <!--<th>Extra</th>-->
+      <th height="19">Comments</th>
+      <th height="19">MIME</th>
+      <th height="19">&nbsp;</th>
+    </tr>
+  </thead>
+  <tr>
+    <td height="19"><a name="users_id"></a>id</td>
+    <td height="19">int(10)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">No</td>
+    <td height="19">&nbsp;</td>
+    <!--<td>auto_increment&nbsp;</td>-->
+    <td height="19">auto increasing ID</td>
+    <td height="19">&nbsp;</td>
+    <td height="19"><a href="../globals/session.htm#uid">Cached in session</a></td>
+  </tr>
+  <tr>
+    <td height="19"><a name="users_username"></a>username</td>
+    <td height="19">varchar(64)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">No</td>
+    <td height="19">&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">user loginname</td>
+    <td height="19">&nbsp;</td>
+    <td height="19">
+    <p align="left"><a href="../globals/session.htm#username">Cached in session</a></td>
+  </tr>
+  <tr>
+    <td height="19"><a name="users_pwd"></a>pwd</td>
+    <td height="19">varchar(32)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">No</td>
+    <td height="19">&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">user password (md5 hashed)</td>
+    <td height="19">&nbsp;</td>
+    <td height="19"><a href="../globals/session.htm#pwd">Cached in session</a></td>
+  </tr>
+  <tr>
+    <td height="19">email</td>
+    <td height="19">varchar(128)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">No</td>
+    <td height="19">&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">user e-mail address</td>
+    <td height="19">&nbsp;</td>
+    <td height="19">&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="19"><a name="users_curr_ip"></a>curr_ip</td>
+    <td height="19">varchar(16)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">No</td>
+    <td height="19">0.0.0.0</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">current session IP address</td>
+    <td height="19">&nbsp;</td>
+    <td height="19"><a href="../globals/session.htm#curr_ip">Cached in session</a></td>
+  </tr>
+  <tr>
+    <td height="19"><a name="users_curr_sessid"></a>curr_sessid</td>
+    <td height="19">varchar(32)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">No</td>
+    <td height="19">&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">current session ID</td>
+    <td height="19">&nbsp;</td>
+    <td height="19"><a href="../globals/session.htm#curr_sessid">Cached in 
+    session</a></td>
+  </tr>
+  <tr>
+    <td height="19">regdate</td>
+    <td height="19">int(16)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">No</td>
+    <td height="19">&nbsp;</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">registration date</td>
+    <td height="19">&nbsp;</td>
+    <td height="19">&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="19"><a name="users_loggedin"></a>loggedin</td>
+    <td height="19">tinyint(1)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">No</td>
+    <td height="19">0</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="19">1 if user is currently logged in, 0 if not</td>
+    <td height="19">&nbsp;</td>
+    <td height="19"><a href="../globals/session.htm#log_status">Cached in 
+    session</a></td>
+  </tr>
+  <tr>
+    <td height="18">activated</td>
+    <td height="18">tinyint(1)</td>
+    <td height="18">No</td>
+    <td height="18">0</td>
+    <td height="18">1 if user is activated, 0 if not</td>
+    <td height="18"></td>
+    <td height="18"></td>
+  </tr>
+  <tr>
+    <td height="18">token</td>
+    <td height="18">varchar(32)</td>
+    <td height="18">Yes</td>
+    <td height="18"><i>NULL</i></td>
+    <td height="18">token for activation or password recovery</td>
+    <td height="18"></td>
+    <td height="18"></td>
+  </tr>
+  <tr>
+    <td height="18"><a name="users_userLevel"></a>userLevel</td>
+    <td height="18">tinyint(2)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="18">No</td>
+    <td height="18">0</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="18">clearance level</td>
+    <td height="18"></td>
+    <td height="18"><a href="user-levels.htm">Related info</a></td>
+  </tr>
+  <tr>
+    <td height="19"><a name="users_avatar_filename"></a>avatar_filename</td>
+    <td height="19">varchar(36)</td>
+    <td height="19">No</td>
+    <td height="19">&nbsp;</td>
+    <td height="19">avatar picture filename</td>
+    <td height="19">&nbsp;</td>
+    <td height="19"><a href="../globals/session.htm#avatar_filename">Cached in 
+    session</a></td>
+  </tr>
+  <tr>
+    <td height="10"><a name="users_language"></a>language</td>
+    <td height="10">varchar(32)</td>
+    <td height="10">No</td>
+    <td height="10">english</td>
+    <td height="10">user preferred language</td>
+    <td height="10"></td>
+    <td height="10"><a href="../globals/languages.htm">Related info</a><br>
+    <a href="../globals/session.htm#usr_language">Cached in session</a></td>
+  </tr>
+  <tr>
+    <td height="10"><a name="users_theme"></a>theme</td>
+    <td height="10">varchar(32)</td>
+    <td height="10">No</td>
+    <td height="10">winky</td>
+    <td height="10">user preferred theme</td>
+    <td height="10"></td>
+    <td height="10"><a href="../globals/session.htm#theme_name">Cached in session</a></td>
+  </tr>
+  <tr>
+    <td height="9"><a name="users_forum_topic_count_per_page"></a>forum_topic_count_per_page</td>
+    <td height="9">smallint(3)</td>
+    <td height="9">No</td>
+    <td height="9">15</td>
+    <td height="9">user preference: how many topics appear on one page</td>
+    <td height="9"></td>
+    <td height="9"><a href="../globals/session.htm#forum_topic_count_per_page">
+    Cached in session</a></td>
+  </tr>
+  <tr>
+    <td height="7"><a name="users_forum_post_count_per_page"></a>forum_post_count_per_page</td>
+    <td height="7">smallint(3)</td>
+    <td height="7">No</td>
+    <td height="7">15</td>
+    <td height="7">user preference: how many posts appear on one page</td>
+    <td height="7"></td>
+    <td height="7"><a href="../globals/session.htm#forum_post_count_per_page">
+    Cached in session</a></td>
+  </tr>
+  <tr>
+    <td height="9"><label for="checkbox_row_12">post_count</label></td>
+    <td height="9">int(6)</td>
+    <td height="9">No</td>
+    <td height="9">0</td>
+    <td height="9">number of posts from the user</td>
+    <td height="9"></td>
+    <td height="9"></td>
+  </tr>
+</table>
+<h3>Indexes</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Keyname</th>
+      <th>Type</th>
+      <th>Unique</th>
+      <th>Packed</th>
+      <th>Field</th>
+      <th>Cardinality</th>
+      <th>Collation</th>
+      <th>Null</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+  <tr class="odd">
+    <th>PRIMARY</th>
+    <td>BTREE</td>
+    <td>Yes</td>
+    <td>No</td>
+    <td>id</td>
+    <td>0</td>
+    <td>A</td>
+    <td>&nbsp;</td>
+    <td></td>
+  </tr>
+  <tr class="odd">
+    <th>username</th>
+    <td>BTREE</td>
+    <td>Yes</td>
+    <td>No</td>
+    <td>username</td>
+    <td>0</td>
+    <td>A</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr class="odd">
+    <th>email</th>
+    <td>BTREE</td>
+    <td>Yes</td>
+    <td>No</td>
+    <td>email</td>
+    <td>0</td>
+    <td>A</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+
+</body>
+
+</html>
