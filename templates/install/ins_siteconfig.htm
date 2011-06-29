@@ -37,6 +37,21 @@
 <h2 class="install-header">{LANG_INSTALL_SITECONFIG_MODULES}</h2>
 <input type="checkbox" name="module_core" value="on" checked disabled> {LANG_MODULE_CORE}<br><small>{LANG_MODULE_CORE_DESCRIPTION} <font class="emphasis">{LANG_MODULE_CANNOT_BE_DISABLED}</font></small><br>
 <input type="checkbox" name="module_forum" value="on"{MODULE_FORUM_CHECK}> {LANG_MODULE_FORUM}<br><small>{LANG_MODULE_FORUM_DESCRIPTION}</small><br>
+<h2 class="install-header">{LANG_MODULE_FORUM}</h2>
+{LANG_UCP_FORUM_TOPICS_PER_PAGE}: <select size="1" name="forum_topic_count_per_page">
+	<option value="5"{T_5_SELECT}>5</option>
+	<option value="15"{T_15_SELECT}>15</option>
+	<option value="30"{T_30_SELECT}>30</option>
+	<option value="50"{T_50_SELECT}>50</option>
+	<option value="100"{T_100_SELECT}>100</option>
+</select><br>
+{LANG_UCP_FORUM_POSTS_PER_PAGE}: <select size="1" name="forum_post_count_per_page">
+	<option value="5"{P_5_SELECT}>5</option>
+	<option value="15"{P_15_SELECT}>15</option>
+	<option value="30"{P_30_SELECT}>30</option>
+	<option value="50"{P_50_SELECT}>50</option>
+	<option value="100"{P_100_SELECT}>100</option>
+</select><br>
 <font class="emphasis">{LANG_PROCEED_CLICK_BUTTON_BELOW}</font><br>
 <input type="submit" value="{LANG_NEXT_NN}">
 <input type="hidden" name="ins_lang" value="{INSTALL_LANGUAGE}">

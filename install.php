@@ -843,6 +843,21 @@ switch ($instPos)
 				/* Modules */
 				'MODULE_FORUM_CHECK'	=>	(@$_POST['module_forum'] == "on" ? " checked" : ""), // Automatically check forum module if it was selected
 				
+				/* Forum */
+				// Topic switch
+				'T_5_SELECT'	=>	($_POST['forum_topic_count_per_page'] == 5 ? " selected" : ""),
+				'T_15_SELECT'	=>	($_POST['forum_topic_count_per_page'] == 15 ? " selected" : ""),
+				'T_30_SELECT'	=>	($_POST['forum_topic_count_per_page'] == 30 ? " selected" : ""),
+				'T_50_SELECT'	=>	($_POST['forum_topic_count_per_page'] == 50 ? " selected" : ""),
+				'T_100_SELECT'	=>	($_POST['forum_topic_count_per_page'] == 100 ? " selected" : ""),
+				
+				// Post switch
+				'P_5_SELECT'	=>	($_POST['forum_post_count_per_page'] == 5 ? " selected" : ""),
+				'P_15_SELECT'	=>	($_POST['forum_post_count_per_page'] == 15 ? " selected" : ""),
+				'P_30_SELECT'	=>	($_POST['forum_post_count_per_page'] == 30 ? " selected" : ""),
+				'P_50_SELECT'	=>	($_POST['forum_post_count_per_page'] == 50 ? " selected" : ""),
+				'P_100_SELECT'	=>	($_POST['forum_post_count_per_page'] == 100 ? " selected" : ""),
+				
 				// Passing install theme and language directory values
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
 				'INSTALL_THEME'	=>	$_POST['ins_thm']
@@ -864,6 +879,21 @@ switch ($instPos)
 				/* Modules */
 				'MODULE_FORUM_CHECK'	=>	" checked", // Automatically check forum module
 				
+				/* Forum */
+				// Topic switch
+				'T_5_SELECT'	=>	"",
+				'T_15_SELECT'	=>	" selected",
+				'T_30_SELECT'	=>	"",
+				'T_50_SELECT'	=>	"",
+				'T_100_SELECT'	=>	"",
+				
+				// Post switch
+				'P_5_SELECT'	=>	"",
+				'P_15_SELECT'	=>	" selected",
+				'P_30_SELECT'	=>	"",
+				'P_50_SELECT'	=>	"",
+				'P_100_SELECT'	=>	"",
+				
 				// Passing install theme and language directory values
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
 				'INSTALL_THEME'	=>	$_POST['ins_thm']
@@ -880,11 +910,21 @@ switch ($instPos)
 		{
 			$Ctemplate->useTemplate("install/ins_siteconfig_variable_error", array(
 				'VARIABLE'	=>	"{LANG_INSTALL_SITECONFIG_TITLE}", // Errornous variable name
+				
+				/* General */
 				'GLOBAL_TITLE'	=>	$_POST['global_title'],
 				'SITE_HOST'	=>	$_POST['site_host'],
+				
+				/* Appearance */
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
 				'INSTALL_THEME'	=>	$_POST['ins_thm'],
-				'MODULE_FORUM_CHECK'	=>	@$_POST['module_forum']
+				
+				/* Modules */
+				'MODULE_FORUM'	=>	(@$_POST['module_forum'] == "on" ? "on" : "off"),
+				
+				/* Forum */
+				'FORUM_TOPIC_COUNT_PER_PAGE'	=>	$_POST['forum_topic_count_per_page'],
+				'FORUM_POST_COUNT_PER_PAGE'	=>	$_POST['forum_post_count_per_page']
 			), FALSE);
 			exit; // We terminate the script
 		}
@@ -893,11 +933,21 @@ switch ($instPos)
 		{
 			$Ctemplate->useTemplate("install/ins_siteconfig_variable_error", array(
 				'VARIABLE'	=>	"{LANG_INSTALL_SITECONFIG_HOST}", // Errornous variable name
+				
+				/* General */
 				'GLOBAL_TITLE'	=>	$_POST['global_title'],
 				'SITE_HOST'	=>	$_POST['site_host'],
+				
+				/* Appearance */
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
 				'INSTALL_THEME'	=>	$_POST['ins_thm'],
-				'MODULE_FORUM_CHECK'	=>	@$_POST['module_forum']
+				
+				/* Modules */
+				'MODULE_FORUM'	=>	(@$_POST['module_forum'] == "on" ? "on" : "off"),
+				
+				/* Forum */
+				'FORUM_TOPIC_COUNT_PER_PAGE'	=>	$_POST['forum_topic_count_per_page'],
+				'FORUM_POST_COUNT_PER_PAGE'	=>	$_POST['forum_post_count_per_page']
 			), FALSE);
 			exit; // We terminate the script
 		}
