@@ -958,7 +958,9 @@ switch ($instPos)
 			('theme', '" .$Cmysql->EscapeString($_POST['ins_thm']). "'),
 			('global_title', '" .$Cmysql->EscapeString($_POST['global_title']). "'),
 			('site_host', '" .$Cmysql->EscapeString($_POST['site_host']). "'),
-			('module_forum', '" .(@$_POST['module_forum'] == "on" ? "on" : "off"). "')"); // $sConfig is true if we are successful
+			('module_forum', '" .(@$_POST['module_forum'] == "on" ? "on" : "off"). "'),
+			('forum_topic_count_per_page', '" .$Cmysql->EscapeString($_POST['forum_topic_count_per_page']). "'),
+			('forum_post_count_per_page', '" .$Cmysql->EscapeString($_POST['forum_post_count_per_page']). "')"); // $sConfig is true if we are successful
 		
 		// Give return or proceed forms based on success
 		if ( $sConfig == FALSE )
