@@ -42,10 +42,23 @@ switch ($regPos)
 	case 0:
 		// Introduction
 		
-		$Ctemplate->useStaticTemplate("user/reg_start", FALSE); // Registration splash
+		$Ctemplate->useTemplate("user/reg_start", array(
+			'REGISTER_DISABLED_EMBED'	=>	(config('registration') == "off" ? $Ctemplate->useStaticTemplate("user/reg_disabled", TRUE) : NULL),
+			'REGISTER_DISABLED'	=>	(config('registration') == "off" ? " disabled" : NULL),
+		), FALSE); // Registration splash
 		break;
 	case 1:
 		// User login informations
+		
+		// Terminate execution if registration is disabled
+		if ( config('registration') == "off" )
+		{
+			$Ctemplate->useStaticTemplate("user/reg_disabled", FALSE);
+			// We terminate the script
+			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
+			DoFooter();
+			exit;
+		}
 		
 		if ( @$_POST['error_goback'] == "yes" ) // If user is redirected because of an error
 		{
@@ -68,6 +81,16 @@ switch ($regPos)
 		break;
 	case 2:
 		// User registering
+		
+		// Terminate execution if registration is disabled
+		if ( config('registration') == "off" )
+		{
+			$Ctemplate->useStaticTemplate("user/reg_disabled", FALSE);
+			// We terminate the script
+			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
+			DoFooter();
+			exit;
+		}
 		
 		// First, we do a check whether every required fields have data
 		if ( $_POST['username'] == NULL ) // Username
@@ -223,6 +246,17 @@ switch ($regPos)
 		break;
 	case 3:
 		// Finish
+		
+		// Terminate execution if registration is disabled
+		if ( config('registration') == "off" )
+		{
+			$Ctemplate->useStaticTemplate("user/reg_disabled", FALSE);
+			// We terminate the script
+			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
+			DoFooter();
+			exit;
+		}
+		
 		$Ctemplate->useStaticTemplate("user/reg_finish", FALSE); // Finish message
 		break;
 }

@@ -199,6 +199,7 @@ Before we can move on installing the system, you have to make your data safe. Cr
 	'{LANG_INSTALL_SITECONFIG_GENERAL}'	=>	"General",
 	'{LANG_INSTALL_SITECONFIG_TITLE}'	=>	"Title",
 	'{LANG_INSTALL_SITECONFIG_HOST}'	=>	"Host",
+	'{LANG_INSTALL_SITECONFIG_REGISTRATION_ENABLED}'	=>	"Registration enabled",
 	'{LANG_INSTALL_SITECONFIG_DEFAULT_TITLE}'	=>	"New WhispyForum site",
 	'{LANG_INSTALL_SITECONFIG_APPEARANCE}'	=>	"Appearance",
 	'{LANG_INSTALL_SITECONFIG_LANGUAGE}'	=>	"Language:",
@@ -296,6 +297,8 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_REG_EMAIL_ALLOCATED}'	=>	"The e-mail address you wanted to register is in use.",
 	'{LANG_REG_ACTIVATION_EMAIL_SUBJECT}'	=>	"Registration notification",
 	'{LANG_REG_ACTIVATION_EMAIL}'	=>	file_get_contents("language/" .LANGUAGE_DIR. "/email.activate.txt"), // Embed the text file here
+	'{LANG_REGISTRATION_DISABLED}'	=>	"Registration disabled",
+	'{LANG_REG_DISABLED_ERROR}'	=>	"The webmasters have disabled the registration to the site.",
 	
 	/* User activation */
 	'{LANG_ACTIVATE_INFO}'	=>	"Before you can begin using your new account, you must activate it. The token you will need to do this is provided to you via email. If you didn't receive it, please check your Spam folder.",
@@ -498,6 +501,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_ADMINCFG_GENERAL}'	=>	"General",
 	'{LANG_ADMINCFG_TITLE}'	=>	"Title",
 	'{LANG_ADMINCFG_HOST}'	=>	"Host",
+	'{LANG_ADMINCFG_REGISTER_ENABLED}'	=>	"Registration enabled",
 	'{LANG_ADMINCFG_DEFAULT_TITLE}'	=>	"New WhispyForum site",
 	'{LANG_ADMINCFG_MODULES}'	=>	"Modules",
 	'{LANG_ADMINCFG_MODULES_HEAD}'	=>	"Here you can set the enabled and disabled modules. The engine is broken up to modules like forum, news and so on. Please note that disabling a module only restricts accessing it, is does not remove previously present content. For example, disabling the forum module will not purge posts. After reenabling it, you can view posts again.",

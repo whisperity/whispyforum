@@ -5,7 +5,8 @@
 <form method="POST" action="control_admin.php">
 <h2 class="install-header">{LANG_ADMINCFG_GENERAL}</h2>
 {LANG_ADMINCFG_TITLE}<span class="red-star">*</span>: <input type="text" name="global_title" value="{GLOBAL_TITLE}" size="35"><br>
-{LANG_ADMINCFG_HOST}<span class="red-star">*</span>: <input type="text" name="site_host" value="{SITE_HOST}" size="35">
+{LANG_ADMINCFG_HOST}<span class="red-star">*</span>: <input type="text" name="site_host" value="{SITE_HOST}" size="35"><br>
+<input type="checkbox" name="registration" value="on"{REGISTRATION_CHECK}> {LANG_ADMINCFG_REGISTER_ENABLED}
 <h2 class="install-header">{LANG_ADMINCFG_MODULES}</h2>
 {LANG_ADMINCFG_MODULES_HEAD}<br>
 <input type="checkbox" name="module_core" value="on" checked disabled> {LANG_MODULE_CORE}<br><small>{LANG_MODULE_CORE_DESCRIPTION} <font class="emphasis">{LANG_MODULE_CANNOT_BE_DISABLED}</font></small><br>

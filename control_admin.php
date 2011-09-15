@@ -877,7 +877,9 @@ switch ($site) // Outputs and scripts are based on the site variable
 					$Ctemplate->useTemplate("admin/siteprefs_variable_error", array(
 						'VARIABLE'	=>	"{LANG_ADMINCFG_TITLE}",
 						'GLOBAL_TITLE'	=>	$_POST['global_title'],
-						'SITE_HOST'	=>	$_POST['site_host']	
+						'SITE_HOST'	=>	$_POST['site_host'],
+						'REGISTRATION'	=>	(@$_POST['registration'] == "on" ? "on" : "off"),
+						'MODEL_FORUM'	=>	(@$_POST['module_forum'] == "on" ? "on" : "off")
 					), FALSE); // Output error box
 					
 					// Terminate the script
@@ -891,7 +893,9 @@ switch ($site) // Outputs and scripts are based on the site variable
 					$Ctemplate->useTemplate("admin/siteprefs_variable_error", array(
 						'VARIABLE'	=>	"{LANG_ADMINCFG_HOST}",
 						'GLOBAL_TITLE'	=>	$_POST['global_title'],
-						'SITE_HOST'	=>	$_POST['site_host']
+						'SITE_HOST'	=>	$_POST['site_host'],
+						'REGISTRATION'	=>	(@$_POST['registration'] == "on" ? "on" : "off"),
+						'MODEL_FORUM'	=>	(@$_POST['module_forum'] == "on" ? "on" : "off")
 					), FALSE); // Output error box
 					
 					// Terminate the script
@@ -905,18 +909,21 @@ switch ($site) // Outputs and scripts are based on the site variable
 				$scUpdate_global_title = $Cmysql->Query("UPDATE config SET value='" .$Cmysql->EscapeString($_POST['global_title']). "' WHERE variable='global_title'");
 				$scUpdate_site_host = $Cmysql->Query("UPDATE config SET value='" .$Cmysql->EscapeString($_POST['site_host']). "' WHERE variable='site_host'");
 				$scUpdate_module_forum = $Cmysql->Query("UPDATE config SET value='" .(@$_POST['module_forum'] == "on" ? "on" : "off"). "' WHERE variable='module_forum'");
+				$scUpdate_registration = $Cmysql->Query("UPDATE config SET value='" .(@$_POST['registration'] == "on" ? "on" : "off"). "' WHERE variable='registration'");
 				
-				if ( ( $scUpdate_global_title == TRUE ) && ( $scUpdate_site_host == TRUE ) && ( $scUpdate_module_forum == TRUE ) )
+				if ( ( $scUpdate_global_title == TRUE ) && ( $scUpdate_site_host == TRUE ) && ( $scUpdate_module_forum == TRUE ) && ( $scUpdate_registration == TRUE ) )
 				{
 					// If we succeeded, output success message, return form
 					$Ctemplate->useStaticTemplate("admin/siteprefs_success", FALSE);
-				} elseif ( ( $scUpdate_global_title == FALSE ) || ( $scUpdate_site_host == FALSE ) || ( $scUpdate_module_forum == FALSE ) )
+				} elseif ( ( $scUpdate_global_title == FALSE ) || ( $scUpdate_site_host == FALSE ) || ( $scUpdate_module_forum == FALSE ) || ( $scUpdate_registration == FALSE ) )
 				{
 					// If we failed, output return form and error message
 					$Ctemplate->useTemplate("admin/siteprefs_error", array(
 						'VARIABLE'	=>	"{LANG_ADMINCFG_TITLE}",
 						'GLOBAL_TITLE'	=>	$_POST['global_title'],
 						'SITE_HOST'	=>	$_POST['site_host'],
+						'REGISTRATION'	=>	(@$_POST['registration'] == "on" ? "on" : "off"),
+						'MODEL_FORUM'	=>	(@$_POST['module_forum'] == "on" ? "on" : "off")
 					), FALSE); // Output error box
 				}
 			}
@@ -1078,6 +1085,7 @@ switch ($site) // Outputs and scripts are based on the site variable
 				$Ctemplate->useTemplate("admin/siteprefs", array(
 					'GLOBAL_TITLE'	=>	$_POST['global_title'],
 					'SITE_HOST'	=>	$_POST['site_host'],
+					'REGISTRATION_CHECK'	=>	(@$_POST['registration'] == "on" ? " checked" : ""),
 					'MODULE_FORUM_CHECK'	=>	(@$_POST['module_forum'] == "on" ? " checked" : "")
 				), FALSE);
 			} else {
@@ -1085,6 +1093,7 @@ switch ($site) // Outputs and scripts are based on the site variable
 				$Ctemplate->useTemplate("admin/siteprefs", array(
 					'GLOBAL_TITLE'	=>	config('global_title'),
 					'SITE_HOST'	=>	config('site_host'),
+					'REGISTRATION_CHECK'	=>	(config('registration') == "on" ? " checked" : ""),
 					'MODULE_FORUM_CHECK'	=>	(config('module_forum') == "on" ? " checked" : "")
 				), FALSE);
 			}

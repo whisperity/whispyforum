@@ -832,6 +832,7 @@ switch ($instPos)
 				/* General */
 				'GLOBAL_TITLE'	=>	$_POST['global_title'],
 				'SITE_HOST'	=>	$_POST['site_host'],
+				'REGISTRATION_CHECK'	=>	(@$_POST['registration'] == "on" ? " checked" : ""), // Automatically check registration if it was selected
 				
 				/* Appearance */
 				'LANGS_LOCALIZED_NAME'	=>	$wf_lang_def['LOCALIZED_NAME'], // The language's own, localized name (so it's Deutch for German)
@@ -868,6 +869,7 @@ switch ($instPos)
 				/* General */
 				'GLOBAL_TITLE'	=>	$wf_lang['{LANG_INSTALL_SITECONFIG_DEFAULT_TITLE}'],
 				'SITE_HOST'	=>	$_SERVER['HTTP_HOST'],
+				'REGISTRATION_CHECK'	=>	" checked",
 				
 				/* Appearance */
 				'LANGS_LOCALIZED_NAME'	=>	$wf_lang_def['LOCALIZED_NAME'], // The language's own, localized name (so it's Deutch for German)
@@ -914,6 +916,7 @@ switch ($instPos)
 				/* General */
 				'GLOBAL_TITLE'	=>	$_POST['global_title'],
 				'SITE_HOST'	=>	$_POST['site_host'],
+				'REGISTRATION'	=>	$_POST['registration'],
 				
 				/* Appearance */
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
@@ -937,6 +940,7 @@ switch ($instPos)
 				/* General */
 				'GLOBAL_TITLE'	=>	$_POST['global_title'],
 				'SITE_HOST'	=>	$_POST['site_host'],
+				'REGISTRATION'	=>	$_POST['registration'],
 				
 				/* Appearance */
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
@@ -958,6 +962,7 @@ switch ($instPos)
 			('theme', '" .$Cmysql->EscapeString($_POST['ins_thm']). "'),
 			('global_title', '" .$Cmysql->EscapeString($_POST['global_title']). "'),
 			('site_host', '" .$Cmysql->EscapeString($_POST['site_host']). "'),
+			('registration', '" .$Cmysql->EscapeString($_POST['registration']). "'),
 			('module_forum', '" .(@$_POST['module_forum'] == "on" ? "on" : "off"). "'),
 			('forum_topic_count_per_page', '" .$Cmysql->EscapeString($_POST['forum_topic_count_per_page']). "'),
 			('forum_post_count_per_page', '" .$Cmysql->EscapeString($_POST['forum_post_count_per_page']). "')"); // $sConfig is true if we are successful

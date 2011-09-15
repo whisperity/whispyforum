@@ -4,11 +4,12 @@
 
 <!--- I THINK WE SHOULD INCLUDE LICENSE INFORMATION HERE -->
 
+{REGISTER_DISABLED_EMBED}<br>
 <font class="emphasis">{LANG_PROCEED_CLICK_BUTTON_BELOW}</font>
 
 <!--- proceed form -->
 <form method="POST" action="registration.php">
-<input type="submit" value="{LANG_NEXT_NN}">
+<input type="submit" value="{LANG_NEXT_NN}"{REGISTER_DISABLED}>
 <input type="hidden" name="regPos" value=1> <!--- Proceeding to step 2 -->
 </form>
 
