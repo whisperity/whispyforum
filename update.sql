@@ -185,3 +185,16 @@ ALTER TABLE `users` ADD `token` VARCHAR( 32 ) CHARACTER SET utf8 COLLATE utf8_ge
 # Revision 670 (adding user activation)
 #
 UPDATE `users` SET `activated`='1';
+
+#
+# Revision 686 (adding news entry table and news adding)
+#
+CREATE TABLE IF NOT EXISTS news (
+	`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+	`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'title of the entry',
+	`createuser` int(10) NOT NULL COMMENT 'the ID of the user who posted the entry (users.id)',
+	`createdate` int(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
+	`content` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'text of the entry',
+	`commentable` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1 if entry is commentable, 0 if not',
+	PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'news entries';

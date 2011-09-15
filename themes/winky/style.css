@@ -428,3 +428,9 @@ td.post-pager {
 	border: 1px dashed #FFFFFF;
 	color: #000000;
 }
+
+/* News */
+td.news-pager {
+	border: 1px dashed #FFFFFF;
+	color: #000000;
+}

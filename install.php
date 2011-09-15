@@ -477,7 +477,8 @@ switch ($instPos)
 		$dbtables_menuEntries_data = FALSE; // We failed adding the default data first
 		$dbtables_menuEntries_data = $Cmysql->Query("INSERT INTO menu_entries(menu_id, label, href) VALUES
 		(1, 'Homepage', 'index.php'),
-		(1, 'Forum', 'forum.php')"); // $dbtables_menuEntries_data sets to true if we succeeded adding default data
+		(1, 'Forum', 'forum.php'),
+		(1, 'News', 'news.php')"); // $dbtables_menuEntries_data sets to true if we succeeded adding default data
 		
 		// We check menu entries table creation
 		if ( ( $dbtables_menuEntries == FALSE) || ( $dbtables_menuEntries_data == FALSE ) )
@@ -678,6 +679,43 @@ switch ($instPos)
 			), FALSE);
 		}
 		/* Configuration table */
+		
+		/* News table */
+		// Stores the user's data
+		$dbtables_news = FALSE; // We failed creating the table first
+		$dbtables_news = $Cmysql->Query("CREATE TABLE IF NOT EXISTS news (
+			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+			`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'title of the entry',
+			`createuser` int(10) NOT NULL COMMENT 'the ID of the user who posted the entry (users.id)',
+			`createdate` int(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
+			`content` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'text of the entry',
+			`commentable` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1 if entry is commentable, 0 if not',
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'news entries'"); // $dbtables_news sets to true if we succeeded creating a table
+		
+		$dbtables_news_data = FALSE; // We failed adding the default data first
+		$dbtables_news_data = $Cmysql->Query("INSERT INTO news(title, createuser, createdate, content, commentable) VALUES ('The new site is installed.', 1, '" .time(). "', 'A new site has popped on the internet. It is seems to be using a new portal engine for different purposes. This is a test news entry, you can delete it if you want.', '1')"); // $dbtables_news_data sets to true if we succeeded adding default data
+		
+		// We check config table creation
+		if ( ( $dbtables_news == FALSE ) || ( $dbtables_news_data == FALSE ) )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
+				'TABLENAME'	=>	"news" // Table name
+			), FALSE);
+			
+			// We set the creation global error variable to false
+			$tablecreation = FALSE;
+			
+			$tablelist[] = "news"; // Append users table name to fail-list
+		} elseif ( ( $dbtables_news != FALSE ) && ( $dbtables_news_data != FALSE ) )
+		{
+			// Give success
+			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
+				'TABLENAME'	=>	"news" // Table name
+			), FALSE);
+		}
+		/* News table */
 		
 		// Check global variable status
 		if ( $tablecreation == FALSE )

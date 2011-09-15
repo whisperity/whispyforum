@@ -654,5 +654,10 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_POSTS_EDIT_SQL_ERROR}'	=>	"There were errors executing the SQL query to edit the post. The post remains the same.",
 	'{LANG_POSTS_EDIT_SUCCESS_HEAD}'	=>	"Edited the post",
 	'{LANG_POSTS_EDIT_SUCCESS}'	=>	"Edition of post {TITLE}",
+	
+	/* News */
+	'{LANG_NEWS}'	=>	"News",
+	'{LANG_NEWS_BY}'	=>	'by <a href="profile.php?id={USERID}" alt="{LANG_PROFILE_VIEW}">{NAME}</a>',
+	'{LANG_NEWS_PAGES}'	=>	"Pages ({CURRENT_PAGE} out of {PAGE_TOTAL}):",
 );
 ?>
