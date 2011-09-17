@@ -187,7 +187,7 @@ ALTER TABLE `users` ADD `token` VARCHAR( 32 ) CHARACTER SET utf8 COLLATE utf8_ge
 UPDATE `users` SET `activated`='1';
 
 #
-# Revision 686 (adding news entry table and news adding)
+# Revision 687 (adding news entry table and news adding)
 #
 CREATE TABLE IF NOT EXISTS news (
 	`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',

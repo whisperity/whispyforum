@@ -46,19 +46,12 @@ if ( $tName == FALSE )
 }
 
 // Get the current user's level
-$uLvl = mysql_fetch_row($Cmysql->Query("SELECT userLevel FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'"));
-
-if ( $uLvl == FALSE )
-{
-	// If the user does not have a return value (meaning the user is a guest)
-	// Set the level to 0
-	$uLvl = array(0	=>	'0');
-}
+$uLvl = $Cusers->getLevel();
 
 // Query the minimal level for the forum
 $fMLvl = mysql_fetch_row($Cmysql->Query("SELECT minLevel FROM forums WHERE id='" .$tName[1]. "'"));
 
-if ( ( $uLvl[0] < $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
+if ( ( $uLvl < $fMLvl[0] ) && ( $uLvl != "0" ) )
 {
 	// If the user is on lower level
 	// than the currently required to view the forum
@@ -93,7 +86,7 @@ if ( ( $uLvl[0] < $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
 		'BODY'	=>	$minLName, // Error text
 		'ALT'	=>	"{LANG_PERMISSIONS_ERROR}", // Alternate picture text
 	), FALSE ); // Give rights error
-} elseif ( ( $uLvl[0] >= $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
+} elseif ( ( $uLvl >= $fMLvl[0] ) && ( $uLvl != "0" ) )
 {
 	// The user has the rights to view the post list, thus has rights to create one
 	
@@ -218,7 +211,7 @@ if ( ( $uLvl[0] < $fMLvl[0] ) && ( $uLvl[0] != "0" ) )
 			}
 		}
 	}
-} elseif ( $uLvl[0] == "0" )
+} elseif ( $uLvl == "0" )
 {
 	// If the user is a guest, even though he/she can view the forum
 	

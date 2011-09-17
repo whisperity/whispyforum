@@ -14,9 +14,9 @@ $Ctemplate->useStaticTemplate("admin/admin_head", FALSE); // Header
 $site = "";
 
 // Get user's level
-$uDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT userLevel FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'")); // We query the user's data
+$uLvl = $Cuser->getLevel();
 
-if ( $uDBArray['userLevel'] < 3 )
+if ( $uLvl < 3 )
 {
 	// If the user does not have rights to see the admin panel
 	$Ctemplate->useTemplate("errormessage", array(
@@ -25,7 +25,7 @@ if ( $uDBArray['userLevel'] < 3 )
 		'BODY'	=>	"{LANG_REQUIRES_ADMIN}", // Error text
 		'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
 	), FALSE ); // We give an unavailable error
-} elseif ( $uDBArray['userLevel'] >= 3 )
+} elseif ( $uLvl >= 3 )
 {
 // If user has the rights, the panel is accessible
 

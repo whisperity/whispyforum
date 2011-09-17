@@ -13,13 +13,13 @@ dieOnModule("forum"); // Die if FORUM is disabled
 $Ctemplate->useStaticTemplate("forum/forums_head", FALSE); // Header
 
 // Get the current user's level
-$uLvl = mysql_fetch_row($Cmysql->Query("SELECT userLevel FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'"));
+$uLvl = $Cusers->getLevel();
 
 /* Creating new forum */
 if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "newforum" ) )
 {
 	// Adding new forum
-	if ( $uLvl[0] < 3 )
+	if ( $uLvl < 3 )
 	{
 		// If the user does not have rights to add new forum
 		$Ctemplate->useTemplate("errormessage", array(
@@ -28,7 +28,7 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "newforum" ) )
 			'BODY'	=>	"{LANG_REQUIRES_ADMIN}", // Error text
 			'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
 		), FALSE ); // We give an unavailable error
-	} elseif ( $uLvl[0] >= 3 )
+	} elseif ( $uLvl >= 3 )
 	{
 		// Access granted :)
 		if ( !isset($_POST['newforum_do']) )
@@ -110,7 +110,7 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "newforum" ) )
 if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "edit" ) && ( isset($_POST['forum_id']) ) )
 {
 	// Editing a forum
-	if ( $uLvl[0] < 2 )
+	if ( $uLvl < 2 )
 	{
 		// If the user does not have rights to add new forum
 		$Ctemplate->useTemplate("errormessage", array(
@@ -119,7 +119,7 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "edit" ) && ( isset($_
 			'BODY'	=>	"{LANG_REQUIRES_MODERATOR}", // Error text
 			'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
 		), FALSE ); // We give an unavailable error
-	} elseif ( $uLvl[0] >= 2 )
+	} elseif ( $uLvl >= 2 )
 	{
 		// Access granted :)
 		if ( !isset($_POST['edit_do']) )
@@ -140,7 +140,7 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "edit" ) && ( isset($_
 					'1_CHECKED'	=>	($_POST['minlevel'] == 1 ? " checked" : ""), // User min. level 1 (user)
 					'2_CHECKED'	=>	($_POST['minlevel'] == 2 ? " checked" : ""), // User min. level 2 (moderator)
 					'3_CHECKED'	=>	($_POST['minlevel'] == 3 ? " checked" : ""), // User min. level 3 (administrator)
-					'ADMIN_DISABLED'	=>	($uLvl[0] < 3 ? " disabled" : "") // Disable the User min. level 3 (admin) box if the user is only a moderator
+					'ADMIN_DISABLED'	=>	($uLvl < 3 ? " disabled" : "") // Disable the User min. level 3 (admin) box if the user is only a moderator
 				), FALSE);
 			} else {
 				// We output general form
@@ -153,7 +153,7 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "edit" ) && ( isset($_
 					'1_CHECKED'	=>	($fData['minLevel'] == 1 ? " checked" : ""), // User min. level 1 (user)
 					'2_CHECKED'	=>	($fData['minLevel'] == 2 ? " checked" : ""), // User min. level 2 (moderator)
 					'3_CHECKED'	=>	($fData['minLevel'] == 3 ? " checked" : ""), // User min. level 3 (administrator)
-					'ADMIN_DISABLED'	=>	($uLvl[0] < 3 ? " disabled" : "") // Disable the User min. level 3 (admin) box if the user is only a moderator
+					'ADMIN_DISABLED'	=>	($uLvl < 3 ? " disabled" : "") // Disable the User min. level 3 (admin) box if the user is only a moderator
 				), FALSE);
 			}
 		} elseif ( ( isset($_POST['edit_do']) ) && ( $_POST['edit_do'] == "yes") )
@@ -195,7 +195,7 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "edit" ) && ( isset($_
 			
 			// We reject the user if he or she wants to make a forum
 			// Administrator only, but he/she is only a moderator
-			if ( ( $uLvl[0] < 3 ) && ( $_POST['minlevel'] == 3 ) )
+			if ( ( $uLvl < 3 ) && ( $_POST['minlevel'] == 3 ) )
 			{
 				$Ctemplate->useTemplate("forum/forums_edit_moderator_error", array(
 					'FORUM_ID'	=>	$_POST['forum_id'], // ID of the forum
@@ -245,7 +245,7 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "edit" ) && ( isset($_
 if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "delete" ) && ( isset($_POST['forum_id']) ) )
 {
 	// Deleting a forum
-	if ( $uLvl[0] < 3 )
+	if ( $uLvl < 3 )
 	{
 		// If the user does not have rights to add new forum
 		$Ctemplate->useTemplate("errormessage", array(
@@ -254,7 +254,7 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "delete" ) && ( isset(
 			'BODY'	=>	"{LANG_REQUIRES_ADMIN}", // Error text
 			'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
 		), FALSE ); // We give an unavailable error
-	} elseif ( $uLvl[0] >= 3 )
+	} elseif ( $uLvl >= 3 )
 	{
 		// Access granted
 		
@@ -361,24 +361,15 @@ if ( !isset($_POST['action']) )
 	// Do listing only if we opened the list in plain mode
 	
 	$Ctemplate->useTemplate("forum/forums_table_open", array(
-		'ADMIN_CREATE_NEW_FORUM'	=>	($uLvl[0] >= 3 ?
+		'ADMIN_CREATE_NEW_FORUM'	=>	($uLvl >= 3 ?
 			$Ctemplate->useStaticTemplate("forum/forums_admin_createnew", TRUE) // Return the button
 		: NULL ), // Output button for new forum only if the user is admin or higher
-		'ADMIN_ACTIONS'	=>	($uLvl[0] >= 2 ? 
+		'ADMIN_ACTIONS'	=>	($uLvl >= 2 ? 
 			$Ctemplate->useStaticTemplate("forum/forums_admin_actions", TRUE) // Return the header
 		: NULL ) // Output header for admin actions only if the user is moderator or higher
 	), FALSE); // Open the table and output header
 	
-	$uDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT userLevel FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'")); // We query the user's data
-	
-	if ( $uDBArray == FALSE )
-	{
-		// If the user does not have a return value (meaning the user is a guest)
-		// Set the level to 0
-		$uDBArray = array('userLevel'	=>	'0');
-	}
-	
-	$forums_data = $Cmysql->Query("SELECT * FROM forums WHERE minLevel <= '" .$Cmysql->EscapeString($uDBArray['userLevel']). "'"); // Query down the forums (only which the user has rights to see)
+	$forums_data = $Cmysql->Query("SELECT * FROM forums WHERE minLevel <= '" .$uLvl. "'"); // Query down the forums (only which the user has rights to see)
 	
 	while ( $row = mysql_fetch_assoc($forums_data) )
 	{
@@ -410,12 +401,12 @@ if ( !isset($_POST['action']) )
 			), TRUE) : $wf_lang['{LANG_POSTS_NO}']),
 			'THREADS'	=>	$thread_count[0],
 			'POSTS'	=>	$post_count[0],
-			'EDIT'	=>	($uLvl[0] >= 2 ? 
+			'EDIT'	=>	($uLvl >= 2 ? 
 				$Ctemplate->useTemplate("forum/forums_admin_edit", array(
 					'FORUM_ID'	=>	$row['id'] // ID of the forum
 				), TRUE) // Return the button
 			: NULL ), // Output edit button for admin actions only if the user is moderator or higher
-			'DELETE'	=>	($uLvl[0] >= 3 ? 
+			'DELETE'	=>	($uLvl >= 3 ? 
 				$Ctemplate->useTemplate("forum/forums_admin_delete", array(
 					'FORUM_ID'	=>	$row['id'] // ID of the forum
 				), TRUE)

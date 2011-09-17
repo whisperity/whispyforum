@@ -330,5 +330,25 @@ class class_users
 			return TRUE; // We give success
 		}
 	}
+	
+	function getLevel()
+	{
+		/**
+		 * The function is used to get a user's level from the database.
+		 */
+		
+		global $Cmysql; // Hook MySQL class here
+		
+		$userLevel = mysql_fetch_row($Cmysql->Query("SELECT userLevel FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'"));
+		
+		if ( $userLevel == FALSE )
+		{
+			// If the user does not have a return value (meaning the user is a guest)
+			// Set the level to 0
+			$userLevel = array(0	=> '0');
+		}
+		
+		return $userLevel[0]; // Return the value
+	}
 }
 ?>
