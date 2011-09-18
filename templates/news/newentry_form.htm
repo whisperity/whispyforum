@@ -1,0 +1,12 @@
+<!--- BEGIN news list newentry form -->
+<!--- Usage: form to add new news entry -->
+<form method="POST" action="news.php">
+	<span class="form-header">{LANG_NEWS_NEWENTRY_HEADER}</span><br>
+	{LANG_NEWS_TITLE}<span class="red-star">*</span>: <input type="text" name="title" value="{TITLE}" size=35><br>
+	{LANG_NEWS_DESCRIPTION}<span class="red-star">*</span>: <input type="text" name="description" value="{DESCRIPTION}" size=80><br>
+	{LANG_NEWS_CONTENT}<span class="red-star">*</span>: <textarea class="forum-post-field" rows="15" cols="50" name="content">{CONTENT}</textarea><br>
+	<input type="checkbox" name="commentable" value="yes"{COMMENTABLE_CHECK}>&nbsp;{LANG_NEWS_COMMENTABLE}<br>
+	<input type="hidden" name="action" value="post_new_entry">
+	<input type="submit" value="{LANG_NEWS_NEWENTRY_POST}">
+</form>
+<!--- END news list newentry form -->

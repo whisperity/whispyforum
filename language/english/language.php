@@ -659,5 +659,16 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_NEWS}'	=>	"News",
 	'{LANG_NEWS_BY}'	=>	'by <a href="profile.php?id={USERID}" alt="{LANG_PROFILE_VIEW}">{NAME}</a>',
 	'{LANG_NEWS_PAGES}'	=>	"Pages ({CURRENT_PAGE} out of {PAGE_TOTAL}):",
+	'{LANG_NEWS_TITLE}'	=>	"Title",
+	'{LANG_NEWS_DESCRIPTION}'	=>	"Description (max. 512 characters)",
+	'{LANG_NEWS_CONTENT}'	=>	"Content",
+	'{LANG_NEWS_COMMENTABLE}'	=>	"Commentable",
+	'{LANG_NEWS_NEWENTRY}'	=>	"Post news",
+	'{LANG_NEWS_NEWENTRY_REQUIRES_MODERATOR}'	=>	"Adding a new news entry requires you to have {LANG_MODERATOR} rights.",
+	'{LANG_NEWS_NEWENTRY_HEADER}'	=>	"New news entry",
+	'{LANG_NEWS_NEWENTRY_POST}'	=>	"Post",
+	'{LANG_NEWS_NEWENTRY_VARIABLE_ERROR}'	=>	"The news entry addition cannot be done until every required variable is entered.",
+	'{LANG_NEWS_NEWENTRY_SQL_ERROR}'	=>	"There were errors executing the SQL query to add the entry. Press the button to try again.",
+	'{LANG_NEWS_NEWENTRY_SUCCESS}'	=>	"The new news entry, titled {TITLE} added successfully.",
 );
 ?>

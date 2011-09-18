@@ -198,3 +198,8 @@ CREATE TABLE IF NOT EXISTS news (
 	`commentable` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1 if entry is commentable, 0 if not',
 	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'news entries';
+
+#
+# Revision 690
+#
+ALTER TABLE `news` ADD `description` VARCHAR(512) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'short description of entry' AFTER `createdate`;

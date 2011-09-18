@@ -688,6 +688,7 @@ switch ($instPos)
 			`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'title of the entry',
 			`createuser` int(10) NOT NULL COMMENT 'the ID of the user who posted the entry (users.id)',
 			`createdate` int(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
+			`description` VARCHAR(512) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'short description of entry',
 			`content` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'text of the entry',
 			`commentable` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1 if entry is commentable, 0 if not',
 			PRIMARY KEY (`id`)
