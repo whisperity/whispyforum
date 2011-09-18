@@ -190,7 +190,7 @@ if ( $uLvl < $fMLvl[0] )
 					
 					// Every variable has value, do the SQL query.
 					$pEdit = $Cmysql->Query("UPDATE posts SET ".
-						"title='" .$Cmysql->EscapeString($_POST['post_title']). "',
+						"title='" .$Cmysql->EscapeString(str_replace("'", "\'", $_POST['post_title'])). "',
 						content='" .$Cmysql->EscapeString(str_replace("'", "\'", $_POST['post_content'])). "' WHERE " .
 						"id='" .$Cmysql->EscapeString($_POST['post_id']). "'");
 					

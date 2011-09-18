@@ -79,8 +79,8 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "newforum" ) )
 			
 			// Every variable has value, do the SQL query.
 			$fCreate = $Cmysql->Query("INSERT INTO forums(title, info, minLevel, createdate) VALUES(".
-				"'" .$Cmysql->EscapeString($_POST['title']). "',
-				'" .$Cmysql->EscapeString($_POST['desc']). "',
+				"'" .$Cmysql->EscapeString(str_replace("'", "\'", $_POST['title'])). "',
+				'" .$Cmysql->EscapeString(str_replace("'", "\'", $_POST['desc'])). "',
 				'" .$Cmysql->EscapeString($_POST['minlevel']). "', " .time(). ")");
 			
 			// $fCreate is TRUE if we succeeded
@@ -212,8 +212,8 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "edit" ) && ( isset($_
 			
 			// Every variable has value, do the SQL query.
 			$fEdit = $Cmysql->Query("UPDATE forums SET ".
-				"title='" .$Cmysql->EscapeString($_POST['title']). "',
-				info='" .$Cmysql->EscapeString($_POST['desc']). "',
+				"title='" .$Cmysql->EscapeString(str_replace("'", "\'", $_POST['title'])). "',
+				info='" .$Cmysql->EscapeString(str_replace("'", "\'", $_POST['desc'])). "',
 				minLevel='" .$Cmysql->EscapeString($_POST['minlevel']). "' WHERE " .
 				"id='" .$Cmysql->EscapeString($_POST['forum_id']). "'");
 			

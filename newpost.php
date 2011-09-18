@@ -152,7 +152,7 @@ if ( ( $uLvl < $fMLvl[0] ) && ( $uLvl != "0" ) )
 			$post_create = $Cmysql->Query("INSERT INTO posts(topicid, forumid, title, createuser, createdate, content) VALUES (
 				'" .$Cmysql->EscapeString($_POST['id']). "',
 				'" .$Cmysql->EscapeString($tName[1]). "',
-				'" .$Cmysql->EscapeString($_POST['post_title']). "',
+				'" .$Cmysql->EscapeString(str_replace("'", "\'", $_POST['post_title'])). "',
 				'" .$Cmysql->EscapeString($_SESSION['uid']). "', '" .time(). "',
 				'" .$Cmysql->EscapeString(str_replace("'", "\'", $_POST['post_content'])). "')"); // Post adding (to the previously created topic)
 			

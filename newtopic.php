@@ -167,7 +167,7 @@ if ( ( $uLvl < $fMLvl[0] ) && ( $uLvl != "0" ) )
 		// Every variable is entered, doing SQL work
 		$topic_create = $Cmysql->Query("INSERT INTO topics(forumid, title, createuser, createdate, locked, highlighted) VALUES (
 			'" .$Cmysql->EscapeString($_POST['forum_id']). "',
-			'" .$Cmysql->EscapeString($_POST['title']). "',
+			'" .$Cmysql->EscapeString(str_replace("'", "\'", $_POST['title'])). "',
 			'" .$Cmysql->EscapeString($_SESSION['uid']). "', '" .time(). "',
 			'" .$Cmysql->EscapeString((!isset($_POST['lock']) ? "0" : "1")). "',
 			'" .$Cmysql->EscapeString((!isset($_POST['highlight']) ? "0" : "1")). "')"); // Topic creation
@@ -185,7 +185,7 @@ if ( ( $uLvl < $fMLvl[0] ) && ( $uLvl != "0" ) )
 			$post_create = $Cmysql->Query("INSERT INTO posts(topicid, forumid, title, createuser, createdate, content) VALUES (
 				'" .mysql_insert_id(). "',
 				'" .$Cmysql->EscapeString($_POST['forum_id']). "',
-				'" .$Cmysql->EscapeString($_POST['post_title']). "',
+				'" .$Cmysql->EscapeString(str_replace("'", "\'", $_POST['post_title'])). "',
 				'" .$Cmysql->EscapeString($_SESSION['uid']). "', '" .time(). "',
 				'" .$Cmysql->EscapeString(str_replace("'", "\'", $_POST['post_content'])). "')"); // Post adding (to the previously created topic)
 			
