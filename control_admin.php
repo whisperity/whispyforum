@@ -14,7 +14,7 @@ $Ctemplate->useStaticTemplate("admin/admin_head", FALSE); // Header
 $site = "";
 
 // Get user's level
-$uLvl = $Cuser->getLevel();
+$uLvl = $Cusers->getLevel();
 
 if ( $uLvl < 3 )
 {
