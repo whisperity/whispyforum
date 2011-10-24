@@ -2,13 +2,15 @@
  /**
  * WhispyForum script file - news.php
  * 
- * Listing news
+ * Handling the news managing: listing news, viewing entry, viewing/adding/editing comments and news entries
  * 
  * WhispyForum
  */
 
 include("includes/load.php"); // Load webpage
-dieOnModule("news"); // Die if NEWS is disabled
+// TO DO: Make this line executed if module is finished
+//dieOnModule("news"); // Die if NEWS is disabled
+// TO DO END
 
 $Ctemplate->useStaticTemplate("news/head", FALSE); // Header
 
@@ -145,7 +147,7 @@ if ( @$_POST['action'] == "newentry" )
 		'" .$Cmysql->EscapeString(str_replace("'", "\'", $_POST['content'])). "',
 		'" .(@$_POST['commentable'] == "yes" ? 1 : 0 ). "')");
 	
-	if ( $entry_add === TRUE )
+	if ( $entry_add === FALSE )
 	{
 		// If failed to add entry, output error
 		$Ctemplate->useTemplate("news/newentry_error", array(
@@ -154,97 +156,127 @@ if ( @$_POST['action'] == "newentry" )
 			'CONTENT'	=>	@$_POST['content'], // Content (missing)
 			'COMMENTABLE'	=>	( @$_POST['commentable'] == "yes" ? "yes" : "no" ) // Comments on/off on entry
 		), FALSE);
-	} elseif ( $entry_add === FALSE )
+	} elseif ( $entry_add === TRUE )
 	{
 		// If succeeded, redirect user to news list
 		$Ctemplate->useTemplate("news/newentry_success", array(
 			'TITLE'	=>	$_POST['title']
 		), FALSE);
 	}
-	
-	// Terminate execution
-	$Ctemplate->useStaticTemplate("news/foot", FALSE); // Footer
-	DoFooter();
-	exit;
-}
-
-$Ctemplate->useTemplate("news/list_head", array(
-	'NEW_ENTRY'	=>	( $Cusers->getLevel() >= 2 ? 
-		$Ctemplate->useStaticTemplate("news/list_newentry", TRUE) : NULL)
-), FALSE); // Table header
-
-/**
- * The news list is split, based on user setting.
- * Because of it, we need to generate a page switcher by using the 'LIMIT start, count'
- * syntax.
- */
-
-$usr_news_split_value = 1; // Use the user's preference (queried from session)
-
-// Query the total number of news
-$news_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM news"));
-
-// Generate the number of pages (we need to ceil it up because we need to have integer pages)
-$news_pages = ceil($news_count[0] / $usr_news_split_value);
-
-// Generate the start_at value
-if ( @$_GET['start_at'] == NULL )
+} elseif ( ( @$_POST['action'] == "more" ) && ( @$_POST['id'] != NULL ) )
 {
-	// If the value is missing, we will assume 0 as the start
-	$news_start = 0;
-} elseif ( @$_GET['start_at'] != NULL )
-{
-	// If we have start value, multiply it with the split value so it'll show the correct page
-	$news_start = $_GET['start_at'] * $usr_news_split_value;
-}
+	// If we requested to give the whole contents of a news entry
 	
-// Query the news of the following page
-$news = $Cmysql->Query("SELECT * FROM news ORDER BY createdate DESC LIMIT " .$news_start.", ".$Cmysql->EscapeString($usr_news_split_value));
-
-while ($row = mysql_fetch_assoc($news) )
-{
-	// Going through every entry, output a row for it
+	// First, we query whether the entry exists,
+	// but if we are already there, we only select the needed columns.
 	
-	// Select the name of the user posting the entry
-	$postuser = mysql_fetch_assoc($Cmysql->Query("SELECT username FROM users WHERE id='" .$row['createuser']. "'"));
+	$entry_data = mysql_fetch_assoc($Cmysql->Query("SELECT title, createuser, createdate, description, content, commentable FROM news WHERE id='" .$Cmysql->EscapeString($_POST['id']). "'"));
 	
-	$Ctemplate->useTemplate("news/list_entry", array(
-		'TITLE'	=>	$row['title'], // News title
-		'DATE'	=>	fdate($row['createdate']). " " .$wf_lang['{LANG_NEWS_BY}'], // Post date
-		'USERID'	=>	$row['createuser'], // Poster ID
-		'NAME'	=>	$postuser['username'], // Poster name
-		'DESCRIPTION'	=>	$row['description'], // Short description of entry
-		
-		//MORE
-		//EDIT
-		//DELETE
-	), FALSE);
-	
-	echo prettyVar($row);
-}
-
-$Ctemplate->useStaticTemplate("news/list_foot", FALSE); // Table footer
-
-if ( $news_pages > 0 )
-{
-	// If we have more than one news list page
-	
-	// Generate embedded pager
-	$pages = ""; // Define the variable
-	for ( $p = 0; $p <= ($news_pages-1); $p++ )
+	if ( $entry_data === FALSE )
 	{
-		$pages .= $Ctemplate->useTemplate("news/list_page_embed", array(
-			'START_AT'	=>	$p,
-			'PAGE_NUMBER'	=>	($p+1)
-		), TRUE);
+		// If the selected entry does not exist, we output an error message and
+		// give the user the ability to go back
+		
+		$Ctemplate->useStaticTemplate("news/entry_missing_error", FALSE);
+	} elseif ( $entry_data == TRUE )
+	{
+		// If the entry is in the database, we further parse and then output the contents
+		
+		// Select the name of the user posting the entry
+		$postuser = mysql_fetch_assoc($Cmysql->Query("SELECT username FROM users WHERE id='" .$entry_data['createuser']. "'"));
+		
+		$Ctemplate->useTemplate("news/more", array(
+			'TITLE'	=>	$entry_data['title'], // News title
+			'DATE'	=>	fdate($entry_data['createdate']). " " .$wf_lang['{LANG_NEWS_BY}'], // Post date
+			'USERID'	=>	$entry_data['createuser'], // Poster ID
+			'NAME'	=>	$postuser['username'], // Poster name
+			'DESCRIPTION'	=>	bbDecode($entry_data['description']), // Short description of entry
+			'CONTENT'	=>	bbDecode($entry_data['content']), // Full entry text
+		), FALSE);
+	}
+} else {
+	// If no variables are fitting the previous cases, we list the news in a short list
+	
+	$Ctemplate->useTemplate("news/list_head", array(
+		'NEW_ENTRY'	=>	( $Cusers->getLevel() >= 2 ? 
+			$Ctemplate->useStaticTemplate("news/list_newentry", TRUE) : NULL)
+	), FALSE); // Table header
+	
+	/**
+	 * The news list is split, based on user setting.
+	 * Because of it, we need to generate a page switcher by using the 'LIMIT start, count'
+	 * syntax.
+	 */
+	// TO DO: implement user ability to set preference
+	$usr_news_split_value = 1; // Use the user's preference (queried from session)
+	// TO DO END
+	
+	// Query the total number of news
+	$news_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM news"));
+	
+	// Generate the number of pages (we need to ceil it up because we need to have integer pages)
+	$news_pages = ceil($news_count[0] / $usr_news_split_value);
+	
+	// Generate the start_at value
+	if ( @$_GET['start_at'] == NULL )
+	{
+		// If the value is missing, we will assume 0 as the start
+		$news_start = 0;
+	} elseif ( @$_GET['start_at'] != NULL )
+	{
+		// If we have start value, multiply it with the split value so it'll show the correct page
+		$news_start = $_GET['start_at'] * $usr_news_split_value;
 	}
 	
-	// Output switcher table
-	$Ctemplate->useTemplate("news/list_pages_table", array(
-		'CURRENT_PAGE'	=>	(@$_GET['start_at']+1), // Number of current page
-		'PAGES_EMBED'	=>	$pages, // Embedding the generated pages box
-		'PAGE_TOTAL'	=>	$news_pages
-	), FALSE);
+	// Query the news of the following page
+	$news = $Cmysql->Query("SELECT * FROM news ORDER BY createdate DESC LIMIT " .$news_start.", ".$Cmysql->EscapeString($usr_news_split_value));
+	
+	while ($row = mysql_fetch_assoc($news) )
+	{
+		// Going through every entry, output a row for it
+		
+		// Select the name of the user posting the entry
+		$postuser = mysql_fetch_assoc($Cmysql->Query("SELECT username FROM users WHERE id='" .$row['createuser']. "'"));
+		
+		$Ctemplate->useTemplate("news/list_entry", array(
+			'TITLE'	=>	$row['title'], // News title
+			'DATE'	=>	fdate($row['createdate']). " " .$wf_lang['{LANG_NEWS_BY}'], // Post date
+			'USERID'	=>	$row['createuser'], // Poster ID
+			'NAME'	=>	$postuser['username'], // Poster name
+			'DESCRIPTION'	=>	bbDecode($row['description']), // Short description of entry
+			
+			// Button to read the whole entry
+			'MORE'	=>	$Ctemplate->useTemplate("news/list_more", array(
+							'ENTRY_ID'	=>	$row['id']
+						), TRUE),
+			//EDIT
+			//DELETE
+		), FALSE);
+	}
+	
+	$Ctemplate->useStaticTemplate("news/list_foot", FALSE); // Table footer
+	
+	if ( $news_pages > 0 )
+	{
+		// If we have more than one news list page
+		
+		// Generate embedded pager
+		$pages = ""; // Define the variable
+		for ( $p = 0; $p <= ($news_pages-1); $p++ )
+		{
+			$pages .= $Ctemplate->useTemplate("news/list_page_embed", array(
+				'START_AT'	=>	$p,
+				'PAGE_NUMBER'	=>	($p+1)
+			), TRUE);
+		}
+		
+		// Output switcher table
+		$Ctemplate->useTemplate("news/list_pages_table", array(
+			'CURRENT_PAGE'	=>	(@$_GET['start_at']+1), // Number of current page
+			'PAGES_EMBED'	=>	$pages, // Embedding the generated pages box
+			'PAGE_TOTAL'	=>	$news_pages
+		), FALSE);
+	}
 }
 
 $Ctemplate->useStaticTemplate("news/foot", FALSE); // Footer

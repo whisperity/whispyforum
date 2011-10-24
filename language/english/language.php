@@ -670,5 +670,8 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_NEWS_NEWENTRY_VARIABLE_ERROR}'	=>	"The news entry addition cannot be done until every required variable is entered.",
 	'{LANG_NEWS_NEWENTRY_SQL_ERROR}'	=>	"There were errors executing the SQL query to add the entry. Press the button to try again.",
 	'{LANG_NEWS_NEWENTRY_SUCCESS}'	=>	"The new news entry, titled {TITLE} added successfully.",
+	
+	'{LANG_NEWS_MORE}'	=>	"More",
+	'{LANG_NEWS_ENTRY_MISSING}'	=>	"The news entry you requested to view is no longer available!",
 );
 ?>
