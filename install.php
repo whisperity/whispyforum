@@ -290,7 +290,7 @@ switch ($instPos)
 				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE); // We give error output
 		} else { // If there isn't any writing errors, give success
-			file_put_contents("config.md5", md5($configfile)); // Put the MD5 hash of written content into a seperate file (for later checks)
+			file_put_contents("config.md5", md5($configfile) . " *config.php"); // Put the MD5 hash of written content into a seperate file (for later checks)
 			
 			$Ctemplate->useTemplate("install/ins_config_write_success", array(
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
