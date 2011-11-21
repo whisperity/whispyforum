@@ -264,18 +264,27 @@ function config($variable = NULL)
 	return $value[0]; // Return the value
 }
 
-function prettyVar($variable = NULL)
+function prettyVar($variable = NULL, $output = FALSE)
 {
 	/**
 	* This function returns the var_export($variable) output
 	* in both machine and human readable format
 	* 
 	* @inputs: $variable - name of the variable
+	* 		   $output - if true, automatically echoes instead of returning the value
 	* @outputs: formatted text
 	*/
 	
+	$return_value = str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($variable,true))."<br>";
 	
-	return str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($variable,true))."<br>";
+	if ( $output )
+	{
+		echo $return_value;
+		return 0;
+	} elseif ( !$output )
+	{
+		return $return_value;
+	}
 }
 
 function sendTemplateMail($address, $subject, $template_name, $variable_array)

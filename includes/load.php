@@ -72,11 +72,11 @@ require("includes/functions.php");
 /* DEVELOPEMENT */
 // PH, workaround: output HTTP POST and GET arrays
 print "<h4>GET</h4>";
-print prettyVar($_GET);
+prettyVar($_GET, true);
 print "<h4>POST</h4>";
-print prettyVar($_POST);
+prettyVar($_POST, true);
 print "<h4>FILES</h4>";
-print prettyVar($_FILES);
+prettyVar($_FILES, true);
 
 /* START GENERATION */
 $Cmysql->Connect(); // Connect to database
@@ -99,17 +99,17 @@ $Ctemplate->useTemplate("framework/header", array(
 print "<h4>SESSION</h4>";
 print prettyVar($_SESSION);
 // print "<h4>SERVER</h4>";
-// print prettyVar($_SERVER);
+// prettyVar($_SERVER, true);
 // print "<h4>REQUEST</h4>";
-// print prettyVar($_REQUEST);
+// prettyVar($_REQUEST, true);
 // print "<h4>ENVIRONMENT</h4>";
-// print prettyVar($_ENV);
+// prettyVar($_ENV, true);
 // print "<h4>COOKIES</h4>";
-// print prettyVar($_COOKIE);
+// prettyVar($_COOKIE, true);
 // print "<h4>Configuration</h4>";
-// print prettyVar($cfg);
+// prettyVar($cfg, true);
 // print "<h4>Localization</h4>";
-// print prettyVar($wf_lang);
+// prettyVar($wf_lang, true);
 
 /* FRAMEWORK */
 

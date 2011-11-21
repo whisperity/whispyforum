@@ -121,7 +121,7 @@ class class_template
 			}
 			
 			// Removing the <!--- HTML TEMPLATE COMMENTS --> from the output
-			$this->_output=preg_replace("/\n?<!---.*?-->\n?/s","",$this->_output);
+			//$this->_output=preg_replace("/\n?<!---.*?-->\n?/s","",$this->_output);
 			
 			if ( $varOutput == TRUE ) // If we decided to give return output
 			{
@@ -189,7 +189,7 @@ class class_template
 			/* Replacing language tokens */
 			
 			// Removing the <!--- HTML TEMPLATE COMMENTS --> from the output
-			$this->_output=preg_replace("/\n?<!---.*?-->\n?/s","",$this->_output);
+			//$this->_output=preg_replace("/\n?<!---.*?-->\n?/s","",$this->_output);
 			
 			if ( $varOutput == TRUE ) // If we decided to give return output
 			{
