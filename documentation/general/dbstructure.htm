@@ -41,6 +41,10 @@
     <td>news entries</td>
   </tr>
   <tr>
+    <th><a href="#tbl_news_comments">news_comments</a></th>
+    <td>comments to news</td>
+  </tr>
+  <tr>
     <th><a href="#tbl_posts">posts</a></th>
     <td>data for posts</td>
   </tr>
@@ -53,7 +57,7 @@
     <td>userdata</td>
   </tr>
   <tr>
-    <th align="center">9 tables</th>
+    <th align="center">10 tables</th>
     <th>&nbsp;</th>
   </tr>
 </table>
@@ -510,7 +514,7 @@
     </tr>
   </thead>
   <tr>
-    <td height="1">id</td>
+    <td height="1"><a name="news_id"></a>id</td>
     <td height="1">int(10)</td>
     <!--<td>&nbsp;</td>-->
     <td height="1">No</td>
@@ -575,6 +579,103 @@
     <td height="0">No</td>
     <td height="0">0</td>
     <td height="0">1 if entry is commentable, 0 if not </td>
+    <td height="0">&nbsp;</td>
+    <td height="0">&nbsp;</td>
+  </tr>
+</table>
+<h3>Indexes</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Keyname</th>
+      <th>Type</th>
+      <th>Unique</th>
+      <th>Packed</th>
+      <th>Field</th>
+      <th>Cardinality</th>
+      <th>Collation</th>
+      <th>Null</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+  <tr class="odd">
+    <th rowspan="1">PRIMARY</th>
+    <td rowspan="1">BTREE</td>
+    <td rowspan="1">Yes</td>
+    <td rowspan="1">No</td>
+    <td>id</td>
+    <td>0</td>
+    <td>A</td>
+    <td>&nbsp;</td>
+    <td rowspan="1">&nbsp;</td>
+  </tr>
+</table>
+<h2><a name="tbl_news_comments"></a>news_comments</h2>
+<p><b>Table comments:</b> comments to news</p>
+<h3>Fields</h3>
+<table style="width: 100%;" height="84">
+  <thead>
+    <tr>
+      <th height="17">Field</th>
+      <th height="17">Types</th>
+      <th height="17">Null</th>
+      <th height="17">Default</th>
+      <th height="17">Comments</th>
+      <th height="17">MIME</th>
+      <th height="17"></th>
+    </tr>
+    <tr>
+      <!--<th>Tulajdonságok</th>-->
+      <!--<th>Extra</th>-->
+    </tr>
+  </thead>
+  <tr>
+    <td height="1">id</td>
+    <td height="1">int(10)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="1">No</td>
+    <td height="1"></td>
+    <!--<td>auto_increment&nbsp;</td>-->
+    <td height="1">auto increasing ID</td>
+    <td height="1"></td>
+    <td height="1"></td>
+  </tr>
+  <tr>
+    <td height="1">news_id</td>
+    <td height="1">int(10)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="1">No</td>
+    <td height="1"></td>
+    <td height="1">ID of the news entry the comment is posted to (<a href="#news_id">news.id</a>)</td>
+    <td height="1"></td>
+    <td height="1"></td>
+  </tr>
+  <tr>
+    <td height="1">createuser</td>
+    <td height="1">int(10)</td>
+    <td height="1">No</td>
+    <td height="1"></td>
+    <td height="1">the ID of the user who posted the entry (<a href="#users_id">users.id</a>)</td>
+    <td height="1"></td>
+    <td height="1"></td>
+  </tr>
+  <tr>
+    <td height="1">createdate</td>
+    <td height="1">int(16)</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="1">No</td>
+    <td height="1">0</td>
+    <!--<td>&nbsp;</td>-->
+    <td height="1">creation date</td>
+    <td height="1"></td>
+    <td height="1"></td>
+  </tr>
+  <tr>
+    <td height="0">content</td>
+    <td height="0">text</td>
+    <td height="0">Yes</td>
+    <td height="0"><i>NULL</i></td>
+    <td height="0">text of the entry</td>
     <td height="0">&nbsp;</td>
     <td height="0">&nbsp;</td>
   </tr>

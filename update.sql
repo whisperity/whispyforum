@@ -1,7 +1,7 @@
 # WhispyForum SQL update file
 # 
 # You can use this update file to modify database
-# structure if you don't want full reinstall.
+# structure if you do not want full reinstall.
 # 
 # You must apply EVERY modification that was committed
 # between your database and script revision.
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS users (
 ALTER TABLE `users` ADD `avatar_filename` VARCHAR( 36 ) NOT NULL COMMENT 'avatar picture filename';
 
 #
-# Revision 491 (making root user's userlevel 4 instead of 5)
+# Revision 491 (making root user userlevel 4 instead of 5)
 #
 UPDATE `users` SET `userLevel` = 4 WHERE `userLevel` = 5;
 
@@ -91,7 +91,7 @@ INSERT INTO menu_entries(menu_id, label, href) VALUES
 ALTER TABLE `users` ADD `language` VARCHAR( 32 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'english' COMMENT 'user preferred language';
 
 #
-# Revisin 581 (making users table's username and e-mail field unique)
+# Revisin 581 (making users table username and e-mail field unique)
 #
 ALTER TABLE `users` ADD UNIQUE (`username`);
 ALTER TABLE `users` ADD UNIQUE (`email`);
@@ -147,7 +147,7 @@ ALTER TABLE `users` ADD `forum_topic_count_per_page` smallint(3) NOT NULL DEFAUL
 ALTER TABLE `users` ADD `forum_post_count_per_page` smallint(3) NOT NULL DEFAULT '15' COMMENT 'user preference: how many posts appear on one page';
 
 #
-# Revision 618 (adding user's post count)
+# Revision 618 (adding user post count)
 #
 ALTER TABLE `users` ADD `post_count` int(6) NOT NULL DEFAULT '0' COMMENT 'number of posts from the user';
 
@@ -203,3 +203,17 @@ CREATE TABLE IF NOT EXISTS news (
 # Revision 690
 #
 ALTER TABLE `news` ADD `description` VARCHAR(512) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'short description of entry' AFTER `createdate`;
+
+#
+# Revision 704 (adding news entry comments table)
+#
+CREATE TABLE IF NOT EXISTS news_comments (
+	`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+	`news_id` int(10) NOT NULL COMMENT 'ID of the news entry the comment is posted to (news.id)',
+	`createuser` int(10) NOT NULL COMMENT 'the ID of the user who posted the entry (users.id)',
+	`createdate` int(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
+	`content` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'text of the entry',
+	PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'comments to news';
+
+ALTER TABLE `users` ADD `news_comment_count` int(6) NOT NULL DEFAULT '0' COMMENT 'number of news comments from the user' AFTER `post_count`;

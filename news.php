@@ -170,7 +170,7 @@ if ( @$_POST['action'] == "newentry" )
 	// First, we query whether the entry exists,
 	// but if we are already there, we only select the needed columns.
 	
-	$entry_data = mysql_fetch_assoc($Cmysql->Query("SELECT title, createuser, createdate, description, content, commentable FROM news WHERE id='" .$Cmysql->EscapeString($_POST['id']). "'"));
+	$entry_data = mysql_fetch_assoc($Cmysql->Query("SELECT id, title, createuser, createdate, description, content, commentable FROM news WHERE id='" .$Cmysql->EscapeString($_POST['id']). "'"));
 	
 	if ( $entry_data === FALSE )
 	{
@@ -191,8 +191,58 @@ if ( @$_POST['action'] == "newentry" )
 			'USERID'	=>	$entry_data['createuser'], // Poster ID
 			'NAME'	=>	$postuser['username'], // Poster name
 			'DESCRIPTION'	=>	bbDecode($entry_data['description']), // Short description of entry
-			'CONTENT'	=>	bbDecode($entry_data['content']), // Full entry text
+			'CONTENT'	=>	bbDecode($entry_data['content']) // Full entry text
 		), FALSE);
+		
+		if ( $entry_data['commentable'] == 1 )
+		{
+			// If the entry is commentable, output the comments
+			
+			// Output the beginning for the table
+			$Ctemplate->useStaticTemplate("news/comment_list_head", FALSE);
+			
+			// Query all the comments assigned to this news entry from the database
+			$comment_result = $Cmysql->Query("SELECT * FROM news_comments WHERE news_id='" .$Cmysql->EscapeString($entry_data['id']). "' ORDER BY createdate DESC");
+			
+			// Going through every comment entry, output them to the user
+			while ( $comment_row = mysql_fetch_assoc($comment_result) )
+			{
+				// Query commenter's data
+				$uData = mysql_fetch_assoc($Cmysql->Query("SELECT username, regdate, loggedin, avatar_filename, news_comment_count FROM users WHERE id='" .$Cmysql->EscapeString($comment_row['createuser']). "'"));
+				
+				if ( $uData['avatar_filename'] == NULL )
+				{
+					$poster_avatar = "themes/{THEME_NAME}/default_avatar.png";
+				} else {
+					// If the user have a defined avatar, make it his SESSION avatar
+					$poster_avatar = "upload/usr_avatar/" .$uData['avatar_filename'];
+					
+					if ( !file_exists("upload/usr_avatar/" .$uData['avatar_filename']) )
+					{
+						$poster_avatar = "themes/{THEME_NAME}/default_avatar.png";
+					}
+				}
+				
+				// Output one row entry
+				$Ctemplate->useTemplate("news/comment_row", array(
+					'ID'	=>	$comment_row['id'], // Comment ID
+					'USERID'	=>	$comment_row['createuser'], // Commenter's ID
+					'USERNAME'	=>	$uData['username'], // Commenter's name
+					'IMGSRC'	=>	$poster_avatar, // Commenter's avatar (or your theme's default if poster does not have one)
+					'REGDATE'	=>	fDate($uData['regdate']), // Commenter's registration date
+					'NEWS_COMMENT_COUNT'	=>	$uData['news_comment_count'], // Comment count of the user
+					'LOG_STATUS'	=>	($uData['loggedin'] == 1 ? "online" : "offline"), // Logged in or out picture
+					'LOG_ALT'	=>	"{LANG_" . ($uData['loggedin'] == 1 ? "ONLINE" : "OFFLINE"). "}", // Alternate text for log_status picture
+					'DATE'	=>	fDate($comment_row['createdate']), // Post date
+					'TEXT'	=>	bbDecode($comment_row['content']), // The post itself
+				), FALSE);
+				
+				//prettyVar($comment_row, true);
+			}
+			
+			// Output ending for the table containing the comments
+			$Ctemplate->useStaticTemplate("news/comment_list_foot", FALSE);
+		}
 	}
 } else {
 	// If no variables are fitting the previous cases, we list the news in a short list

@@ -402,6 +402,7 @@ switch ($instPos)
 			`forum_topic_count_per_page` smallint(3) NOT NULL DEFAULT '15' COMMENT 'user preference: how many topics appear on one page',
 			`forum_post_count_per_page` smallint(3) NOT NULL DEFAULT '15' COMMENT 'user preference: how many posts appear on one page',
 			`post_count` int(6) NOT NULL DEFAULT '0' COMMENT 'number of posts from the user',
+			`news_comment_count` int(6) NOT NULL DEFAULT '0' COMMENT 'number of news comments from the user',
 			PRIMARY KEY (`id`),
 			UNIQUE KEY `username` (`username`),
 			UNIQUE KEY `email` (`email`)
@@ -651,7 +652,7 @@ switch ($instPos)
 		/* Badges table */
 		
 		/* Configuration table */
-		// Stores the user's data
+		// Stores the engine configuration
 		$dbtables_config = FALSE; // We failed creating the table first
 		$dbtables_config = $Cmysql->Query("CREATE TABLE IF NOT EXISTS config (
 			`variable` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'variable name',
@@ -670,7 +671,7 @@ switch ($instPos)
 			// We set the creation global error variable to false
 			$tablecreation = FALSE;
 			
-			$tablelist[] = "config"; // Append users table name to fail-list
+			$tablelist[] = "config"; // Append config table name to fail-list
 		} elseif ( $dbtables_config != FALSE )
 		{
 			// Give success
@@ -681,7 +682,7 @@ switch ($instPos)
 		/* Configuration table */
 		
 		/* News table */
-		// Stores the user's data
+		// Stores the news' data
 		$dbtables_news = FALSE; // We failed creating the table first
 		$dbtables_news = $Cmysql->Query("CREATE TABLE IF NOT EXISTS news (
 			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
@@ -708,7 +709,7 @@ switch ($instPos)
 			// We set the creation global error variable to false
 			$tablecreation = FALSE;
 			
-			$tablelist[] = "news"; // Append users table name to fail-list
+			$tablelist[] = "news"; // Append news table name to fail-list
 		} elseif ( ( $dbtables_news != FALSE ) && ( $dbtables_news_data != FALSE ) )
 		{
 			// Give success
@@ -717,6 +718,40 @@ switch ($instPos)
 			), FALSE);
 		}
 		/* News table */
+		
+		/* News comments table */
+		// Stores the comments for news entries
+		$dbtables_news_comments = FALSE; // We failed creating the table first
+		$dbtables_news_comments = $Cmysql->Query("CREATE TABLE IF NOT EXISTS news_comments (
+			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+			`news_id` int(10) NOT NULL COMMENT 'ID of the news entry the comment is posted to (news.id)',
+			`createuser` int(10) NOT NULL COMMENT 'the ID of the user who posted the entry (users.id)',
+			`createdate` int(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
+			`content` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'text of the entry',
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'comments to news'"); // $dbtables_news_comments sets to true if we succeeded creating a table
+		
+		
+		// We check config table creation
+		if ( $dbtables_news_comments == FALSE )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
+				'TABLENAME'	=>	"news_comments" // Table name
+			), FALSE);
+			
+			// We set the creation global error variable to false
+			$tablecreation = FALSE;
+			
+			$tablelist[] = "news_comments"; // Append news_comments table name to fail-list
+		} elseif ( $dbtables_news_comments != FALSE )
+		{
+			// Give success
+			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
+				'TABLENAME'	=>	"news_comments" // Table name
+			), FALSE);
+		}
+		/* News comments table */
 		
 		// Check global variable status
 		if ( $tablecreation == FALSE )

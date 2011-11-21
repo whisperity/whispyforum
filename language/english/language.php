@@ -673,5 +673,8 @@ When you logout, you're automatically redirected through this page by the engine
 	
 	'{LANG_NEWS_MORE}'	=>	"More",
 	'{LANG_NEWS_ENTRY_MISSING}'	=>	"The news entry you requested to view is no longer available!",
+	
+	'{LANG_NEWS_COMMENTS}'	=>	"Comments",
+	'{LANG_NEWS_COMMENT_COUNT}'	=>	"Comments",
 );
 ?>
