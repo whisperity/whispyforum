@@ -97,7 +97,7 @@ $Ctemplate->useTemplate("framework/header", array(
 
 /* DEVELOPEMENT */
 print "<h4>SESSION</h4>";
-print prettyVar($_SESSION);
+prettyVar($_SESSION, true);
 // print "<h4>SERVER</h4>";
 // prettyVar($_SERVER, true);
 // print "<h4>REQUEST</h4>";
