@@ -30,7 +30,7 @@ $Ctemplate->useTemplate("bbcodes", array(
 	'URL'	=>	bbDecode("[url]http://google.com[/url]"),
 	'URL_WITH_TEXT'	=>	bbDecode("[url=http://google.com]" .$wf_lang['{LANG_BBCODES_GOOGLE_HOMEPAGE}']. "[/url]"),
 	'QUOTE'	=>	bbDecode("[quote]" .$wf_lang['{LANG_BBCODES_PICASSO_QUOTE}']. "[/quote]"),
-	'QUOTE_CITATED'	=>	bbDecode('[quote="Pablo Picasso"]' .$wf_lang['{LANG_BBCODES_PICASSO_QUOTE}']. '[/quote]'),
+	'QUOTE_CITATED'	=>	bbDecode('[quote=Pablo Picasso]' .$wf_lang['{LANG_BBCODES_PICASSO_QUOTE}']. '[/quote]'),
 ), FALSE);
 
 DoFooter();
