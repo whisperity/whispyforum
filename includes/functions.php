@@ -357,7 +357,7 @@ function sendTemplateMail($address, $subject, $template_name, $variable_array)
 	/**
 	* This function sends an email message to a set recipient
 	* using a set template and a set array of replaced variables (in template)
-	*
+	* 
 	* @inputs: $address - recipient address
 	* 	   $subject - mail subject
 	* 	   $template_name - name of the template file
@@ -375,5 +375,61 @@ function sendTemplateMail($address, $subject, $template_name, $variable_array)
 	
 	// Send out the mail
 	mail($address, $subject, $message, $headers);
+}
+
+function ambox($type, $body, $title = NULL)
+{
+	/**
+	* This function generates a template error/message/success box from
+	* the parameters.
+	* 
+	* Easter egg: amBox (http://en.wikipedia.org/wiki/Template:Ambox) is the all-purpose pseudotemplate of Wikipedia :)
+	* @inputs: $type - box type: ERROR, MESSAGE, SUCCESS (red, orange, green)
+	* 	   $body - message body
+	* 	   $title - box header
+	*/
+	
+	// Hook the template conductor
+	global $Ctemplate;
+	
+	// Based on the type, fetch the box
+	switch ( strtoupper($type) )
+	{
+		case "ERROR":
+			$template = "errormessage";
+			$alt = "{LANG_ERROR_EXCLAMATION}";
+			$picture = "Nuvola_apps_error.png";
+			
+			break;
+		case "MESSAGE":
+			$template = "messagebox";
+			$alt = "Message";
+			$picture = "Nuvola_apps_terminal.png";
+			
+			break;
+		case "SUCCESS":
+			$template = "successbox";
+			$alt = "{LANG_SUCCESS_EXCLAMATION}";
+			$picture = "Nuvola_apps_korganizer.png";
+			
+			break;
+		default:
+			$template = "errormessage";
+			$alt = "{LANG_MISSING_PARAMETERS}";
+			$picture = "Stop_hand.png";
+			
+			$title = "{LANG_MISSING_PARAMETERS}";
+			$body = "{LANG_MISSING_PARAMETERS_BODY}. Invalid AmBox type.";
+			
+			break;
+	}
+	
+	// Output the box on the screen
+	$Ctemplate->useTemplate($template, array(
+		'TITLE'	=>	$title,
+		'BODY'	=>	$body,
+		'ALT'	=>	$alt,
+		'PICTURE_NAME'	=>	$picture
+	), FALSE);
 }
 ?>
