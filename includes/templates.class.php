@@ -130,7 +130,7 @@ class class_template
 				
 				$this->__resetOutput(); // We clear the output stack
 				
-				// The reason of caching: after RETURN, we cannot call the clearing (becuse it exist the function)
+				// The reason of caching: after RETURN, we cannot call the clearing (becuse it exits the function)
 				// but if we call it before, it will give NULL as output
 				return $rVar; // We return cached output as a variable
 			} elseif ( $varOutput == FALSE ) // If we decided to give echo output
@@ -198,7 +198,7 @@ class class_template
 				
 				$this->__resetOutput(); // We clear the output stack
 				
-				// The reason of caching: after RETURN, we cannot call the clearing (becuse it exist the function)
+				// The reason of caching: after RETURN, we cannot call the clearing (becuse it exits the function)
 				// but if we call it before, it will give NULL as output
 				return $rVar; // We return cached output as a variable
 			} elseif ( $varOutput == FALSE ) // If we decided to give echo output

@@ -198,8 +198,21 @@ if ( @$_POST['action'] == "newentry" )
 		{
 			// If the entry is commentable, output the comments
 			
+			// Decide whether the user is authorized to post a new comment
+			$comment_authorized = FALSE; // We need to declare the variable first
+			if ( $uLvl >= 1 )
+			{
+				// If the user is USER or higher, they are authorized to post comments
+				$comment_authorized = TRUE;
+			}
+			
 			// Output the beginning for the table
-			$Ctemplate->useStaticTemplate("news/comment_list_head", FALSE);
+			$Ctemplate->useTemplate("news/comment_list_head", array(
+				'NEW_COMMENT'	=>	($comment_authorized ? $Ctemplate->useTemplate(
+					"news/comment_list_head_newcomment", array(
+						'NEWS_ID'	=>	$entry_data['id']
+					), TRUE) : NULL)
+			), FALSE);
 			
 			// Query all the comments assigned to this news entry from the database
 			$comment_result = $Cmysql->Query("SELECT * FROM news_comments WHERE news_id='" .$Cmysql->EscapeString($entry_data['id']). "' ORDER BY createdate DESC");
@@ -244,6 +257,9 @@ if ( @$_POST['action'] == "newentry" )
 			$Ctemplate->useStaticTemplate("news/comment_list_foot", FALSE);
 		}
 	}
+} elseif ( ( @$_POST['action'] == "newcomment" ) && ( @$_POST['news_id'] != NULL ) ) {
+	// If the user decided to post a comment and the news entry's ID was forwarded, let him/her post his/her comment
+	
 } else {
 	// If no variables are fitting the previous cases, we list the news in a short list
 	
