@@ -268,7 +268,8 @@ if ( @$_POST['action'] == "newentry" )
 			$Ctemplate->useStaticTemplate("news/comment_list_foot", FALSE);
 		}
 	}
-} elseif ( ( @$_POST['action'] == "newcomment" ) && ( @$_POST['id'] != NULL ) ) {
+} elseif ( ( @$_POST['action'] == "newcomment" ) && ( @$_POST['id'] != NULL ) )
+{
 	// If the user decided to post a comment and the news entry's ID was forwarded, let him/her post his/her comment
 	
 	// Check whether the requested news entry exists
@@ -309,7 +310,8 @@ if ( @$_POST['action'] == "newentry" )
 			}
 		}
 	}
-} elseif ( ( @$_POST['action'] == "postcomment" ) && ( @$_POST['id'] != NULL ) ) {
+} elseif ( ( @$_POST['action'] == "postcomment" ) && ( @$_POST['id'] != NULL ) )
+{
 	// If the user posted a comment and the news entry's ID was forwarded, store the comment in the database
 	
 	// Check whether the requested news entry exists
@@ -357,13 +359,13 @@ if ( @$_POST['action'] == "newentry" )
 			
 			if ( $comment_store === TRUE )
 			{
-				// If the query succeeded
+				// If the query succeeded, output success box and return the user to the news entry
 				$Ctemplate->useTemplate("news/comment_create_success", array(
 					'ENTRY_ID'	=>	$_POST['id'], // News entry ID
 				), FALSE);
 			} elseif ( $comment_store === FALSE )
 			{
-				// If the query failed
+				// If the query failed, output an error box
 				$Ctemplate->useTemplate("news/comment_create_error", array(
 					'ENTRY_ID'	=>	$_POST['id'], // News entry ID
 					'CONTENT'	=>	$_POST['content'] // Password (should be empty)
