@@ -16,6 +16,19 @@ $Ctemplate->useStaticTemplate("news/head", FALSE); // Header
 
 $uLvl = $Cusers->getLevel(); // Get user level from database
 
+if ( ( @$_GET['action'] == "more" ) && ( @$_GET['id'] != NULL ) )
+{
+	// If the page was loaded to output all of a news entry,
+	// but the variables were passed as HTTP GET, put them to HTTP POST.
+	
+	$_POST['action'] = @$_GET['action'];
+	$_POST['id'] = @$_GET['id'];
+	
+	// Truncate the GET superglobal
+	unset($_GET['action']);
+	unset($_GET['id']);
+}
+
 if ( @$_POST['action'] == "newentry" )
 {
 	// If requested a form to add a new news entry
@@ -210,7 +223,7 @@ if ( @$_POST['action'] == "newentry" )
 			$Ctemplate->useTemplate("news/comment_list_head", array(
 				'NEW_COMMENT'	=>	($comment_authorized ? $Ctemplate->useTemplate(
 					"news/comment_list_head_newcomment", array(
-						'NEWS_ID'	=>	$entry_data['id']
+						'ENTRY_ID'	=>	$entry_data['id']
 					), TRUE) : NULL)
 			), FALSE);
 			
@@ -249,17 +262,115 @@ if ( @$_POST['action'] == "newentry" )
 					'DATE'	=>	fDate($comment_row['createdate']), // Post date
 					'TEXT'	=>	bbDecode($comment_row['content']), // The post itself
 				), FALSE);
-				
-				//prettyVar($comment_row, true);
 			}
 			
 			// Output ending for the table containing the comments
 			$Ctemplate->useStaticTemplate("news/comment_list_foot", FALSE);
 		}
 	}
-} elseif ( ( @$_POST['action'] == "newcomment" ) && ( @$_POST['news_id'] != NULL ) ) {
+} elseif ( ( @$_POST['action'] == "newcomment" ) && ( @$_POST['id'] != NULL ) ) {
 	// If the user decided to post a comment and the news entry's ID was forwarded, let him/her post his/her comment
 	
+	// Check whether the requested news entry exists
+	$entry_data = mysql_fetch_assoc($Cmysql->Query("SELECT id, title, commentable FROM news WHERE id='" .$Cmysql->EscapeString($_POST['id']). "'"));
+	
+	if ( $entry_data === FALSE )
+	{
+		// If the selected entry does not exist, we output an error message and
+		// give the user the ability to go back
+		
+		$Ctemplate->useStaticTemplate("news/entry_missing_error", FALSE);
+	} elseif ( $entry_data == TRUE )
+	{
+		// If the entry exists, check whether it is commentable or not
+		if ( $entry_data['commentable'] == 0 )
+		{
+			// If not commentable, output error message
+			ambox('ERROR', "Entry is not commentable."); // Placeholder
+		} elseif ( $entry_data['commentable'] == 1 )
+		{
+			// If commentable, output the comment form
+			
+			if ( @$_POST['error_goback'] == "yes" ) // If user is redirected because of an error
+			{
+				// We output the form with data returned (user doesn't have to enter it again)
+				$Ctemplate->useTemplate("news/comment_create_form", array(
+					'ENTRY_ID'	=>	$entry_data['id'],
+					'ENTRY_TITLE'	=>	$entry_data['title'],
+					'CONTENT'	=>	$_POST['content']
+				), FALSE);
+			} else {
+				// We output general form
+				$Ctemplate->useTemplate("news/comment_create_form", array(
+					'ENTRY_ID'	=>	$entry_data['id'],
+					'ENTRY_TITLE'	=>	$entry_data['title'],
+					'CONTENT'	=>	NULL
+				), FALSE);
+			}
+		}
+	}
+} elseif ( ( @$_POST['action'] == "postcomment" ) && ( @$_POST['id'] != NULL ) ) {
+	// If the user posted a comment and the news entry's ID was forwarded, store the comment in the database
+	
+	// Check whether the requested news entry exists
+	$entry_data = mysql_fetch_assoc($Cmysql->Query("SELECT id, title, commentable FROM news WHERE id='" .$Cmysql->EscapeString($_POST['id']). "'"));
+	
+	if ( $entry_data === FALSE )
+	{
+		// If the selected entry does not exist, we output an error message and
+		// give the user the ability to go back
+		
+		$Ctemplate->useStaticTemplate("news/entry_missing_error", FALSE);
+	} elseif ( $entry_data == TRUE )
+	{
+		// If the entry exists, check whether it is commentable or not
+		if ( $entry_data['commentable'] == 0 )
+		{
+			// If not commentable, output error message
+			$Ctemplate->useTemplate("news/comment_create_not_commentable", array(
+				'ENTRY_ID'	=>	$_POST['id'] // News entry ID
+			), FALSE);
+		} elseif ( $entry_data['commentable'] == 1 )
+		{
+			// If the entry is commentable, do the commenting
+			
+			// Check whether the comment field is empty
+			if ( $_POST['content'] == NULL ) // Content
+			{
+				$Ctemplate->useTemplate("news/comment_create_variable_error", array(
+					'VARIABLE'	=>	"{LANG_NEWS_COMMENTS_COMMENT}", // Errornous variable name
+					'ENTRY_ID'	=>	$_POST['id'], // News entry ID
+					'CONTENT'	=>	@$_POST['content'] // Password (should be empty)
+				), FALSE);
+				// We terminate the script
+				$Ctemplate->useStaticTemplate("news/foot", FALSE); // Footer
+				DoFooter();
+				exit;
+			}
+			
+			// If the required variable is present and has value, do the SQL query
+			$comment_store = $Cmysql->Query("INSERT INTO news_comments(news_id, createuser, createdate, content) VALUES 
+			('" .$Cmysql->EscapeString($_POST['id']). "',
+			'" .$Cmysql->EscapeString($_SESSION['uid']). "',
+			'" .time(). "',
+			'" .$Cmysql->EscapeString(str_replace("'", "\'", $_POST['content'])). "')");
+			
+			if ( $comment_store === TRUE )
+			{
+				// If the query succeeded
+				$Ctemplate->useTemplate("news/comment_create_success", array(
+					'ENTRY_ID'	=>	$_POST['id'], // News entry ID
+				), FALSE);
+			} elseif ( $comment_store === FALSE )
+			{
+				// If the query failed
+				$Ctemplate->useTemplate("news/comment_create_error", array(
+					'ENTRY_ID'	=>	$_POST['id'], // News entry ID
+					'CONTENT'	=>	$_POST['content'] // Password (should be empty)
+				), FALSE);
+			}
+		}
+	}
 } else {
 	// If no variables are fitting the previous cases, we list the news in a short list
 	

@@ -673,9 +673,19 @@ When you logout, you're automatically redirected through this page by the engine
 	
 	'{LANG_NEWS_MORE}'	=>	"More",
 	'{LANG_NEWS_ENTRY_MISSING}'	=>	"The news entry you requested to view is no longer available!",
+	'{LANG_NEWS_ENTRY_NOT_COMMENTABLE}'	=>	"The news entry you requested is not commentable!",
 	
 	'{LANG_NEWS_COMMENTS}'	=>	"Comments",
 	'{LANG_NEWS_COMMENTS_NEW}'	=>	"New comment",
 	'{LANG_NEWS_COMMENT_COUNT}'	=>	"Comments",
+	
+	'{LANG_NEWS_COMMENTS_CREATE_HEADER}'	=>	"Post new comment",
+	'{LANG_NEWS_COMMENTS_COMMENT}'	=>	"Comment",
+	'{LANG_NEWS_COMMENTS_CREATE_POST}'	=>	"Post comment",
+	'{LANG_NEWS_COMMENTS_CREATE_VAR_ERROR}'	=>	"Empty comments cannot be posted.",
+	'{LANG_NEWS_COMMENTS_CREATE_ERROR}'	=>	"There was an error updating the database to store your comment. Please try later.",
+	'{LANG_NEWS_COMMENTS_CREATE_SUCCESS_HEAD}'	=>	"Created the comment",
+	'{LANG_NEWS_COMMENTS_CREATE_SUCCESS}'	=>	"Posting of comment ",
+	'{LANG_NEWS_COMMENTS_CREATE_SUCCESS_RETURN}'	=>	"Return to the entry",
 );
 ?>

@@ -1,0 +1,14 @@
+<!--- BEGIN news comment create form -->
+<!--- Usage: form for users posting new comments to news entries -->
+<a href="news.php?action=more&id={ENTRY_ID}">{ENTRY_TITLE}</a><br><br>
+<font class="emphasis">{LANG_MANDATORY_VARIABLES_REDSTAR}</font>
+
+<form method="POST" action="news.php">
+<span class="form-header">{LANG_NEWS_COMMENTS_CREATE_HEADER}</span><br>
+{LANG_NEWS_COMMENTS_COMMENT}<span class="red-star">*</span> <small>(<a href="tool.bb-test.php" target="_blank">{LANG_BB_VIEWCODES}</a>, <a href="tool.emot-test.php" target="_blank">{LANG_EMOTICONS_VIEW}</a>)</small>:<br>
+<textarea class="forum-post-field" rows="15" cols="50" name="content">{CONTENT}</textarea><br>
+<input type="hidden" name="action" value="postcomment">
+<input type="hidden" name="id" value="{ENTRY_ID}">
+<input type="submit" value="{LANG_NEWS_COMMENTS_CREATE_POST}">
+</form>
+<!--- END news comment create form -->

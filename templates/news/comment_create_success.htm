@@ -1,0 +1,19 @@
+<!--- BEGIN news comment success -->
+<!--- Usage: news comment posting form, success box -->
+<table class="successbox"> <!--- copying the successbox template -->
+	<tr>
+		<td class="successpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_txt.png" alt="{LANG_SUCCESS_EXCLAMATION}"></td>
+		<td class="successtitle">{LANG_NEWS_COMMENTS_CREATE_SUCCESS_HEAD}</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="successbody">{LANG_NEWS_COMMENTS_CREATE_SUCCESS} {LANG_EXECUTED_SUCCESSFULLY}</td>
+	</tr>
+</table> <!--- copying the successbox template -->
+
+<form method="GET" action="news.php">
+<input type="hidden" name="id" value="{ENTRY_ID}">
+<input type="hidden" name="action" value="more">
+<input type="submit" value="{LANG_NEWS_COMMENTS_CREATE_SUCCESS_RETURN}">
+</form>
+<!--- END news comment success -->
