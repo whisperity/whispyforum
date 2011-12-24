@@ -548,8 +548,8 @@ switch ($instPos)
 			`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'title for the topic',
 			`createuser` int(10) NOT NULL COMMENT 'the ID of the user who created the topic (users.id)',
 			`createdate` int(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
-			`locked` enum('0', '1') NOT NULL DEFAULT '0' COMMENT 'whether the topic is locked (no new posts allowed): 1 - locked, 0 - not locked',
-			`highlighted` enum('0', '1') NOT NULL DEFAULT '0' COMMENT 'topic is highlighted at the top of the list if value is 1',
+			`locked` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'whether the topic is locked (no new posts allowed): 1 - locked, 0 - not locked',
+			`highlighted` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'topic is highlighted at the top of the list if value is 1',
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'data for topics'"); // $dbtables_topics sets to true if we succeeded creating a table
 		

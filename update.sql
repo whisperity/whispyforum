@@ -217,3 +217,9 @@ CREATE TABLE IF NOT EXISTS news_comments (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'comments to news';
 
 ALTER TABLE `users` ADD `news_comment_count` int(6) NOT NULL DEFAULT '0' COMMENT 'number of news comments from the user' AFTER `post_count`;
+
+#
+# Revision 713 (changing type of topics.locked and topics.highlighted from enum('0', '1') to tinyint(1))
+#
+ALTER TABLE `topics` CHANGE `locked` `locked` TINYINT( 1 ) NOT NULL DEFAULT '0';
+ALTER TABLE `topics` CHANGE `highlighted` `highlighted` TINYINT( 1 ) NOT NULL DEFAULT '0';
