@@ -348,6 +348,32 @@ class class_users
 			$userLevel = array(0	=> '0');
 		}
 		
+		/* SECURITY HOLE!
+			This part of the script is only added for developer purposes
+			and thus, makes a RATHER LARGE security hole in the system.
+			
+			DO NOT USE IN PRODUCTION!
+		*/
+		echo '<span style="color: red; font-weight: bold">DO NOT USE THIS IN PRODUCTION!</span> <span style="color: maroon; font-weight: bold">This script queries the rank level of the user which, due to a developer-installed workaround, fakeable. Please remove the security hole.</span> <span style="color: red; font-weight: bold">DO NOT USE THIS IN PRODUCTION!</span><br>';
+		if ( @$_GET['fakelevel'] != NULL )
+		{
+			// If we have a fake level set in the HTTP GET header
+			// we forward that instead of the real level.
+			
+			// This is a big security hole... crater, becuase it allows
+			// those knowing how to fake their level and get superadmin rights.
+			// (Also, values outside the boundaries of 0 and 4 can break the system.)
+			echo '<span style="color: red; font-weight: bold">User level is faked to ' .$_GET['fakelevel']. '. Real value is ' .$userLevel[0]. '.</span><br>';
+			
+			return $_GET['fakelevel'];
+		}
+		/* SECURITY HOLE!
+			This part of the script is only added for developer purposes
+			and thus, makes a RATHER LARGE security hole in the system.
+			
+			DO NOT USE IN PRODUCTION!
+		*/
+		
 		return $userLevel[0]; // Return the value
 	}
 }
