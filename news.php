@@ -322,6 +322,73 @@ if ( @$_POST['action'] == "newentry" )
 			'TITLE'	=>	$_POST['title']
 		), FALSE);
 	}
+} elseif ( ( @$_POST['action'] == "deleteentry" ) && ( @$_POST['id'] != NULL ) ) 
+{
+	// If we requested to delete the entry, first, perform initial checks
+	// Deleting an entry requires level 3.
+	
+	if ( $uLvl < 3 )
+	{
+		// If the user is on lower level than Administrator
+		
+		$Ctemplate->useTemplate("errormessage", array(
+			'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
+			'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
+			'BODY'	=>	$wf_lang['{LANG_NEWS_DELETE_REQUIRES_ADMINISTRATOR}'], // Error text
+			'ALT'	=>	"{LANG_PERMISSIONS_ERROR}", // Alternate picture text
+		), FALSE ); // Give rights error
+	} elseif ( $uLvl >= 3 )
+	{
+		// Do removal of news entry  first
+		$nDel = $Cmysql->Query("DELETE FROM news WHERE id='" .$Cmysql->EscapeString($_POST['id']). "'");
+		
+		if ( $nDel == FALSE )
+		{
+			// Failed to delete the entry
+			$Ctemplate->useTemplate("errormessage", array(
+				'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
+				'TITLE'	=>	"{LANG_ERROR_EXCLAMATION}", // Error title
+				'BODY'	=>	"{LANG_NEWS_DELETEENTRY_ERROR}", // Error text
+				'ALT'	=>	"{LANG_ERROR_EXCLAMATION}" // Alternate picture text
+			), FALSE ); // We give an error
+			
+			$Ctemplate->useTemplate("news/list_back", array(
+				'START_AT'	=>	$_POST['start_at']
+			), FALSE); // Return button
+		} elseif ( $nDel == TRUE )
+		{
+			// Deleted the entry
+			$Ctemplate->useTemplate("successbox", array(
+				'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_txt.png", // Folder with pencil icon
+				'TITLE'	=>	"{LANG_SUCCESS_EXCLAMATION}", // Success title
+				'BODY'	=>	"{LANG_NEWS_DELETEENTRY_SUCCESS}", // Success text
+				'ALT'	=>	"{LANG_SUCCESS_EXCLAMATION}" // Alternate picture text
+			), FALSE ); // We give success
+			
+			// Delete the comments
+			$cDel = $Cmysql->Query("DELETE FROM news_comments WHERE news_id='" .$Cmysql->EscapeString($_POST['id']). "'");
+			
+			if ( $cDel == FALSE )
+			{
+				// Give error only if we failed removing the comments
+				$Ctemplate->useTemplate("errormessage", array(
+					'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
+					'TITLE'	=>	"{LANG_ERROR_EXCLAMATION}", // Error title
+					'BODY'	=>	"{LANG_NEWS_DELETEENTRY_COMMENT_ERROR}", // Error text
+					'ALT'	=>	"{LANG_ERROR_EXCLAMATION}" // Alternate picture text
+				), FALSE ); // We give an error
+			}
+			
+			$Ctemplate->useTemplate("news/list_back", array(
+				'START_AT'	=>	$_POST['start_at']
+			), FALSE); // Return button
+		}
+	}
+	
+	// Terminate execution
+	$Ctemplate->useStaticTemplate("news/foot", FALSE); // Footer
+	DoFooter();
+	exit;
 } elseif ( ( @$_POST['action'] == "more" ) && ( @$_POST['id'] != NULL ) )
 {
 	// If we requested to give the whole contents of a news entry
@@ -352,8 +419,11 @@ if ( @$_POST['action'] == "newentry" )
 			'DESCRIPTION'	=>	bbDecode($entry_data['description']), // Short description of entry
 			'CONTENT'	=>	bbDecode($entry_data['content']), // Full entry text
 			
-			// Entry edit button
+			// Button for administrative tasks
 			'EDIT'	=>	( $uLvl >= 2 ? $Ctemplate->useTemplate("News/list_admin_edit", array(
+							'ID'	=>	$entry_data['id']
+						), TRUE) : NULL),
+			'DELETE'	=>	( $uLvl >= 3 ? $Ctemplate->useTemplate("News/list_admin_delete", array(
 							'ID'	=>	$entry_data['id'],
 							'START_AT'	=>	(@$_GET['start_at'] == NULL ? '0' : $_GET['start_at'])
 						), TRUE) : NULL),
@@ -580,11 +650,15 @@ if ( @$_POST['action'] == "newentry" )
 			'MORE'	=>	$Ctemplate->useTemplate("news/list_more", array(
 							'ENTRY_ID'	=>	$row['id']
 						), TRUE),
+			
+			// Buttons for administrative tasks
 			'EDIT'	=>	( $uLvl >= 2 ? $Ctemplate->useTemplate("News/list_admin_edit", array(
+							'ID'	=>	$row['id']
+						), TRUE) : NULL),
+			'DELETE'	=>	( $uLvl >= 3 ? $Ctemplate->useTemplate("News/list_admin_delete", array(
 							'ID'	=>	$row['id'],
 							'START_AT'	=>	(@$_GET['start_at'] == NULL ? '0' : $_GET['start_at'])
 						), TRUE) : NULL),
-			//DELETE
 		), FALSE);
 	}
 	

@@ -695,5 +695,16 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_NEWS_EDITENTRY_VARIABLE_ERROR}'	=>	"The news entry edition cannot be done until every required variable is entered.",
 	'{LANG_NEWS_EDITENTRY_SQL_ERROR}'	=>	"There were errors executing the SQL query to edit the entry. Press the button to try again.",
 	'{LANG_NEWS_EDITENTRY_SUCCESS}'	=>	"The entry has been edited.",
+	
+	'{LANG_NEWS_DELETE}'	=>	"Delete",
+	'{LANG_NEWS_DELETE_REQUIRES_ADMINISTRATOR}'	=>	"Deleting an entry requires you to have {LANG_ADMINISTRATOR} rights.",
+	'{LANG_NEWS_EDITENTRY_HEADER}'	=>	'Editing entry <a href="news.php?action=more&id={ID}">{ORIGINAL_TITLE}</a>',
+	'{LANG_NEWS_EDITENTRY_POST}'	=>	"Edit the entry",
+	'{LANG_NEWS_EDITENTRY_VARIABLE_ERROR}'	=>	"The news entry edition cannot be done until every required variable is entered.",
+	'{LANG_NEWS_EDITENTRY_SQL_ERROR}'	=>	"There were errors executing the SQL query to edit the entry. Press the button to try again.",
+	'{LANG_NEWS_EDITENTRY_SUCCESS}'	=>	"The entry has been edited.",
+	'{LANG_NEWS_DELETEENTRY_ERROR}'	=>	"Failed to remove the news entry.",
+	'{LANG_NEWS_DELETEENTRY_SUCCESS}'	=>	"Successfully removed the news entry.",
+	'{LANG_NEWS_DELETEENTRY_COMMENT_ERROR}'	=>	"Failed to remove the comments linked to the news entry.",
 );
 ?>
