@@ -223,3 +223,10 @@ ALTER TABLE `users` ADD `news_comment_count` int(6) NOT NULL DEFAULT '0' COMMENT
 #
 ALTER TABLE `topics` CHANGE `locked` `locked` TINYINT( 1 ) NOT NULL DEFAULT '0';
 ALTER TABLE `topics` CHANGE `highlighted` `highlighted` TINYINT( 1 ) NOT NULL DEFAULT '0';
+
+#
+# Revision 721 (adding ability to specify news pager split value)
+#
+ALTER TABLE `users` ADD `news_split_value` SMALLINT( 3 ) NOT NULL DEFAULT '15' COMMENT 'user preference: how many entry to appear on one page' AFTER `post_count`;
+INSERT INTO `config` (`variable`, `value`) VALUES ('news_split_value', '15'),
+('module_news', 'on');

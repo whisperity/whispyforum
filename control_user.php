@@ -425,6 +425,64 @@ switch ($site)
 			), FALSE); // Output panel
 		}
 		break;
+	case "news":
+		// News settings
+		
+		// If the NEWS module is disabled, prevent execution
+		if ( config("module_news") == "off" )
+		{
+			$Ctemplate->useStaticTemplate("user/cp_foot", FALSE); // Output footer
+			dieOnModule("news"); // The DoFooter and the rest is issued by dieOnModule
+		}
+		
+		if ( isset($_POST['set_do']) )
+		{
+			// Change the preference
+			$mod = $Cmysql->Query("UPDATE users SET ".
+				"news_split_value ='" .$Cmysql->EscapeString($_POST['new_news_split_value']). "' ".
+				"WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'");
+			
+			// $mod is TRUE if we succeed and FALSE if we fail
+			if ( $mod == FALSE )
+			{
+				// If we failed
+				$Ctemplate->useTemplate("errormessage", array(
+					'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
+					'TITLE'	=>	"{LANG_UCP_NEWS_FAIL}", // Error title
+					'BODY'	=>	"", // Error text
+					'ALT'	=>	"{LANG_SQL_EXEC_ERROR}" // Alternate picture text
+				), FALSE ); // We give an unavailable error
+				
+				$Ctemplate->useStaticTemplate("user/cp_news_back", FALSE); // Back button
+			} elseif ( $mod == TRUE )
+			{
+				// If we succeeded
+				$Ctemplate->useTemplate("successbox", array(
+					'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_home.png", // House (user CP header)
+					'TITLE'	=>	"{LANG_UCP_NEWS_SUCCESS}", // Success title
+					'BODY'	=>	"{LANG_UCP_NEWS_SUCCESS_1}", // Success text
+					'ALT'	=>	"{LANG_SQL_EXEC_SUCCESS}" // Alternate picture text
+				), FALSE ); // We give a success message
+				
+				$Ctemplate->useStaticTemplate("user/cp_news_back", FALSE); // Back button
+				
+				// Modify the session so the next page load
+				// will use the new value
+				$_SESSION['news_split_value'] = $_POST['new_news_split_value'];
+			}
+		} else {
+			$Ctemplate->useStaticTemplate("user/cp_news", FALSE);
+			
+			$Ctemplate->useTemplate("user/cp_news_form", array(
+				// News split
+				'N_5_SELECT'	=>	($_SESSION['news_split_value'] == 5 ? " selected" : ""),
+				'N_15_SELECT'	=>	($_SESSION['news_split_value'] == 15 ? " selected" : ""),
+				'N_30_SELECT'	=>	($_SESSION['news_split_value'] == 30 ? " selected" : ""),
+				'N_50_SELECT'	=>	($_SESSION['news_split_value'] == 50 ? " selected" : ""),
+				'N_100_SELECT'	=>	($_SESSION['news_split_value'] == 100 ? " selected" : "")
+			), FALSE); // Output panel
+		}
+		break;
 }
 
 }

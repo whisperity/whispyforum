@@ -879,7 +879,8 @@ switch ($site) // Outputs and scripts are based on the site variable
 						'GLOBAL_TITLE'	=>	$_POST['global_title'],
 						'SITE_HOST'	=>	$_POST['site_host'],
 						'REGISTRATION'	=>	(@$_POST['registration'] == "on" ? "on" : "off"),
-						'MODEL_FORUM'	=>	(@$_POST['module_forum'] == "on" ? "on" : "off")
+						'MODULE_FORUM'	=>	(@$_POST['module_forum'] == "on" ? "on" : "off"),
+						'MODULE_NEWS'	=>	(@$_POST['module_news'] == "on" ? "on" : "off")
 					), FALSE); // Output error box
 					
 					// Terminate the script
@@ -895,7 +896,8 @@ switch ($site) // Outputs and scripts are based on the site variable
 						'GLOBAL_TITLE'	=>	$_POST['global_title'],
 						'SITE_HOST'	=>	$_POST['site_host'],
 						'REGISTRATION'	=>	(@$_POST['registration'] == "on" ? "on" : "off"),
-						'MODEL_FORUM'	=>	(@$_POST['module_forum'] == "on" ? "on" : "off")
+						'MODULE_FORUM'	=>	(@$_POST['module_forum'] == "on" ? "on" : "off"),
+						'MODULE_NEWS'	=>	(@$_POST['module_news'] == "on" ? "on" : "off")
 					), FALSE); // Output error box
 					
 					// Terminate the script
@@ -909,13 +911,14 @@ switch ($site) // Outputs and scripts are based on the site variable
 				$scUpdate_global_title = $Cmysql->Query("UPDATE config SET value='" .$Cmysql->EscapeString($_POST['global_title']). "' WHERE variable='global_title'");
 				$scUpdate_site_host = $Cmysql->Query("UPDATE config SET value='" .$Cmysql->EscapeString($_POST['site_host']). "' WHERE variable='site_host'");
 				$scUpdate_module_forum = $Cmysql->Query("UPDATE config SET value='" .(@$_POST['module_forum'] == "on" ? "on" : "off"). "' WHERE variable='module_forum'");
+				$scUpdate_module_news = $Cmysql->Query("UPDATE config SET value='" .(@$_POST['module_news'] == "on" ? "on" : "off"). "' WHERE variable='module_news'");
 				$scUpdate_registration = $Cmysql->Query("UPDATE config SET value='" .(@$_POST['registration'] == "on" ? "on" : "off"). "' WHERE variable='registration'");
 				
-				if ( ( $scUpdate_global_title == TRUE ) && ( $scUpdate_site_host == TRUE ) && ( $scUpdate_module_forum == TRUE ) && ( $scUpdate_registration == TRUE ) )
+				if ( ( $scUpdate_global_title == TRUE ) && ( $scUpdate_site_host == TRUE ) && ( $scUpdate_module_forum == TRUE ) && ( $scUpdate_module_news == TRUE ) && ( $scUpdate_registration == TRUE ) )
 				{
 					// If we succeeded, output success message, return form
 					$Ctemplate->useStaticTemplate("admin/siteprefs_success", FALSE);
-				} elseif ( ( $scUpdate_global_title == FALSE ) || ( $scUpdate_site_host == FALSE ) || ( $scUpdate_module_forum == FALSE ) || ( $scUpdate_registration == FALSE ) )
+				} elseif ( ( $scUpdate_global_title == FALSE ) || ( $scUpdate_site_host == FALSE ) || ( $scUpdate_module_forum == FALSE ) || ( $scUpdate_module_news == FALSE ) || ( $scUpdate_registration == FALSE ) )
 				{
 					// If we failed, output return form and error message
 					$Ctemplate->useTemplate("admin/siteprefs_error", array(
@@ -1086,7 +1089,8 @@ switch ($site) // Outputs and scripts are based on the site variable
 					'GLOBAL_TITLE'	=>	$_POST['global_title'],
 					'SITE_HOST'	=>	$_POST['site_host'],
 					'REGISTRATION_CHECK'	=>	(@$_POST['registration'] == "on" ? " checked" : ""),
-					'MODULE_FORUM_CHECK'	=>	(@$_POST['module_forum'] == "on" ? " checked" : "")
+					'MODULE_FORUM_CHECK'	=>	(@$_POST['module_forum'] == "on" ? " checked" : ""),
+					'MODULE_NEWS_CHECK'	=>	(@$_POST['module_news'] == "on" ? " checked" : "")
 				), FALSE);
 			} else {
 				// We output general form
@@ -1094,7 +1098,8 @@ switch ($site) // Outputs and scripts are based on the site variable
 					'GLOBAL_TITLE'	=>	config('global_title'),
 					'SITE_HOST'	=>	config('site_host'),
 					'REGISTRATION_CHECK'	=>	(config('registration') == "on" ? " checked" : ""),
-					'MODULE_FORUM_CHECK'	=>	(config('module_forum') == "on" ? " checked" : "")
+					'MODULE_FORUM_CHECK'	=>	(config('module_forum') == "on" ? " checked" : ""),
+					'MODULE_NEWS_CHECK'	=>	(config('module_news') == "on" ? " checked" : "")
 				), FALSE);
 			}
 		}
@@ -1165,6 +1170,61 @@ switch ($site) // Outputs and scripts are based on the site variable
 		}
 		break;
 	/* * FORUM SETTINGS * */
+	/* --------------------------- */
+	/* * NEWS SETTINGS * */
+	case "news":
+		// If the NEWS module is disabled, prevent execution
+		if ( config("module_news") == "off" )
+		{
+			$Ctemplate->useStaticTemplate("admin/admin_foot", FALSE); // Output footer
+			dieOnModule("news"); // The DoFooter and the rest is issued by dieOnModule
+		}
+		
+		if ( isset($_POST['set_do']) )
+		{
+			// Change the preferences
+			$updateEntriesPerPage = $Cmysql->Query("UPDATE config SET ".
+				"value='" .$Cmysql->EscapeString($_POST['new_news_split_value']). "' WHERE variable='news_split_value'");
+			
+			// The return values are TRUE if we succeed and FALSE if we fail
+			if ( $updateEntriesPerPage == FALSE )
+			{
+				// If we failed
+				$Ctemplate->useTemplate("errormessage", array(
+					'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Locked folder icon
+					'TITLE'	=>	"{LANG_UCP_NEWS_FAIL}", // Error title
+					'BODY'	=>	"", // Error text
+					'ALT'	=>	"{LANG_SQL_EXEC_ERROR}" // Alternate picture text
+				), FALSE ); // We give an unavailable error
+				
+				$Ctemplate->useStaticTemplate("admin/news_back", FALSE); // Back button
+			} elseif ( $updateEntriesPerPage == TRUE )
+			{
+				// If we succeeded
+				$Ctemplate->useTemplate("successbox", array(
+					'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_home.png", // House (user CP header)
+					'TITLE'	=>	"{LANG_UCP_NEWS_SUCCESS}", // Success title
+					'BODY'	=>	"{LANG_ACP_NEWS_SUCCESS_1}", // Success text
+					'ALT'	=>	"{LANG_SQL_EXEC_SUCCESS}" // Alternate picture text
+				), FALSE ); // We give a success message
+				
+				$Ctemplate->useStaticTemplate("admin/news_back", FALSE); // Back button
+			}
+		} else {
+			// Get the two values into a variable
+			$entriesPerPage = config("news_split_value");
+			
+			$Ctemplate->useTemplate("admin/news", array(
+				// Entry switch
+				'N_5_SELECT'	=>	($entriesPerPage == 5 ? " selected" : ""),
+				'N_15_SELECT'	=>	($entriesPerPage == 15 ? " selected" : ""),
+				'N_30_SELECT'	=>	($entriesPerPage == 30 ? " selected" : ""),
+				'N_50_SELECT'	=>	($entriesPerPage == 50 ? " selected" : ""),
+				'N_100_SELECT'	=>	($entriesPerPage == 100 ? " selected" : "")
+			), FALSE); // Output panel
+		}
+		break;
+	/* * NEWS SETTINGS * */
 	/* --------------------------- */
 }
 }

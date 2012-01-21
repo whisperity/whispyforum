@@ -8,9 +8,7 @@
  */
 
 include("includes/load.php"); // Load webpage
-// TO DO: Make this line executed if module is finished
-//dieOnModule("news"); // Die if NEWS is disabled
-// TO DO END
+dieOnModule("news"); // Die if NEWS is disabled
 
 $Ctemplate->useStaticTemplate("news/head", FALSE); // Header
 
@@ -608,9 +606,9 @@ if ( @$_POST['action'] == "newentry" )
 	 * Because of it, we need to generate a page switcher by using the 'LIMIT start, count'
 	 * syntax.
 	 */
-	// TO DO: implement user ability to set preference
-	$usr_news_split_value = 5; // Use the user's preference (queried from session)
-	// TO DO END
+	
+	$usr_news_split_value = $_SESSION['news_split_value']; // Use the user's preference (queried from session)
+	
 	
 	// Query the total number of news
 	$news_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM news"));

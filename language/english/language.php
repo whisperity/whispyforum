@@ -423,6 +423,15 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_UCP_FORUM_SUCCESS}'	=>	"Preferences modified",
 	'{LANG_UCP_FORUM_SUCCESS_1}'	=>	"You successfully modified your preferences. The next page you request will use the new value.",
 	
+	/* News settings */
+	'{LANG_UCP_NEWS}'	=>	"News settings",
+	'{LANG_UCP_NEWS_TITLE}'	=>	"Here you can set your preferences about how the news module should operate.<br>".'<font class="emphasis">To modify something, set the new value and click Modify.</font>'." Your actual preference is automatically selected.",
+	'{LANG_UCP_NEWS_MODIFY}'	=>	"Modify",
+	'{LANG_UCP_NEWS_ENTRIES_PER_PAGE}'	=>	"Entries appearing on one page",
+	'{LANG_UCP_NEWS_FAIL}'	=>	"Cannot modify the preferences",
+	'{LANG_UCP_NEWS_SUCCESS}'	=>	"Preferences modified",
+	'{LANG_UCP_NEWS_SUCCESS_1}'	=>	"You successfully modified your preferences. The next page you request will use the new value.",
+	
 	/* Administrator control panel */
 	'{LANG_ACP_TOOLTIP}'	=>	"Administrator control panel",
 	
@@ -519,10 +528,16 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_MODULE_CORE_DESCRIPTION}'	=>	"The core module set consists the essential parts of the framework and some basic features like administrator and user control panels, registartion, user activation, password recovery helpers, profile pages, BB code parser and an emoticon subsystem.",
 	'{LANG_MODULE_FORUM}'	=>	"Forum",
 	'{LANG_MODULE_FORUM_DESCRIPTION}'	=>	"The forum module is a three-level forum system (forum-topics-posts) with moderational features.",
+	'{LANG_MODULE_NEWS}'	=>	"News",
+	'{LANG_MODULE_NEWS_DESCRIPTION}'	=>	"The news module is a basic news system with commenting options.",
 	
 	/* Admin forum settings */
 	'{LANG_ACP_FORUM_TITLE}'	=>	"Here you can set the preferences about how the forum should operate.<br>".'<font class="emphasis">To modify something, set the new value and click Modify.</font>'." The actual preference is automatically selected.<br>These preferences will only affect guests and new users.",
 	'{LANG_ACP_FORUM_SUCCESS_1}'	=>	"You successfully modified the preferences.",
+	
+	/* Admin news settings */
+	'{LANG_ACP_NEWS_TITLE}'	=>	"Here you can set the preferences about how the news module should operate.<br>".'<font class="emphasis">To modify something, set the new value and click Modify.</font>'." The actual preference is automatically selected.<br>These preferences will only affect guests and new users.",
+	'{LANG_ACP_NEWS_SUCCESS_1}'	=>	"You successfully modified the preferences.",
 	
 	/* Variable error boxes */
 	'{LANG_VAR_REQ_NOT_ENTERED}'	=>	"You didn't entered one of the required variables, {VARIABLE} cannot be empty.",

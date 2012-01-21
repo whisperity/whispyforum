@@ -38,6 +38,7 @@
 <h2 class="install-header">{LANG_INSTALL_SITECONFIG_MODULES}</h2>
 <input type="checkbox" name="module_core" value="on" checked disabled> {LANG_MODULE_CORE}<br><small>{LANG_MODULE_CORE_DESCRIPTION} <font class="emphasis">{LANG_MODULE_CANNOT_BE_DISABLED}</font></small><br>
 <input type="checkbox" name="module_forum" value="on"{MODULE_FORUM_CHECK}> {LANG_MODULE_FORUM}<br><small>{LANG_MODULE_FORUM_DESCRIPTION}</small><br>
+<input type="checkbox" name="module_news" value="on"{MODULE_NEWS_CHECK}> {LANG_MODULE_NEWS}<br><small>{LANG_MODULE_NEWS_DESCRIPTION}</small><br>
 <h2 class="install-header">{LANG_MODULE_FORUM}</h2>
 {LANG_UCP_FORUM_TOPICS_PER_PAGE}: <select size="1" name="forum_topic_count_per_page">
 	<option value="5"{T_5_SELECT}>5</option>
@@ -52,6 +53,14 @@
 	<option value="30"{P_30_SELECT}>30</option>
 	<option value="50"{P_50_SELECT}>50</option>
 	<option value="100"{P_100_SELECT}>100</option>
+</select><br>
+<h2 class="install-header">{LANG_MODULE_NEWS}</h2>
+{LANG_UCP_NEWS_ENTRIES_PER_PAGE}: <select size="1" name="news_split_value">
+	<option value="5"{N_5_SELECT}>5</option>
+	<option value="15"{N_15_SELECT}>15</option>
+	<option value="30"{N_30_SELECT}>30</option>
+	<option value="50"{N_50_SELECT}>50</option>
+	<option value="100"{N_100_SELECT}>100</option>
 </select><br>
 <font class="emphasis">{LANG_PROCEED_CLICK_BUTTON_BELOW}</font><br>
 <input type="submit" value="{LANG_NEXT_NN}">

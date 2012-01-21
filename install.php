@@ -402,6 +402,7 @@ switch ($instPos)
 			`forum_topic_count_per_page` smallint(3) NOT NULL DEFAULT '15' COMMENT 'user preference: how many topics appear on one page',
 			`forum_post_count_per_page` smallint(3) NOT NULL DEFAULT '15' COMMENT 'user preference: how many posts appear on one page',
 			`post_count` int(6) NOT NULL DEFAULT '0' COMMENT 'number of posts from the user',
+			`news_split_value` smallint(3) NOT NULL DEFAULT '15' COMMENT 'user preference: how many entry to appear on one page',
 			`news_comment_count` int(6) NOT NULL DEFAULT '0' COMMENT 'number of news comments from the user',
 			PRIMARY KEY (`id`),
 			UNIQUE KEY `username` (`username`),
@@ -954,6 +955,7 @@ switch ($instPos)
 				
 				/* Modules */
 				'MODULE_FORUM_CHECK'	=>	" checked", // Automatically check forum module
+				'MODULE_NEWS_CHECK'	=>	" checked", // Automatically check news module
 				
 				/* Forum */
 				// Topic switch
@@ -969,6 +971,14 @@ switch ($instPos)
 				'P_30_SELECT'	=>	"",
 				'P_50_SELECT'	=>	"",
 				'P_100_SELECT'	=>	"",
+				
+				/* News */
+				// Entry switch
+				'N_5_SELECT'	=>	"",
+				'N_15_SELECT'	=>	" selected",
+				'N_30_SELECT'	=>	"",
+				'N_50_SELECT'	=>	"",
+				'N_100_SELECT'	=>	"",
 				
 				// Passing install theme and language directory values
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
@@ -998,10 +1008,14 @@ switch ($instPos)
 				
 				/* Modules */
 				'MODULE_FORUM'	=>	(@$_POST['module_forum'] == "on" ? "on" : "off"),
+				'MODULE_NEWS'	=>	(@$_POST['module_news'] == "on" ? "on" : "off"),
 				
 				/* Forum */
 				'FORUM_TOPIC_COUNT_PER_PAGE'	=>	$_POST['forum_topic_count_per_page'],
-				'FORUM_POST_COUNT_PER_PAGE'	=>	$_POST['forum_post_count_per_page']
+				'FORUM_POST_COUNT_PER_PAGE'	=>	$_POST['forum_post_count_per_page'],
+				
+				/* News */
+				'NEWS_SPLIT_VALUE'	=>	$_POST['news_split_value']
 			), FALSE);
 			exit; // We terminate the script
 		}
@@ -1022,10 +1036,14 @@ switch ($instPos)
 				
 				/* Modules */
 				'MODULE_FORUM'	=>	(@$_POST['module_forum'] == "on" ? "on" : "off"),
+				'MODULE_NEWS'	=>	(@$_POST['module_news'] == "on" ? "on" : "off"),
 				
 				/* Forum */
 				'FORUM_TOPIC_COUNT_PER_PAGE'	=>	$_POST['forum_topic_count_per_page'],
-				'FORUM_POST_COUNT_PER_PAGE'	=>	$_POST['forum_post_count_per_page']
+				'FORUM_POST_COUNT_PER_PAGE'	=>	$_POST['forum_post_count_per_page'],
+				
+				/* News */
+				'NEWS_SPLIT_VALUE'	=>	$_POST['news_split_value']
 			), FALSE);
 			exit; // We terminate the script
 		}
@@ -1039,13 +1057,36 @@ switch ($instPos)
 			('registration', '" .$Cmysql->EscapeString($_POST['registration']). "'),
 			('module_forum', '" .(@$_POST['module_forum'] == "on" ? "on" : "off"). "'),
 			('forum_topic_count_per_page', '" .$Cmysql->EscapeString($_POST['forum_topic_count_per_page']). "'),
-			('forum_post_count_per_page', '" .$Cmysql->EscapeString($_POST['forum_post_count_per_page']). "')"); // $sConfig is true if we are successful
+			('forum_post_count_per_page', '" .$Cmysql->EscapeString($_POST['forum_post_count_per_page']). "'),
+			('module_news', '" .(@$_POST['module_news'] == "on" ? "on" : "off"). "'),
+			('news_split_value', '" .$Cmysql->EscapeString($_POST['news_split_value']). "')"); // $sConfig is true if we are successful
 		
 		// Give return or proceed forms based on success
 		if ( $sConfig == FALSE )
 		{
 			// Give error
 			$Ctemplate->useTemplate("install/ins_siteconfig_error", array(
+				/* General */
+				'GLOBAL_TITLE'	=>	$_POST['global_title'],
+				'SITE_HOST'	=>	$_POST['site_host'],
+				'REGISTRATION'	=>	$_POST['registration'],
+				
+				/* Appearance */
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm'],
+				
+				/* Modules */
+				'MODULE_FORUM'	=>	(@$_POST['module_forum'] == "on" ? "on" : "off"),
+				'MODULE_NEWS'	=>	(@$_POST['module_news'] == "on" ? "on" : "off"),
+				
+				/* Forum */
+				'FORUM_TOPIC_COUNT_PER_PAGE'	=>	$_POST['forum_topic_count_per_page'],
+				'FORUM_POST_COUNT_PER_PAGE'	=>	$_POST['forum_post_count_per_page'],
+				
+				/* News */
+				'NEWS_SPLIT_VALUE'	=>	$_POST['news_split_value']
+				
+				// Passing install theme and language directory values
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
 				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);

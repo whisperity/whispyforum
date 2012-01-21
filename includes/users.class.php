@@ -60,6 +60,9 @@ class class_users
 		/* Forum */
 		$_SESSION['forum_topic_count_per_page'] = config("forum_topic_count_per_page"); // Default number of topics appearing on one page
 		$_SESSION['forum_post_count_per_page'] = config("forum_post_count_per_page"); // Default number of posts appearing on one page
+		
+		/* News */
+		$_SESSION['news_split_value'] = config("news_split_value"); // Default number of entries appearing on one page
 	}
 	
 	private function __destroySession()
@@ -276,6 +279,9 @@ class class_users
 				/* Forum */
 				$_SESSION['forum_topic_count_per_page'] = $userDBArray['forum_topic_count_per_page']; // Number of topics appearing on one page
 				$_SESSION['forum_post_count_per_page'] = $userDBArray['forum_post_count_per_page']; // Number of topics appearing on one page
+				
+				/* News */
+				$_SESSION['news_split_value'] = $userDBArray["news_split_value"]; // Number of entries appearing on one page
 				
 				$Cmysql->Query("UPDATE users SET curr_ip='" .$_SESSION['curr_ip']. "', curr_sessid='" .$_SESSION['curr_sessid']. "', loggedin=1 WHERE id='" .$userDBArray['id']. "'"); // We update the database to enter the current session data
 				return TRUE; // Then return TRUE

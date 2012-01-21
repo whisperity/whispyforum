@@ -1,0 +1,17 @@
+<!--- BEGIN admin controlpanel news form -->
+<!--- Usage: acp news preference form -->
+{LANG_ACP_NEWS_TITLE}
+<br><br>
+<form method="POST" action="control_admin.php">
+<input type="hidden" name="site" value="news">
+{LANG_UCP_NEWS_ENTRIES_PER_PAGE}: <select size="1" name="new_news_split_value">
+	<option value="5"{N_5_SELECT}>5</option>
+	<option value="15"{N_15_SELECT}>15</option>
+	<option value="30"{N_30_SELECT}>30</option>
+	<option value="50"{N_50_SELECT}>50</option>
+	<option value="100"{N_100_SELECT}>100</option>
+</select><br>
+<input type="hidden" name="set_do" value="do">
+<input type="submit" value="{LANG_UCP_NEWS_MODIFY}">
+</form>
+<!--- END admin controlpanel news form -->
