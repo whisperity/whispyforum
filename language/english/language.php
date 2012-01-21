@@ -504,7 +504,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_ADMINCFG_REGISTER_ENABLED}'	=>	"Registration enabled",
 	'{LANG_ADMINCFG_DEFAULT_TITLE}'	=>	"New WhispyForum site",
 	'{LANG_ADMINCFG_MODULES}'	=>	"Modules",
-	'{LANG_ADMINCFG_MODULES_HEAD}'	=>	"Here you can set the enabled and disabled modules. The engine is broken up to modules like forum, news and so on. Please note that disabling a module only restricts accessing it, is does not remove previously present content. For example, disabling the forum module will not purge posts. After reenabling it, you can view posts again.",
+	'{LANG_ADMINCFG_MODULES_HEAD}'	=>	"Here you can set the enabled and disabled modules. The engine is chunked into modules like forum, news and so on. Please note that disabling a module only restricts accessing it without removing previously present content. For example, disabling the forum module will not purge posts. After reenabling it, you can view posts again.",
 	'{LANG_ADMINCFG_VARIABLE_ERROR}'	=>	"Cannot modify the settings until every required variable is entered.",
 	'{LANG_ADMINCFG_WRITE_ERROR}'	=>	"Unable to store the configuration.",
 	'{LANG_ADMINCFG_SUCCESS}'	=>	"Configuration saved",
@@ -687,5 +687,13 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_NEWS_COMMENTS_CREATE_SUCCESS_HEAD}'	=>	"Created the comment",
 	'{LANG_NEWS_COMMENTS_CREATE_SUCCESS}'	=>	"Posting of comment executed successfully.",
 	'{LANG_NEWS_COMMENTS_CREATE_SUCCESS_RETURN}'	=>	"Return to the entry",
+	
+	'{LANG_NEWS_EDIT}'	=>	"Edit",
+	'{LANG_NEWS_EDIT_REQUIRES_MODERATOR}'	=>	"Editing an entry requires you to have {LANG_MODERATOR} rights.",
+	'{LANG_NEWS_EDITENTRY_HEADER}'	=>	'Editing entry <a href="news.php?action=more&id={ID}">{ORIGINAL_TITLE}</a>',
+	'{LANG_NEWS_EDITENTRY_POST}'	=>	"Edit the entry",
+	'{LANG_NEWS_EDITENTRY_VARIABLE_ERROR}'	=>	"The news entry edition cannot be done until every required variable is entered.",
+	'{LANG_NEWS_EDITENTRY_SQL_ERROR}'	=>	"There were errors executing the SQL query to edit the entry. Press the button to try again.",
+	'{LANG_NEWS_EDITENTRY_SUCCESS}'	=>	"The entry has been edited.",
 );
 ?>

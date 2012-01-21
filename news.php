@@ -37,13 +37,10 @@ if ( @$_POST['action'] == "newentry" )
 	{
 		// If the user is on lower level than Moderator
 		
-		// First, generate the variable which stores the
-		// name of the level to be on to post news
-		
 		$Ctemplate->useTemplate("errormessage", array(
 			'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
 			'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
-			'BODY'	=>	"{LANG_TOPICS_THIS_FORUM_REQUIRES_MODERATOR}", // Error text
+			'BODY'	=>	$wf_lang['{LANG_NEWS_NEWENTRY_REQUIRES_MODERATOR}'], // Error text
 			'ALT'	=>	"{LANG_PERMISSIONS_ERROR}", // Alternate picture text
 		), FALSE ); // Give rights error
 	} elseif ( $uLvl >= 2 )
@@ -82,13 +79,10 @@ if ( @$_POST['action'] == "newentry" )
 	{
 		// If the user is on lower level than Moderator
 		
-		// First, generate the variable which stores the
-		// name of the level to be on to post news
-		
 		$Ctemplate->useTemplate("errormessage", array(
 			'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
 			'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
-			'BODY'	=>	"{LANG_TOPICS_THIS_FORUM_REQUIRES_MODERATOR}", // Error text
+			'BODY'	=>	$wf_lang['{LANG_NEWS_NEWENTRY_REQUIRES_MODERATOR}'], // Error text
 			'ALT'	=>	"{LANG_PERMISSIONS_ERROR}", // Alternate picture text
 		), FALSE ); // Give rights error
 	} elseif ( $uLvl >= 2 )
@@ -176,6 +170,158 @@ if ( @$_POST['action'] == "newentry" )
 			'TITLE'	=>	$_POST['title']
 		), FALSE);
 	}
+} elseif ( ( @$_POST['action'] == "editentry" ) && ( @$_POST['id'] != NULL ) )
+{
+	// If requested a form to edit an entry
+	
+	if ( $uLvl < 2 )
+	{
+		// If the user is on lower level than Moderator
+		
+		$Ctemplate->useTemplate("errormessage", array(
+			'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
+			'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
+			'BODY'	=>	$wf_lang['{LANG_NEWS_EDIT_REQUIRES_MODERATOR}'], // Error text
+			'ALT'	=>	"{LANG_PERMISSIONS_ERROR}", // Alternate picture text
+		), FALSE ); // Give rights error
+	} elseif ( $uLvl >= 2 )
+	{
+		// Output form
+		
+		// Fetch information from database
+		$nEntry = mysql_fetch_assoc($Cmysql->Query("SELECT title, description, content, commentable FROM news WHERE id='" .$Cmysql->EscapeString($_POST['id']). "'"));
+		
+		if ( @$_POST['error_goback'] == "yes" )
+		{
+			// If the user is redirected because of an error, form the data back in.
+			$Ctemplate->useTemplate("news/editentry_form", array(
+				'TITLE'	=>	$_POST['title'],
+				'ORIGINAL_TITLE'	=>	$nEntry['title'],
+				'DESCRIPTION'	=>	$_POST['description'],
+				'CONTENT'	=>	$_POST['content'],
+				'COMMENTABLE_CHECK'	=>	($_POST['commentable'] == "yes" ? " checked" : NULL ),
+				'ID'	=>	$_POST['id']
+			), FALSE);
+		} else {
+			// If plain form requested, give the original data
+			
+			$Ctemplate->useTemplate("news/editentry_form", array(
+				'TITLE'	=>	$nEntry['title'],
+				'ORIGINAL_TITLE'	=>	$nEntry['title'], // The original and the new title is the same at the first step of editing
+				'DESCRIPTION'	=>	$nEntry['description'],
+				'CONTENT'	=>	$nEntry['content'],
+				'COMMENTABLE_CHECK'	=>	($nEntry['commentable'] == 1 ? " checked" : NULL ),	
+				'ID'	=>	$_POST['id']
+			), FALSE);
+		}
+	}
+	
+	// Terminate execution
+	$Ctemplate->useStaticTemplate("news/foot", FALSE); // Footer
+	DoFooter();
+	exit;
+} elseif ( ( @$_POST['action'] == "do_edit_entry" ) && ( @$_POST['id'] != NULL ) )
+{
+	// If requested SQL operation to edit the news entry
+	
+	if ( $uLvl < 2 )
+	{
+		// If the user is on lower level than Moderator
+		
+		$Ctemplate->useTemplate("errormessage", array(
+			'PICTURE_NAME'	=>	"Nuvola_apps_agent.png", // Security officer icon
+			'TITLE'	=>	"{LANG_INSUFFICIENT_RIGHTS}", // Error title
+			'BODY'	=>	$wf_lang['{LANG_NEWS_EDIT_REQUIRES_MODERATOR}'], // Error text
+			'ALT'	=>	"{LANG_PERMISSIONS_ERROR}", // Alternate picture text
+		), FALSE ); // Give rights error
+	} elseif ( $uLvl >= 2 )
+	{
+		// If the user is eligible to edit the entry, do it
+		
+		// First, make sure all required field is entered
+		if ( @$_POST['title'] == NULL ) // Title
+		{
+			// Output error box
+			
+			$Ctemplate->useTemplate("news/editentry_variable_error", array(
+				'VARIABLE'	=>	"{LANG_NEWS_TITLE}", // Missing variable name
+				'ID'	=>	$_POST['id'], // Post ID
+				'TITLE'	=>	@$_POST['title'], // Title (missing)
+				'DESCRIPTION'	=>	@$_POST['description'], // Description
+				'CONTENT'	=>	@$_POST['content'], // Content
+				'COMMENTABLE'	=>	( @$_POST['commentable'] == "yes" ? "yes" : "no" ) // Comments on/off on entry
+			), FALSE);
+			
+			// Terminate execution
+			$Ctemplate->useStaticTemplate("news/foot", FALSE); // Footer
+			DoFooter();
+			exit;
+		}
+		
+		if ( @$_POST['description'] == NULL ) // Description
+		{
+			// Output error box
+			
+			$Ctemplate->useTemplate("news/editentry_variable_error", array(
+				'VARIABLE'	=>	"{LANG_NEWS_DESCRIPTION}", // Missing variable name
+				'ID'	=>	$_POST['id'], // Post ID
+				'TITLE'	=>	@$_POST['title'], // Title
+				'DESCRIPTION'	=>	@$_POST['description'], // Description (missing)
+				'CONTENT'	=>	@$_POST['content'], // Content
+				'COMMENTABLE'	=>	( @$_POST['commentable'] == "yes" ? "yes" : "no" ) // Comments on/off on entry
+			), FALSE);
+			
+			// Terminate execution
+			$Ctemplate->useStaticTemplate("news/foot", FALSE); // Footer
+			DoFooter();
+			exit;
+		}
+		
+		if ( @$_POST['content'] == NULL ) // Content
+		{
+			// Output error box
+			
+			$Ctemplate->useTemplate("news/editentry_variable_error", array(
+				'VARIABLE'	=>	"{LANG_NEWS_CONTENT}", // Missing variable name
+				'ID'	=>	$_POST['id'], // Post ID
+				'TITLE'	=>	@$_POST['title'], // Title
+				'DESCRIPTION'	=>	@$_POST['description'], // Description
+				'CONTENT'	=>	@$_POST['content'], // Content (missing)
+				'COMMENTABLE'	=>	( @$_POST['commentable'] == "yes" ? "yes" : "no" ) // Comments on/off on entry
+			), FALSE);
+			
+			// Terminate execution
+			$Ctemplate->useStaticTemplate("news/foot", FALSE); // Footer
+			DoFooter();
+			exit;
+		}
+	}
+	
+	// If every variable is entered, do SQL query
+	$entry_edit = $Cmysql->Query("UPDATE news SET 
+		title='" .$Cmysql->EscapeString(str_replace("'", "\'", $_POST['title'])). "',
+		description='" .$Cmysql->EscapeString(str_replace("'", "\'", $_POST['description'])). "',
+		content='" .$Cmysql->EscapeString(str_replace("'", "\'", $_POST['content'])). "',
+		commentable='" .(@$_POST['commentable'] == "yes" ? 1 : 0 ). "' WHERE id='" .$Cmysql->EscapeString($_POST['id']). "'");
+	
+	if ( $entry_edit === FALSE )
+	{
+		// If failed to add entry, output error
+		$Ctemplate->useTemplate("news/editentry_error", array(
+			'TITLE'	=>	@$_POST['title'], // Title
+			'ID'	=>	$_POST['id'], // Post ID
+			'DESCRIPTION'	=>	@$_POST['description'], // Description
+			'CONTENT'	=>	@$_POST['content'], // Content (missing)
+			'COMMENTABLE'	=>	( @$_POST['commentable'] == "yes" ? "yes" : "no" ) // Comments on/off on entry
+		), FALSE);
+	} elseif ( $entry_edit === TRUE )
+	{
+		// If succeeded, redirect user to news list
+		$Ctemplate->useTemplate("news/editentry_success", array(
+			'ID'	=>	$_POST['id'],
+			'TITLE'	=>	$_POST['title']
+		), FALSE);
+	}
 } elseif ( ( @$_POST['action'] == "more" ) && ( @$_POST['id'] != NULL ) )
 {
 	// If we requested to give the whole contents of a news entry
@@ -204,7 +350,13 @@ if ( @$_POST['action'] == "newentry" )
 			'USERID'	=>	$entry_data['createuser'], // Poster ID
 			'NAME'	=>	$postuser['username'], // Poster name
 			'DESCRIPTION'	=>	bbDecode($entry_data['description']), // Short description of entry
-			'CONTENT'	=>	bbDecode($entry_data['content']) // Full entry text
+			'CONTENT'	=>	bbDecode($entry_data['content']), // Full entry text
+			
+			// Entry edit button
+			'EDIT'	=>	( $uLvl >= 2 ? $Ctemplate->useTemplate("News/list_admin_edit", array(
+							'ID'	=>	$entry_data['id'],
+							'START_AT'	=>	(@$_GET['start_at'] == NULL ? '0' : $_GET['start_at'])
+						), TRUE) : NULL),
 		), FALSE);
 		
 		if ( $entry_data['commentable'] == 1 )
@@ -377,7 +529,7 @@ if ( @$_POST['action'] == "newentry" )
 	// If no variables are fitting the previous cases, we list the news in a short list
 	
 	$Ctemplate->useTemplate("news/list_head", array(
-		'NEW_ENTRY'	=>	( $Cusers->getLevel() >= 2 ? 
+		'NEW_ENTRY'	=>	( $uLvl >= 2 ? 
 			$Ctemplate->useStaticTemplate("news/list_newentry", TRUE) : NULL)
 	), FALSE); // Table header
 	
@@ -387,7 +539,7 @@ if ( @$_POST['action'] == "newentry" )
 	 * syntax.
 	 */
 	// TO DO: implement user ability to set preference
-	$usr_news_split_value = 1; // Use the user's preference (queried from session)
+	$usr_news_split_value = 5; // Use the user's preference (queried from session)
 	// TO DO END
 	
 	// Query the total number of news
@@ -428,7 +580,10 @@ if ( @$_POST['action'] == "newentry" )
 			'MORE'	=>	$Ctemplate->useTemplate("news/list_more", array(
 							'ENTRY_ID'	=>	$row['id']
 						), TRUE),
-			//EDIT
+			'EDIT'	=>	( $uLvl >= 2 ? $Ctemplate->useTemplate("News/list_admin_edit", array(
+							'ID'	=>	$row['id'],
+							'START_AT'	=>	(@$_GET['start_at'] == NULL ? '0' : $_GET['start_at'])
+						), TRUE) : NULL),
 			//DELETE
 		), FALSE);
 	}

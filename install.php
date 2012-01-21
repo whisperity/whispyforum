@@ -696,7 +696,7 @@ switch ($instPos)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'news entries'"); // $dbtables_news sets to true if we succeeded creating a table
 		
 		$dbtables_news_data = FALSE; // We failed adding the default data first
-		$dbtables_news_data = $Cmysql->Query("INSERT INTO news(title, createuser, createdate, description, content, commentable) VALUES ('The new site is installed.', 1, '" .time(). "', 'Your first news entry.', 'A new site has popped on the internet. It is seems to be using a new portal engine for different purposes. This is a test news entry, you can delete it if you want.', '1')"); // $dbtables_news_data sets to true if we succeeded adding default data
+		$dbtables_news_data = $Cmysql->Query("INSERT INTO news(title, createuser, createdate, description, content, commentable) VALUES ('The new site is installed.', 1, '" .time(). "', 'Your first news entry.', 'This is a test news entry, you can delete it if you want.', '1')"); // $dbtables_news_data sets to true if we succeeded adding default data
 		
 		// We check config table creation
 		if ( ( $dbtables_news == FALSE ) || ( $dbtables_news_data == FALSE ) )

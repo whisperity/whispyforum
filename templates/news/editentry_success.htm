@@ -1,0 +1,19 @@
+<!--- BEGIN news editentry success -->
+<!--- Usage: new news entry editing success box -->
+<table class="successbox"> <!--- copying the successbox template -->
+	<tr>
+		<td class="successpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_txt.png" alt="{LANG_SUCCESS_EXCLAMATION}"></td>
+		<td class="successtitle">{LANG_SUCCESS_EXCLAMATION}</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="successbody">{LANG_NEWS_EDITENTRY_SUCCESS}</td>
+	</tr>
+</table> <!--- copying the successbox template -->
+
+<form method="GET" action="news.php">
+<input type="hidden" name="action" value="more">
+<input type="hidden" name="id" value="{ID}">
+<input type="submit" value="{LANG_BB_BACK}">
+</form>
+<!--- END news editentry success -->
