@@ -164,9 +164,8 @@ $Ctemplate->useTemplate("user/profile_body", array(
 	'LOG_ALT'	=>	"{LANG_" . ($userData['loggedin'] == 1 ? "ONLINE" : "OFFLINE"). "}",
 	'LEVEL'	=>	$levelName,
 	'LANGUAGE'	=>	$wf_lang_def['LOCALIZED_NAME']." (".$wf_lang_def['SHORT_NAME'].")",
-	'FORUM_TOPICS_PER_PAGE'	=>	$userData['forum_topic_count_per_page'],
-	'FORUM_POSTS_PER_PAGE'	=>	$userData['forum_post_count_per_page'],
 	'POST_COUNT'	=>	$userData['post_count'],
+	'NEWS_COMMENT_COUNT'	=>	$userData['news_comment_count'],
 	
 	'BADGES'	=>	$Cbadges->BadgeCount($_GET['id']),
 	'TOTAL_BADGES'	=>	$Cbadges->TotalBadgeCount(),

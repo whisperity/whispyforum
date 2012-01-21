@@ -214,8 +214,8 @@ switch ($regPos)
 			$Cmysql->EscapeString($_POST['username']). "'," .
 			"'" .md5($Cmysql->EscapeString($_POST['password'])). "'," .
 			"'" .$Cmysql->EscapeString($_POST['email']). "', " .time(). ", 1, 0, '" .$token. "'," .
-			"'" .config("forum_topic_count_per_page"). "', '". config("forum_post_count_per_page"). "',
-			, '". config("news_split_value"). "')"); // Will be true if we succeed
+			"'" .config("forum_topic_count_per_page"). "', '". config("forum_post_count_per_page"). "'," .
+			"'". config("news_split_value"). "')"); // Will be true if we succeed
 		
 		if ( $regQuery == FALSE )
 		{
