@@ -9,6 +9,7 @@
 
 include("includes/load.php"); // Load webpage
 dieOnModule("news"); // Die if NEWS is disabled
+devBox(); // Module under development
 
 $Ctemplate->useStaticTemplate("news/head", FALSE); // Header
 

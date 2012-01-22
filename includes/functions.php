@@ -377,14 +377,14 @@ function sendTemplateMail($address, $subject, $template_name, $variable_array)
 	mail($address, $subject, $message, $headers);
 }
 
-function ambox($type, $body, $title = NULL)
+function ambox($type, $body = NULL, $title = NULL)
 {
 	/**
 	* This function generates a template error/message/success box from
 	* the parameters.
 	* 
 	* Easter egg: amBox (http://en.wikipedia.org/wiki/Template:Ambox) is the all-purpose pseudotemplate of Wikipedia :)
-	* @inputs: $type - box type: ERROR, MESSAGE, SUCCESS (red, orange, green)
+	* @inputs: $type - box type: ERROR, MESSAGE, SUCCESS, DEVELOPER (red, orange, green, orange (with special picture))
 	* 	   $body - message body
 	* 	   $title - box header
 	*/
@@ -413,6 +413,15 @@ function ambox($type, $body, $title = NULL)
 			$picture = "Nuvola_apps_korganizer.png";
 			
 			break;
+		case "DEVELOPER":
+			$template = "messagebox";
+			$alt = "Under development";
+			$picture = "Nuvola_mimetypes_deb.png";
+			
+			$title = "This module is under development.";
+			$body = "Please do not use this module in production!";
+			
+			break;
 		default:
 			$template = "errormessage";
 			$alt = "{LANG_MISSING_PARAMETERS}";
@@ -431,5 +440,11 @@ function ambox($type, $body, $title = NULL)
 		'ALT'	=>	$alt,
 		'PICTURE_NAME'	=>	$picture
 	), FALSE);
+}
+
+function devBox()
+{
+	/* Function alias for ambox("DEVELOPER"); */
+	ambox("DEVELOPER");
 }
 ?>
