@@ -12,10 +12,9 @@
 </table> <!--- copying the errorbox template -->
 
 {LANG_TO_RETRY_CLICK_BACK}
-<form method="POST" action="news.php">
+<form method="GET" action="news.php">
 <input type="hidden" name="id" value="{ENTRY_ID}">
 <input type="hidden" name="action" value="more">
-<input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
 <input type="submit" value="{LANG_BB_BACK}">
 </form>
 <!--- END news comment create noncommentable error -->

@@ -507,7 +507,9 @@ if ( @$_POST['action'] == "newentry" )
 		if ( $entry_data['commentable'] == 0 )
 		{
 			// If not commentable, output error message
-			ambox('ERROR', "Entry is not commentable."); // Placeholder
+			$Ctemplate->useTemplate("news/comment_create_not_commentable", array(
+					'ENTRY_ID'	=>	$entry_data['id']
+			), FALSE);
 		} elseif ( $entry_data['commentable'] == 1 )
 		{
 			// If commentable, output the comment form
@@ -580,6 +582,12 @@ if ( @$_POST['action'] == "newentry" )
 			if ( $comment_store === TRUE )
 			{
 				// If the query succeeded, output success box and return the user to the news entry
+				
+				// Append one to the user's news comment count
+				$oldCount = mysql_fetch_row($Cmysql->Query("SELECT news_comment_count FROM users WHERE id='" .$Cmysql->EscapeString($_SESSION['uid']). "'")); // Get old count from database
+				
+				$Cmysql->Query("UPDATE users SET news_comment_count='" .$Cmysql->EscapeString($oldCount[0] + 1). "' WHERE id='" .$Cmysql->EscapeString($_SESSION['uid']). "'"); // Administer the new value
+				
 				$Ctemplate->useTemplate("news/comment_create_success", array(
 					'ENTRY_ID'	=>	$_POST['id'], // News entry ID
 				), FALSE);
