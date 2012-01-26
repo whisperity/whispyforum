@@ -1093,7 +1093,7 @@ switch ($instPos)
 				'FORUM_POST_COUNT_PER_PAGE'	=>	$_POST['forum_post_count_per_page'],
 				
 				/* News */
-				'NEWS_SPLIT_VALUE'	=>	$_POST['news_split_value']
+				'NEWS_SPLIT_VALUE'	=>	$_POST['news_split_value'],
 				
 				// Passing install theme and language directory values
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
