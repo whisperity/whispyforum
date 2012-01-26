@@ -918,6 +918,7 @@ switch ($instPos)
 				
 				/* Modules */
 				'MODULE_FORUM_CHECK'	=>	(@$_POST['module_forum'] == "on" ? " checked" : ""), // Automatically check forum module if it was selected
+				'MODULE_NEWS_CHECK'	=>	(@$_POST['module_news'] == "on" ? " checked" : ""), // Automatically check news module if it was selected
 				
 				/* Forum */
 				// Topic switch
@@ -933,6 +934,14 @@ switch ($instPos)
 				'P_30_SELECT'	=>	($_POST['forum_post_count_per_page'] == 30 ? " selected" : ""),
 				'P_50_SELECT'	=>	($_POST['forum_post_count_per_page'] == 50 ? " selected" : ""),
 				'P_100_SELECT'	=>	($_POST['forum_post_count_per_page'] == 100 ? " selected" : ""),
+				
+				/* News */
+				// Entry switch
+				'N_5_SELECT'	=>	($_POST['news_split_value'] == 5 ? " selected" : ""),
+				'N_15_SELECT'	=>	($_POST['news_split_value'] == 15 ? " selected" : ""),
+				'N_30_SELECT'	=>	($_POST['news_split_value'] == 30 ? " selected" : ""),
+				'N_50_SELECT'	=>	($_POST['news_split_value'] == 50 ? " selected" : ""),
+				'N_100_SELECT'	=>	($_POST['news_split_value'] == 100 ? " selected" : ""),
 				
 				// Passing install theme and language directory values
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
