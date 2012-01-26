@@ -817,7 +817,7 @@ switch ($instPos)
 		// Registering admin user
 		
 		// First, we do a check whether any of the mandatory variables are NULL
-		if ( $_POST['root_name'] == NULL ) // Database host
+		if ( $_POST['root_name'] == NULL ) // Username
 		{
 			$Ctemplate->useTemplate("install/ins_adminusr_variable_error", array(
 				'VARIABLE'	=>	"{LANG_USERNAME}", // Errornous variable name
@@ -830,7 +830,7 @@ switch ($instPos)
 			exit; // We terminate the script
 		}
 		
-		if ( $_POST['root_pass'] == NULL ) // Database user
+		if ( $_POST['root_pass'] == NULL ) // Root password
 		{
 			$Ctemplate->useTemplate("install/ins_adminusr_variable_error", array(
 				'VARIABLE'	=>	"{LANG_PASSWORD}", // Errornous variable name
@@ -843,7 +843,7 @@ switch ($instPos)
 			exit; // We terminate the script
 		}
 		
-		if ( $_POST['root_email'] == NULL ) // Database password
+		if ( $_POST['root_email'] == NULL ) // E-mail address
 		{
 			$Ctemplate->useTemplate("install/ins_adminusr_variable_error", array(
 				'VARIABLE'	=>	"{LANG_EMAIL}", // Errornous variable name
