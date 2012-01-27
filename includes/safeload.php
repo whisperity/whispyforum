@@ -75,11 +75,11 @@ require("includes/functions.php");
 /* DEVELOPEMENT */
 // PH, workaround: output HTTP POST and GET arrays
 print "<h4>GET</h4>";
-print prettyVar($_GET, true);
+prettyVar($_GET, true);
 print "<h4>POST</h4>";
-print prettyVar($_POST, true);
+prettyVar($_POST, true);
 print "<h4>FILES</h4>";
-print prettyVar($_FILES, true);
+prettyVar($_FILES, true);
 
 /* START GENERATION */
 $Cmysql->Connect(); // Connect to database
