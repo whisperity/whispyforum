@@ -88,7 +88,7 @@ if ( @$_POST['username'] == NULL )
 		$variables = array(
 			'RECOVERY_SITE'	=>	"http://" .config("site_host"). "/pwd_recover_do.php",
 			'USERNAME'	=>	$_POST['username'],
-			'TOKEN'	=>	$token		
+			'TOKEN'	=>	$token
 		);
 		
 		// Send out the mail

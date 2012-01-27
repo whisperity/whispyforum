@@ -419,10 +419,10 @@ if ( @$_POST['action'] == "newentry" )
 			'CONTENT'	=>	bbDecode($entry_data['content']), // Full entry text
 			
 			// Button for administrative tasks
-			'EDIT'	=>	( $uLvl >= 2 ? $Ctemplate->useTemplate("News/list_admin_edit", array(
+			'EDIT'	=>	( $uLvl >= 2 ? $Ctemplate->useTemplate("news/list_admin_edit", array(
 							'ID'	=>	$entry_data['id']
 						), TRUE) : NULL),
-			'DELETE'	=>	( $uLvl >= 3 ? $Ctemplate->useTemplate("News/list_admin_delete", array(
+			'DELETE'	=>	( $uLvl >= 3 ? $Ctemplate->useTemplate("news/list_admin_delete", array(
 							'ID'	=>	$entry_data['id'],
 							'START_AT'	=>	(@$_GET['start_at'] == NULL ? '0' : $_GET['start_at'])
 						), TRUE) : NULL),
@@ -659,10 +659,10 @@ if ( @$_POST['action'] == "newentry" )
 						), TRUE),
 			
 			// Buttons for administrative tasks
-			'EDIT'	=>	( $uLvl >= 2 ? $Ctemplate->useTemplate("News/list_admin_edit", array(
+			'EDIT'	=>	( $uLvl >= 2 ? $Ctemplate->useTemplate("news/list_admin_edit", array(
 							'ID'	=>	$row['id']
 						), TRUE) : NULL),
-			'DELETE'	=>	( $uLvl >= 3 ? $Ctemplate->useTemplate("News/list_admin_delete", array(
+			'DELETE'	=>	( $uLvl >= 3 ? $Ctemplate->useTemplate("news/list_admin_delete", array(
 							'ID'	=>	$row['id'],
 							'START_AT'	=>	(@$_GET['start_at'] == NULL ? '0' : $_GET['start_at'])
 						), TRUE) : NULL),

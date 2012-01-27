@@ -115,7 +115,7 @@ if ( ( @$_POST['username'] == NULL ) || ( $_POST['token'] == NULL ) || ( @$_POST
 	if ( $setNewPass == FALSE )
 	{
 		// If we failed setting the password in database, output an error message
-		$Ctemplate->useStaticTemplate("user/recover_do_tokensql_error", FALSE);
+		$Ctemplate->useStaticTemplate("user/recover_do_update_error", FALSE);
 	} elseif ( $setNewPass == TRUE )
 	{
 		// If we set the password
