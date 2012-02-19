@@ -447,4 +447,27 @@ function devBox()
 	/* Function alias for ambox("DEVELOPER"); */
 	ambox("DEVELOPER");
 }
+
+function selfURL()
+{
+	/* This function generates the full URL of the current request.
+	 *
+	 * Useful for return URL generation.
+	*/
+	
+	// Define whether HTTPS (secure HTTP) is on
+	$s = empty($_SERVER["HTTPS"]) ? ''
+		: ($_SERVER["HTTPS"] == "on") ? "s"
+		: "";
+	
+	// Get the protocol itself
+	$protocol = substr(strtolower($_SERVER["SERVER_PROTOCOL"]), 0, strpos(strtolower($_SERVER["SERVER_PROTOCOL"]), "/")).$s;
+	
+	// Get the port or use HTTP 80 by default
+	$port = ($_SERVER["SERVER_PORT"] == "80") ? ""
+		: (":".$_SERVER["SERVER_PORT"]);
+	
+	// Fetch a proper URL from the data and the current request
+	return $protocol."://".$_SERVER['SERVER_NAME'].$port.$_SERVER['REQUEST_URI'];
+}
 ?>

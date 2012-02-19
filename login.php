@@ -71,7 +71,7 @@ if ( $logsuccess === FALSE )
 {
 	// If the user is not activated
 	$Ctemplate->useTemplate("user/login_error_activate", array(
-		'RETURN_TO_URL'	=>	$returnURI
+		'RETURN_TO_URL'	=>	$returnURI // Return URI
 	), FALSE); // Output specific error message
 } elseif ( $logsuccess === TRUE )
 {

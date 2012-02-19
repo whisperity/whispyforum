@@ -160,11 +160,8 @@ class class_users
 		
 		global $Ctemplate; // We need to declare the templates class
 		
-		// We generate the return link from the HTTP REQUEST_URI (so we passthru the GET array)
-		$returnLink = substr($_SERVER['REQUEST_URI'],1); // We crop the starting / from the returnLink
-		
 		$Ctemplate->useTemplate("user/loginform", array(
-			'RETURN_TO'	=>	$returnLink
+			'RETURN_TO'	=>	selfURL()
 		), FALSE);
 	}
 	
@@ -176,9 +173,6 @@ class class_users
 		 */
 		
 		global $Ctemplate, $Cmysql; // We need to declare the templates and mySQL class
-		
-		// We generate the return link from the HTTP REQUEST_URI (so we passthru the GET array)
-		$returnLink = substr($_SERVER['REQUEST_URI'],1); // We crop the starting / from the returnLink
 		
 		$Ctemplate->useTemplate("user/userform_head", array(
 			'USERNAME'	=>	$_SESSION['username'], // Username (from session)
@@ -198,7 +192,7 @@ class class_users
 		}
 		
 		$Ctemplate->useTemplate("user/userform_logout", array(
-			'RETURN_TO'	=>	$returnLink
+			'RETURN_TO'	=>	selfURL()
 		), FALSE); // Logout button
 		
 		$Ctemplate->useStaticTemplate("user/userform_foot", FALSE); // Close divs
