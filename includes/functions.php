@@ -264,14 +264,14 @@ function config($variable = NULL)
 	return $value[0]; // Return the value
 }
 
-function prettyVar($variable = NULL, $output = FALSE)
+function prettyVar($variable = NULL, $output = TRUE)
 {
 	/**
 	* This function returns the var_export($variable) output
 	* in both machine and human readable format
 	* 
 	* @inputs: $variable - name of the variable
-	* 		   $output - if true, automatically echoes instead of returning the value
+	* 		   $output - if false, won't print the output of prettyVar automatically
 	* @outputs: formatted text
 	*/
 	
