@@ -22,25 +22,9 @@ include("language/bootlocal.php");
 
 /* Preload checks */
 // Check whether configuration file exists
-if ( ( file_exists("config.php") == 1 ) && ( file_exists("config.md5") == 1 ) )
+if ( file_exists("config.php") == 1 )
 {
-	// Check whether the installation was successful and the config file is valid
-	if ( str_replace(" *config.php", "", file_get_contents("config.md5")) != md5(file_get_contents("config.php")) )
-	{
-		// We embed the default (winky) stylesheet so the error message will appear properly
-		echo '<link rel="stylesheet" type="text/css" href="themes/winky/style.css">';
-		
-		$Ctemplate->useTemplate("errormessage", array(
-			'PICTURE_NAME'	=>	"Nuvola_apps_package_settings.png", // Text file icon
-			'TITLE'	=>	"{LANG_LOAD_CORRUPTION}", // Error title
-			'BODY'	=>	"{LANG_LOAD_CORRUPTION_BODY}", // Error text
-			'ALT'	=>	"{LANG_LOAD_CORRUPTION_ALT}" // Alternate picture text
-		), FALSE); // We output an error message
-		exit; // Terminate execution
-	} elseif ( str_replace(" *config.php", "", file_get_contents("config.md5")) === md5(file_get_contents("config.php")) )
-	{
-		require("config.php"); // Load the configuration file
-	}
+	require("config.php"); // Load the configuration file
 } elseif ( file_exists("config.php") == 0 ) // If not
 {
 	// We embed the default (winky) stylesheet so the error message will appear properly
