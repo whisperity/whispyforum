@@ -110,7 +110,7 @@ if ( ( @$_POST['username'] == NULL ) || ( $_POST['token'] == NULL ) || ( @$_POST
 	}
 	
 	// If both is true, and the passwords are okay, do procedure
-	$setNewPass = $Cmysql->Query("UPDATE users SET pwd='" .md5($Cmysql->EscapeString($_POST['pass1'])). "', token=NULL WHERE username='" .$Cmysql->EscapeString($_POST['username']). "'"); // Set the new password in database, TRUE if it was successful
+	$setNewPass = $Cmysql->Query("UPDATE users SET pwd='" .$Cmysql->EscapeString($_POST['pass1']). "', token=NULL WHERE username='" .$Cmysql->EscapeString($_POST['username']). "'"); // Set the new password in database, TRUE if it was successful
 	
 	if ( $setNewPass == FALSE )
 	{

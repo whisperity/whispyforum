@@ -212,7 +212,7 @@ switch ($regPos)
 		// Everything is fine, we register the user.
 		$regQuery = $Cmysql->Query("INSERT INTO users(username, pwd, email, regdate, userLevel, activated, token, forum_topic_count_per_page, forum_post_count_per_page, news_split_value) VALUES ('" .
 			$Cmysql->EscapeString($_POST['username']). "'," .
-			"'" .md5($Cmysql->EscapeString($_POST['password'])). "'," .
+			"'" .$Cmysql->EscapeString($_POST['password']). "'," .
 			"'" .$Cmysql->EscapeString($_POST['email']). "', " .time(). ", 1, 0, '" .$token. "'," .
 			"'" .config("forum_topic_count_per_page"). "', '". config("forum_post_count_per_page"). "'," .
 			"'". config("news_split_value"). "')"); // Will be true if we succeed

@@ -868,7 +868,7 @@ switch ($instPos)
 		
 		$adminreg = $Cmysql->Query("INSERT INTO users(username, pwd, email, regdate, activated, userLevel, post_count) VALUES ('" .
 			$Cmysql->EscapeString($_POST['root_name']). "'," .
-			"'" .md5($Cmysql->EscapeString($_POST['root_pass'])). "'," .
+			"'" .$Cmysql->EscapeString($_POST['root_pass']). "'," .
 			"'" .$Cmysql->EscapeString($_POST['root_email']). "', " .time(). ", 1, 4, 1)"); // Will be true if we succeed
 		
 		if ( $adminreg == FALSE )

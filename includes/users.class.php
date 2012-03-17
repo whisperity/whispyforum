@@ -209,7 +209,7 @@ class class_users
 		
 		global $Cmysql; // We need to declare the mySQL class
 		
-		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .$Cmysql->EscapeString($username). "' AND pwd='" .md5($Cmysql->EscapeString($password)). "'")); // We query the user's data
+		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .$Cmysql->EscapeString($username). "' AND pwd='" .$Cmysql->EscapeString($password). "'")); // We query the user's data
 		
 		if  ( $userDBArray == TRUE ) 
 		{
