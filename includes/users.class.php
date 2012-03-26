@@ -348,33 +348,119 @@ class class_users
 			$userLevel = array(0	=> '0');
 		}
 		
-		/* SECURITY HOLE!
-			This part of the script is only added for developer purposes
-			and thus, makes a RATHER LARGE security hole in the system.
-			
-			DO NOT USE IN PRODUCTION!
-		*/
-		echo '<span style="color: red; font-weight: bold">DO NOT USE THIS IN PRODUCTION!</span> <span style="color: maroon; font-weight: bold">This script queries the rank level of the user which, due to a developer-installed workaround, fakeable. Please remove the security hole.</span> <span style="color: red; font-weight: bold">DO NOT USE THIS IN PRODUCTION!</span><br>';
-		if ( @$_GET['fakelevel'] != NULL )
-		{
-			// If we have a fake level set in the HTTP GET header
-			// we forward that instead of the real level.
-			
-			// This is a big security hole... crater, becuase it allows
-			// those knowing how to fake their level and get superadmin rights.
-			// (Also, values outside the boundaries of 0 and 4 can break the system.)
-			echo '<span style="color: red; font-weight: bold">User level is faked to ' .$_GET['fakelevel']. '. Real value is ' .$userLevel[0]. '.</span><br>';
-			
-			return $_GET['fakelevel'];
-		}
-		/* SECURITY HOLE!
-			This part of the script is only added for developer purposes
-			and thus, makes a RATHER LARGE security hole in the system.
-			
-			DO NOT USE IN PRODUCTION!
+		return $userLevel[0]; // Return the value
+	}
+}
+
+class user
+{ 
+	// The user class defines the user object itself and manages sessions.
+	// Methods of this class is used to access the users table seamlessly and easily.
+	
+	private $_userdata = array();
+	private $_loggedin = 0;
+	
+	function __construct()
+	{
+		/**
+		 * Constructor function, gets called every time a new
+		 * instance of the user object is created.
 		*/
 		
-		return $userLevel[0]; // Return the value
+		// If the session is uninitialized (well it should be), initialize it
+		//if ( !@$_SESSION )
+		//{
+			$this->_initSession();
+		//}
+	}
+	
+	private function _initSession()
+	{
+		/**
+		 * Function initializes the session data for the user.
+		*/
+		
+		// Load the session
+		session_start();
+		Header('Cache-Control: cache');
+		
+		// If there is no userID present in the session, set up a new session
+		// If there is, check for the session's client data and authenticate the user
+		if ( !isset($_SESSION['id']) )
+		{
+			$this->_setupSession();
+		} elseif ( $_SESSION['id'] > 0  )
+		{
+			$cl_side = $this->_checkClient();
+			$sv_side = $this->_dbAuthUser();
+		}
+	}
+	
+	private function _setupSession( $incomedata = array() )
+	{
+		/**
+		 * This function sets up a basic session for new visitors.
+		*/
+			
+		$_SESSION = array(
+			'id'	=>	0,
+			'username'	=>	NULL,
+			'password'	=>	NULL,
+			'ip'	=>	sha1($_SERVER['REMOTE_ADDR']),
+			'sessid'	=>	session_id(),
+			'user_agent'	=>	sha1($_SERVER['HTTP_USER_AGENT'])
+		);
+	}
+	
+	private function _checkClient()
+	{
+		/**
+		 * This function compares the visitor's client data and the session data.
+		 * The data consists of the client's IP address, user agent and session_id.
+		 * 
+		 * TRUE is returned if the session clearly matches the current request.
+		 * Otherwise, FALSE is returned.
+		*/
+		
+		if ( ( $_SESSION['ip'] === sha1($_SERVER['REMOTE_ADDR']) ) &&
+			 ( $_SESSION['user_agent'] === sha1($_SERVER['HTTP_USER_AGENT']) ) &&
+			 ( $_SESSION['sessid'] === $_COOKIE[session_name()] )
+			)
+		{
+			$res = 1;
+		}
+		
+		return ( @$res === 1 ? TRUE : FALSE );
+	}
+	
+	private function _dbAuthUser()
+	{
+		/**
+		 * This function checks the session data and the user table
+		 * and authenticates the user.
+		 * 
+		 * TRUE is returned if the user credentials match the ones stored in database.
+		 * Otherwise, FALSE is returned.
+		*/
+		
+		global $Cmysql;
+		
+		$res = $Cmysql->Query("SELECT id FROM users WHERE 
+			id='" .$Cmysql->EscapeString($_SESSION['id']). "' AND
+			username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND
+			pwd='" .$Cmysql->EscapeString($_SESSION['password']). "'");
+		
+		return ( mysql_num_rows($res) === 1 ? TRUE : FALSE);
+	}
+	
+	function __destruct()
+	{
+		/**
+		 * Destructor. Called each time the instance is deferenced
+		 * (either with unset() or the end of execution).
+		*/
+		
+		var_dump($this);
 	}
 }
 ?>
