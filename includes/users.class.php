@@ -486,7 +486,10 @@ class user
 		}
 		
 		// Unserialize and parse the `extra_data` field and store that data too.
-		$extra = unserialize($row['extra_data']);
+		$extra = @unserialize($row['extra_data']);
+		
+		if ( !is_array($extra) )
+			$extra = array();
 		
 		foreach ( $extra as $k => $v )
 		{
