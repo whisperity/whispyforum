@@ -479,25 +479,19 @@ class user
 			username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND
 			pwd='" .$Cmysql->EscapeString($_SESSION['password']). "' LIMIT 1"));
 		
-		$k = array_keys($row);
-		$v = array_values($row);
-		
-		// Using the fetched key - value arrays, store the data into the _userdata property.
-		for ( $i = 0; $i <= ( count($row) - 1 ); $i++ )
+		// Store the data into the _userdata property.
+		foreach ( $row as $k => $v )
 		{
-			if ( $k[$i] != "extra_data" )
-				$this->_userdata[ $k[$i] ] = $v[$i];
+			if ( $k != "extra_data" )
+				$this->_userdata[$k] = $v;
 		}
 		
 		// Unserialize and parse the `extra_data` field and store that data too.
 		$extra = unserialize($row['extra_data']);
 		
-		$extK = array_keys($extra);
-		$extV = array_values($extra);
-		
-		for ( $extI = 0; $extI <= ( count($extra) -1 ); $extI++ )
+		foreach ( $extra as $k => $v )
 		{
-			$this->_userdata[ $extK[$extI] ] = $extV[$extI];
+			$this->_userdata[$k] = $v;
 		}
 	}
 	
