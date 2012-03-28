@@ -357,8 +357,8 @@ class user
 	// The user class defines the user object itself and manages sessions.
 	// Methods of this class is used to access the users table seamlessly and easily.
 	
-	private $_userdata = array();
-	private $_loggedin = 0;
+	private $_userdata = array(); // The user's data (requested and filled at page load)
+	private $_userdata_diff = array(); // If a user's data is updated, new values are stored in a new array, saved at destruction time
 	
 	function __construct()
 	{
@@ -368,10 +368,13 @@ class user
 		*/
 		
 		// If the session is uninitialized (well it should be), initialize it
-		//if ( !@$_SESSION )
-		//{
+		if ( !@$_SESSION )
+		{
 			$this->_initSession();
-		//}
+		} else {
+			echo "Session is already initialized.";
+			$this->_initSession();
+		}
 	}
 	
 	private function _initSession()
@@ -393,6 +396,13 @@ class user
 		{
 			$cl_side = $this->_checkClient();
 			$sv_side = $this->_dbAuthUser();
+			
+			// If both checks confirm that the session is valid, request
+			// query and filling of the user's userdata array in the object.
+			if ( ( $cl_side === TRUE ) && ( $sv_side === TRUE ) )
+			{
+				$this->_extractData();
+			}
 		}
 	}
 	
@@ -428,9 +438,11 @@ class user
 			)
 		{
 			$res = 1;
+		} else {
+			$res = 0;
 		}
 		
-		return ( @$res === 1 ? TRUE : FALSE );
+		return ( $res === 1 ? TRUE : FALSE );
 	}
 	
 	private function _dbAuthUser()
@@ -450,7 +462,75 @@ class user
 			username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND
 			pwd='" .$Cmysql->EscapeString($_SESSION['password']). "'");
 		
-		return ( mysql_num_rows($res) === 1 ? TRUE : FALSE);
+		return ( mysql_num_rows($res) === 1 ? TRUE : FALSE );
+	}
+	
+	private function _extractData()
+	{
+		/**
+		 * This function queries the database for the concurrent user's data
+		 * and fills the _userdata array with it for further usage.
+		*/
+		
+		global $Cmysql;
+		
+		$row = mysql_fetch_assoc($Cmysql->QUery("SELECT * FROM users WHERE 
+			id='" .$Cmysql->EscapeString($_SESSION['id']). "' AND
+			username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND
+			pwd='" .$Cmysql->EscapeString($_SESSION['password']). "' LIMIT 1"));
+		
+		$k = array_keys($row);
+		$v = array_values($row);
+		
+		// Using the fetched key - value arrays, store the data into the _userdata property.
+		for ( $i = 0; $i <= ( count($row) - 1 ); $i++ )
+		{
+			if ( $k[$i] != "extra_data" )
+				$this->_userdata[ $k[$i] ] = $v[$i];
+		}
+		
+		// Unserialize and parse the `extra_data` field and store that data too.
+		$extra = unserialize($row['extra_data']);
+		
+		$extK = array_keys($extra);
+		$extV = array_values($extra);
+		
+		for ( $extI = 0; $extI <= ( count($extra) -1 ); $extI++ )
+		{
+			$this->_userdata[ $extK[$extI] ] = $extV[$extI];
+		}
+	}
+	
+	private function _checkForExtra( $key )
+	{
+		/**
+		 * This function checks whether the data field ($key) is a seperate
+		 * column in the database, or should be put into the extra_data array.
+		 * 
+		 * Returned value is TRUE if the key is an extra, FALSE is seperate
+		 * 
+		 * input mixed $key
+		 * returns boolean
+		*/
+		
+		/*** Explanation for this method:
+				The `users` table in the database stores the data for every user.
+				The user's data is seperated into two types: seperate and extra.
+				
+				'Seperate' values have their own key/field in the database.
+					For example: id, username, password are seperate fields.
+				'Extra' values are put into the `extra_data` column of the database
+				via the serialize() function, and stored as one data.
+				Extra values can store basically anything about the user which does not
+				require its own seperate colums, thus, being "extra".
+					For example: module configuration like `forum_topics_per_page` is an extra field.
+		**/
+		
+		global $Cmysql;
+		
+		$field_res = $Cmysql->Query("SHOW COLUMNS FROM users LIKE '" .$Cmysql->EscapeString($key). "'");
+		
+		return ( mysql_num_rows($field_res) === 1 ? TRUE : FALSE );
 	}
 	
 	function __destruct()
@@ -460,7 +540,7 @@ class user
 		 * (either with unset() or the end of execution).
 		*/
 		
-		var_dump($this);
+		prettyVar($this);
 	}
 }
 ?>

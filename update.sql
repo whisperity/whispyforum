@@ -230,3 +230,8 @@ ALTER TABLE `topics` CHANGE `highlighted` `highlighted` TINYINT( 1 ) NOT NULL DE
 ALTER TABLE `users` ADD `news_split_value` SMALLINT( 3 ) NOT NULL DEFAULT '15' COMMENT 'user preference: how many entry to appear on one page' AFTER `post_count`;
 INSERT INTO `config` (`variable`, `value`) VALUES ('news_split_value', '15'),
 ('module_news', 'on');
+
+#
+# Revision 812 (added the extra_data field to the user table because of user class redesign)
+#
+ALTER TABLE `users` ADD `extra_data` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'extra properties of the user' AFTER `email`;
