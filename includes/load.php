@@ -67,6 +67,8 @@ $Cmysql->Connect(); // Connect to database
 $Cusers->Initialize(); // We initialize the userdata
 // User initialization also loads the language file
 
+$user = new user;
+
 // Badge manager
 require("badges.class.php");
 global $Cbadges; // Class is global
@@ -116,8 +118,8 @@ function DoFooter()
 	
 	$Ctemplate->useStaticTemplate("framework/footer_close", FALSE); // Close footer
 	
-	$Cmysql->Disconnect(); // Disconnect from database
-	
+	//$Cmysql->Disconnect(); // Disconnect from database
+	exit;
 }
 
 function dieOnModule($moduleName)

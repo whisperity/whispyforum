@@ -474,7 +474,7 @@ class user
 		
 		global $Cmysql;
 		
-		$row = mysql_fetch_assoc($Cmysql->QUery("SELECT * FROM users WHERE 
+		$row = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE 
 			id='" .$Cmysql->EscapeString($_SESSION['id']). "' AND
 			username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND
 			pwd='" .$Cmysql->EscapeString($_SESSION['password']). "' LIMIT 1"));
@@ -482,8 +482,7 @@ class user
 		// Store the data into the _userdata property.
 		foreach ( $row as $k => $v )
 		{
-			if ( $k != "extra_data" )
-				$this->_userdata[$k] = $v;
+			$this->_userdata[$k] = $v;
 		}
 		
 		// Unserialize and parse the `extra_data` field and store that data too.
@@ -495,16 +494,64 @@ class user
 		}
 	}
 	
+	private function _saveData()
+	{
+		/**
+		 * This function checks the changes of the userdata in memory and updates the database.
+		*/
+		
+		global $Cmysql;
+		
+		// If there are no keys to modify, we return FALSE.
+		if ( count( $this->_userdata_diff ) === 0 )
+			return FALSE;
+		
+		$updates = '';
+		$extra_exists = FALSE;
+		
+		// Analyze the _userdata_diff array to prepare an SQL query for modifications.
+		
+		foreach ( $this->_userdata_diff as $k => $v )
+		{
+			if ( $this->_checkForExtra($k) === FALSE )
+			{
+				$updates .= $k."='" .$Cmysql->EscapeString($v)."',\n";
+				unset( $this->_userdata_diff[$k] );
+			} elseif ( $this->_checkForExtra($k) === TRUE )
+			{
+				$extra_exists = TRUE;
+			}
+		}
+		
+		// If there is at least one 'extra' key modified, update the `extra_data` field too.
+		if ( $extra_exists === TRUE )
+		{
+			// Get the original extra data's array, update it with the new ones, then put it back to database.
+			$arrExtra = unserialize( $this->_userdata['extra_data'] );
+			
+			foreach ( $this->_userdata_diff as $k => $v )
+				$arrExtra[$k] = $v;
+			
+			$updates .= "extra_data='" .$Cmysql->EscapeString(serialize( $arrExtra )). "'";
+		}
+		
+		$query = "UPDATE users SET " .$Cmysql->EscapeString($updates). " WHERE 
+			id='" .$Cmysql->EscapeString($_SESSION['id']). "' AND
+			username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND
+			pwd='" .$Cmysql->EscapeString($_SESSION['password']). "'";
+		
+		$result = $Cmysql->Query($query);
+		
+		return $result;
+	}
+	
 	private function _checkForExtra( $key )
 	{
 		/**
 		 * This function checks whether the data field ($key) is a seperate
 		 * column in the database, or should be put into the extra_data array.
 		 * 
-		 * Returned value is TRUE if the key is an extra, FALSE is seperate
-		 * 
-		 * input mixed $key
-		 * returns boolean
+		 * Returned value is TRUE if the key is an extra, FALSE if seperate.
 		*/
 		
 		/*** Explanation for this method:
@@ -524,7 +571,7 @@ class user
 		
 		$field_res = $Cmysql->Query("SHOW COLUMNS FROM users LIKE '" .$Cmysql->EscapeString($key). "'");
 		
-		return ( mysql_num_rows($field_res) === 1 ? TRUE : FALSE );
+		return ( mysql_num_rows($field_res) === 1 ? FALSE : TRUE );
 	}
 	
 	function __destruct()
@@ -535,6 +582,10 @@ class user
 		*/
 		
 		prettyVar($this);
+		
+		// If there is a user logged in, save its data.
+		if ( $_SESSION['id'] > 0 )
+			$this->_saveData();
 	}
 }
 ?>
