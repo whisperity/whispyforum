@@ -384,7 +384,7 @@ function ambox($type, $body = NULL, $title = NULL)
 	* the parameters.
 	* 
 	* Easter egg: amBox (http://en.wikipedia.org/wiki/Template:Ambox) is the all-purpose pseudotemplate of Wikipedia :)
-	* @inputs: $type - box type: ERROR, MESSAGE, SUCCESS, DEVELOPER (red, orange, green, orange (with special picture))
+	* @inputs: $type - box type: ERROR, MESSAGE, SUCCESS, SYSFAIL/HALT, DEVELOPER (red, orange, green, orange (with special picture))
 	* 	   $body - message body
 	* 	   $title - box header
 	*/
@@ -422,6 +422,13 @@ function ambox($type, $body = NULL, $title = NULL)
 			$body = "Please do not use this module in production!";
 			
 			break;
+		case "SYSFAIL":
+		case "HALT":
+			$template = "errormessage";
+			$alt = "{LANG_ERROR_EXCLAMATION}";
+			$picture = "Stop_hand.png";
+			
+			break;
 		default:
 			$template = "errormessage";
 			$alt = "{LANG_MISSING_PARAMETERS}";
@@ -440,12 +447,6 @@ function ambox($type, $body = NULL, $title = NULL)
 		'ALT'	=>	$alt,
 		'PICTURE_NAME'	=>	$picture
 	), FALSE);
-}
-
-function devBox()
-{
-	/* Function alias for ambox("DEVELOPER"); */
-	ambox("DEVELOPER");
 }
 
 function selfURL()

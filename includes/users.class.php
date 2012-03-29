@@ -399,19 +399,19 @@ class user
 			
 			// If both checks confirm that the session is valid, request
 			// query and filling of the user's userdata array in the object.
-			if ( ( $cl_side === TRUE ) && ( $sv_side === TRUE ) )
+			if ( $cl_side === TRUE && $sv_side === TRUE )
 			{
 				$this->_extractData();
 			}
 		}
 	}
 	
-	private function _setupSession( $incomedata = array() )
+	private function _setupSession()
 	{
 		/**
 		 * This function sets up a basic session for new visitors.
 		*/
-			
+		
 		$_SESSION = array(
 			'id'	=>	0,
 			'username'	=>	NULL,
@@ -432,9 +432,9 @@ class user
 		 * Otherwise, FALSE is returned.
 		*/
 		
-		if ( ( $_SESSION['ip'] === sha1($_SERVER['REMOTE_ADDR']) ) &&
-			 ( $_SESSION['user_agent'] === sha1($_SERVER['HTTP_USER_AGENT']) ) &&
-			 ( $_SESSION['sessid'] === $_COOKIE[session_name()] )
+		if ( $_SESSION['ip'] === sha1($_SERVER['REMOTE_ADDR']) &&
+			 $_SESSION['user_agent'] === sha1($_SERVER['HTTP_USER_AGENT']) &&
+			 $_SESSION['sessid'] === $_COOKIE[session_name()]
 			)
 		{
 			$res = 1;
@@ -494,6 +494,59 @@ class user
 		foreach ( $extra as $k => $v )
 		{
 			$this->_userdata[$k] = $v;
+		}
+	}
+	
+	function getValue( $key, $past = FALSE )
+	{
+		/**
+		 * This function returns the requested key ($key) from _userdata.
+		 * 
+		 * If the said key has been already modified in the current thread, we return the new value,
+		 * unless $past is set to TRUE.
+		*/
+		
+		if ( $past === FALSE )
+		{
+			if ( array_key_exists($key, $this->_userdata_diff) )
+			{
+				$ret = $this->_userdata_diff[$key];
+			} elseif ( array_key_exists($key, $this->_userdata) && !array_key_exists($key, $this->_userdata_diff) )
+			{
+				$ret = $this->_userdata[$key];
+			} elseif ( !array_key_exists($key, $this->_userdata) && !array_key_exists($key, $this->_userdata_diff) )
+			{
+				$ret = FALSE;
+			}
+		} elseif ( $past === TRUE )
+		{
+			if ( array_key_exists($key, $this->_userdata) )
+			{
+				$ret = $this->_userdata[$key];
+			} elseif ( !array_key_exists($key, $this->_userdata) )
+			{
+				$ret = FALSE;
+			}
+		}
+		
+		return $ret;
+	}
+	
+	function setValue( $key, $value )
+	{
+		/**
+		 * This function sets the $key key of userdata to the new $value value.
+		*/
+		
+		if ( isset($key) && isset($value) )
+		{
+			if ( array_key_exists($key, $this->_userdata) && $this->_userdata[$key] === $value )
+			{
+				return TRUE;
+			} else {
+				$this->_userdata_diff[$key] = $value;
+				return TRUE;
+			}
 		}
 	}
 	

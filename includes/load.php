@@ -118,7 +118,8 @@ function DoFooter()
 	
 	$Ctemplate->useStaticTemplate("framework/footer_close", FALSE); // Close footer
 	
-	//$Cmysql->Disconnect(); // Disconnect from database
+	unset($user); // Unset the user
+	$Cmysql->Disconnect(); // Disconnect from database
 	exit;
 }
 
