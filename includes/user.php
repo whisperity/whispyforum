@@ -684,9 +684,7 @@ class user
 		 * Destructor. Called each time the instance is deferenced
 		 * (either with unset() or the end of execution).
 		*/
-		
-		prettyVar($this);
-		
+				
 		// If there is a user logged in, save its data.
 		if ( $this->userid > 0 )
 			$this->_saveData();

@@ -314,9 +314,7 @@ class mysql
 		*/
 		
 		$this->flush();
-		mysql_close($this->link);
-		
-		prettyVar($this);
+		@mysql_close($this->link);
 	}
 }
 ?>
