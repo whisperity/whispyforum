@@ -43,13 +43,15 @@ if ( file_exists("config.php") == 1 )
 
 /* Libraries */
 // mySQL database layer
-require("mysql.class.php");
-global $Cmysql; // Class is global
+require("mysql.php");
+global $Cmysql, $sql; // Class is global
 $Cmysql = new class_mysql;
 
+$sql = new mysql( $cfg['dbhost'], $cfg['dbuser'], $cfg['dbpass'], $cfg['dbname'] );
+
 // users & session manager 
-require("users.class.php");
-global $Cusers; // Class is global
+require("user.php");
+global $Cusers, $user; // Class is global
 $Cusers = new class_users;
 
 // general functions
@@ -69,6 +71,8 @@ prettyVar($_FILES, true);
 $Cmysql->Connect(); // Connect to database
 $Cusers->Initialize(); // We initialize the userdata
 // User initialization also loads the language file
+
+$user = new user(0);
 
 /* DEVELOPEMENT */
 print "<h4>SESSION</h4>";
@@ -95,9 +99,13 @@ echo '<head>
 	<link rel="stylesheet" type="text/css" href="themes/' .$_SESSION['theme_name']. '/style.css">'."\n";
 function DoFooter()
 {
-	global $Cmysql; // Load classes
+	global $Cmysql, $sql, $user; // Load classes
 	
+	unset($user);
 	$Cmysql->Disconnect(); // Disconnect from database
+	unset($sql);
+	
+	exit;
 }
 
 /* FRAMEWORK */

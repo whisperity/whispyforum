@@ -1,13 +1,13 @@
 <?php
 /**
- * WhispyForum class library - mysql.class.php
- * 
- * mySQL database layer
- * 
- * Class used to connect and maintain database queries
- * 
  * WhispyForum
- */
+ * 
+ * /includes/mysql.php
+*/
+
+if ( !defined("WHISPYFORUM") )
+	die("Direct opening.");
+
 class class_mysql
 {
 	// Define private variables
@@ -186,6 +186,38 @@ class class_mysql
 			'BODY'	=>	'There were errors escaping string <tt>' .htmlspecialchars($sString). '</tt>.<br>The mySQL error message was <tt>' .mysql_error(). '</tt>', // Error text
 			'ALT'	=>	"{LANG_SQL_ERROR}" // Alternate picture text
 		), FALSE ); // We output an error message
+	}
+}
+
+class mysql
+{
+	/**
+	 * Database handler on the mySQL layer.
+	*/
+	
+	// Link identifier for current connection.
+	var $link;
+	
+	// Resource container for the current query
+	var $res;
+	
+	function __construct( $dbhost, $dbuser, $dbpass, $dbname )
+	{
+		/**
+		 * Construction function loads the class and initializes the header of object.
+		*/
+		
+		// Connect to the database
+		
+	}
+	
+	function __destruct()
+	{
+		/**
+		 * Destructor flushes the object and closes the instance.
+		*/
+		
+		var_dump($this);
 	}
 }
 ?>

@@ -1,13 +1,13 @@
 <?php
 /**
- * WhispyForum class library - users.class.php
- * 
- * users and session manager
- * 
- * Class used to manage users and session data as well as login processes
- * 
  * WhispyForum
- */
+ * 
+ * /includes/user.php
+*/
+
+if ( !defined("WHISPYFORUM") )
+	die("Direct opening.");
+
 class class_users
 {
 	function Initialize()
@@ -353,27 +353,52 @@ class class_users
 }
 
 class user
-{ 
+{
 	// The user class defines the user object itself and manages sessions.
 	// Methods of this class is used to access the users table seamlessly and easily.
 	
-	private $_userdata = array(); // The user's data (requested and filled at page load)
-	private $_userdata_diff = array(); // If a user's data is updated, new values are stored in a new array, saved at destruction time
+	// The following two variables contain the user's data.
+	// _userdata is filled at page load (see the _extractData() function), while
+	// _userdata_diff is altered by setValue() and saved to the database at end (-> _saveData()).
+	private $_userdata = array();
+	private $_userdata_diff = array();
 	
-	function __construct()
+	// Userid stores the pointer ID of the user referenced in this instance
+	public $userid = 0;
+	
+	// Current is TRUE if the instance refers for the current user, FALSE if otherwise.
+	public $current = TRUE;
+	
+	function __construct( $pointer = -1 )
 	{
 		/**
 		 * Constructor function, gets called every time a new
 		 * instance of the user object is created.
+		 * 
+		 * The $pointer input sets the userID of the user the current instance
+		 * refers to. (This way the object can be used to get the data of other users.) 
+		 * Pointer should be zero if initialization happens for the current user.
 		*/
 		
-		// If the session is uninitialized (well it should be), initialize it
-		if ( !@$_SESSION )
+		// Load the session if the instance refers to the current user 
+		if ( $pointer === 0 )
 		{
-			$this->_initSession();
-		} else {
-			echo "Session is already initialized.";
-			$this->_initSession();
+			// If the session is uninitialized (well it should be), initialize it
+			if ( !@$_SESSION )
+			{
+				$this->_initSession();
+			} else {
+				echo "Session is already initialized.";
+				$this->_initSession();
+			}
+		} elseif ( $pointer > 0)
+		{
+			// If the instance refers to the non-current user, we load their data.
+			
+			$this->userid = $pointer;
+			$this->current = FALSE;
+			
+			$this->_extractData();
 		}
 	}
 	
@@ -401,6 +426,9 @@ class user
 			// query and filling of the user's userdata array in the object.
 			if ( $cl_side === TRUE && $sv_side === TRUE )
 			{
+				$this->userid = $_SESSION['id'];
+				$this->current = TRUE;
+				
 				$this->_extractData();
 			}
 		}
@@ -474,10 +502,20 @@ class user
 		
 		global $Cmysql;
 		
-		$row = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE 
-			id='" .$Cmysql->EscapeString($_SESSION['id']). "' AND
-			username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND
-			pwd='" .$Cmysql->EscapeString($_SESSION['password']). "' LIMIT 1"));
+		if ( $this->current )
+		{
+			$row = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE 
+				id='" .$Cmysql->EscapeString($_SESSION['id']). "' AND
+				username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND
+				pwd='" .$Cmysql->EscapeString($_SESSION['password']). "' LIMIT 1"));
+		} elseif ( !$this->current )
+		{
+			$row = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE 
+				id='" .$Cmysql->EscapeString($this->userid). "' LIMIT 1"));
+		}
+		
+		if ( !$row )
+			return FALSE;
 		
 		// Store the data into the _userdata property.
 		foreach ( $row as $k => $v )
@@ -591,10 +629,20 @@ class user
 			$updates .= "extra_data='" .$Cmysql->EscapeString(serialize( $arrExtra )). "'";
 		}
 		
-		$query = "UPDATE users SET " .$Cmysql->EscapeString($updates). " WHERE 
-			id='" .$Cmysql->EscapeString($_SESSION['id']). "' AND
-			username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND
-			pwd='" .$Cmysql->EscapeString($_SESSION['password']). "'";
+		$updates = rtrim($updates, "\n");
+		$updates = rtrim($updates, ",");
+		
+		if ( $this->current )
+		{
+			$query = "UPDATE users SET " .$Cmysql->EscapeString( rtrim($updates, ",") ). " WHERE 
+				id='" .$Cmysql->EscapeString($_SESSION['id']). "' AND
+				username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND
+				pwd='" .$Cmysql->EscapeString($_SESSION['password']). "'";
+		} elseif ( !$this->current )
+		{
+			$query = "UPDATE users SET " .$Cmysql->EscapeString( rtrim($updates, ",") ). " WHERE 
+				id='" .$Cmysql->EscapeString($this->userid). "'";
+		}
 		
 		$result = $Cmysql->Query($query);
 		
@@ -640,7 +688,7 @@ class user
 		prettyVar($this);
 		
 		// If there is a user logged in, save its data.
-		if ( $_SESSION['id'] > 0 )
+		if ( $this->userid > 0 )
 			$this->_saveData();
 	}
 }

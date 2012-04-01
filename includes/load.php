@@ -40,13 +40,16 @@ if ( file_exists("config.php") == 1 )
 
 /* Libraries */
 // mySQL database layer
-require("mysql.class.php");
-global $Cmysql; // Class is global
+require("mysql.php");
+global $Cmysql, $sql; // Class is global
 $Cmysql = new class_mysql;
 
+// Initialize the SQL layer
+$sql = new mysql( $cfg['dbhost'], $cfg['dbuser'], $cfg['dbpass'], $cfg['dbname'] );
+
 // users & session manager 
-require("users.class.php");
-global $Cusers; // Class is global
+require("user.php");
+global $Cusers, $user; // Class is global
 $Cusers = new class_users;
 
 // general functions
@@ -67,7 +70,7 @@ $Cmysql->Connect(); // Connect to database
 $Cusers->Initialize(); // We initialize the userdata
 // User initialization also loads the language file
 
-$user = new user;
+$user = new user(0);
 
 // Badge manager
 require("badges.class.php");
@@ -109,7 +112,7 @@ $Ctemplate->useStaticTemplate("framework/center", FALSE); // Closing left menuba
 
 function DoFooter()
 {
-	global $Ctemplate, $Cmysql; // Load classes
+	global $Ctemplate, $Cmysql, $sql, $user; // Load classes
 	
 	$Ctemplate->useStaticTemplate("framework/right", FALSE); // Close center table and right menubar begin
 		$Ctemplate->DoMenuBars('RIGHT'); // Do right menubar
@@ -120,6 +123,7 @@ function DoFooter()
 	
 	unset($user); // Unset the user
 	$Cmysql->Disconnect(); // Disconnect from database
+	unset($sql); // Close the database connection
 	exit;
 }
 
