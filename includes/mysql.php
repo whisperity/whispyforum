@@ -196,28 +196,118 @@ class mysql
 	*/
 	
 	// Link identifier for current connection.
-	var $link;
+	public $link;
 	
 	// Resource container for the current query
-	var $res;
+	public $res;
 	
 	function __construct( $dbhost, $dbuser, $dbpass, $dbname )
 	{
 		/**
 		 * Construction function loads the class and initializes the header of object.
+		 * 
+		 * On initialization, the instance connects to the database with the arguments set.
 		*/
 		
-		// Connect to the database
+		// Connect to the host and select the database
+		$this->link = mysql_connect( $dbhost, $dbuser, $dbpass ) or
+			die("Connect error.");
 		
+		mysql_select_db( $dbname, $this->link ) or die("DB select error.");
+		
+		// Set up the SQL-specific constants
+		define('SQL_ASSOC', MYSQL_ASSOC);
+		define('SQL_NUM', MYSQL_NUM);
+		define('SQL_BOTH', MYSQL_BOTH);
+	}
+	
+	function flush()
+	{
+		/**
+		 * Empties the result and frees the data from memory.
+		*/
+		
+		if ( is_resource($this->res) )
+			mysql_free_result($this->res);
+	}
+	
+	function query( $query )
+	{
+		/**
+		 * Runs the argument $query on the database then stores the result in $res.
+		 * 
+		 * Returns TRUE if the query was successfully executed, FALSE if not.
+		*/
+		
+		$this->flush();
+		
+		$this->res = @mysql_query($query, $this->link);
+		
+		if ( !$this->res )
+		{
+			echo "Query error.";
+			return FALSE;
+		} else {
+			return TRUE;
+		}
+	}
+	
+	function fetch_array( $res = NULL, $type = SQL_ASSOC )
+	{
+		/**
+		 * Fetch an array from the given query result with the given type.
+		 * If no result is given, it will use the latest.
+		 * 
+		 * Types can be:
+		 *		SQL_ASSOC	-	returned array contains the data in key => value format
+		 *		SQL_NUM		-	array contains data in column_id => value (column_id is a number)
+		 *		SQL_BOTH	-	the returned array contains the data in each of the ways mentioned above
+		 * 
+		 * Returns the fetched array or FALSE if failed to fetch.
+		*/
+		
+		if ( isset($res) )
+		{
+			return @mysql_fetch_array( $res, $type );
+		} else {
+			if ( isset($this->res) )
+			{
+				return @mysql_fetch_array( $this->res, $type );
+			} else {
+				return FALSE;
+			}
+		}
+	}
+	
+	function num_rows()
+	{
+		/**
+		 * Return the number of rows in the result.
+		*/
+		
+		return @mysql_num_rows($this->res);
+	}
+	
+	function insert_id()
+	{
+		/**
+		 * This function returns the ID of the currently inserted row.
+		*/
+		
+		return @mysql_insert_id($this->res);
 	}
 	
 	function __destruct()
 	{
 		/**
-		 * Destructor flushes the object and closes the instance.
+		 * The destructor releases the object at its dereference.
+		 * This function closes the database link and readies the class for dereference.
 		*/
 		
-		var_dump($this);
+		$this->flush();
+		mysql_close($this->link);
+		
+		prettyVar($this);
 	}
 }
 ?>
