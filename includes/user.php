@@ -483,14 +483,14 @@ class user
 		 * Otherwise, FALSE is returned.
 		*/
 		
-		global $Cmysql;
+		global $sql;
 		
-		$res = $Cmysql->Query("SELECT id FROM users WHERE 
-			id='" .$Cmysql->EscapeString($_SESSION['id']). "' AND
-			username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND
-			pwd='" .$Cmysql->EscapeString($_SESSION['password']). "'");
+		$sql->query("SELECT id FROM users WHERE 
+			id='" .$sql->escape($_SESSION['id']). "' AND
+			username='" .$sql->escape($_SESSION['username']). "' AND
+			pwd='" .$sql->escape($_SESSION['password']). "'");
 		
-		return ( mysql_num_rows($res) === 1 ? TRUE : FALSE );
+		return ( $sql->num_rows() === 1 ? TRUE : FALSE );
 	}
 	
 	private function _extractData()
@@ -500,18 +500,18 @@ class user
 		 * and fills the _userdata array with it for further usage.
 		*/
 		
-		global $Cmysql;
+		global $sql;
 		
 		if ( $this->current )
 		{
-			$row = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE 
-				id='" .$Cmysql->EscapeString($_SESSION['id']). "' AND
-				username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND
-				pwd='" .$Cmysql->EscapeString($_SESSION['password']). "' LIMIT 1"));
+			$row = $sql->fetch_array($sql->query("SELECT * FROM users WHERE 
+				id='" .$sql->escape($_SESSION['id']). "' AND
+				username='" .$sql->escape($_SESSION['username']). "' AND
+				pwd='" .$sql->escape($_SESSION['password']). "' LIMIT 1"), SQL_ASSOC);
 		} elseif ( !$this->current )
 		{
-			$row = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE 
-				id='" .$Cmysql->EscapeString($this->userid). "' LIMIT 1"));
+			$row = $sql->fetch_array($sql->query("SELECT * FROM users WHERE 
+				id='" .$sql->escape($this->userid). "' LIMIT 1"), SQL_ASSOC);
 		}
 		
 		if ( !$row )
@@ -594,7 +594,7 @@ class user
 		 * This function checks the changes of the userdata in memory and updates the database.
 		*/
 		
-		global $Cmysql;
+		global $sql;
 		
 		// If there are no keys to modify, we return FALSE.
 		if ( count( $this->_userdata_diff ) === 0 )
@@ -609,7 +609,7 @@ class user
 		{
 			if ( $this->_checkForExtra($k) === FALSE )
 			{
-				$updates .= $k."='" .$Cmysql->EscapeString($v)."',\n";
+				$updates .= $k."='" .$sql->escape($v)."',\n";
 				unset( $this->_userdata_diff[$k] );
 			} elseif ( $this->_checkForExtra($k) === TRUE )
 			{
@@ -626,7 +626,7 @@ class user
 			foreach ( $this->_userdata_diff as $k => $v )
 				$arrExtra[$k] = $v;
 			
-			$updates .= "extra_data='" .$Cmysql->EscapeString(serialize( $arrExtra )). "'";
+			$updates .= "extra_data='" .$sql->escape(serialize( $arrExtra )). "'";
 		}
 		
 		$updates = rtrim($updates, "\n");
@@ -634,17 +634,17 @@ class user
 		
 		if ( $this->current )
 		{
-			$query = "UPDATE users SET " .$Cmysql->EscapeString( rtrim($updates, ",") ). " WHERE 
-				id='" .$Cmysql->EscapeString($_SESSION['id']). "' AND
-				username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND
-				pwd='" .$Cmysql->EscapeString($_SESSION['password']). "'";
+			$query = "UPDATE users SET " .$sql->escape( rtrim($updates, ",") ). " WHERE 
+				id='" .$sql->escape($_SESSION['id']). "' AND
+				username='" .$sql->escape($_SESSION['username']). "' AND
+				pwd='" .$sql->escape($_SESSION['password']). "'";
 		} elseif ( !$this->current )
 		{
-			$query = "UPDATE users SET " .$Cmysql->EscapeString( rtrim($updates, ",") ). " WHERE 
-				id='" .$Cmysql->EscapeString($this->userid). "'";
+			$query = "UPDATE users SET " .$sql->escape( rtrim($updates, ",") ). " WHERE 
+				id='" .$sql->escape($this->userid). "'";
 		}
 		
-		$result = $Cmysql->Query($query);
+		$result = $sql->query($query);
 		
 		return $result;
 	}
@@ -671,11 +671,11 @@ class user
 					For example: module configuration like `forum_topics_per_page` is an extra field.
 		**/
 		
-		global $Cmysql;
+		global $sql;
 		
-		$field_res = $Cmysql->Query("SHOW COLUMNS FROM users LIKE '" .$Cmysql->EscapeString($key). "'");
+		$sql->query("SHOW COLUMNS FROM users LIKE '" .$sql->escape($key). "'");
 		
-		return ( mysql_num_rows($field_res) === 1 ? FALSE : TRUE );
+		return ( $sql->num_rows() === 1 ? FALSE : TRUE );
 	}
 	
 	function __destruct()

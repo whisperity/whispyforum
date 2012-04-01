@@ -43,6 +43,9 @@ if ( file_exists("config.php") == 1 )
 
 /* Libraries */
 // mySQL database layer
+// general functions
+require("includes/functions.php");
+
 require("mysql.php");
 global $Cmysql, $sql; // Class is global
 $Cmysql = new class_mysql;
@@ -54,8 +57,6 @@ require("user.php");
 global $Cusers, $user; // Class is global
 $Cusers = new class_users;
 
-// general functions
-require("includes/functions.php");
 /* Libraries */
 
 /* DEVELOPEMENT */

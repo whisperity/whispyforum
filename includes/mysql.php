@@ -248,7 +248,7 @@ class mysql
 			echo "Query error.";
 			return FALSE;
 		} else {
-			return TRUE;
+			return $this->res;
 		}
 	}
 	
@@ -294,7 +294,16 @@ class mysql
 		 * This function returns the ID of the currently inserted row.
 		*/
 		
-		return @mysql_insert_id($this->res);
+		return @mysql_insert_id($this->link);
+	}
+	
+	function escape( $string )
+	{
+		/**
+		 * This function escapes certain characters to prevent SQL-injection attack.
+		*/
+		
+		return @mysql_real_escape_string($string, $this->link);
 	}
 	
 	function __destruct()
