@@ -73,7 +73,7 @@ $Cmysql->Connect(); // Connect to database
 $Cusers->Initialize(); // We initialize the userdata
 // User initialization also loads the language file
 
-$user = new user(0);
+$user = new user(0, FALSE);
 
 /* DEVELOPEMENT */
 print "<h4>SESSION</h4>";

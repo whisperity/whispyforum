@@ -369,7 +369,10 @@ class user
 	// Current is TRUE if the instance refers for the current user, FALSE if otherwise.
 	public $current = TRUE;
 	
-	function __construct( $pointer = -1 )
+	// Stores whether the instance opened the user's data only for reading
+	private $_readOnly = TRUE;
+	
+	function __construct( $pointer = -1, $readOnly = TRUE )
 	{
 		/**
 		 * Constructor function, gets called every time a new
@@ -378,11 +381,21 @@ class user
 		 * The $pointer input sets the userID of the user the current instance
 		 * refers to. (This way the object can be used to get the data of other users.) 
 		 * Pointer should be zero if initialization happens for the current user.
+		 * 
+		 * If $readOnly is TRUE, the class will be initialized on the user in read-only mode.
 		*/
+		
+		$this->_readOnly = $readOnly;
 		
 		// Load the session if the instance refers to the current user 
 		if ( $pointer === 0 )
 		{
+			// If the class is read-only on the current user, give an error
+			if ( $this->_readOnly )
+			{
+				die("Attempted to initialize read-only user object on the concurrent user.");
+			}
+			
 			// If the session is uninitialized (well it should be), initialize it
 			if ( !@$_SESSION )
 			{
@@ -576,6 +589,11 @@ class user
 		 * This function sets the $key key of userdata to the new $value value.
 		*/
 		
+		if ( $this->_readOnly )
+		{
+			echo "Warning! This instance of the user object is running in read-only mode.";
+		}
+		
 		if ( isset($key) && isset($value) )
 		{
 			if ( array_key_exists($key, $this->_userdata) && $this->_userdata[$key] === $value )
@@ -586,6 +604,15 @@ class user
 				return TRUE;
 			}
 		}
+	}
+	
+	function isReadOnly()
+	{
+		/**
+		 * This function returns whether the current object is read-only as a boolean.
+		*/
+		
+		return $this->_readOnly;
 	}
 	
 	private function _saveData()
@@ -684,9 +711,9 @@ class user
 		 * Destructor. Called each time the instance is deferenced
 		 * (either with unset() or the end of execution).
 		*/
-				
-		// If there is a user logged in, save its data.
-		if ( $this->userid > 0 )
+		
+		// If there is a user logged in and the instance is not set read-only, save its data.
+		if ( $this->userid > 0 && !$this->_readOnly )
 			$this->_saveData();
 	}
 }
