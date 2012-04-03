@@ -1,16 +1,13 @@
 <?php
 /**
- * WhispyForum class library - templates.class.php
- * 
- * Templates class used for parsing template files.
- * 
- * Template files are located inside the /templates directory
- * and acts like static HTML files with marked locations
- * which are being replaced to set variables
- * during output.
- * 
  * WhispyForum
- */
+ * 
+ * /includes/template.php
+*/
+
+//if ( !defined("WHISPYFORUM") )
+	//die("Direct opening.");
+
 class class_template
 {
 	private $_output; // OUTPUT is the output which is printed at the end of the parsing
@@ -306,6 +303,86 @@ class class_template
 			
 			$menuContent = NULL; // Menu content is nothing
 		}
+	}
+}
+
+class template
+{
+	/**
+	 * The template conductor is responsible for generating the HTML-output of the system.
+	 * 
+	 * Templates are HTML files containing the HTML output the system uses. Templates are parsed
+	 * in runtime, with their "keys" replaced into "values". Keys are put as {[KEY]} into the source.
+	*/
+	
+	// Base directory from where the template files should be included.
+	private $_basedir = "";
+	
+	// The array contains all the templates loaded into the memory, unparsed.
+	private $_templates = array();
+	
+	// $_names stores a catalogue of names of template files loaded.
+	private $_names = array();
+	
+	// $_stack is the array containing the runtime templates parsed, ready to be output.
+	private $_stack = array();
+	
+	// This array contains the current output string.
+	private $_output = NULL;
+	
+	function __construct()
+	{
+		/**
+		 * Constructor initializes the current instance.
+		*/
+		
+		
+	}
+	
+	function loadTemplate( $file, $multi = FALSE )
+	{
+		/**
+		 * This function loads the requested $file template from the filesystem.
+		 * If $multi is set to TRUE, the file will be treated a multi-template file.
+		*/
+		
+		// Return error if the file we want does not exist.
+		if ( !file_exists( $this->_basedir.$file ) )
+		{
+			echo "Warning! The requested file (" .$file. ") not found in basedir (" .$this->_basedir. ").";
+			return FALSE;
+		}
+		
+		$file = $this->_basedir.$file;
+		
+		// Stop executing the function if the template file is already loaded.
+		if ( in_array( $file, $this->_names ) )
+			return FALSE;
+		
+		// Load the file contents
+		$res = fopen( $file, "rb" );
+		$data = fread( $res, @filesize($file) );
+		fclose($res);
+		
+		// Store the template data into memory
+		if ( !$multi )
+		{
+			/*** Stuff to do if single-template file. ***/
+		} elseif ( $multi )
+		{
+			/*** Parse multi-template file and store data. ***/
+		}
+		
+		return TRUE;
+	}
+	
+	function __destruct()
+	{
+		/**
+		 * Executed at dereference, this function prepares the object for desctruction.
+		*/
+		
+		prettyVar($this);
 	}
 }
 ?>

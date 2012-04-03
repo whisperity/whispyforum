@@ -12,9 +12,10 @@
 
 /* Libraries */
 // Template conductor (we load it before everything because templates are needed to get error messages)
-require("templates.class.php");
-global $Ctemplate; // Class is global
+require("template.php");
+global $Ctemplate, $template; // Class is global
 $Ctemplate = new class_template;
+$template = new template;
 /* Libraries */
 
 // Load boot-time localizations (it's a lite edition of the general English localization, only containing strings which are required before initializing the user array)
