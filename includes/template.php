@@ -5,8 +5,8 @@
  * /includes/template.php
 */
 
-//if ( !defined("WHISPYFORUM") )
-	//die("Direct opening.");
+if ( !defined("WHISPYFORUM") )
+	die("Direct opening.");
 
 class class_template
 {
@@ -348,12 +348,12 @@ class template
 	// This array contains the current output string.
 	private $_output = NULL;
 	
-	function __construct()
-	{
+	//function __construct()
+	//{
 		/**
 		 * Constructor initializes the current instance.
 		*/
-	}
+	//}
 	
 	function loadTemplate( $file, $multi = FALSE )
 	{
@@ -523,11 +523,11 @@ class template
 		return $this->_stack[ $name ];
 	}
 	
-	function __destruct()
-	{
+	//function __destruct()
+	//{
 		/**
 		 * Executed at dereference, this function prepares the object for desctruction.
 		*/
-	}
+	//}
 }
 ?>
