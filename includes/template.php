@@ -313,6 +313,24 @@ class template
 	 * 
 	 * Templates are HTML files containing the HTML output the system uses. Templates are parsed
 	 * in runtime, with their "keys" replaced into "values". Keys are put into the source.
+	 * 
+	 * Template files can either be "single" or "multi" ones.
+	 * 
+	 * Single files are bearing the .tpf (template file) extension and they contain one template.
+	 * The template file is added to the memory with the bare filename.
+	 * 
+	 * Multi files are .tpp (template package), and they contain multiple templates in this format:
+	 * <!--- BEGIN template -->
+	 *  (HTML content is here)
+	 * <!--- END template -->
+	 *  (recommended line break)
+	 * <!--- BEGIN another_template -->
+	 *  (some HTML code and variables)
+	 * <!--- END another_template -->
+	 * 
+	 * When these packages are loaded, template data between the BEGIN and END statements is added to
+	 * the memory with the name of the name present in the BEGIN and END statement.
+	 * (In this example: template and another_template will be available after loading the .tpp file.)
 	*/
 	
 	// Base directory (relative to main folder of script) from where the template files should be included.
@@ -325,7 +343,7 @@ class template
 	private $_index_tpp = array();
 	
 	// $_stack is the array containing the runtime templates parsed, ready to be output.
-	//private $_stack = array();
+	private $_stack = array();
 	
 	// This array contains the current output string.
 	private $_output = NULL;
@@ -335,8 +353,6 @@ class template
 		/**
 		 * Constructor initializes the current instance.
 		*/
-		
-		// Create outermost base stack
 	}
 	
 	function loadTemplate( $file, $multi = FALSE )
@@ -396,7 +412,7 @@ class template
 		
 		if ( !array_key_exists( $template, $this->_templates ) )
 		{
-			echo "Error. The requested template (" .$template. ") is not loaded.";
+			echo "Error! The requested template (" .$template. ") is not loaded.";
 			return FALSE;
 		}
 		
@@ -413,14 +429,105 @@ class template
 		return $this->_output;
 	}
 	
+	function createStack( $name = NULL )
+	{
+		/**
+		 * This function creates a stack to contain templates for buffering purposes.
+		 * The stack will be given the name $name if present, or an automatically generated one.
+		*/
+		
+		if ( isset($name) )
+		{
+			if ( array_key_exists($name, $this->_stack) )
+			{
+				echo "Error! The stack named " .$name. " already exists.";
+				return FALSE;
+			}
+			
+			$this->_stack[ $name ] = "";
+		} else {
+			$this->_stack[] = "";
+		}
+	}
+	
+	private function _getRecentStack()
+	{
+		/**
+		 * This function returns the identifier of the most recent stack.
+		*/
+		
+		// The commendted-out way would be understandable and actually used, but no.
+		// Since PHP 5.0.5, using it gives "Strict Standards: Only variables should be passed by reference"
+		// $stack = end( array_keys($this->_stack) );
+		
+		$stack_keys = array_keys($this->_stack);
+		return end($stack_keys);
+	}
+	
+	function deleteStack( $name = NULL )
+	{
+		/**
+		 * Remove the stack named $name, or, if not present, the most recent one.
+		*/
+		
+		if ( !isset($name) )
+			$name = $this->_getRecentStack();
+		
+		if ( !array_key_exists($name, $this->_stack) )
+		{
+			echo "Error! The stack named " .$name. " does not exist.";
+			return FALSE;
+		}
+		
+		unset($this->_stack[ $name ]);
+	}
+	
+	function addToStack( $data = NULL, $stack = NULL )
+	{
+		/**
+		 * Store $data into the stack named $stack.
+		*/
+		
+		// If $data is not present, it will automatically be the last parsed template.
+		if ( !isset($data) )
+			$data = $this->_output;
+		
+		// If $stack is not present, it will automatically be the newest created stack.
+		if ( !isset($stack) )
+			$stack = $this->_getRecentStack();
+		
+		if ( !array_key_exists($name, $this->_stack) )
+		{
+			echo "Error! The stack named " .$name. " does not exist.";
+			return FALSE;
+		}
+		
+		$this->_stack[ $stack ] .= $data;
+	}
+	
+	function getStack( $name = NULL )
+	{
+		/**
+		 * Return the value of stack named $name, or the most recent one.
+		*/
+		
+		if ( !isset($name) )
+			$name = $this->_getRecentStack();
+		
+		if ( !array_key_exists($name, $this->_stack) )
+		{
+			echo "Error! The stack named " .$name. " does not exist.";
+			return FALSE;
+		}
+		
+		return $this->_stack[ $name ];
+	}
+	
 	function __destruct()
 	{
 		/**
 		 * Executed at dereference, this function prepares the object for desctruction.
 		*/
-		
-		echo "<br><br>";
-		prettyVar($this);
 	}
 }
 ?>
