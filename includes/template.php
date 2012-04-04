@@ -325,7 +325,7 @@ class template
 	private $_index_tpp = array();
 	
 	// $_stack is the array containing the runtime templates parsed, ready to be output.
-	private $_stack = array();
+	//private $_stack = array();
 	
 	// This array contains the current output string.
 	private $_output = NULL;
@@ -336,7 +336,7 @@ class template
 		 * Constructor initializes the current instance.
 		*/
 		
-		
+		// Create outermost base stack
 	}
 	
 	function loadTemplate( $file, $multi = FALSE )
@@ -385,6 +385,32 @@ class template
 		}
 		
 		unset($data);
+	}
+	
+	function parseTemplate( $template, $replace = NULL )
+	{
+		/**
+		 * This function parses the said $template with replacing the keys in the template file
+		 * with values from the $replace array. The output is stored in the _output buffer.
+		*/
+		
+		if ( !array_key_exists( $template, $this->_templates ) )
+		{
+			echo "Error. The requested template (" .$template. ") is not loaded.";
+			return FALSE;
+		}
+		
+		$this->_output = $this->_templates[ $template ];
+		
+		if ( is_array($replace) )
+		{
+			foreach ( $replace as $k => $v )
+			{
+				$this->_output = str_replace( "{[" .$k ."]}", $v, $this->_output);
+			}
+		}
+		
+		return $this->_output;
 	}
 	
 	function __destruct()
