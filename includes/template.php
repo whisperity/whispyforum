@@ -312,17 +312,17 @@ class template
 	 * The template conductor is responsible for generating the HTML-output of the system.
 	 * 
 	 * Templates are HTML files containing the HTML output the system uses. Templates are parsed
-	 * in runtime, with their "keys" replaced into "values". Keys are put as {[KEY]} into the source.
+	 * in runtime, with their "keys" replaced into "values". Keys are put into the source.
 	*/
 	
-	// Base directory from where the template files should be included.
+	// Base directory (relative to main folder of script) from where the template files should be included.
 	private $_basedir = "";
 	
 	// The array contains all the templates loaded into the memory, unparsed.
 	private $_templates = array();
 	
-	// $_names stores a catalogue of names of template files loaded.
-	private $_names = array();
+	// $_index_tpp contains an indexed list on all the multi-template packages loaded
+	private $_index_tpp = array();
 	
 	// $_stack is the array containing the runtime templates parsed, ready to be output.
 	private $_stack = array();
@@ -346,34 +346,45 @@ class template
 		 * If $multi is set to TRUE, the file will be treated a multi-template file.
 		*/
 		
+		$suffix = ( $multi ? ".tpp" : ".tpf" );
+		
 		// Return error if the file we want does not exist.
-		if ( !file_exists( $this->_basedir.$file ) )
+		if ( !file_exists( $this->_basedir.$file.$suffix ) )
 		{
-			echo "Warning! The requested file (" .$file. ") not found in basedir (" .$this->_basedir. ").";
+			echo "Warning! The requested file (" .$file.$suffix. ") not found in basedir (" .$this->_basedir. ").";
 			return FALSE;
 		}
 		
-		$file = $this->_basedir.$file;
-		
 		// Stop executing the function if the template file is already loaded.
-		if ( in_array( $file, $this->_names ) )
+		if ( ( !$multi && array_key_exists( $file, $this->_templates ) ) || ( $multi && in_array( $file, $this->_index_tpp ) ) )
 			return FALSE;
 		
 		// Load the file contents
-		$res = fopen( $file, "rb" );
-		$data = fread( $res, @filesize($file) );
-		fclose($res);
+		$handle = fopen( $this->_basedir.$file.$suffix, "rb" );
+		$data = fread( $handle, filesize($this->_basedir.$file.$suffix) );
+		fclose($handle);
 		
 		// Store the template data into memory
 		if ( !$multi )
 		{
-			/*** Stuff to do if single-template file. ***/
+			$this->_templates[ $file ] = $data;
 		} elseif ( $multi )
 		{
-			/*** Parse multi-template file and store data. ***/
+			// Escape some strings in the
+			$data = str_replace( array('\\', '\'', "\n"), array('\\\\', '\\\'', ''), $data);
+			
+			// Chunk up the template package to individual template files and make an executable
+			// PHP code which will insert the loaded templates into memory.
+			$data = preg_replace('#<!--- BEGIN (.*?) -->(.*?)<!--- END (.*?) -->#', "\n" . '$this->_templates[\'\\1\'] = \'\\2\';', $data);
+			
+			// Run the previously created PHP code
+			eval($data);
+			
+			// Store the template package's name in the index
+			$this->_index_tpp[] = $file;
 		}
 		
-		return TRUE;
+		unset($data);
 	}
 	
 	function __destruct()
@@ -382,6 +393,7 @@ class template
 		 * Executed at dereference, this function prepares the object for desctruction.
 		*/
 		
+		echo "<br><br>";
 		prettyVar($this);
 	}
 }
