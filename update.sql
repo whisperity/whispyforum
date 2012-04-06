@@ -235,3 +235,13 @@ INSERT INTO `config` (`variable`, `value`) VALUES ('news_split_value', '15'),
 # Revision 812 (added the extra_data field to the user table because of user class redesign)
 #
 ALTER TABLE `users` ADD `extra_data` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'extra properties of the user' AFTER `email`;
+
+#
+# Revision 827 (drop some fields from the user table)
+#
+ALTER TABLE `users`
+	DROP `curr_ip`,
+	DROP `curr_sessid`
+	DROP `forum_topic_count_per_page`,
+	DROP `forum_post_count_per_page`,
+	DROP `news_split_value`;
