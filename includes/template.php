@@ -334,7 +334,7 @@ class template
 	*/
 	
 	// Base directory (relative to main folder of script) from where the template files should be included.
-	private $_basedir = "";
+	private $_basedir = "templates/";
 	
 	// The array contains all the templates loaded into the memory, unparsed.
 	private $_templates = array();
@@ -348,14 +348,25 @@ class template
 	// This array contains the current output string.
 	private $_output = NULL;
 	
-	//function __construct()
-	//{
+	function set_basedir( $basedir )
+	{
 		/**
-		 * Constructor initializes the current instance.
+		 * This function sets the internal basedir to the $basedir argument.
 		*/
-	//}
+		
+		$this->_basedir = $basedir;
+	}
 	
-	function loadTemplate( $file, $multi = FALSE )
+	function get_basedir()
+	{
+		/**
+		 * This function returns the current _basedir property of the object.
+		*/
+		
+		return $this->_basedir;
+	}
+	
+	function load_template( $file, $multi = FALSE )
 	{
 		/**
 		 * This function loads the requested $file template from the filesystem.
@@ -403,7 +414,7 @@ class template
 		unset($data);
 	}
 	
-	function parseTemplate( $template, $replace = NULL )
+	function parse_template( $template, $replace = NULL )
 	{
 		/**
 		 * This function parses the said $template with replacing the keys in the template file
@@ -429,7 +440,7 @@ class template
 		return $this->_output;
 	}
 	
-	function createStack( $name = NULL )
+	function create_stack( $name = NULL )
 	{
 		/**
 		 * This function creates a stack to contain templates for buffering purposes.
@@ -450,7 +461,7 @@ class template
 		}
 	}
 	
-	private function _getRecentStack()
+	private function _get_recent_stack()
 	{
 		/**
 		 * This function returns the identifier of the most recent stack.
@@ -464,14 +475,14 @@ class template
 		return end($stack_keys);
 	}
 	
-	function deleteStack( $name = NULL )
+	function delete_stack( $name = NULL )
 	{
 		/**
 		 * Remove the stack named $name, or, if not present, the most recent one.
 		*/
 		
 		if ( !isset($name) )
-			$name = $this->_getRecentStack();
+			$name = $this->_get_recent_stack();
 		
 		if ( !array_key_exists($name, $this->_stack) )
 		{
@@ -482,7 +493,7 @@ class template
 		unset($this->_stack[ $name ]);
 	}
 	
-	function addToStack( $data = NULL, $stack = NULL )
+	function add_to_stack( $data = NULL, $stack = NULL )
 	{
 		/**
 		 * Store $data into the stack named $stack.
@@ -494,7 +505,7 @@ class template
 		
 		// If $stack is not present, it will automatically be the newest created stack.
 		if ( !isset($stack) )
-			$stack = $this->_getRecentStack();
+			$stack = $this->_get_recent_stack();
 		
 		if ( !array_key_exists($name, $this->_stack) )
 		{
@@ -505,14 +516,14 @@ class template
 		$this->_stack[ $stack ] .= $data;
 	}
 	
-	function getStack( $name = NULL )
+	function get_stack( $name = NULL )
 	{
 		/**
 		 * Return the value of stack named $name, or the most recent one.
 		*/
 		
 		if ( !isset($name) )
-			$name = $this->_getRecentStack();
+			$name = $this->_get_recent_stack();
 		
 		if ( !array_key_exists($name, $this->_stack) )
 		{
@@ -522,12 +533,5 @@ class template
 		
 		return $this->_stack[ $name ];
 	}
-	
-	//function __destruct()
-	//{
-		/**
-		 * Executed at dereference, this function prepares the object for desctruction.
-		*/
-	//}
 }
 ?>

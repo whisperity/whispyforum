@@ -370,7 +370,7 @@ class user
 	public $current = TRUE;
 	
 	// Stores whether the instance opened the user's data only for reading
-	private $_readOnly = TRUE;
+	private $_readonly = TRUE;
 	
 	function __construct( $pointer = -1, $readOnly = TRUE )
 	{
@@ -385,13 +385,13 @@ class user
 		 * If $readOnly is TRUE, the class will be initialized on the user in read-only mode.
 		*/
 		
-		$this->_readOnly = $readOnly;
+		$this->_readonly = $readOnly;
 		
 		// Load the session if the instance refers to the current user 
 		if ( $pointer === 0 )
 		{
 			// If the class is read-only on the current user, give an error
-			if ( $this->_readOnly )
+			if ( $this->_readonly )
 			{
 				die("Attempted to initialize read-only user object on the concurrent user.");
 			}
@@ -399,10 +399,9 @@ class user
 			// If the session is uninitialized (well it should be), initialize it
 			if ( !@$_SESSION )
 			{
-				$this->_initSession();
+				$this->_init_session();
 			} else {
 				echo "Session is already initialized.";
-				$this->_initSession();
 			}
 		} elseif ( $pointer > 0)
 		{
@@ -411,11 +410,14 @@ class user
 			$this->userid = $pointer;
 			$this->current = FALSE;
 			
-			$this->_extractData();
+			$this->_extract_data();
 		}
+		
+		// Define a constant for get_value()
+		@define('USER_NO_KEY', "requested-key-not-present");
 	}
 	
-	private function _initSession()
+	private function _init_session()
 	{
 		/**
 		 * Function initializes the session data for the user.
@@ -429,11 +431,11 @@ class user
 		// If there is, check for the session's client data and authenticate the user
 		if ( !isset($_SESSION['id']) )
 		{
-			$this->_setupSession();
+			$this->_setup_session();
 		} elseif ( $_SESSION['id'] > 0  )
 		{
-			$cl_side = $this->_checkClient();
-			$sv_side = $this->_dbAuthUser();
+			$cl_side = $this->_check_slient();
+			$sv_side = $this->_db_auth_user();
 			
 			// If both checks confirm that the session is valid, request
 			// query and filling of the user's userdata array in the object.
@@ -442,12 +444,12 @@ class user
 				$this->userid = $_SESSION['id'];
 				$this->current = TRUE;
 				
-				$this->_extractData();
+				$this->_extract_data();
 			}
 		}
 	}
 	
-	private function _setupSession()
+	private function _setup_session()
 	{
 		/**
 		 * This function sets up a basic session for new visitors.
@@ -463,7 +465,7 @@ class user
 		);
 	}
 	
-	private function _checkClient()
+	private function _check_client()
 	{
 		/**
 		 * This function compares the visitor's client data and the session data.
@@ -486,7 +488,7 @@ class user
 		return ( $res === 1 ? TRUE : FALSE );
 	}
 	
-	private function _dbAuthUser()
+	private function _db_auth_user()
 	{
 		/**
 		 * This function checks the session data and the user table
@@ -506,7 +508,7 @@ class user
 		return ( $sql->num_rows() === 1 ? TRUE : FALSE );
 	}
 	
-	private function _extractData()
+	private function _extract_data()
 	{
 		/**
 		 * This function queries the database for the concurrent user's data
@@ -548,7 +550,7 @@ class user
 		}
 	}
 	
-	function getValue( $key, $past = FALSE )
+	function get_value( $key, $past = FALSE )
 	{
 		/**
 		 * This function returns the requested key ($key) from _userdata.
@@ -567,7 +569,7 @@ class user
 				$ret = $this->_userdata[$key];
 			} elseif ( !array_key_exists($key, $this->_userdata) && !array_key_exists($key, $this->_userdata_diff) )
 			{
-				$ret = FALSE;
+				$ret = USER_NO_KEY;
 			}
 		} elseif ( $past === TRUE )
 		{
@@ -576,14 +578,14 @@ class user
 				$ret = $this->_userdata[$key];
 			} elseif ( !array_key_exists($key, $this->_userdata) )
 			{
-				$ret = FALSE;
+				$ret = USER_NO_KEY;
 			}
 		}
 		
 		return $ret;
 	}
 	
-	function setValue( $key, $value )
+	function set_value( $key, $value )
 	{
 		/**
 		 * This function sets the $key key of userdata to the new $value value.
@@ -606,7 +608,7 @@ class user
 		}
 	}
 	
-	function isReadOnly()
+	function is_readonly()
 	{
 		/**
 		 * This function returns whether the current object is read-only as a boolean.
@@ -615,7 +617,7 @@ class user
 		return $this->_readOnly;
 	}
 	
-	private function _saveData()
+	private function _save_data()
 	{
 		/**
 		 * This function checks the changes of the userdata in memory and updates the database.
@@ -634,11 +636,11 @@ class user
 		
 		foreach ( $this->_userdata_diff as $k => $v )
 		{
-			if ( $this->_checkForExtra($k) === FALSE )
+			if ( $this->_check_for_extra($k) === FALSE )
 			{
 				$updates .= $k."='" .$sql->escape($v)."',\n";
 				unset( $this->_userdata_diff[$k] );
-			} elseif ( $this->_checkForExtra($k) === TRUE )
+			} elseif ( $this->_check_for_extra($k) === TRUE )
 			{
 				$extra_exists = TRUE;
 			}
@@ -676,7 +678,7 @@ class user
 		return $result;
 	}
 	
-	private function _checkForExtra( $key )
+	private function _check_for_extra( $key )
 	{
 		/**
 		 * This function checks whether the data field ($key) is a seperate
@@ -713,8 +715,8 @@ class user
 		*/
 		
 		// If there is a user logged in and the instance is not set read-only, save its data.
-		if ( $this->userid > 0 && !$this->_readOnly )
-			$this->_saveData();
+		if ( $this->userid > 0 && !$this->_readonly )
+			$this->_save_data();
 	}
 }
 ?>

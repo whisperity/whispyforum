@@ -245,3 +245,15 @@ ALTER TABLE `users`
 	DROP `forum_topic_count_per_page`,
 	DROP `forum_post_count_per_page`,
 	DROP `news_split_value`;
+
+#
+# Revision 828 (rewrote frontend framework, added module system)
+#
+CREATE TABLE IF NOT EXISTS modules (
+	`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+	`module` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'name of the module',
+	`extra_data` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'configuration of the module',
+	`align` tinyint(2) NOT NULL DEFAULT '0' COMMENT 'sidebar vertical align',
+	`side` enum('left', 'right') NOT NULL DEFAULT 'left' COMMENT 'sidebar choice',
+	PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'module data';

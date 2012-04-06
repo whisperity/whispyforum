@@ -426,6 +426,42 @@ switch ($instPos)
 		}
 		/* Users table */
 		
+		/* Modules table */
+		// Stores the module data
+		$dbtables_modules = FALSE; // We failed creating the table first
+		$dbtables_modules = $Cmysql->Query("CREATE TABLE IF NOT EXISTS modules (
+			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+			`module` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'name of the module',
+			`extra_data` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'configuration of the module',
+			`align` tinyint(2) NOT NULL DEFAULT '0' COMMENT 'sidebar vertical align',
+			`side` enum('left', 'right') NOT NULL DEFAULT 'left' COMMENT 'sidebar choice',
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'module data'"); // $dbtables_modules sets to true if we succeeded creating a table
+		
+		$dbtables_modules_data = FALSE; // We failed adding the default data first
+		$dbtables_modules_data = $Cmysql->Query(""); // $dbtables_modules_data sets to true if we succeeded adding default data
+		
+		// We check menus table creation
+		if ( ( $dbtables_modules == FALSE) || ( $dbtables_modules_data == FALSE ) )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
+				'TABLENAME'	=>	"modules" // Table name
+			), FALSE);
+			
+			// We set the creation global error variable to false
+			$tablecreation = FALSE;
+			
+			$tablelist[] = "modules"; // Append menu table name to fail-list
+		} elseif ( ( $dbtables_modules != FALSE )  && ( $dbtables_modules_data != FALSE ) )
+		{
+			// Give success
+			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
+				'TABLENAME'	=>	"modules" // Table name
+			), FALSE);
+		}
+		/* Modules table */
+		
 		/* Menus table */
 		// Stores the menu's data
 		$dbtables_menu = FALSE; // We failed creating the table first

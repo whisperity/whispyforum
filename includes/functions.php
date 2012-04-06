@@ -246,22 +246,17 @@ function fDate($date = "current")
 	return date("F j, Y, H:i", $date);
 }
 
-function config($variable = NULL)
+function config( $variable )
 {
 	/**
-	* This function returns the global configuration variable
-	* $variable value.
-	* 
-	* @inputs: $variable - name of the variable
-	* @outputs: return value of variable (from database table `config`)
+	* This function returns the value of $variable in the config table.
 	*/
 	
-	global $Cmysql; // We need the SQL class
+	global $sql;
 	
-	// Get the value array from database
-	$value = mysql_fetch_row($Cmysql->Query("SELECT value FROM config WHERE variable='" .$Cmysql->EscapeString($variable). "'"));
+	$result = $sql->fetch_array($sql->query("SELECT value FROM config WHERE variable='" .$sql->escape($variable). "'"), SQL_NUM);
 	
-	return $value[0]; // Return the value
+	return $result[0];
 }
 
 function prettyVar($variable = NULL, $output = TRUE)

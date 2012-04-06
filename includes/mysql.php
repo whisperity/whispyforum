@@ -201,6 +201,9 @@ class mysql
 	// Resource container for the current query
 	public $res;
 	
+	// $_fetch_types contain the type constants for fetch_array()
+	private $_fetch_types = array(MYSQL_ASSOC, MYSQL_NUM, MYSQL_BOTH);
+	
 	function __construct( $dbhost, $dbuser, $dbpass, $dbname )
 	{
 		/**
@@ -213,12 +216,13 @@ class mysql
 		$this->link = mysql_connect( $dbhost, $dbuser, $dbpass ) or
 			die("Connect error.");
 		
-		mysql_select_db( $dbname, $this->link ) or die("DB select error.");
+		mysql_select_db( $dbname, $this->link ) or
+			die("DB select error.");
 		
 		// Set up the SQL-specific constants
-		define('SQL_ASSOC', MYSQL_ASSOC);
-		define('SQL_NUM', MYSQL_NUM);
-		define('SQL_BOTH', MYSQL_BOTH);
+		@define('SQL_ASSOC', 0);
+		@define('SQL_NUM', 1);
+		@define('SQL_BOTH', 2);
 	}
 	
 	function flush()
@@ -268,11 +272,11 @@ class mysql
 		
 		if ( isset($res) )
 		{
-			return @mysql_fetch_array( $res, $type );
+			return @mysql_fetch_array( $res, $this->_fetch_types[$type] );
 		} else {
 			if ( isset($this->res) )
 			{
-				return @mysql_fetch_array( $this->res, $type );
+				return @mysql_fetch_array( $this->res, $this->_fetch_types[$type] );
 			} else {
 				return FALSE;
 			}
@@ -316,5 +320,12 @@ class mysql
 		$this->flush();
 		@mysql_close($this->link);
 	}
+}
+
+function get_one_key( $field, $key, $table )
+{
+	/**
+	 * This function returns the value of one set 
+	*/
 }
 ?>
