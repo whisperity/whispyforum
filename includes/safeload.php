@@ -28,8 +28,8 @@ if ( file_exists("config.php") == 1 )
 	require("config.php"); // Load the configuration file
 } elseif ( file_exists("config.php") == 0 ) // If not
 {
-	// We embed the default (winky) stylesheet so the error message will appear properly
-	echo '<link rel="stylesheet" type="text/css" href="themes/winky/style.css">';
+	// We embed the default (tuvia) stylesheet so the error message will appear properly
+	echo '<link rel="stylesheet" type="text/css" href="themes/tuvia/style.css">';
 	
 	$Ctemplate->useTemplate("errormessage", array(
 		'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Unavailable file icon

@@ -5,7 +5,7 @@ include('includes/load.php'); // Call the loader
 $Ctemplate->useTemplate("wf_hello", array(
     'NAME'    =>    "Individual",
 	'VERSION'	=>	"1.0",
-    'CODENAME'    =>    "Winky"
+    'CODENAME'    =>    "Tuvia"
 ), FALSE);
 echo "<br>\n";
 echo "Example wf_hello done.<br>";

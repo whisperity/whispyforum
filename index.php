@@ -19,6 +19,11 @@ $user = new user(0, FALSE);
 
 
 
+
+prettyVar($user);
+prettyVar($sql);
+prettyVar($template);
+
 unset($user);
 unset($sql);
 unset($template);

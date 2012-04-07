@@ -109,8 +109,8 @@ class class_template
 			if ( !isset($_SESSION['theme_name']) )
 			{
 				// If there isn't session data (for example while logging in or out)
-				// Replace the theme name for the default theme (winky)
-				$this->_output=str_replace('{THEME_NAME}','winky',$this->_output);
+				// Replace the theme name for the default theme (tuvia)
+				$this->_output=str_replace('{THEME_NAME}','tuvia',$this->_output);
 			} else {
 				// If there is
 				// Replace the theme name for the user's preference
@@ -162,8 +162,8 @@ class class_template
 			if ( !isset($_SESSION['theme_name']) )
 			{
 				// If there isn't session data (for example while logging in or out)
-				// Replace the theme name for the default theme (winky)
-				$this->_output=str_replace('{THEME_NAME}','winky',$this->_output);
+				// Replace the theme name for the default theme (tuvia)
+				$this->_output=str_replace('{THEME_NAME}','tuvia',$this->_output);
 			} else {
 				// If there is
 				// Replace the theme name for the user's preference

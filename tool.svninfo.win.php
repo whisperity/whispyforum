@@ -45,7 +45,7 @@ include(svnInfoFN);
 
 <body>
 
-<link rel="stylesheet" type="text/css" href="themes/winky/style.css">
+<link rel="stylesheet" type="text/css" href="themes/tuvia/style.css">
 
 <div id="menucontainer" style="width: 640px">
 	<div id="header"><div id="header_left"></div>

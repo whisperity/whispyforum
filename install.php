@@ -46,8 +46,8 @@ if ( !isset($_POST['ins_lang']) )
 if ( !isset($_POST['ins_thm']) )
 {
 	// If we did not select the installer theme, load the default one
-	echo '<link rel="stylesheet" type="text/css" href="themes/winky/style.css">';
-	$_POST['ins_thm'] = "winky"; // Make the default theme automatically selected in the theme switcher
+	echo '<link rel="stylesheet" type="text/css" href="themes/tuvia/style.css">';
+	$_POST['ins_thm'] = "tuvia"; // Make the default theme automatically selected in the theme switcher
 } elseif ( isset($_POST['ins_thm']) )
 {
 	// If we set, load the one we set
@@ -197,7 +197,7 @@ switch ($instPos)
 				'DBHOST'	=>	"localhost", // Database host (default)
 				'DBUSER'	=>	"", // Database user
 				'DBPASS'	=>	"", // Database password
-				'DBNAME'	=>	"winky_db", // Database name (default)
+				'DBNAME'	=>	"tuvia_db", // Database name (default)
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
 				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE); // Config file generator
@@ -397,7 +397,7 @@ switch ($instPos)
 			`userLevel` tinyint(2) NOT NULL DEFAULT '0' COMMENT 'clearance level',
 			`avatar_filename` varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'avatar picture filename',
 			`language` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'english' COMMENT 'user preferred language',
-			`theme` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'winky' COMMENT 'user preferred theme',
+			`theme` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'tuvia' COMMENT 'user preferred theme',
 			`post_count` int(6) NOT NULL DEFAULT '0' COMMENT 'number of posts from the user',
 			`news_comment_count` int(6) NOT NULL DEFAULT '0' COMMENT 'number of news comments from the user',
 			PRIMARY KEY (`id`),

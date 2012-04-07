@@ -132,7 +132,7 @@ function statusButtons($line)
 
 <body>
 
-<link rel="stylesheet" type="text/css" href="themes/winky/style.css">
+<link rel="stylesheet" type="text/css" href="themes/tuvia/style.css">
 <?php
 	if ( isset($_GET['command']) )
 	{

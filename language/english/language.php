@@ -411,7 +411,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_SITEPREF_MODIFY_THEME_SUCCESS}'	=>	"Theme modified",
 	'{LANG_SITEPREF_MODIFY_THEME_SUCCESS_1}'	=>	"You successfully modified your theme. The next page you request will load with the theme you set.",
 	'{LANG_SITEPREF_MODIFY_THEME_NOTICE}'	=>	"Your current theme is marked.",
-	'{LANG_SITEPREF_WINKY_THEME_DESC}'	=>	"The default theme for WhispyForum",
+	'{LANG_SITEPREF_TUVIA_THEME_DESC}'	=>	"The default theme for WhispyForum",
 	
 	/* Forum settings */
 	'{LANG_UCP_FORUM}'	=>	"Forum settings",
