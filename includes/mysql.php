@@ -321,11 +321,4 @@ class mysql
 		@mysql_close($this->link);
 	}
 }
-
-function get_one_key( $field, $key, $table )
-{
-	/**
-	 * This function returns the value of one set 
-	*/
-}
 ?>

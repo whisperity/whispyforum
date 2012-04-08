@@ -358,8 +358,8 @@ class user
 	// Methods of this class is used to access the users table seamlessly and easily.
 	
 	// The following two variables contain the user's data.
-	// _userdata is filled at page load (see the _extractData() function), while
-	// _userdata_diff is altered by setValue() and saved to the database at end (-> _saveData()).
+	// _userdata is filled at page load (see the _extract_data() function), while
+	// _userdata_diff is altered by setValue() and saved to the database at end (-> _save_data()).
 	private $_userdata = array();
 	private $_userdata_diff = array();
 	
@@ -500,10 +500,10 @@ class user
 		
 		global $sql;
 		
-		$sql->query("SELECT id FROM users WHERE 
-			id='" .$sql->escape($_SESSION['id']). "' AND
-			username='" .$sql->escape($_SESSION['username']). "' AND
-			pwd='" .$sql->escape($_SESSION['password']). "'");
+		$sql->query("SELECT id FROM `users` WHERE 
+			`id`=" .$sql->escape($_SESSION['id']). " AND
+			`username`='" .$sql->escape($_SESSION['username']). "' AND
+			`pwd`='" .$sql->escape($_SESSION['password']). "';");
 		
 		return ( $sql->num_rows() === 1 ? TRUE : FALSE );
 	}
@@ -519,14 +519,14 @@ class user
 		
 		if ( $this->current )
 		{
-			$row = $sql->fetch_array($sql->query("SELECT * FROM users WHERE 
-				id='" .$sql->escape($_SESSION['id']). "' AND
-				username='" .$sql->escape($_SESSION['username']). "' AND
-				pwd='" .$sql->escape($_SESSION['password']). "' LIMIT 1"), SQL_ASSOC);
+			$row = $sql->fetch_array($sql->query("SELECT * FROM `users` WHERE 
+				`id`=" .$sql->escape($_SESSION['id']). " AND
+				`username`='" .$sql->escape($_SESSION['username']). "' AND
+				`pwd`='" .$sql->escape($_SESSION['password']). "' LIMIT 1;"), SQL_ASSOC);
 		} elseif ( !$this->current )
 		{
-			$row = $sql->fetch_array($sql->query("SELECT * FROM users WHERE 
-				id='" .$sql->escape($this->userid). "' LIMIT 1"), SQL_ASSOC);
+			$row = $sql->fetch_array($sql->query("SELECT * FROM `users` WHERE 
+				`id`=" .$sql->escape($this->userid). " LIMIT 1;"), SQL_ASSOC);
 		}
 		
 		if ( !$row )
@@ -638,7 +638,7 @@ class user
 		{
 			if ( $this->_check_for_extra($k) === FALSE )
 			{
-				$updates .= $k."='" .$sql->escape($v)."',\n";
+				$updates .= "`" .$k."`='" .$sql->escape($v)."',\n";
 				unset( $this->_userdata_diff[$k] );
 			} elseif ( $this->_check_for_extra($k) === TRUE )
 			{
@@ -655,7 +655,7 @@ class user
 			foreach ( $this->_userdata_diff as $k => $v )
 				$arrExtra[$k] = $v;
 			
-			$updates .= "extra_data='" .$sql->escape(serialize( $arrExtra )). "'";
+			$updates .= "`extra_data`='" .$sql->escape(serialize( $arrExtra )). "'";
 		}
 		
 		$updates = rtrim($updates, "\n");
@@ -663,14 +663,14 @@ class user
 		
 		if ( $this->current )
 		{
-			$query = "UPDATE users SET " .$sql->escape( rtrim($updates, ",") ). " WHERE 
-				id='" .$sql->escape($_SESSION['id']). "' AND
-				username='" .$sql->escape($_SESSION['username']). "' AND
-				pwd='" .$sql->escape($_SESSION['password']). "'";
+			$query = "UPDATE `users` SET " .$sql->escape( rtrim($updates, ",") ). " WHERE 
+				`id`=" .$sql->escape($_SESSION['id']). " AND
+				`username`='" .$sql->escape($_SESSION['username']). "' AND
+				`pwd`='" .$sql->escape($_SESSION['password']). "' LIMIT 1;";
 		} elseif ( !$this->current )
 		{
-			$query = "UPDATE users SET " .$sql->escape( rtrim($updates, ",") ). " WHERE 
-				id='" .$sql->escape($this->userid). "'";
+			$query = "UPDATE `users` SET " .$sql->escape( rtrim($updates, ",") ). " WHERE 
+				`id`=" .$sql->escape($this->userid). " LIMIT 1;";
 		}
 		
 		$result = $sql->query($query);
@@ -702,7 +702,7 @@ class user
 		
 		global $sql;
 		
-		$sql->query("SHOW COLUMNS FROM users LIKE '" .$sql->escape($key). "'");
+		$sql->query("SHOW COLUMNS FROM `users` LIKE '" .$sql->escape($key). "';");
 		
 		return ( $sql->num_rows() === 1 ? FALSE : TRUE );
 	}
