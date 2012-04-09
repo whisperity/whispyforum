@@ -202,7 +202,7 @@ class mysql
 	public $res;
 	
 	// $_fetch_types contain the type constants for fetch_array()
-	private $_fetch_types = array(MYSQL_ASSOC, MYSQL_NUM, MYSQL_BOTH);
+	private $_fetch_types = array(1	=>	MYSQL_ASSOC, 2	=>	MYSQL_NUM, 3	=>	MYSQL_BOTH);
 	
 	function __construct( $dbhost, $dbuser, $dbpass, $dbname )
 	{
@@ -220,9 +220,9 @@ class mysql
 			die("DB select error.");
 		
 		// Set up the SQL-specific constants
-		@define('SQL_ASSOC', 0);
-		@define('SQL_NUM', 1);
-		@define('SQL_BOTH', 2);
+		@define('SQL_ASSOC', 1);
+		@define('SQL_NUM', 2);
+		@define('SQL_BOTH', 3);
 	}
 	
 	function flush()
