@@ -225,16 +225,6 @@ class mysql
 		@define('SQL_BOTH', 3);
 	}
 	
-	function flush()
-	{
-		/**
-		 * Empties the result and frees the data from memory.
-		*/
-		
-		if ( is_resource($this->res) )
-			mysql_free_result($this->res);
-	}
-	
 	function query( $query )
 	{
 		/**
@@ -243,17 +233,11 @@ class mysql
 		 * Returns TRUE if the query was successfully executed, FALSE if not.
 		*/
 		
-		$this->flush();
+		$res = @mysql_query($query, $this->link)
+			or print("Query error: " .$query);
 		
-		$this->res = @mysql_query($query, $this->link);
-		
-		if ( !$this->res )
-		{
-			echo "Query error.";
-			return FALSE;
-		} else {
-			return $this->res;
-		}
+		$this->res = $res;
+		return $res;
 	}
 	
 	function fetch_array( $res = NULL, $type = SQL_ASSOC )
@@ -270,7 +254,7 @@ class mysql
 		 * Returns the fetched array or FALSE if failed to fetch.
 		*/
 		
-		if ( isset($res) )
+		if ( isset($res) && is_resource($res) )
 		{
 			return @mysql_fetch_array( $res, $this->_fetch_types[$type] );
 		} else {
@@ -326,7 +310,6 @@ class mysql
 		 * This function closes the database link and readies the class for dereference.
 		*/
 		
-		$this->flush();
 		@mysql_close($this->link);
 	}
 }

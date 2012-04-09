@@ -18,12 +18,13 @@ if ( file_exists("config.php") == 1 )
 
 // Load the requested libraries
 require("includes/functions.php");
+require("includes/module.php");
 require("includes/mysql.php");
 require("includes/template.php");
 require("includes/user.php");
 
 global $template, $sql, $user;
-$template = new template();
+$template = new template;
 $sql = new mysql( $cfg['dbhost'], $cfg['dbuser'], $cfg['dbpass'], $cfg['dbname'] );
 $user = new user(0, FALSE);
 
@@ -58,7 +59,20 @@ print $template->parse_template("header", array(
 	'GLOBAL_TITLE'	=>	config("global_title"),
 	'THEME_NAME'	=>	( $user->get_value("theme") === USER_NO_KEY ? config("theme") : $user->get_value("theme") ) ));
 
+// Generate the left sidebar.
 $template->create_stack("left");
+
+// Load all the modules in align order from the database and then execute them
+$sql->query("SELECT `id`, `module` FROM `modules` WHERE `side`='left' ORDER BY `align` ASC;");
+while ( $module = $sql->fetch_array() )
+	$left_bar[] = $module;
+
+foreach ( $left_bar as &$bar_entry )
+{
+	$current_module = new module($bar_entry['id'], $bar_entry['module']);
+	$current_module->execute();
+	unset($current_module);
+}
 
 function DoFooter()
 {

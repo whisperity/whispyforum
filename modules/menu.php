@@ -25,11 +25,10 @@
  * 		$this:	the reference variable $this always refers to the instance from which the module was called
  * 		$part:	frontend codes can specify a $part variable (-> module::execute()) which helps us to put different
  * 					aspects of a module into one file
+ * 		$data:	along with $part, the frontend can give us data to use here
+ * 					it is advised that we treat $data as an array, however, there is no such restriction in the code
  * 		$ret:	because the module is loaded from a function, the concurrent execution can have a returned value
  * 					which can be further parsed by the frontend
- * 
- * Are global classes like $template, $sql and $user available in this context?
- * 		Yes, the global classes are available here too.
  * 
  * /modules/menu.php
 */
@@ -44,6 +43,12 @@ if ( !isset($this) || !is_object($this) )
 // The $part variable is available from the caller function.
 switch ( $part )
 {
+	// The "general_execute" part conventionally contains the base code which
+	// gets executed when the module is executed by default.
+	case "general_execute":
+		echo "Module executed.";
+		break;
+	
 	// The default $part statement should never contain any direct code.
 	// We return TRUE so that we can check the module is present.
 	case NULL:

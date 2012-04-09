@@ -38,39 +38,31 @@ class module
 		
 		global $sql;
 		
-		// Return error if nothing if specified from which we can specify the module loaded.
 		if ( $mod_id === 0 && $mod_file === NULL )
 		{
 			echo "Error! Unable to load unspecified new module.";
 			return FALSE;
 		}
 		
-		// If the module's ID is not default, figure out the file it is linked to.
-		if ( $mod_id !== 0 ) 
+		if ( $mod_id !== 0 && $mod_file === NULL )
 		{
-			$this->_module_id = $mod_id;
-			
-			$result = $sql->fetch_array(
-				$sql->Query("SELECT `module` FROM `modules` WHERE `id`=" .$sql->escape($mod_id). " LIMIT 1;"),
-				SQL_NUM);
-			
-			$this->_module_file = $result[0];
-			
-			// If we specified a module filename but it is not what is set in the database, return error.
-			if ( $mod_file !== NULL && $mod_file !== $result[0] )
-			{
-				echo "Error! Module #" .$mod_id. " was called with script set to " .$mod_file. " while the database points to " .$result[0]. ".";
-				return FALSE;
-			}
+			echo "Error! Module filename was not specified.";
+			return FALSE;
 		}
 		
-		// If we load a new module and specify a filename, load it.
+		if ( $mod_id !== 0 && $mod_file !== NULL ) 
+		{
+			$this->_module_id = $mod_id;
+			$this->_module_file = $mod_file;
+		}
+		
 		if ( $mod_id === 0 && $mod_file !== NULL )
 			$this->_module_file = $mod_file;
 		
 		if ( !file_exists("modules/" .$this->_module_file. ".php") )
 		{
 			echo "The requested module file " .$this->_module_file. " does not exist.";
+			$this->_module_file = NULL;
 			return FALSE;
 		}
 		
@@ -88,7 +80,7 @@ class module
 		@define('MODCONF_NO_KEY', "requested-key-not-present");
 	}
 	
-	function execute( $part = NULL, $data = NULL )
+	function execute( $part = "general_execute", $data = NULL )
 	{
 		/**
 		 * This function includes the module script with the set $part value.
@@ -97,7 +89,8 @@ class module
 		 * Data can be passed trough using the $data parameter.
 		*/
 		
-		include("modules/" .$this->_module_file. ".php");
+		if ( $this->_module_file !== NULL )
+			include("modules/" .$this->_module_file. ".php");
 		
 		return ( isset($ret) ? $ret : NULL);
 	}
@@ -161,7 +154,7 @@ class module
 		 * Destructor executes at dereference of the object.
 		 * This codeblock saves the modified _modconf keys (_modconf_diff), if any.
 		*/
-		prettyVar($this);
+		
 		global $sql;
 		
 		// If there are no keys to modify, we return FALSE.
