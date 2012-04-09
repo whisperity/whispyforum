@@ -283,13 +283,13 @@ class mysql
 		}
 	}
 	
-	function num_rows()
+	function num_rows( $res = NULL )
 	{
 		/**
 		 * Return the number of rows in the result.
 		*/
 		
-		return @mysql_num_rows($this->res);
+		return @mysql_num_rows( (isset($res) ? $res : $this->res) );
 	}
 	
 	function insert_id()
@@ -308,6 +308,15 @@ class mysql
 		*/
 		
 		return @mysql_real_escape_string($string, $this->link);
+	}
+	
+	function seek( $res = NULL, $row = 0 )
+	{
+		/**
+		 * This function seeks the set $res result (or the internal property) to row number $row
+		*/
+		
+		return @mysql_data_seek( (isset($res) ? $res : $this->res ), $row);
 	}
 	
 	function __destruct()

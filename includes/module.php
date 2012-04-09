@@ -46,7 +46,7 @@ class module
 		}
 		
 		// If the module's ID is not default, figure out the file it is linked to.
-		if ( $mod_id !== 0 )
+		if ( $mod_id !== 0 ) 
 		{
 			$this->_module_id = $mod_id;
 			
@@ -88,15 +88,14 @@ class module
 		@define('MODCONF_NO_KEY', "requested-key-not-present");
 	}
 	
-	function execute( $part = NULL )
+	function execute( $part = NULL, $data = NULL )
 	{
 		/**
 		 * This function includes the module script with the set $part value.
 		 * Different $part values can be used to include multiple execution scenarios into one module file.
+		 * 
+		 * Data can be passed trough using the $data parameter.
 		*/
-		
-		// Include loads the file into the namespace of this function, so we hook all the global classes.
-		global $template, $sql, $user;
 		
 		include("modules/" .$this->_module_file. ".php");
 		
@@ -162,7 +161,7 @@ class module
 		 * Destructor executes at dereference of the object.
 		 * This codeblock saves the modified _modconf keys (_modconf_diff), if any.
 		*/
-		
+		prettyVar($this);
 		global $sql;
 		
 		// If there are no keys to modify, we return FALSE.
