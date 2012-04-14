@@ -507,9 +507,9 @@ class template
 		if ( !isset($stack) )
 			$stack = $this->_get_recent_stack();
 		
-		if ( !array_key_exists($name, $this->_stack) )
+		if ( !array_key_exists($stack, $this->_stack) )
 		{
-			echo "Error! The stack named " .$name. " does not exist.";
+			echo "Error! The stack named " .$stack. " does not exist.";
 			return FALSE;
 		}
 		
