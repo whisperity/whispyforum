@@ -513,7 +513,7 @@ class template
 			return FALSE;
 		}
 		
-		$this->_stack[ $stack ] .= $data;
+		$this->_stack[ $stack ] .= "\n" .$data;
 	}
 	
 	function get_stack( $name = NULL )

@@ -52,15 +52,16 @@ prettyVar($_SESSION, true);
 // print "<h4>Localization</h4>";
 // prettyVar($wf_lang, true);
 /* DEVELOPEMENT */
-
 $template->load_template("framework", TRUE);
 
 print $template->parse_template("header", array(
+	'HEADER'	=>	NULL,
 	'GLOBAL_TITLE'	=>	config("global_title"),
 	'THEME_NAME'	=>	( $user->get_value("theme") === USER_NO_KEY ? config("theme") : $user->get_value("theme") ) ));
 
-// Generate the left sidebar.
+// Create a stack for the left menubar.
 $template->create_stack("left");
+$left_bar = array();
 
 // Load all the modules in align order from the database and then execute them
 $sql->query("SELECT `id`, `module` FROM `modules` WHERE `side`='left' ORDER BY `align` ASC;");
@@ -70,24 +71,59 @@ while ( $module = $sql->fetch_array() )
 foreach ( $left_bar as &$bar_entry )
 {
 	$current_module = new module($bar_entry['id'], $bar_entry['module']);
-	$current_module->execute();
+	$mod_output = $current_module->execute();
+	
+	// Add the module output into the left stack
+	$template->add_to_stack($mod_output, "left");
+	
 	unset($current_module);
 }
 
-function DoFooter()
+// Output the left menubar and set the pointer to the center part.
+print $template->parse_template("left", array(
+	'LEFT'	=>	$template->get_stack("left") ));
+print $template->parse_template("center", NULL);
+
+function footer()
 {
+	/**
+	 * The footer() function generates the footer of the output
+	 * after the frontend code generated the center.
+	*/
+	
 	global $template, $sql, $user;
 	
-	prettyVar($user);
-	prettyVar($sql);
-	prettyVar($template);
+	// Just as we did the left menubar earlier, we do the right menubar.
+	$template->create_stack("right");
+	$right_bar = array();
 	
+	$sql->query("SELECT `id`, `module` FROM `modules` WHERE `side`='right' ORDER BY `align` ASC;");
+	while ( $module = $sql->fetch_array() )
+		$right_bar[] = $module;
+	
+	foreach ( $right_bar as &$bar_entry )
+	{
+		$current_module = new module($bar_entry['id'], $bar_entry['module']);
+		$mod_output = $current_module->execute();
+		
+		// Add the module output into the left stack
+		$template->add_to_stack($mod_output, "right");
+		
+		unset($current_module);
+	}
+	
+	// Outputting the right menubar's template to the browser automatically closes the center cell.
+	print $template->parse_template("right", array(
+		'RIGHT'	=>	$template->get_stack("right") ));
+	
+	// Generate the footer
+	print $template->parse_template("footer", array(
+		'FOOTER'	=>	NULL ));
+	
+	// Unset the global classes and finalize execution
 	unset($user);
 	unset($sql);
 	unset($template);
 	exit;
 }
-
-function dieOnModule() { }
-
 ?>

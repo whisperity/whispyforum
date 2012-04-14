@@ -46,7 +46,29 @@ switch ( $part )
 	// The "general_execute" part conventionally contains the base code which
 	// gets executed when the module is executed by default.
 	case "general_execute":
-		echo "Module executed.";
+		// We need the global sql handler and template conductor
+		global $sql, $template;
+		
+		// We load the template containing the menu
+		$template->load_template("menu", TRUE);
+		
+		// Output an error message if there is module is misconfigured.
+		if ( $this->get_value("menu_id") === MODCONF_NO_KEY )
+		{
+			// $template->parse_template() prepares the template files with replacing the keys we say.
+			// Then, we put the function's output into the $ret variable.
+			$ret = $template->parse_template("menu", array(
+				'HEADER'	=>	"Invalid menu!",
+				'CONTENT'	=>	NULL,
+				'FOOTER'	=>	"Menu ID not present in module configuration."
+			));
+			
+			// $ret will automatically be returned to the frontend at the end of module execution, but
+			// to prevent the normal code (below) executing, we state:
+			return FALSE;
+		}
+		
+		
 		break;
 	
 	// The default $part statement should never contain any direct code.

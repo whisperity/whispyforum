@@ -2,40 +2,41 @@
 <html>
 
 <head>
-<title>{[GLOBAL_TITLE]}</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link rel="stylesheet" type="text/css" href="themes/{[THEME_NAME]}/style.css">
+	<title>{[GLOBAL_TITLE]}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="themes/{[THEME_NAME]}/style.css">
 </head>
 <body>
 
 <div class="headerbox">
+{[HEADER]}
+</div>
 <!--- END header -->
 
 <!--- BEGIN left -->
-</div>
 <table border="0" class="centerdiv">
 <tr>
 <td valign="top" class="left">
+{[LEFT]}
+</td>
 <!--- END left -->
 
 <!--- BEGIN center -->
-</td>
 <td valign="top" class="center">
-<!--- END framework center -->
+<!--- END center -->
 
 <!--- BEGIN right -->
 </td>
 <td valign="top" class="right">
+{[RIGHT]}
+</td>
 <!--- END right -->
 
 <!--- BEGIN footer -->
-</td>
 </tr></table>
 <div class="footerbox">
-<!--- END footer -->
-
-<!--- BEGIN footer_close -->
+{[FOOTER]}
 </div>
 </body>
 </html>
-<!--- END footer_close -->
+<!--- END footer -->
