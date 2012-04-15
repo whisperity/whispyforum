@@ -68,6 +68,36 @@ switch ( $part )
 			return FALSE;
 		}
 		
+		// Load the menu from the database.
+		$sql->query("SELECT `header` FROM `menus` WHERE `id`=" .$sql->escape( $this->get_value("menu_id") ). ";");
+		$header = $sql->fetch_array();
+		
+		if ( $sql->num_rows() === 0 )
+		{
+			echo "Menu ID " .$this->get_value("menu_id"). " does not exist.";
+			return FALSE;
+		} 
+		
+		// Fetch menu subelements from the database.
+		$sql->query("SELECT `label`, `href` FROM `menu_entries` WHERE `menu_id`=" .$sql->escape( $this->get_value("menu_id") ). ";");
+		
+		// Request a randomized token for the menu element stack, then create the stack.
+		$token = token();
+		$template->create_stack("menu_elements#" .$token);
+		
+		// Iterate trough the result.
+		while ( $element = $sql->fetch_array() )
+		{
+			// We add each element to the element list stack
+			$template->add_to_stack( $template->parse_template("menu element", array(
+				'HREF'	=>	$element['href'],
+				'LABEL'	=>	$element['label'] )), "menu_elements#".$token);
+		}
+		
+		$ret = $template->parse_template("menu", array(
+			'HEADER'	=>	$header['header'],
+			'CONTENT'	=>	$template->get_stack("menu_elements#" .$token),
+			'FOOTER'	=>	NULL));
 		
 		break;
 	

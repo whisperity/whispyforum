@@ -468,13 +468,11 @@ switch ($instPos)
 		$dbtables_menu = $Cmysql->Query("CREATE TABLE IF NOT EXISTS menus (
 			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
 			`header` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'menu header',
-			`align` tinyint(2) NOT NULL DEFAULT '0' COMMENT 'sidebar vertical align',
-			`side` enum('left', 'right') NOT NULL DEFAULT 'left' COMMENT 'sidebar choice',
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'menu information'"); // $dbtables_menu sets to true if we succeeded creating a table
 		
 		$dbtables_menu_data = FALSE; // We failed adding the default data first
-		$dbtables_menu_data = $Cmysql->Query("INSERT INTO menus(header, align, side) VALUES ('Main menu', 0, 'left')"); // $dbtables_menu_data sets to true if we succeeded adding default data
+		$dbtables_menu_data = $Cmysql->Query("INSERT INTO menus(header, align, side) VALUES ('Main menu')"); // $dbtables_menu_data sets to true if we succeeded adding default data
 		
 		// We check menus table creation
 		if ( ( $dbtables_menu == FALSE) || ( $dbtables_menu_data == FALSE ) )

@@ -257,3 +257,10 @@ CREATE TABLE IF NOT EXISTS modules (
 	`side` enum('left', 'right') NOT NULL DEFAULT 'left' COMMENT 'sidebar choice',
 	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'module data';
+
+#
+# Revision 841 (added new menu system)
+#
+ALTER TABLE `menus`
+	DROP `align`,
+	DROP `side`;
