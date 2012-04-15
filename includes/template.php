@@ -236,4 +236,153 @@ class template
 		return $this->_stack[ $name ];
 	}
 }
+
+function load_all_templates( $object = NULL, $tpf = TRUE, $tpp = TRUE, $htm = FALSE )
+{
+	/**
+	 * This function loads _every_ template file found installed on the server.
+	 * Because this function creates an exaggerated amount of overhead, using it
+	 * in productional environments is discouraged.
+	 * 
+	 * The function will use the referenced $object object as its template conductor.
+	 * $tpf, $tpp and $htm are boolean values setting whether the function should load such files.
+	*/
+	
+	// Output error if conductor is not referenced.
+	if ( !isset($object) || !is_object($object) )
+	{
+		echo "The referenced object argument is not an object or not present.";
+		return FALSE;
+	}
+	
+	// Store the old basedir and set the current basedir to script install folder.
+	$old_basedir = $object->get_basedir();
+	$object->set_basedir("./");
+	
+	function index_directory( $dir )
+	{
+		/**
+		 * This function reads and enumerates the requested $dir directory, searching for files.
+		 * 
+		 * To understand this function, you need to know that this function executes itself recursively.
+		 * Every execution returns a $names array, which is automatically merged into the "widest" $names,
+		 * and that last $names is returned at the end of the last execution.
+		*/
+		
+		$names = array();
+		
+		// Do not enumerate if we failed to open the directory.
+		if ( is_dir($dir) && is_readable($dir) )
+		{
+			// We go on with every file in the directory.
+			foreach ( scandir($dir) as $file )
+			{
+				// We omit some directories to prevent recursion and errors.
+				if ( !in_array($file, array(".", "..", ".svn")) )
+				{
+					if ( is_dir($dir."/".$file) && is_readable($dir."/".$file) )
+					{
+						// If the current entry is a directory, we read that directory too.
+						// (And we add the returned values of this execution to the $names array.)
+						$names[] = index_directory($dir."/".$file);
+					}
+					
+					if ( is_file($dir."/".$file) && is_readable($dir."/".$file) )
+					{
+						// If the current entry is a file, we check for file extension and add it to the files-to-load list.
+						
+						// Omit .bak and .xxx~ (Windows and Unix-like) backup files.
+						if ( pathinfo($dir."/".$file, PATHINFO_EXTENSION) !== "bak" && substr( pathinfo($dir."/".$file, PATHINFO_EXTENSION), strlen( pathinfo($dir."/".$file, PATHINFO_EXTENSION) ) - 1, 1 ) !== "~" )
+						{
+							$names[] = $dir."/".$file;
+						}
+					}
+				}
+			}
+		} elseif ( !is_dir($dir) || !is_readable($dir) )
+		{
+			echo "The requested directory " .$dir. " could not be opened.";
+			return FALSE;
+		}
+		
+		return $names;
+	}
+	
+	function array_merge_multidimensional( $array = array() )
+	{
+		/**
+		 * This function merges a nested, multidimensional array into one superarray
+		 * The input $array is the initial array, and a result of an array will be returned.
+		*/
+		
+		$return = array();
+		
+		if ( !isset($array) || !is_array($array) )
+			return FALSE;
+		
+		// Go trough the input element-by-element.
+		foreach ( $array as &$element )
+		{
+			if ( is_array($element) )
+			{
+				// If the currently checked element is an array, we call this function recursively.
+				$return = array_merge( $return, array_merge_multidimensional($element) );
+			} elseif ( !is_array($element) )
+			{
+				// If it is not an array, add the element to the return list.
+				$return[] = $element;
+			}
+		}
+		
+		return $return;
+	}
+	
+	$files = array_merge_multidimensional( index_directory(".") );
+	
+	foreach ( $files as &$file )
+	{
+		// Trim the prefixing ./ if present.
+		if ( substr($file, 0, 2 ) === "./" )
+			$file = substr($file, 2, strlen($file));
+		
+		// Load TPF files if requested
+		if ( pathinfo($file, PATHINFO_EXTENSION) === "tpf" && $tpf === TRUE )
+		{
+			$file = substr($file, 0, strpos($file, ".tpf"));
+			$object->load_template($file, FALSE);
+		}
+		
+		// Load TPP files if requested
+		if ( pathinfo($file, PATHINFO_EXTENSION) === "tpp" && $tpp === TRUE )
+		{
+			$file = substr($file, 0, strpos($file, ".tpp"));
+			$object->load_template($file, TRUE);
+		}
+		
+		// Loading the old, deprecated HTM files are a bit more tricky.
+		// The old-fashioned HTM templates were structurally identical to the new TPP multi-template packages,
+		// but each file only contained one template.
+		if ( pathinfo($file, PATHINFO_EXTENSION) === "htm" && $htm === TRUE )
+		{
+			// Set up a temporary path and copy-paste the file into the temporary folder.
+			$tmpdir = ini_get("upload_tmp_dir")."/";
+			$token = token();
+			$tmppath = $tmpdir.$token.".tpp";
+			file_put_contents($tmppath, file_get_contents($file));
+			
+			// With setting the basedir back and forth, we load the temporary file.
+			$object->set_basedir($tmpdir);
+			$object->load_template($token, TRUE);
+			$object->set_basedir("./");
+			
+			// Remove the temporary file.
+			unlink($tmppath);
+		}
+	}
+	
+	// Set the basedir back to the original one
+	$object->set_basedir($old_basedir);
+	
+	
+}
 ?>
