@@ -1,43 +1,20 @@
 <?php
  /**
- * WhispyForum function file - functions.php
- * 
- * General functions library file
- * 
  * WhispyForum
- */
-function generateHexToken()
-{
-	/**
-	* This function generates a hexadecimal token and returns it as a variable
-	* 
-	* Nearly identical to generateHexTokenNoDC, but it does group the output variable in 4 char groups seperated with a double colon.
-	* 
-	* @outputs: a token in this format: 3c43:a968:3f69:3480:32fe:1206:d835
-	*/
-	$token = md5( sha1( time()+rand(0, time()) ) );
-	
-	$tok = substr($token, 0, 4); // First 4 characters
-	for ($i = 5; $i <= 28; $i+=4 ) // Generate the rest with a FOR loop
-	{
-		$tok .= ":" . substr($token, $i, 4); // The rest 4 charaters portions are linked with a :
-	}
-	
-	return $tok;
-}
+ * 
+ * /includes/functions.php
+*/
 
-function generateHexTokenNoDC()
+if ( !defined("WHISPYFORUM") )
+	die("Direct opening.");
+
+function token()
 {
 	/**
-	* This function generates a hexadecimal token and returns it as a variable
-	* 
-	* Nearly identical to generateHexToken, but it does not group the output variable in 4 char groups seperated with a double colon.
-	* 
-	* @outputs: a token in this format: 3c43a9683f69348032fe1206d835
+	 * This function generates a unique 32-character long hexademical token for various purposes.
 	*/
-	$token = md5( sha1( time()+rand(0, time()) ) );
 	
-	return $token;
+	return md5( sha1( time() + rand(0, time()) ) );
 }
 
 function saveThumbnailJPEG($originalImage,$new_height,$filename)

@@ -28,7 +28,11 @@ class mysql
 		/**
 		 * Construction function loads the class and initializes the header of object.
 		 * 
-		 * On initialization, the instance connects to the database with the arguments set.
+		 * On initialization, the instance connects to the database with the arguments set:
+		 * 		dbhost:	database server host (usually 'localhost')
+		 * 		dbuser:	database username
+		 * 		dbpass:	password of user
+		 * 		dpname:	name of the database to use
 		*/
 		
 		// Connect to the host and select the database
