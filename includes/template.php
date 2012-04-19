@@ -381,8 +381,6 @@ function load_all_templates( $object = NULL, $tpf = TRUE, $tpp = TRUE, $htm = FA
 	}
 	
 	// Set the basedir back to the original one
-	$object->set_basedir($old_basedir);
-	
-	
+	$object->set_basedir($old_basedir);	
 }
 ?>

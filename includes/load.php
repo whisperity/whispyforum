@@ -16,8 +16,9 @@ if ( file_exists("config.php") == 1 )
 	die("Missing configuration file.");
 }
 
-// Load the requested libraries
+// Load the required libraries.
 require("includes/functions.php");
+require("includes/language.php");
 require("includes/module.php");
 require("includes/mysql.php");
 require("includes/template.php");
@@ -91,7 +92,7 @@ function footer()
 	 * after the frontend code generated the center.
 	*/
 	
-	global $template, $sql, $user;
+	global $template, $sql, $user, $localization;
 	
 	// Just as we did the left menubar earlier, we do the right menubar.
 	$template->create_stack("right");
@@ -119,6 +120,8 @@ function footer()
 	// Generate the footer
 	print $template->parse_template("footer", array(
 		'FOOTER'	=>	NULL ));
+	
+	prettyVar($localization);
 	
 	// Unset the global classes and finalize execution
 	unset($user);
