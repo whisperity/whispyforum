@@ -358,6 +358,8 @@ function ambox($type, $body = NULL, $title = NULL, $image = NULL, $image_alt = N
 	 * This function generates a template message box from
 	 * the parameters. $type can be CRITICAL, ERROR, WARNING, INFO or SUCCESS.
 	 * 
+	 * The parsed HTML template is returned as a string.
+	 * 
 	 * Easter egg: amBox (http://en.wikipedia.org/wiki/Template:Ambox) is the all-purpose pseudotemplate of Wikipedia :)
 	*/
 	

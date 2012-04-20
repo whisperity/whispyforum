@@ -50,6 +50,10 @@ class template
 	// This array contains the current output string.
 	private $_output = NULL;
 	
+	// $_replace_archive contain the already replaced keys with the replace values.
+	// This allows to cache the commonly used keys like 'THEME_NAME'.
+	private $_replace_archive = array();
+	
 	function set_basedir( $basedir )
 	{
 		/**
@@ -131,11 +135,17 @@ class template
 		
 		$this->_output = $this->_templates[ $template ];
 		
+		// We load the already changed keys from the archive.
+		// Because the current $replace parameter is the second one,
+		// the current replace array will dominate over already-existing keys in the archive.
+		$replace = array_merge( $this->_replace_archive, ( is_array($replace) ? $replace : array() ) );
+		
 		if ( is_array($replace) )
 		{
 			foreach ( $replace as $k => $v )
 			{
 				$this->_output = str_replace( "{[" .$k ."]}", $v, $this->_output);
+				$this->_replace_archive[$k] = $v;
 			}
 		}
 		
