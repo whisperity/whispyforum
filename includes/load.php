@@ -2,16 +2,28 @@
 /**
  * WhispyForum
  * 
+ * Framework loader for the environment of WhispyForum.
+ * 
+ * How to load the environment from a frontend script?
+ * 		Just call require("includes/load.php"); and the framework will be loaded.
+ * 
  * /includes/load.php
 */
+
+// Scripts can load in normal or safe mode.
+// To do it, you have to state
+// define('REQUIRE_SAFEMODE', TRUE);
+// BEFORE including load.php in the source of your frontent script.
+if ( !defined('REQUIRE_SAFEMODE') )
+	define('REQUIRE_SAFEMODE', FALSE);
 
 // Define that the system is loaded.
 define('WHISPYFORUM', TRUE);
 
-if ( file_exists("config.php") == 1 ) 
+if ( file_exists("config.php") === TRUE ) 
 {
 	require("config.php");
-} elseif ( file_exists("config.php") == 0 )
+} elseif ( file_exists("config.php") === FALSE )
 {
 	die("Missing configuration file.");
 }
@@ -26,7 +38,7 @@ require("includes/user.php");
 
 global $template, $sql, $user;
 $template = new template;
-$sql = new mysql( $cfg['dbhost'], $cfg['dbuser'], $cfg['dbpass'], $cfg['dbname'] );
+$sql = new mysql( @$cfg['dbhost'], @$cfg['dbuser'], @$cfg['dbpass'], @$cfg['dbname'] );
 $user = new user(0, FALSE);
 
 /* DEVELOPEMENT */
@@ -64,17 +76,20 @@ print $template->parse_template("header", array(
 $template->create_stack("left");
 $left_bar = array();
 
-// Load all the modules in align order from the database and then execute them
+// Load all the modules in align order from the database and then execute them.
 $sql->query("SELECT `id`, `module` FROM `modules` WHERE `side`='left' ORDER BY `align` ASC;");
 while ( $module = $sql->fetch_array() )
 	$left_bar[] = $module;
+
+if ( REQUIRE_SAFEMODE )
+	$left_bar = array();
 
 foreach ( $left_bar as &$bar_entry )
 {
 	$current_module = new module($bar_entry['id'], $bar_entry['module']);
 	$mod_output = $current_module->execute();
 	
-	// Add the module output into the left stack
+	// Add the module output into the left stack.
 	$template->add_to_stack($mod_output, "left");
 	
 	unset($current_module);
@@ -82,7 +97,7 @@ foreach ( $left_bar as &$bar_entry )
 
 // Output the left menubar and set the pointer to the center part.
 print $template->parse_template("left", array(
-	'LEFT'	=>	$template->get_stack("left") ));
+	'LEFT'	=>	( !REQUIRE_SAFEMODE ? $template->get_stack("left") : NULL ) ));
 print $template->parse_template("center", NULL);
 
 function footer()
@@ -102,12 +117,15 @@ function footer()
 	while ( $module = $sql->fetch_array() )
 		$right_bar[] = $module;
 	
+	if ( REQUIRE_SAFEMODE )
+		$right_bar = array();
+	
 	foreach ( $right_bar as &$bar_entry )
 	{
 		$current_module = new module($bar_entry['id'], $bar_entry['module']);
 		$mod_output = $current_module->execute();
 		
-		// Add the module output into the left stack
+		// Add the module output into the left stack.
 		$template->add_to_stack($mod_output, "right");
 		
 		unset($current_module);
@@ -115,18 +133,21 @@ function footer()
 	
 	// Outputting the right menubar's template to the browser automatically closes the center cell.
 	print $template->parse_template("right", array(
-		'RIGHT'	=>	$template->get_stack("right") ));
+		'RIGHT'	=>	( !REQUIRE_SAFEMODE ? $template->get_stack("right") : NULL ) ));
 	
-	// Generate the footer
+	// Generate the footer.
 	print $template->parse_template("footer", array(
 		'FOOTER'	=>	NULL ));
 	
 	prettyVar($localization);
-	
-	// Unset the global classes and finalize execution
+	// Unset the global classes and finalize execution.
 	unset($user);
 	unset($sql);
 	unset($template);
+	unset($localization);
 	exit;
 }
+
+// Footer will always be executed when shutting down.
+register_shutdown_function('footer');
 ?>
