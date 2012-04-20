@@ -38,6 +38,7 @@ class module
 		
 		global $sql;
 		
+		// Set up module ID and module filename.
 		if ( $mod_id === 0 && $mod_file === NULL )
 		{
 			echo "Error! Unable to load unspecified new module.";
@@ -71,6 +72,10 @@ class module
 		{
 			$result = $sql->query("SELECT `extra_data` FROM `modules` WHERE `id`=" .$sql->escape($mod_id). " LIMIT 1;");
 			$data = $sql->fetch_array($result, SQL_NUM);
+			
+			// If there is no extra data, we create an empty array.
+			if ( !is_array( @unserialize($data[0]) ) )
+				$data[0] = serialize( array() );
 			
 			foreach ( unserialize($data[0]) as $k => $v )
 				$this->_modconf[$k] = $v;
