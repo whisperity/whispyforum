@@ -226,10 +226,13 @@ function fDate($date = "current")
 function config( $variable )
 {
 	/**
-	* This function returns the value of $variable in the config table.
+	 * This function returns the value of $variable from the config table.
 	*/
 	
 	global $sql;
+	
+	if ( !is_object($sql) )
+		return FALSE;
 	
 	$result = $sql->fetch_array($sql->query("SELECT value FROM config WHERE variable='" .$sql->escape($variable). "'"), SQL_NUM);
 	

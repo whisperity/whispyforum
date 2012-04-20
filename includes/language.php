@@ -13,7 +13,7 @@ global $localization;
 if ( !isset($localization) || !is_array($localization) )
 	$localization = array();
 
-function load_lang( $basedir, $file )
+function load_lang( $file, $basedir = NULL )
 {
 	/**
 	 * This function loads the $file file from $basedir folder from the hard disk to the memory.
@@ -22,6 +22,19 @@ function load_lang( $basedir, $file )
 	 * It means that if two loaded localization files set a value for the same key,
 	 * the value stated, the value used will be the one stated in the last loaded file.
 	*/
+	
+	global $user;
+	
+	// If there is no basedir set, we set up a default one: either the user's preference or the default config from the database.
+	if ( !isset($basedir) )
+	{
+		$basedir = ( ( is_object($user) && $user->get_value("language") != USER_NO_KEY ) ? $user->get_value("language") : config("language") );
+		
+		// If we were unable to fetch the personal/global preference, we set the defualt "english" one.
+		// This can be the case if we are loading the core/boot localizations when the system is not yet loaded.
+		if ( !$basedir )
+			$basedir = "english";
+	}
 	
 	if ( !file_exists("language/".$basedir."/".$file.".php") )
 	{
