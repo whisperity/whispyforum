@@ -90,7 +90,7 @@ class user
 			$this->_setup_session();
 		} elseif ( $_SESSION['id'] > 0  )
 		{
-			$cl_side = $this->_check_slient();
+			$cl_side = $this->_check_client();
 			$sv_side = $this->_db_auth_user();
 			
 			// If both checks confirm that the session is valid, request
@@ -101,6 +101,16 @@ class user
 				$this->current = TRUE;
 				
 				$this->_extract_data();
+			}
+			
+			if ( $cl_side === FALSE )
+			{
+				echo "Error validating session information of client.";
+			}
+			
+			if ( $sv_side === FALSE )
+			{
+				echo "User authentication failure.";
 			}
 		}
 	}
@@ -117,7 +127,8 @@ class user
 			'password'	=>	NULL,
 			'ip'	=>	sha1($_SERVER['REMOTE_ADDR']),
 			'sessid'	=>	session_id(),
-			'user_agent'	=>	sha1($_SERVER['HTTP_USER_AGENT'])
+			'user_agent'	=>	sha1($_SERVER['HTTP_USER_AGENT']),
+			'site_uuid'	=>	UNIQUETOKEN
 		);
 	}
 	
@@ -131,9 +142,10 @@ class user
 		 * Otherwise, FALSE is returned.
 		*/
 		
-		if ( $_SESSION['ip'] === sha1($_SERVER['REMOTE_ADDR']) &&
-			 $_SESSION['user_agent'] === sha1($_SERVER['HTTP_USER_AGENT']) &&
-			 $_SESSION['sessid'] === $_COOKIE[session_name()]
+		if ( @$_SESSION['ip'] === sha1($_SERVER['REMOTE_ADDR']) &&
+			 @$_SESSION['user_agent'] === sha1($_SERVER['HTTP_USER_AGENT']) &&
+			 @$_SESSION['sessid'] === $_COOKIE[session_name()] &&
+			 @$_SESSION['site_uuid'] === UNIQUETOKEN
 			)
 		{
 			$res = 1;
@@ -157,9 +169,9 @@ class user
 		global $sql;
 		
 		$sql->query("SELECT id FROM `users` WHERE 
-			`id`=" .$sql->escape($_SESSION['id']). " AND
-			`username`='" .$sql->escape($_SESSION['username']). "' AND
-			`pwd`='" .$sql->escape($_SESSION['password']). "';");
+			`id`=" .$sql->escape(@$_SESSION['id']). " AND
+			`username`='" .$sql->escape(@$_SESSION['username']). "' AND
+			`pwd`='" .$sql->escape(@$_SESSION['password']). "';");
 		
 		return ( $sql->num_rows() === 1 ? TRUE : FALSE );
 	}
