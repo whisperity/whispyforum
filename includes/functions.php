@@ -366,7 +366,7 @@ function ambox($type, $body = NULL, $title = NULL, $image = NULL, $image_alt = N
 	global $template;
 	
 	return $template->parse_template("ambox", array(
-		'TYPE'	=>	strtolower($types),
+		'TYPE'	=>	strtolower($type),
 		'TITLE'	=>	$title,
 		'BODY'	=>	$body,
 		'IMAGE'	=>	$image,
