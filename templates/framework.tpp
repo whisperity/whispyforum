@@ -40,3 +40,15 @@
 </body>
 </html>
 <!--- END footer -->
+
+<!--- BEGIN ambox -->
+<table class="ambox" id="ambox-{[TYPE]}">
+<tr>
+	<td rowspan="2"><img src="themes/{[THEME_NAME]}/{[IMAGE]}" alt="{[IMAGE_ALT]}"></td>
+	<td class="title">{[TITLE]}</td>
+</tr>
+<tr>
+	<td class="body">{[BODY]}</td>
+</tr>
+</table>
+<!--- END ambox -->

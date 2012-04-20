@@ -352,76 +352,23 @@ function sendTemplateMail($address, $subject, $template_name, $variable_array)
 	mail($address, $subject, $message, $headers);
 }
 
-function ambox($type, $body = NULL, $title = NULL)
+function ambox($type, $body = NULL, $title = NULL, $image = NULL, $image_alt = NULL)
 {
 	/**
-	* This function generates a template error/message/success box from
-	* the parameters.
-	* 
-	* Easter egg: amBox (http://en.wikipedia.org/wiki/Template:Ambox) is the all-purpose pseudotemplate of Wikipedia :)
-	* @inputs: $type - box type: ERROR, MESSAGE, SUCCESS, SYSFAIL/HALT, DEVELOPER (red, orange, green, orange (with special picture))
-	* 	   $body - message body
-	* 	   $title - box header
+	 * This function generates a template message box from
+	 * the parameters. $type can be CRITICAL, ERROR, WARNING, INFO or SUCCESS.
+	 * 
+	 * Easter egg: amBox (http://en.wikipedia.org/wiki/Template:Ambox) is the all-purpose pseudotemplate of Wikipedia :)
 	*/
 	
-	// Hook the template conductor
-	global $Ctemplate;
+	global $template;
 	
-	// Based on the type, fetch the box
-	switch ( strtoupper($type) )
-	{
-		case "ERROR":
-			$template = "errormessage";
-			$alt = "{LANG_ERROR_EXCLAMATION}";
-			$picture = "Nuvola_apps_error.png";
-			
-			break;
-		case "MESSAGE":
-			$template = "messagebox";
-			$alt = "Message";
-			$picture = "Nuvola_apps_terminal.png";
-			
-			break;
-		case "SUCCESS":
-			$template = "successbox";
-			$alt = "{LANG_SUCCESS_EXCLAMATION}";
-			$picture = "Nuvola_apps_korganizer.png";
-			
-			break;
-		case "DEVELOPER":
-			$template = "messagebox";
-			$alt = "Under development";
-			$picture = "Nuvola_mimetypes_deb.png";
-			
-			$title = "This module is under development.";
-			$body = "Please do not use this module in production!";
-			
-			break;
-		case "SYSFAIL":
-		case "HALT":
-			$template = "errormessage";
-			$alt = "{LANG_ERROR_EXCLAMATION}";
-			$picture = "Stop_hand.png";
-			
-			break;
-		default:
-			$template = "errormessage";
-			$alt = "{LANG_MISSING_PARAMETERS}";
-			$picture = "Stop_hand.png";
-			
-			$title = "{LANG_MISSING_PARAMETERS}";
-			$body = "{LANG_MISSING_PARAMETERS_BODY}. Invalid AmBox type.";
-			
-			break;
-	}
-	
-	// Output the box on the screen
-	$Ctemplate->useTemplate($template, array(
+	return $template->parse_template("ambox", array(
+		'TYPE'	=>	strtolower($types),
 		'TITLE'	=>	$title,
 		'BODY'	=>	$body,
-		'ALT'	=>	$alt,
-		'PICTURE_NAME'	=>	$picture
-	), FALSE);
+		'IMAGE'	=>	$image,
+		'IMAGE_ALT'	=>	$image_alt) );
 }
 
 function selfURL()

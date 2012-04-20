@@ -106,78 +106,45 @@ span.form-header {
 
 /* Forms */
 
-/* Error message box template */
-table.errorbox {
+table.ambox {
 	font-weight: bold;
-	color: Maroon;
-	background-color: #FFC0C0;
-	border: 1px solid maroon;
 	padding: 3px;
+	border: 1px solid #565656;
+	background-color: white;
 	line-height: 125%;
 	margin: 1em auto;
 }
 
-td.errortitle {
+table.ambox td.title {
 	font-family: MS Sans Serif;
 	font-size: 14pt;
 	text-decoration: underline;
 	font-weight: bold;
 }
 
-td.errorpicture {
+table.ambox td.body {
+	padding: 2px;
 }
 
-td.errorbody {
-}
-/* Error message box template */
-
-/* General message box template */
-table.messagebox {
-	font-weight: bold;
-	color: DarkOrange;
-	background-color: #FFFFC0;
-	border: 1px solid orange;
-	padding: 3px;
-	line-height: 125%;
-	margin: 1em auto;
+#ambox-critical {
+	border-left: 10px solid #b22222;
 }
 
-td.messagetitle {
-	font-family: MS Sans Serif;
-	font-size: 14pt;
-	text-decoration: underline;
-	font-weight: bold;
+#ambox-error {
+	border-left: 10px solid #f28500;
 }
 
-td.messagepicture {
+#ambox-warning {
+	border-left: 10px solid #f4c430;
 }
 
-td.messagebody {
-}
-/* General message box template */
-
-/* Success message box template (nearly identical to errorbox) */
-table.successbox { 
-	font-weight: bold;
-	color: DarkGreen;
-	background-color: #C0FFC0;
-	border: 1px solid darkgreen;
-	padding: 3px;
-	line-height: 125%;
-	margin: 1em auto;
-}
-	
-td.successtitle {
-	font-family: MS Sans Serif;
-	font-size: 14pt;
-	text-decoration: underline;
-	font-weight: bold;
+#ambox-info {
+	border-left: 10px solid #3399ff;
 }
 
-td.successpicture {}
-
-td.successbody {}
-/* Success message box template (nearly identical to errorbox) */
+#ambox-success {
+	border-left: 10px solid #228b22;
+}
 
 /* Install */
 table.install-header {
