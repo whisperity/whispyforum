@@ -46,10 +46,10 @@ switch ( $part )
 	// The "general_execute" part conventionally contains the base code which
 	// gets executed when the module is executed by default.
 	case "general_execute":
-		// We need the global sql handler and template conductor
+		// We need the global sql handler and template conductor.
 		global $sql, $template;
 		
-		// We load the template containing the menu
+		// We load the template containing the menu.
 		$template->load_template("menu", TRUE);
 		
 		// Output an error message if there is module is misconfigured.
@@ -85,7 +85,6 @@ switch ( $part )
 		$token = token();
 		$template->create_stack("menu_elements#" .$token);
 		
-		// Iterate trough the result.
 		while ( $element = $sql->fetch_array() )
 		{
 			// We add each element to the element list stack
@@ -98,6 +97,8 @@ switch ( $part )
 			'HEADER'	=>	$header['header'],
 			'CONTENT'	=>	$template->get_stack("menu_elements#" .$token),
 			'FOOTER'	=>	NULL));
+		
+		$template->delete_stack("menu_elements#" .$token);
 		
 		break;
 	
