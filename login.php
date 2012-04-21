@@ -9,13 +9,18 @@
 define('REQUIRE_SAFEMODE', TRUE);
 require("includes/load.php");
 
-$template->load_template("userbox", TRUE);
-
 if ( $_SESSION['id'] !== 0 && $user->userid !== 0 )
-	print ambox('ERROR', lang_key("LOGIN ALREADY"), NULL, "Nuvola_apps_kgpg.png", NULL);
+	exit( ambox('ERROR', lang_key("LOGIN ALREADY"), NULL, "Nuvola_apps_kgpg.png", NULL) );
 
 if ( count($_POST) === 0 )
-	exit( ambox('CRITICAL', lang_key("DIRECT"), lang_key("DIRECT TITLE"), "Nuvola_apps_terminal.png", NULL) );
+{
+	// Load a template of the login box module and execute the direct open part.
+	// It will generate us a login box.
+	
+	$loginbox = new module(0, "userbox");
+	echo $loginbox->execute("login direct open");
+	exit;
+}
 
 if ( @$_POST['user_loginname'] === "" || @$_POST['user_password'] === "" )
 {
@@ -26,6 +31,7 @@ if ( @$_POST['user_loginname'] === "" || @$_POST['user_password'] === "" )
 			'LINK'	=>	@$_POST['returnto']
 		) )
 	) );
+	exit();
 }
 
 if ( @$_POST['user_loginname'] !== "" && @$_POST['user_password'] !== "" )
@@ -69,5 +75,7 @@ if ( @$_POST['user_loginname'] !== "" && @$_POST['user_password'] !== "" )
 			) );
 		}
 	}
+	
+	exit;
 }
 ?>
