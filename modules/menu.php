@@ -58,9 +58,9 @@ switch ( $part )
 			// $template->parse_template() prepares the template files with replacing the keys we say.
 			// Then, we put the function's output into the $ret variable.
 			$ret = $template->parse_template("menu", array(
-				'HEADER'	=>	"Invalid menu!",
+				'HEADER'	=>	lang("MENU INVALID"),
 				'CONTENT'	=>	NULL,
-				'FOOTER'	=>	"Menu ID not present in module configuration."
+				'FOOTER'	=>	lang_key("MENU NO ID")
 			));
 			
 			// $ret will automatically be returned to the frontend at the end of module execution, but
@@ -74,7 +74,11 @@ switch ( $part )
 		
 		if ( $sql->num_rows() === 0 )
 		{
-			echo "Menu ID " .$this->get_value("menu_id"). " does not exist.";
+			$ret = $template->parse_template("menu", array(
+				'HEADER'	=>	lang_key("MENU INVALID"),
+				'CONTENT'	=>	NULL,
+				'FOOTER'	=>	lang_key("MENU WRONG ID", array('ID'	=>	$this->get_value("menu_id")) )
+			));
 			return FALSE;
 		} 
 		

@@ -47,9 +47,15 @@ $localized = array(
 		
 	'DIRECT TITLE'	=>	"Direct opening",
 	'DIRECT'	=>	"This page does not support direct opening.",
+	
 	'REDIRECT'	=>	'You are being redirected. If your browser does not support redirection, click <a href="{LINK}">here</a>.',
+	
 	'USERNAME'	=>	"Username",
 	'PASSWORD'	=>	"Password",
+	
+	'MENU INVALID'	=>	"Invalid menu!",
+	'MENU WRONG ID'	=>	"The module is configured to show menu ID #{ID}, but such menu does not exist.",
+	'MENU NO ID'	=>	"The module is not configured properly.",
 	
 	'USERBOX NOT FOUND'	=>	"Your module list does not contain a userbox.\nA userbox was added to the list of appearing modules to prevent locking yourself out from the system.",
 	'USERBOX LOGIN'	=>	"Login",
