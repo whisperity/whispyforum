@@ -23,6 +23,19 @@
 // The array to be loaded is called $localized.
 // It is merged into the global $localization array by load_lang().
 $localized = array(
+	'DIRECT TITLE'	=>	"Direct opening",
+	'DIRECT'	=>	"This page does not support direct opening.",
+	'REDIRECT'	=>	'You are being redirected. If your browser does not support redirection, click <a href="{LINK}">here</a>.',
+	'USERNAME'	=>	"Username",
+	'PASSWORD'	=>	"Password",
 	
+	'USERBOX LOGIN'	=>	"Login",
+	'USERBOX REGISTER'	=>	"Register",
+	'USERBOX RECOVER'	=>	"Lost password",
+	'LOGIN EMPTY'	=>	"The username or password field was left empty.",
+	'LOGIN ALREADY'	=>	"You are already logged in.",
+	'LOGIN AUTH FAIL'	=>	"The username or password you supported is invalid, or your user does not exist.",
+	'LOGIN NOT ACTIVATED'	=>	"You account is not activated. Please check your e-mail inbox and activate your account before using it.",
+	'LOGIN SUCCESS'	=>	"You have successfully logged in. Welcome!",
 );
 ?>

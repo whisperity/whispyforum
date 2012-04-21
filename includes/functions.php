@@ -242,12 +242,11 @@ function config( $variable )
 function prettyVar($variable = NULL, $output = TRUE)
 {
 	/**
-	* This function returns the var_export($variable) output
-	* in both machine and human readable format
-	* 
-	* @inputs: $variable - name of the variable
-	* 		   $output - if false, won't print the output of prettyVar automatically
-	* @outputs: formatted text
+	 * This function returns the var_export($variable) output
+	 * in both machine and human readable format.
+	 * 
+	 * If $output is TRUE, the output is printed to the screen (default).
+	 * If FALSE, it is returned.
 	*/
 	
 	$return_value = str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($variable,true))."<br>";
@@ -261,71 +260,6 @@ function prettyVar($variable = NULL, $output = TRUE)
 		return $return_value;
 	}
 }
-
-/*function createArray($variable = NULL)
-{
-	/**
-	* This function creates an array from a prettyVar()-formatted string.
-	* 
-	* @inputs: $variable - variable contents
-	* @outputs: created array
-	*/
-	
-	/**
-	* Current errors:
-	*  This function cannot properly handle boolean variables.
-	* 
-	* Action taken: disabling.
-	*/
-	
-	/*// Immediately terminate execution because function still needs developing
-	return '<span style="color: red; font-weight: bold;">The function <i>createArray()</i> should not be used as it is malfunctioning.</span>';
-	die("Terminated, disabled function was called.");
-	
-	// Remove the prettyVar-formatting, this will remove the HTML tags
-	$variable = str_replace(array("<br>","&nbsp;"), array("\n"," "), $variable);
-	
-	// First, truncate the header "array (" line and the footer ")\n" line
-	$variable = str_replace(array("array (",")\n"), NULL, $variable);
-	
-	// Cut the remaining text into an array, containing each line
-	$elements = explode(",\n", $variable);
-	
-	// Declare the array under construction
-	$return_array = array();
-	
-	foreach ( $elements as &$line )
-	{
-		// Going through all lines, build the array
-		
-		// If the currently processed element is not empty (in normal cases, the footer appends a single NULL string), process it further
-		if ( $line != "" )
-		{
-			// The $line variable looks like this:
-			// 'key' => 'value'
-			
-			// We first need to further explode() the $line to fetch both the variable and the value
-			$line_exploded = explode("=>", $line);
-			
-			// $line_exploded is now an array, containing two keys:
-			// $line_exploded[0] is the original key
-			// $line_exploded[1] is the original value
-			
-			// Trim whitespaces of both
-			$line_exploded[0] = trim($line_exploded[0]);
-			$line_exploded[1] = trim($line_exploded[1]);
-			
-			// Remove any unwanted ' character from both
-			$line_exploded[0] = str_replace("'", NULL, $line_exploded[0]);
-			$line_exploded[1] = str_replace("'", NULL, $line_exploded[1]);
-			
-			// Put the fetched variable and value into the array
-			$return_array[$line_exploded[0]] = $line_exploded[1];
-		}
-	}
-	
-	return $return_array;
-}*/
 
 function sendTemplateMail($address, $subject, $template_name, $variable_array)
 {
@@ -375,9 +309,8 @@ function ambox($type, $body = NULL, $title = NULL, $image = NULL, $image_alt = N
 
 function selfURL()
 {
-	/* This function generates the full URL of the current request.
-	 *
-	 * Useful for return URL generation.
+	/**
+	 * This function generates the full URL of the current request.
 	*/
 	
 	// Define whether HTTPS (secure HTTP) is on

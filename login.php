@@ -1,85 +1,73 @@
 <?php
- /**
- * WhispyForum script file - login page
- * 
- * Page using the user class to do logins
- * 
+/**
  * WhispyForum
- */
+ * 
+ * User login transition page. 
+ * 
+ * /login.php
+*/
+define('REQUIRE_SAFEMODE', TRUE);
+require("includes/load.php");
 
-include("includes/safeload.php"); // We load the environment without framework
+$template->load_template("userbox", TRUE);
 
-if ( $_POST == NULL )
+if ( $_SESSION['id'] !== 0 && $user->userid !== 0 )
+	print ambox('ERROR', lang_key("LOGIN ALREADY"), NULL, "Nuvola_apps_kgpg.png", NULL);
+
+if ( count($_POST) === 0 )
+	exit( ambox('CRITICAL', lang_key("DIRECT"), lang_key("DIRECT TITLE"), "Nuvola_apps_terminal.png", NULL) );
+
+if ( @$_POST['user_loginname'] === "" || @$_POST['user_password'] === "" )
 {
-	// If POST array is null (direct opening the page)
-	// we give error
-	$Ctemplate->useStaticTemplate("user/login_err_nopost", FALSE);
-	
-	exit; // We terminate the script
+	print ambox('CRITICAL', lang_key("LOGIN EMPTY"), NULL, "Nuvola_apps_terminal.png", NULL);
+	print $template->parse_template("redirect", array(
+		'RETURNTO'	=>	@$_POST['returnto'],
+		'REDIRECT'	=>	lang_key("REDIRECT", array(
+			'LINK'	=>	@$_POST['returnto']
+		) )
+	) );
 }
 
-if ( $_POST['returnto'] == NULL )
+if ( @$_POST['user_loginname'] !== "" && @$_POST['user_password'] !== "" )
 {
-	// We can have errors with unentered variables
-	// if the script redirects the user to the login page
-	// without giving any POST causing annoying and unnecessary redirections
-	$returnURI = "index.php"; // Return URI is the homepage
-} else {
-	$returnURI = $_POST['returnto']; // Return URI is the original return page
-}
-
-if ( $_POST['user_loginname'] == NULL )
-{
-	// If user wants to login without username
-	// give error message
+	$sql->query("SELECT `id`, `activated` FROM `users` WHERE `username`='" .$sql->escape($_POST['user_loginname']). "' AND `pwd`='" .$sql->escape($_POST['user_password']). "' LIMIT 1;");
 	
-	$Ctemplate->useTemplate("user/login_err_novalue", array(
-		'RETURN_TO_URL'	=>	$returnURI, // Return URI
-		'VARIABLE_HEADER'	=>	"{LANG_USERNAME}", // Unentered variable (uppercase)
-		'VARIABLE_BODY'	=>	"{LANG_USERNAME_LOWERCASE}" // Unentered variable (lowercase)
-	), FALSE);
-	
-	exit; // We terminate the script
+	if ( $sql->num_rows() === 0 )
+	{
+		print ambox('ERROR', lang_key("LOGIN AUTH FAIL"), NULL, "Nuvola_apps_kgpg.png", NULL);
+		print $template->parse_template("redirect", array(
+			'RETURNTO'	=>	@$_POST['returnto'],
+			'REDIRECT'	=>	lang_key("REDIRECT", array(
+				'LINK'	=>	@$_POST['returnto']
+			) )
+		) );
+	} elseif ( $sql->num_rows() === 1 )
+	{
+		$row = $sql->fetch_array();
+		
+		if ( $row['activated'] === "0" )
+		{
+			print ambox('WARNING', lang_key("LOGIN NOT ACTIVATED"), NULL, "Nuvola_apps_kgpg.png", NULL);
+			print $template->parse_template("redirect", array(
+				'RETURNTO'	=>	@$_POST['returnto'],
+				'REDIRECT'	=>	lang_key("REDIRECT", array(
+					'LINK'	=>	@$_POST['returnto']
+				) )
+			) );
+		} elseif ( $row['activated'] === "1" )
+		{
+			$_SESSION['id'] = $row['id'];
+			$_SESSION['username'] = $_POST['user_loginname'];
+			$_SESSION['password'] = $_POST['user_password'];
+			
+			print ambox('SUCCESS', lang_key("LOGIN SUCCESS"), NULL, "Nuvola_apps_kgpg.png", NULL);
+			print $template->parse_template("redirect", array(
+				'RETURNTO'	=>	@$_POST['returnto'],
+				'REDIRECT'	=>	lang_key("REDIRECT", array(
+					'LINK'	=>	@$_POST['returnto']
+				) )
+			) );
+		}
+	}
 }
-
-if ( $_POST['user_password'] == NULL )
-{
-	// If user wants to login without entering password
-	// give error message
-	
-	$Ctemplate->useTemplate("user/login_err_novalue", array(
-		'RETURN_TO_URL'	=>	$returnURI, // Return URI
-		'VARIABLE_HEADER'	=>	"{LANG_PASSWORD}", // Unentered variable (uppercase)
-		'VARIABLE_BODY'	=>	"{LANG_PASSWORD_LOWERCASE}" // Unentered variable (lowercase)
-	), FALSE);
-	
-	exit; // We terminate the script
-}
-
-$logsuccess = $Cusers->Login($_POST['user_loginname'], $_POST['user_password']); // We call the login function.
-
-// $logsuccess is TRUE if the user successfully logged in
-// $logsuccess is FALSE if there were errors during login
-
-if ( $logsuccess === FALSE )
-{
-	// We output an error message
-	$Ctemplate->useTemplate("user/login_error", array(
-		'RETURN_TO_URL'	=>	$returnURI // Return URI
-	), FALSE);
-} elseif ( $logsuccess === "activate" )
-{
-	// If the user is not activated
-	$Ctemplate->useTemplate("user/login_error_activate", array(
-		'RETURN_TO_URL'	=>	$returnURI // Return URI
-	), FALSE); // Output specific error message
-} elseif ( $logsuccess === TRUE )
-{
-	// We give success
-	$Ctemplate->useTemplate("user/login_success", array(
-		'RETURN_TO_URL'	=>	$returnURI // Return URI
-	), FALSE);
-}
-
-DoFooter();
 ?>

@@ -41,6 +41,11 @@
 </html>
 <!--- END footer -->
 
+<!--- BEGIN redirect -->
+<meta http-equiv="refresh" content="3; url={[RETURNTO]}">
+{[REDIRECT]}
+<!--- END redirect -->
+
 <!--- BEGIN ambox -->
 <table class="ambox" id="ambox-{[TYPE]}">
 <tr>

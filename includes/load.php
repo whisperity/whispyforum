@@ -41,6 +41,9 @@ $template = new template;
 $sql = new mysql( @$cfg['dbhost'], @$cfg['dbuser'], @$cfg['dbpass'], @$cfg['dbname'] );
 $user = new user(0, FALSE);
 
+// Load the core localization.
+load_lang("core");
+
 /* DEVELOPEMENT */
 // PH, workaround: output HTTP POST and GET arrays
 print "<h4>GET</h4>";
@@ -75,6 +78,15 @@ print $template->parse_template("header", array(
 // Create a stack for the left menubar.
 $template->create_stack("left");
 $left_bar = array();
+
+// Check whether there is a userbox module somewhere in the module table.
+// If there isn't, we forcedly load such module (to prevent locking out users) to the top of the left menubar.
+$sql->query("SELECT `id` FROM `modules` WHERE `module`='userbox';");
+if ( $sql->num_rows() === 0 )
+{
+	echo "There is no userbox found. Added forced userbox to prevent lockout.";
+	$left_bar[] = array('id'	=>	0,	'module'	=>	'userbox');
+}
 
 // Load all the modules in align order from the database and then execute them.
 $sql->query("SELECT `id`, `module` FROM `modules` WHERE `side`='left' ORDER BY `align` ASC;");
@@ -139,6 +151,9 @@ function footer()
 	print $template->parse_template("footer", array(
 		'FOOTER'	=>	NULL ));
 	
+	prettyVar($user);
+	prettyVar($sql);
+	prettyVar($template);
 	prettyVar($localization);
 	// Unset the global classes and finalize execution.
 	unset($user);
