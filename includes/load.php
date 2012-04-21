@@ -38,11 +38,10 @@ require("includes/user.php");
 
 global $template, $sql, $user;
 $template = new template;
+load_lang("core");
+$template->load_template("framework", TRUE);
 $sql = new mysql( @$cfg['dbhost'], @$cfg['dbuser'], @$cfg['dbpass'], @$cfg['dbname'] );
 $user = new user(0, FALSE);
-
-// Load the core localization.
-load_lang("core");
 
 /* DEVELOPEMENT */
 // PH, workaround: output HTTP POST and GET arrays
@@ -68,8 +67,6 @@ prettyVar($_SESSION, true);
 // print "<h4>Localization</h4>";
 // prettyVar($wf_lang, true);
 /* DEVELOPEMENT */
-$template->load_template("framework", TRUE);
-
 print $template->parse_template("header", array(
 	'HEADER'	=>	NULL,
 	'GLOBAL_TITLE'	=>	config("global_title"),
@@ -78,13 +75,13 @@ print $template->parse_template("header", array(
 // Create a stack for the left menubar.
 $template->create_stack("left");
 $left_bar = array();
-
+echo token();
 // Check whether there is a userbox module somewhere in the module table.
 // If there isn't, we forcedly load such module (to prevent locking out users) to the top of the left menubar.
 $sql->query("SELECT `id` FROM `modules` WHERE `module`='userbox';");
 if ( $sql->num_rows() === 0 )
 {
-	echo "There is no userbox found. Added forced userbox to prevent lockout.";
+	echo ambox('INFO', lang_key("USERBOX NOT FOUND"), lang_key("NONSTANDARD CONFIGURATION"), "configuration.png");
 	$left_bar[] = array('id'	=>	0,	'module'	=>	'userbox');
 }
 

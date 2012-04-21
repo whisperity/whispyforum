@@ -81,7 +81,6 @@ class user
 		
 		// Load the session
 		session_start();
-		Header('Cache-Control: cache');
 		
 		// If there is no userID present in the session, set up a new session
 		// If there is, check for the session's client data and authenticate the user
@@ -104,14 +103,10 @@ class user
 			}
 			
 			if ( $cl_side === FALSE )
-			{
-				echo "Error validating session information of client.";
-			}
+				echo ambox('ERROR', lang_key("USER CLIENT ERROR"), lang_key("USER CLIENT ERROR TITLE"), "agent.png");
 			
 			if ( $sv_side === FALSE )
-			{
-				echo "User authentication failure.";
-			}
+				echo ambox('ERROR', lang_key("USER AUTH ERROR"), lang_key("USER AUTH ERROR TITLE"), "user.png");
 		}
 	}
 	
@@ -125,9 +120,9 @@ class user
 			'id'	=>	0,
 			'username'	=>	NULL,
 			'password'	=>	NULL,
-			'ip'	=>	sha1($_SERVER['REMOTE_ADDR']),
+			'ip'	=>	$_SERVER['REMOTE_ADDR'],
 			'sessid'	=>	session_id(),
-			'user_agent'	=>	sha1($_SERVER['HTTP_USER_AGENT']),
+			'user_agent'	=>	$_SERVER['HTTP_USER_AGENT'],
 			'site_uuid'	=>	UNIQUETOKEN
 		);
 	}
@@ -142,8 +137,8 @@ class user
 		 * Otherwise, FALSE is returned.
 		*/
 		
-		if ( @$_SESSION['ip'] === sha1($_SERVER['REMOTE_ADDR']) &&
-			 @$_SESSION['user_agent'] === sha1($_SERVER['HTTP_USER_AGENT']) &&
+		if ( @$_SESSION['ip'] === $_SERVER['REMOTE_ADDR'] &&
+			 @$_SESSION['user_agent'] === $_SERVER['HTTP_USER_AGENT'] &&
 			 @$_SESSION['sessid'] === $_COOKIE[session_name()] &&
 			 @$_SESSION['site_uuid'] === UNIQUETOKEN
 			)
@@ -260,9 +255,7 @@ class user
 		*/
 		
 		if ( $this->_readOnly )
-		{
-			echo "Warning! This instance of the user object is running in read-only mode.";
-		}
+			echo ambox('WARNING', lang_key("USER READONLY"));
 		
 		if ( isset($key) && isset($value) )
 		{

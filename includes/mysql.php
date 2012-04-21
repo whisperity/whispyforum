@@ -57,7 +57,9 @@ class mysql
 		*/
 		
 		$res = @mysql_query($query, $this->link)
-			or print("Query error: " .mysql_error(). "<br>Query was " .$query);
+			or print( ambox('WARNING', lang_key("QUERY ERROR", array(
+				'ERROR'	=>	mysql_error(),
+				'QUERY'	=>	$query) )) );
 		
 		$this->res = $res;
 		return $res;

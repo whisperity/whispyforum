@@ -38,7 +38,7 @@ function load_lang( $file, $basedir = NULL )
 	
 	if ( !file_exists("language/".$basedir."/".$file.".php") )
 	{
-		echo "Requested language file " .$basedir. "/" .$file. " not found.";
+		echo ambox('WARNING', lang_key("LANGUAGE NOT FOUND", array('FILE'	=>	$basedir. "/" .$file)) );
 		return FALSE;
 	}
 	
@@ -77,6 +77,6 @@ function lang_key( $key, $replace = array() )
 		}
 	}
 	
-	return $return;
+	return str_replace( "\n", "<br>", $return);
 }
 ?>

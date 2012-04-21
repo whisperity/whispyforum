@@ -11,10 +11,10 @@ if ( !defined("WHISPYFORUM") )
 function token()
 {
 	/**
-	 * This function generates a unique 32-character long hexademical token for various purposes.
+	 * This function generates a unique token for various purposes.
 	*/
 	
-	return md5( sha1( time() + rand(0, time()) ) );
+	return md5( sha1( time() + rand(0, time()) ) ) ."-". substr( str_shuffle('0123456789abcdefghijklmnopqrstvwxyz0123456789abcdefghijklmnopqrstvwxyz0123456789abcdefghijklmnopqrstvwxyz0123456789abcdefghijklmnopqrstvwxyz0123456789abcdefghijklmnopqrstvwxyz0123456789abcdefghijklmnopqrstvwxyz'), 0, 16);
 }
 
 function saveThumbnailJPEG($originalImage,$new_height,$filename)
@@ -286,7 +286,7 @@ function sendTemplateMail($address, $subject, $template_name, $variable_array)
 	mail($address, $subject, $message, $headers);
 }
 
-function ambox($type, $body = NULL, $title = NULL, $image = NULL, $image_alt = NULL)
+function ambox($type, $body = NULL, $title = NULL, $image = NULL, $image_alt = NULL, $theme = NULL)
 {
 	/**
 	 * This function generates a template message box from
@@ -299,12 +299,45 @@ function ambox($type, $body = NULL, $title = NULL, $image = NULL, $image_alt = N
 	
 	global $template;
 	
+	if ( !isset($image) )
+	{
+		switch ( $type )
+		{
+			case 'CRITICAL':
+				$image = "critical.png";
+				break;
+			case 'ERROR':
+				$image = "error.png";
+				break;
+			case 'WARNING':
+				$image = "warning.png";
+				break;
+			case 'INFO':
+				$image = "info.png";
+				break;
+			case 'SUCCESS':
+				$image = "success.png";
+				break;
+		}
+	}
+	
+	if ( !isset($theme) )
+	{
+		global $user;
+		
+		$theme = ( ( is_object($user) && $user->get_value("theme") != USER_NO_KEY ) ? $user->get_value("theme") : config("theme") );
+		
+		if ( !$theme )
+			$theme = "tuvia";
+	}
+	
 	return $template->parse_template("ambox", array(
 		'TYPE'	=>	strtolower($type),
 		'TITLE'	=>	$title,
 		'BODY'	=>	$body,
 		'IMAGE'	=>	$image,
-		'IMAGE_ALT'	=>	$image_alt) );
+		'IMAGE_ALT'	=>	$image_alt,
+		'THEME_NAME'	=>	$theme) );
 }
 
 function selfURL()

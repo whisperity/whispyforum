@@ -84,7 +84,9 @@ class template
 		// Return error if the file we want does not exist.
 		if ( !file_exists( $this->_basedir.$file.$suffix ) )
 		{
-			echo "Warning! The requested file (" .$file.$suffix. ") not found in basedir (" .$this->_basedir. ").";
+			echo ambox('CRITICAL', lang_key("TEMPLATE FILE MISSING", array(
+				'FILE'	=>	$file.$suffix,
+				'BASEDIR'	=>	$this->_basedir)) );
 			return FALSE;
 		}
 		
@@ -129,7 +131,7 @@ class template
 		
 		if ( !array_key_exists( $template, $this->_templates ) )
 		{
-			echo "Error! The requested template (" .$template. ") is not loaded.";
+			echo ambox('ERROR', lang_key("TEMPLATE MISSING", array('TEMPLATE'	=>	$template)) );
 			return FALSE;
 		}
 		
@@ -163,7 +165,7 @@ class template
 		{
 			if ( array_key_exists($name, $this->_stack) )
 			{
-				echo "Error! The stack named " .$name. " already exists.";
+				echo ambox('WARNING', lang_key("TEMPLATE STACK ALREADY", array('STACK'	=>	$name)) );
 				return FALSE;
 			}
 			
@@ -198,7 +200,7 @@ class template
 		
 		if ( !array_key_exists($name, $this->_stack) )
 		{
-			echo "Error! The stack named " .$name. " does not exist.";
+			echo ambox('WARNING', lang_key("TEMPLATE STACK MISSING", array('STACK'	=>	$name)) );
 			return FALSE;
 		}
 		
@@ -221,7 +223,7 @@ class template
 		
 		if ( !array_key_exists($stack, $this->_stack) )
 		{
-			echo "Error! The stack named " .$stack. " does not exist.";
+			echo ambox('WARNING', lang_key("TEMPLATE STACK MISSING", array('STACK'	=>	$stack)) );
 			return FALSE;
 		}
 		
@@ -239,7 +241,7 @@ class template
 		
 		if ( !array_key_exists($name, $this->_stack) )
 		{
-			echo "Error! The stack named " .$name. " does not exist.";
+			echo ambox('WARNING', lang_key("TEMPLATE STACK ALREADY", array('STACK'	=>	$name)) );
 			return FALSE;
 		}
 		

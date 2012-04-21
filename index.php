@@ -4,6 +4,4 @@
 */
 
 include("includes/load.php");
-
-footer();
 ?>

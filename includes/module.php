@@ -41,13 +41,13 @@ class module
 		// Set up module ID and module filename.
 		if ( $mod_id === 0 && $mod_file === NULL )
 		{
-			echo "Error! Unable to load unspecified new module.";
+			echo ambox('ERROR', lang_key("MODULE NO ID NO FILE"));
 			return FALSE;
 		}
 		
 		if ( $mod_id !== 0 && $mod_file === NULL )
 		{
-			echo "Error! Module filename was not specified.";
+			echo ambox('ERROR', lang_key("MODULE NO FILE", array('ID'	=>	$mod_id)) );
 			return FALSE;
 		}
 		
@@ -62,9 +62,9 @@ class module
 		
 		if ( !file_exists("modules/" .$this->_module_file. ".php") )
 		{
-			echo "The requested module file " .$this->_module_file. " does not exist.";
+			$ret = ambox('ERROR', lang_key("MODULE FILE MISSING", array('FILE'	=>	$this->_module_file)) );
 			$this->_module_file = NULL;
-			return FALSE;
+			return $ret;
 		}
 		
 		// Extract module configuration from database.
