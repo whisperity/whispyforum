@@ -20,6 +20,9 @@ if ( !defined('REQUIRE_SAFEMODE') )
 // Define that the system is loaded.
 define('WHISPYFORUM', TRUE);
 
+// Save the current working directory for later use.
+define('WORKING_DIRECTORY', getcwd());
+
 if ( file_exists("config.php") === TRUE ) 
 {
 	require("config.php");
@@ -75,7 +78,7 @@ print $template->parse_template("header", array(
 // Create a stack for the left menubar.
 $template->create_stack("left");
 $left_bar = array();
-echo token();
+
 // Check whether there is a userbox module somewhere in the module table.
 // If there isn't, we forcedly load such module (to prevent locking out users) to the top of the left menubar.
 $sql->query("SELECT `id` FROM `modules` WHERE `module`='userbox';");
@@ -117,6 +120,11 @@ function footer()
 	*/
 	
 	global $template, $sql, $user, $localization;
+	
+	// Because footer is executed as a shutdown function,
+	// and Apache servers are likely to change the working folder for shutdown functions,
+	// we change our working directory back to where the script is running from.
+	chdir(WORKING_DIRECTORY);
 	
 	// Just as we did the left menubar earlier, we do the right menubar.
 	$template->create_stack("right");
