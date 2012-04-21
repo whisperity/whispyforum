@@ -147,7 +147,4 @@ function footer()
 	unset($localization);
 	exit;
 }
-
-// Footer will always be executed when shutting down.
-register_shutdown_function('footer');
 ?>
