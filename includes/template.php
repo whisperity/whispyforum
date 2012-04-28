@@ -54,6 +54,12 @@ class template
 	// This allows to cache the commonly used keys like 'THEME_NAME'.
 	private $_replace_archive = array();
 	
+	function __construct()
+	{
+		// Define a constant for get_archived_key()
+		@define('TEMPLATE_NO_KEY', "requested-key-not-present");
+	}
+	
 	function set_basedir( $basedir )
 	{
 		/**
@@ -152,6 +158,15 @@ class template
 		}
 		
 		return $this->_output;
+	}
+	
+	function get_archived_key( $key )
+	{
+		/**
+		 * This function returns the value of given key from the replace archive.
+		*/
+		
+		return ( array_key_exists($key, $this->_replace_archive) ? $this->_replace_archive[$key] : TEMPLATE_NO_KEY );
 	}
 	
 	function create_stack( $name = NULL )

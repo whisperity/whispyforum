@@ -1,4 +1,4 @@
-<!--- BEGIN user login -->
+<!--- BEGIN login -->
 <div id="menucontainer">
 	<div id="header"><div id="header_left"></div>
 	<div id="header_main">{[LANG_LOGIN]}</div><div id="header_right"></div></div>
@@ -15,4 +15,23 @@
 	<div id="footer"></div>
 </div>
 <br>
-<!--- END user login -->
+<!--- END login -->
+
+<!--- BEGIN userbox -->
+<div id="menucontainer">
+	<div id="header"><div id="header_left"></div>
+	<div id="header_main">{[WELCOME]}</div><div id="header_right"></div></div>
+    <div id="content">
+		<img src="{[AVATAR_FILENAME]}" alt="{AVATAR_ALT}"><br>
+		<a href="profile.php?id={[USER_ID]}">{[LANG_PROFILE]}</a><br>
+		<a href="control_user.php">{[LANG_USER_CONTROL_PANEL]}</a>
+		
+		<form method="POST" action="logout.php">
+			<input type="hidden" name="returnto" value="{[RETURN_TO]}">
+			<input type="hidden" name="logout" value="do_user_logout">
+			<input type="submit" value="{[LANG_LOGOUT]}">
+		</form>
+	</div>
+</div>
+<br>
+<!--- END userbox -->

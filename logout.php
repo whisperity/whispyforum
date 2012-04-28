@@ -1,55 +1,40 @@
 <?php
- /**
- * WhispyForum script file - logout page
- * 
- * Page using the user class to do logouts
- * 
+/**
  * WhispyForum
- */
+ * 
+ * User logout transition page. 
+ * 
+ * /logout.php
+*/
+define('REQUIRE_SAFEMODE', TRUE);
+require("includes/load.php");
 
-include("includes/safeload.php"); // We load the environment without framework
+if ( $_SESSION['id'] === 0 && $user->userid === 0 )
+	exit( ambox('ERROR', lang_key("LOGOUT NOT LOGGED IN"), NULL, "user.png", NULL) );
 
-if ( $_POST == NULL )
+if ( count($_POST) === 0 )
+	exit( ambox('CRITICAL', lang_key("DIRECT"), lang_key("DIRECT TITLE"), "code.png", NULL) );
+
+if ( @$_POST['logout'] !== "do_user_logout" )
 {
-	// If POST array is null (direct opening the page)
-	// we give error
-	$Ctemplate->useStaticTemplate("user/logout_err_nopost", FALSE);
-	
-	exit; // We terminate the script
+	exit( ambox('CRITICAL', lang_key("DIRECT"), lang_key("DIRECT TITLE"), "code.png", NULL) );
 }
 
-if ( $_POST['returnto'] == NULL )
+if ( @$_POST['logout'] === "do_user_logout" )
 {
-	// We can have errors with unentered variables
-	// if the script redirects the user to the login page
-	// without giving any POST causing annoying and unnecessary redirections
-	$returnURI = "index.php"; // Return URI is the homepage
-} else {
-	$returnURI = $_POST['returnto']; // Return URI is the original return page
-}
-
-if ( $_POST['logout'] == "do_user_logout" )
-{
-	// If the proper POST value was given, we logout the user
-	$logsuccess = $Cusers->Logout($_SESSION['username']); // We call the logout function.
+	// Destroy the session's data.
+	// When the user loads the next page, user::_startup_session() will create a new, guest session.
+	session_unset();
+	session_destroy();
 	
-	// $logsuccess is TRUE if the user successfully logged out
-	// $logsuccess is FALSE if there were errors during logout
+	print ambox('SUCCESS', lang_key("LOGOUT SUCCESS"), NULL, "user.png", NULL);
+	print $template->parse_template("redirect", array(
+		'RETURNTO'	=>	@$_POST['returnto'],
+		'REDIRECT'	=>	lang_key("REDIRECT", array(
+			'LINK'	=>	@$_POST['returnto']
+		) )
+	) );
 	
-	if ( $logsuccess == FALSE )
-	{
-		// We output an error message
-		$Ctemplate->useTemplate("user/logout_error", array(
-			'RETURN_TO_URL'	=>	$returnURI // Return URI
-		), FALSE);
-	} elseif ( $logsuccess == TRUE )
-	{
-		// We give success
-		$Ctemplate->useTemplate("user/logout_success", array(
-			'RETURN_TO_URL'	=>	$returnURI // Return URI
-		), FALSE);
-	}
+	exit;
 }
-
-DoFooter();
 ?>

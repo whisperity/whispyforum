@@ -61,10 +61,19 @@ $localized = array(
 	'USERBOX LOGIN'	=>	"Login",
 	'USERBOX REGISTER'	=>	"Register",
 	'USERBOX RECOVER'	=>	"Lost password",
+	'USERBOX WELCOME'	=>	"Welcome, {USERNAME}!",
+	'USERBOX AVATAR ALT'	=>	"Your avatar",
+	'USERBOX PROFILE'	=>	"Profile",
+	'USERBOX USERCP'	=>	"Control panel",
+	'USERBOX LOGOUT'	=>	"Logout",
+	
 	'LOGIN EMPTY'	=>	"The username or password field was left empty.",
 	'LOGIN ALREADY'	=>	"You are already logged in.",
 	'LOGIN AUTH FAIL'	=>	"The username or password you supported is invalid, or your user does not exist.",
 	'LOGIN NOT ACTIVATED'	=>	"You account is not activated. Please check your e-mail inbox and activate your account before using it.",
 	'LOGIN SUCCESS'	=>	"You have successfully logged in. Welcome!",
+	
+	'LOGOUT NOT LOGGED IN'	=>	"You are not logged in.",
+	'LOGOUT SUCCESS'	=>	"You have successfully logged out.",
 );
 ?>
