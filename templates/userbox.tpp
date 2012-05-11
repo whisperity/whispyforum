@@ -14,7 +14,6 @@
 	</div>
 	<div id="footer"></div>
 </div>
-<br>
 <!--- END login -->
 
 <!--- BEGIN userbox -->
@@ -25,7 +24,7 @@
 		<img src="{[AVATAR_FILENAME]}" alt="{AVATAR_ALT}"><br>
 		<a href="profile.php?id={[USER_ID]}">{[LANG_PROFILE]}</a><br>
 		<a href="control_user.php">{[LANG_USER_CONTROL_PANEL]}</a>
-		
+		{[ADMIN_CONTROL_PANEL]}
 		<form method="POST" action="logout.php">
 			<input type="hidden" name="returnto" value="{[RETURN_TO]}">
 			<input type="hidden" name="logout" value="do_user_logout">
@@ -33,5 +32,8 @@
 		</form>
 	</div>
 </div>
-<br>
 <!--- END userbox -->
+
+<!--- BEGIN userbox admincp -->
+<br><a href="control_admin.php">{[LANG_ADMIN_CONTROL_PANEL]}</a>
+<!--- END userbox admincp -->

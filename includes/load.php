@@ -28,6 +28,14 @@ if ( file_exists("config.php") === TRUE )
 	require("config.php");
 } elseif ( file_exists("config.php") === FALSE )
 {
+	if ( file_exists("templates/install/config_error.tpf") )
+	{
+		$errorfile = fopen("templates/install/config_error.tpf", "r");
+		$message = fread($errorfile, filesize("templates/install/config_error.tpf") );
+		fclose($errorfile);
+		
+		echo $message;
+	}
 	die("Missing configuration file.");
 }
 

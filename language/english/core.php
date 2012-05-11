@@ -65,6 +65,7 @@ $localized = array(
 	'USERBOX AVATAR ALT'	=>	"Your avatar",
 	'USERBOX PROFILE'	=>	"Profile",
 	'USERBOX USERCP'	=>	"Control panel",
+	'USERBOX ADMINCP'	=>	"Administrator panel",
 	'USERBOX LOGOUT'	=>	"Logout",
 	
 	'LOGIN EMPTY'	=>	"The username or password field was left empty.",

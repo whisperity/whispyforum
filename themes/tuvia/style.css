@@ -211,6 +211,7 @@ span.install-menu-entries {
 	border-bottom-color: #000033;
 	border-left-color: #000033;
 	background-color: #FFFFFF;
+	margin-bottom: 8px;
 }
 
 #menucontainer #header #header_left {

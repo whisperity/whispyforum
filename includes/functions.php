@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * WhispyForum
  * 
  * /includes/functions.php

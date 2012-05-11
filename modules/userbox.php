@@ -44,6 +44,8 @@ switch ( $part )
 				'USER_ID'	=>	$user->get_value("id"),
 				'LANG_PROFILE'	=>	lang_key("USERBOX PROFILE"),
 				'LANG_USER_CONTROL_PANEL'	=>	lang_key("USERBOX USERCP"),
+				'ADMIN_CONTROL_PANEL'	=>	$template->parse_template("userbox admincp"),
+				'LANG_ADMIN_CONTROL_PANEL'	=>	lang_key("USERBOX ADMINCP"),
 				'LANG_LOGOUT'	=>	lang_key("USERBOX LOGOUT"),
 				'RETURN_TO'	=>	selfURL()
 			) );
