@@ -12,9 +12,22 @@ class cache
 {
 	/**
 	 * TinyCache is a lightweight caching class for easy, HDD-based caches.
+	 * 
+	 * Due to how TinyCache works, it is DISCOURAGED to use this system to store ANY sort
+	 * of information which is to be kept for a long time and is not available elsewhere.
 	*/
 	
 	// $_depot stores the depot information.
+	// _depot is always an array, having the following structure:
+	// 		access count	number of access made to the depot
+	// 		caches			array, containing a list of cache files
+	// 			cache => file		where cache is the name of the cache and file is the filename
+	//		create time		time() when the cache was created
+	//		last xyz time	time() when the last xyz action was made
+	// 			flush			last save of the depot to the disk
+	// 			obtain			last read of depot from the disk
+	// 			get				last read of a cache file
+	// 			modify			last modification (set or delete) of a cache file
 	private $_depot = array();
 	
 	// $_basedir stores the base working directory of the instance.
@@ -51,22 +64,9 @@ class cache
 		{
 			// Create the depot structure.
 			
-			// This will create 256 folders from 00 to ff (00, 01, 02, .. fd, fe, ff) in the basedir.
-			$hex = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f");
-			
-			for ($i = 0; $i <= count($hex) -1 ; $i++)
-			{
-				for ($j = 0; $j <= count($hex) -1 ; $j++)
-				{
-					@mkdir($this->_basedir. "/" .$hex[$i].$hex[$j]);
-					@chmod($this->_basedir. "/" .$hex[$i].$hex[$j], 0777);
-				}
-			}
-			
-			unset($hex);
-			
 			// Create a basic $_depot array and fill it into the file.
 			$depot_wcf = array(
+				'access count'	=>	0,
 				'create time'	=>	time(),
 				'caches'	=>	array()
 			);
@@ -91,14 +91,14 @@ class cache
 		{
 			// If the requested cache exists, we read it.
 			
-			if ( !is_readable($this->_basedir ."/". substr($this->_depot['caches'][$cache], 0, 2) ."/" .$this->_depot['caches'][$cache]) )
+			if ( !is_readable($this->_basedir ."/". $this->_depot['caches'][$cache]) )
 			{
 				// If the file is unreadable, we remove the pointer from the depot.
 				$this->delete($cache);
 				$ret = TINYCACHE_NO_KEY;
 			} else {
-				$cachefile = fopen($this->_basedir ."/". substr($this->_depot['caches'][$cache], 0, 2) ."/". $this->_depot['caches'][$cache], "r");
-				$cachedata = fread($cachefile, filesize($this->_basedir ."/". substr($this->_depot['caches'][$cache], 0, 2) ."/". $this->_depot['caches'][$cache]));
+				$cachefile = fopen($this->_basedir ."/". $this->_depot['caches'][$cache], "r");
+				$cachedata = fread($cachefile, filesize($this->_basedir ."/". $this->_depot['caches'][$cache]));
 				fclose($cachefile);
 				
 				$content = unserialize($cachedata);
@@ -127,6 +127,22 @@ class cache
 		return ( isset($ret) ? $ret : NULL );
 	}
 	
+	function is_key( $value )
+	{
+		/**
+		 * This function checks whether the argument $value is a valid cache value or not.
+		 * Returns TRUE if value is valid, FALSE if not.
+		 * 
+		 * Usage of
+		 * 		if ( $cache->get("key") === TINYCACHE_NO_KEY )
+		 * and
+		 * 		if ( !$cache->is_key( $cache->get("key") ) )
+		 * results in the exact same behavious (IF-block will run if the key doesn't exist.)
+		*/
+		
+		return ( $value === TINYCACHE_NO_KEY ? FALSE : TRUE );
+	}
+	
 	function set( $cache, $content, $expiry = 3600 )
 	{
 		/**
@@ -152,7 +168,7 @@ class cache
 		);
 		
 		// Put the cache data onto the HDD.
-		$fhandle = fopen($this->_basedir. "/" . substr($dname, 0, 2) ."/" .$dname, "w+");
+		$fhandle = fopen($this->_basedir ."/". $dname, "w+");
 		fwrite($fhandle, serialize($write));
 		fclose($fhandle);
 	
@@ -189,6 +205,45 @@ class cache
 		}
 	}
 	
+	function run_maintenance()
+	{
+		/**
+		 * This function runs a maintenance skimming on the cache folder.
+		 * This skim run deletes every file which is no longer related to a
+		 * cache entry and every cache entry linking to a missing file.
+		 * 
+		 * After it, every cache file is read and those expired will be deleted.
+		*/
+		
+		// First obtain the concurrent list of caches from the disk.
+		$this->_obtain();
+		
+		// Go through the cache list one-by-one, 
+		foreach ($this->_depot['caches'] as $v)
+		{
+			// The cache::get(); function will attempt to read the cache file from the disk.
+			// This call removes every expired entry from the depot and
+			// every cache linking to nonexistant files on the disk.
+			$this->get( array_search($v, $this->_depot['caches']) );
+		}
+		
+		// To clean the files which no longer point to depot entries,
+		// we first map the cache folder and check if files point to any entry.
+		foreach ( scandir($this->_basedir) as $file )
+		{
+			// Scandir of the basedir returns us an array of every file in the basedir.
+			if ( !in_array($file, array(".", "..", ".svn", "depot.wcf") ) )
+			{
+				// After omitting some files, we check whether the name is in the cache array.
+				if ( !array_search( $file, $this->_depot['caches'] ) )
+				{
+					// If the file is no longer linked to a cache entry, we delete it.
+					@unlink($this->_basedir."/".$file);
+				}
+			}
+		}
+	}
+	
 	private function _obtain()
 	{
 		/**
@@ -207,6 +262,7 @@ class cache
 		fclose($depotfile);
 		
 		$this->_depot['last obtain time'] = time();
+		$this->_depot['access count'] = $this->_depot['access count'] + 1;
 	}
 	
 	private function _clean()
@@ -231,6 +287,7 @@ class cache
 		if ( count($this->_depot) > 0 )
 		{
 			$this->_depot['last flush time'] = time();
+			$this->_depot['access count'] = $this->_depot['access count'] + 1;
 			
 			$depotfile = fopen($this->_basedir. "/depot.wcf", "w");
 			fwrite($depotfile, serialize($this->_depot));

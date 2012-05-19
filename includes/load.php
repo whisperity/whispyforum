@@ -44,10 +44,12 @@ require("includes/functions.php");
 require("includes/language.php");
 require("includes/module.php");
 require("includes/mysql.php");
+require("includes/tinycache.php");
 require("includes/template.php");
 require("includes/user.php");
 
-global $template, $sql, $user;
+global $cache, $template, $sql, $user;
+$cache = new cache;
 $template = new template;
 load_lang("core");
 $template->load_template("framework", TRUE);
@@ -127,7 +129,7 @@ function footer()
 	 * after the frontend code generated the center.
 	*/
 	
-	global $template, $sql, $user, $localization;
+	global $cache, $template, $sql, $user, $localization;
 	
 	// Because footer is executed as a shutdown function,
 	// and Apache servers are likely to change the working folder for shutdown functions,
@@ -167,11 +169,13 @@ function footer()
 	prettyVar($user);
 	prettyVar($sql);
 	prettyVar($template);
+	prettyVar($cache);
 	prettyVar($localization);
 	// Unset the global classes and finalize execution.
 	unset($user);
 	unset($sql);
 	unset($template);
+	unset($cache);
 	unset($localization);
 	exit;
 }

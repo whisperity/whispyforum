@@ -361,4 +361,82 @@ function selfURL()
 	// Fetch a proper URL from the data and the current request
 	return $protocol."://".$_SERVER['SERVER_NAME'].$port.$_SERVER['REQUEST_URI'];
 }
+
+function index_directory( $dir )
+{
+	/**
+	 * This function reads and enumerates the requested $dir directory, searching for files.
+	 * 
+	 * To understand this function, you need to know that this function executes itself recursively.
+	 * Every execution returns a $names array, which is automatically merged into the "widest" $names,
+	 * and that last $names is returned at the end of the last execution.
+	*/
+	
+	$names = array();
+	
+	// Do not enumerate if we failed to open the directory.
+	if ( is_dir($dir) && is_readable($dir) )
+	{
+		// We go on with every file in the directory.
+		foreach ( scandir($dir) as $file )
+		{
+			// We omit some directories to prevent recursion and errors.
+			if ( !in_array($file, array(".", "..", ".svn")) )
+			{
+				if ( is_dir($dir."/".$file) && is_readable($dir."/".$file) )
+				{
+					// If the current entry is a directory, we read that directory too.
+					// (And we add the returned values of this execution to the $names array.)
+					$names[] = index_directory($dir."/".$file);
+				}
+				
+				if ( is_file($dir."/".$file) && is_readable($dir."/".$file) )
+				{
+					// If the current entry is a file, we check for file extension and add it to the files-to-load list.
+					
+					// Omit .bak and .xxx~ (Windows and Unix-like) backup files.
+					if ( pathinfo($dir."/".$file, PATHINFO_EXTENSION) !== "bak" && substr( pathinfo($dir."/".$file, PATHINFO_EXTENSION), strlen( pathinfo($dir."/".$file, PATHINFO_EXTENSION) ) - 1, 1 ) !== "~" )
+					{
+						$names[] = $dir."/".$file;
+					}
+				}
+			}
+		}
+	} elseif ( !is_dir($dir) || !is_readable($dir) )
+	{
+		echo "The requested directory " .$dir. " could not be opened.";
+		return FALSE;
+	}
+	
+	return $names;
+}
+
+function array_merge_multidimensional( $array = array() )
+{
+	/**
+	 * This function merges a nested, multidimensional array into one superarray
+	 * The input $array is the initial array, and a result of an array will be returned.
+	*/
+	
+	$return = array();
+	
+	if ( !isset($array) || !is_array($array) )
+		return FALSE;
+	
+	// Go trough the input element-by-element.
+	foreach ( $array as &$element )
+	{
+		if ( is_array($element) )
+		{
+			// If the currently checked element is an array, we call this function recursively.
+			$return = array_merge( $return, array_merge_multidimensional($element) );
+		} elseif ( !is_array($element) )
+		{
+			// If it is not an array, add the element to the return list.
+			$return[] = $element;
+		}
+	}
+	
+	return $return;
+}
 ?>
