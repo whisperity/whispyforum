@@ -23,21 +23,10 @@ define('WHISPYFORUM', TRUE);
 // Save the current working directory for later use.
 define('WORKING_DIRECTORY', getcwd());
 
-if ( file_exists("config.php") === TRUE ) 
-{
-	require("config.php");
-} elseif ( file_exists("config.php") === FALSE )
-{
-	if ( file_exists("templates/install/config_error.tpf") )
-	{
-		$errorfile = fopen("templates/install/config_error.tpf", "r");
-		$message = fread($errorfile, filesize("templates/install/config_error.tpf") );
-		fclose($errorfile);
-		
-		echo $message;
-	}
-	die("Missing configuration file.");
-}
+// Load the configuration file. If not present or the system is not installed, redirect the user.
+@require("config.php");
+if ( !is_array(@$cfg) )
+	header('Location: install.php');
 
 // Load the required libraries.
 require("includes/functions.php");

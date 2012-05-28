@@ -1,5 +1,0 @@
-Your configuration file is missing from the installation folder.<br>
-This error is usually caused when the website is only copied to the FTP, but the system is not installed.<br>
-<br>
-Please make sure, that <tt>config.php</tt> is readable by the webserver's user account (it is usually <tt>www-data</tt>), and that the file exists. If stuck, contact your network administrator.<br>
-<!-- The framework's "Missing configuration file" die message comes here. -->
