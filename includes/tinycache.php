@@ -8,291 +8,188 @@
 if ( !defined("WHISPYFORUM") )
 	die("Direct opening.");
 
-class cache
+/**
+ * TinyCache is a lightweight caching class for easy, HDD-based caches.
+ * 
+ * Due to how TinyCache works, it is DISCOURAGED to use this system to store ANY sort
+ * of information which is to be kept for a long time and is not available elsewhere.
+*/
+
+// The base directory where the cache files are kept.
+define('TC_BASEDIR', ini_get("upload_tmp_dir"));
+
+// Define the maximum filesize a chunk can reach (in bytes, the default is 4 096, which equals 4 KiB).
+define('TC_MAX_CHUNK_SIZE', 4096);
+
+// Define the 'not found' constant used by cache_get().
+define('TC_NO_KEY', -1);
+
+function cache_set( $name, $content, $expiry = 3600 )
 {
 	/**
-	 * TinyCache is a lightweight caching class for easy, HDD-based caches.
-	 * 
-	 * Due to how TinyCache works, it is DISCOURAGED to use this system to store ANY sort
-	 * of information which is to be kept for a long time and is not available elsewhere.
+	 * The set() function takes $content and saves it under the name $name.
+	 * $expiry is the number of seconds before the cache expires (default value is 3600, which equals 1 hour).
 	*/
 	
-	// $_depot stores the depot information.
-	// _depot is always an array, having the following structure:
-	// 		access count	number of access made to the depot
-	// 		caches			array, containing a list of cache files
-	// 			cache => file		where cache is the name of the cache and file is the filename
-	//		create time		time() when the cache was created
-	//		last xyz time	time() when the last xyz action was made
-	// 			flush			last save of the depot to the disk
-	// 			obtain			last read of depot from the disk
-	// 			get				last read of a cache file
-	// 			modify			last modification (set or delete) of a cache file
-	private $_depot = array();
+	// We first attempt to remove the old cache.
+	cache_delete($name);
 	
-	// $_basedir stores the base working directory of the instance.
-	private $_basedir = NULL;
+	// Clear the filesize caches.
+	clearstatcache();
 	
-	function __construct()
+	// Determine the file size.
+	$filesize = strlen($content);
+	
+	// Create the file header
+	$header = "\x14" . $name . "\x7F" . $filesize . "\x7F" . (time() + $expiry) . "\x14" . "\x02";
+	
+	/**
+	 * Header explanation:
+	 * 	\x14 - a paragraph sign character marks the beginning of header
+	 * 	name - name of the cache save
+	 * 	\x7F - delimiter of header information
+	 * 	filesize - size of the whole data
+	 * 	\x7F - another delimiter
+	 * 	time() + expiry - the epoch timestemp the cache is "best before"
+	 * 	\x14 - paragraph sign denoting the end of header
+	 * 	\x02 - control bit denoting the start of real data
+	*/
+	
+	// The filename of the cache is the md5 of the original name because
+	// this way, we can prevent the need of index files.
+	// When a cache is read back, the name identificates it in the system,
+	// and because the md5() is the same, we can use the md5 hash to identificate on the disk.
+	$filename = md5($name);
+	
+	if ( $filesize + strlen($header) > TC_MAX_CHUNK_SIZE )
 	{
-		/**
-		 * The constructor automatically executes when a new instance is invoked.
-		*/
-		$this->_basedir = getcwd()."/cache";
+		// If the content would be bigger than the maximum file size, we need to chunk the file up.
 		
-		// We load the depot of caches.
-		$this->_load_depot();
+		// The first chunk needs to contain the header information,
+		// so the first chunk needs to be TC_MAX_CHUNK_SIZE - size of header big.
+		$first = str_split($content, TC_MAX_CHUNK_SIZE - strlen($header));
+		$first = $first[0];
 		
-		// Define a constant for get()
-		@define('TINYCACHE_NO_KEY', "requested-key-not-present");
-	}
-	
-	private function _load_depot()
-	{
-		/**
-		 * This function loads the known cache depot description into the memory.
-		 * The depot file is called "depot.wcf" and it is stored in the set basedir folder.
-		 * 
-		 * If the folder does not exist, we create the depot structure.
-		*/
+		// Now we cut the first (TC_MAX_CHUNK_SIZE - size of header) bytes
+		// of content from the beginning.
+		$content = substr($content, TC_MAX_CHUNK_SIZE - strlen($header));
 		
-		if ( is_readable($this->_basedir. "/depot.wcf") )
+		// After the header and the first chunk is prepared, the rest of the chunks
+		// can have the defined size. We split the content again.
+		$buffer = str_split($content, TC_MAX_CHUNK_SIZE);
+		$buffer[-1] = $header.$first;
+		
+		for ( $i = 1; $i <= count($buffer); $i++ )
 		{
-			// Load the depot contents.
-			$this->_obtain();
-		} elseif ( is_dir($this->_basedir) && is_writable($this->_basedir) && !file_exists($this->_basedir. "/depot.wcf") )
-		{
-			// Create the depot structure.
+			// Write each chunk to the disk.
 			
-			// Create a basic $_depot array and fill it into the file.
-			$depot_wcf = array(
-				'access count'	=>	0,
-				'create time'	=>	time(),
-				'caches'	=>	array()
-			);
+			// We need to subtract 2 from $i at writing because the first
+			// chunk-to-write has the index of -1, while the first value of $i is 1.
 			
-			$this->_depot = $depot_wcf;
-			$this->_flush();
-			unset($depot_wcf);
+			$handle = fopen( TC_BASEDIR ."/". $filename .".". $i, "w+b");
+			fwrite($handle, $buffer[$i - 2]);
+			fclose($handle);
 		}
-	}
-	
-	function get( $cache )
+	} elseif ( $filesize + strlen($header) <= TC_MAX_CHUNK_SIZE )
 	{
-		/**
-		 * This function reads the depot and returns the contents of $cache if present.
-		 * 
-		 * If the cache is not present or expired, TINYCACHE_NO_KEY will be returned.
-		*/
+		// If the data (and header) is smaller than the maximum size allowed, we write a single file.
+		$handle = fopen( TC_BASEDIR ."/". $filename .".1", "w+b");
+		fwrite($handle, $header.$content);
+		fclose($handle);
+	}
+}
+
+function cache_get( $name )
+{
+	/**
+	 * The get() function reads the cache named $name and returns it.
+	*/
+	
+	// Clear the filesize caches.
+	clearstatcache();
+	
+	// Get the identifier name from the name of the cache.
+	$filename = md5($name);
+	
+	// Check whether the file exists, and if yes, open the file.
+	if ( is_readable(TC_BASEDIR ."/". $filename .".1") )
+	{
+		$first_handle = fopen( TC_BASEDIR ."/". $filename .".1", "rb");
+		$first = fread($first_handle, filesize( TC_BASEDIR ."/". $filename .".1"));
+		fclose($first_handle);
 		
-		$this->_obtain();
+		// $first contains the content of the first (.1) file.
 		
-		if ( array_key_exists($cache, $this->_depot['caches']) )
+		// Using the delimiter-based explode of string, we chunk the content
+		// and retrieve the header informations: name, size and expiry.
+		$exploded = explode("\x02", $first);
+		$header = explode("\x14", $exploded[0]);
+		$header = explode("\x7F", $header[1]);
+		
+		// Terminate retrieving if the loaded cache file is different than the one we want.
+		// (This is HIGHLY unlikely to happen, but we must make sure.)
+		if ( $header[0] != $name )
+			return TC_NO_KEY;
+		
+		// Also terminate retrieving if the cache has already expired.
+		if ( time() >= $header[2] )
 		{
-			// If the requested cache exists, we read it.
+			// Running into an expired cache automatically triggers its removal.
+			cache_delete($name);
+			return TC_NO_KEY;
+		}
+		
+		if ( $header[1] <= TC_MAX_CHUNK_SIZE )
+		{
+			// If the size of the data in the file (excluding header) is smaller than
+			// the maximum chunk size, it means that this is a single-file cache.
 			
-			if ( !is_readable($this->_basedir ."/". $this->_depot['caches'][$cache]) )
+			// We return the already-loaded (whole) data from the file.
+			// (By starting reading it from the end of the header
+			// and the header delimiter character (0 + strlen + 1).)
+			return substr($first, strlen($exploded[0]) + 1);
+		} elseif ( $header[1] > TC_NO_KEY )
+		{
+			// If the size is bigger, it means that the cache has been chunked.
+			
+			// An internal buffer is created to store the data.
+			// (The first loaded content is appended automatically.)
+			$buffer = substr($first, strlen($exploded[0]) + 1);
+			
+			// The number of chunks is the rounded-up value of the division.
+			// Example: if the division if 12.5, it means that we have 12 full and 1 half-sized files: total 13.
+			$chunk_count = ceil($header[1] / TC_MAX_CHUNK_SIZE);
+			
+			for ( $i = 2; $i <= $chunk_count; $i++ )
 			{
-				// If the file is unreadable, we remove the pointer from the depot.
-				$this->delete($cache);
-				$ret = TINYCACHE_NO_KEY;
-			} else {
-				$cachefile = fopen($this->_basedir ."/". $this->_depot['caches'][$cache], "r");
-				$cachedata = fread($cachefile, filesize($this->_basedir ."/". $this->_depot['caches'][$cache]));
-				fclose($cachefile);
-				
-				$content = unserialize($cachedata);
-				
-				if ( time() >= $content['expiry'] )
-				{
-					// If the cache expired, we delete the cache and return TINYCACHE_NO_KEY.
-					$this->delete($cache);
-					$ret = TINYCACHE_NO_KEY;
-				} else {
-					// If the cache is still valid, we return the content itself.
-					$ret = $content['content'];
-				}
-			}
-		} else {
-			// Missing cache will result in TINYCACHE_NO_KEY being returned.
-			$ret = TINYCACHE_NO_KEY;
-		}
-		$this->_depot['last get time'] = time();
-		$this->_flush();
-		
-		// Empty the internal depot information to free memory space.
-		$this->_clean();
-		
-		// Return the previously fetched return value.
-		return ( isset($ret) ? $ret : NULL );
-	}
-	
-	function is_key( $value )
-	{
-		/**
-		 * This function checks whether the argument $value is a valid cache value or not.
-		 * Returns TRUE if value is valid, FALSE if not.
-		 * 
-		 * Usage of
-		 * 		if ( $cache->get("key") === TINYCACHE_NO_KEY )
-		 * and
-		 * 		if ( !$cache->is_key( $cache->get("key") ) )
-		 * results in the exact same behavious (IF-block will run if the key doesn't exist.)
-		*/
-		
-		return ( $value === TINYCACHE_NO_KEY ? FALSE : TRUE );
-	}
-	
-	function set( $cache, $content, $expiry = 3600 )
-	{
-		/**
-		 * This function stores $content into the $cache using the TinyCache library.
-		 * The cache's lifespan can be set with $expire, it sets the expirity in seconds.
-		*/
-		
-		// First, we fetch a name for our cache (dname stands for depot name).
-		$this->_obtain();
-		
-		if ( array_key_exists($cache, $this->_depot['caches']) )
-		{
-			// If the named cache already exists, we read the name from the depot.
-			$dname = $this->_depot['caches'][$cache];
-		} else {
-			// If the cache doesn't exist, create a new name for it.
-			$dname = token();
-		}
-		
-		$write = array(
-			'expiry' =>	time() + $expiry,
-			'content'	=>	$content
-		);
-		
-		// Put the cache data onto the HDD.
-		$fhandle = fopen($this->_basedir ."/". $dname, "w+");
-		fwrite($fhandle, serialize($write));
-		fclose($fhandle);
-	
-		// Update the cache information in the memory and flush to the disk.
-		$this->_depot['caches'][$cache] = $dname;
-		$this->_depot['last modify time'] = time();
-		$this->_flush();
-		
-		// Empty the internal depot information.
-		$this->_clean();
-	}
-	
-	function delete( $cache )
-	{	
-		/**
-		 * This function deletes the said $cache from the hard drive.
-		*/
-		
-		$this->_obtain();
-		
-		// If the cache points to a valid cache file and it is writable, we delete it.
-		if ( array_key_exists($cache, $this->_depot['caches']) )
-		{
-			if ( is_writable($this->_basedir ."/". $this->_depot['caches'][$cache]) )
-			{
-				unlink($this->_basedir ."/". $this->_depot['caches'][$cache]);
+				// Read every chunk and append the read data to the buffer.
+				$handle = fopen( TC_BASEDIR ."/". $filename .".". $i, "rb");
+				$buffer .= fread($handle, filesize( TC_BASEDIR ."/". $filename .".". $i ));
+				fclose($handle);
 			}
 			
-			// We unset the key from the caches array then flush the depot info back to the disk.
-			unset($this->_depot['caches'][$cache]);
-			$this->_depot['last modify time'] = time();
-			$this->_flush();
-			$this->_clean();
+			// Return the full readed cache entry.
+			return $buffer;
 		}
+	} else {
+		// If the file is unreadable, we return signifying that the cache does not exist.
+		return TINYCACHE_NO_KEY;
 	}
+}
+
+function cache_delete( $name )
+{
+	/**
+	 * Delete the cache named $name.
+	*/
 	
-	function run_maintenance()
-	{
-		/**
-		 * This function runs a maintenance skimming on the cache folder.
-		 * This skim run deletes every file which is no longer related to a
-		 * cache entry and every cache entry linking to a missing file.
-		 * 
-		 * After it, every cache file is read and those expired will be deleted.
-		*/
-		
-		// First obtain the concurrent list of caches from the disk.
-		$this->_obtain();
-		
-		// Go through the cache list one-by-one, 
-		foreach ($this->_depot['caches'] as $v)
-		{
-			// The cache::get(); function will attempt to read the cache file from the disk.
-			// This call removes every expired entry from the depot and
-			// every cache linking to nonexistant files on the disk.
-			$this->get( array_search($v, $this->_depot['caches']) );
-		}
-		
-		// To clean the files which no longer point to depot entries,
-		// we first map the cache folder and check if files point to any entry.
-		foreach ( scandir($this->_basedir) as $file )
-		{
-			// Scandir of the basedir returns us an array of every file in the basedir.
-			if ( !in_array($file, array(".", "..", ".svn", "depot.wcf") ) )
-			{
-				// After omitting some files, we check whether the name is in the cache array.
-				if ( !array_search( $file, $this->_depot['caches'] ) )
-				{
-					// If the file is no longer linked to a cache entry, we delete it.
-					@unlink($this->_basedir."/".$file);
-				}
-			}
-		}
-	}
+	// Clear the filesize caches.
+	clearstatcache();
 	
-	private function _obtain()
-	{
-		/**
-		 * This function updates the memory-stored depot information from the hard disk.
-		*/
-		
-		// Because file sizes are cached, multiple obtains in a single execution
-		// (which usually happens) would return an errorneous string to unserialize.
-		// Thus, we forcedly clear the status cache.
-		clearstatcache();
-		
-		$depotfile = fopen($this->_basedir. "/depot.wcf", "rb");
-		$data = fread($depotfile, filesize($this->_basedir. "/depot.wcf"));
-		$this->_depot = unserialize($data);
-		unset($data);
-		fclose($depotfile);
-		
-		$this->_depot['last obtain time'] = time();
-		$this->_depot['access count'] = $this->_depot['access count'] + 1;
-	}
+	// Get the identifier name from the name of the cache.
+	$filename = md5($name);
 	
-	private function _clean()
-	{
-		/**
-		 * This function empties the internal depot stack stored in memory.
-		*/
-		
-		// ** Cleaning is not needed as _obtain() automatically overwrites the current data. **
-		//$this->_depot = array();
-	}
-	
-	private function _flush()
-	{
-		/**
-		 * The flush function exports the memory-based depot info to the hard disk,
-		 * into the depot.wcf index file.
-		 * 
-		 * The command will not run if the internal stack is empty.
-		*/
-		
-		if ( count($this->_depot) > 0 )
-		{
-			$this->_depot['last flush time'] = time();
-			$this->_depot['access count'] = $this->_depot['access count'] + 1;
-			
-			$depotfile = fopen($this->_basedir. "/depot.wcf", "w");
-			fwrite($depotfile, serialize($this->_depot));
-			fclose($depotfile);
-		}
-	}
+	// Delete the files.
+	array_map( "unlink", glob(TC_BASEDIR ."/". $filename .".*") );
 }
 ?>
