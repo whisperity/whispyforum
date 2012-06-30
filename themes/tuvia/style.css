@@ -24,6 +24,11 @@ font.emphasis {
 	font-weight: bold;
 }
 
+.subtitle {
+	font-family: Trebuchet MS, Verdana, Geneva, Arial, Helvetica, sans-serif;
+	border-bottom: 1px solid black;
+}
+
 /* Framework */
 div.headerbox {
 	width: 100%;
@@ -185,12 +190,19 @@ td.install-block-right {
 	width: 25%;
 }
 
-span.install-menu-actual {
-	color: #AB1852;
+li.install-menu-done {
+	color: #49A835;
+	list-style-image: url(arrow_down.png);
 }
 
-span.install-menu-entries {
+li.install-menu-actual {
+	color: #AB1852;
+	list-style-image: url(arrow_right.png);
+}
+
+li.install-menu-remain {
 	color: #49A835;
+	list-style: none;
 }
 /* Install */
 

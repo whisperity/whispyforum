@@ -1,4 +1,365 @@
 <?php
+/**
+ * WhispyForum
+ * 
+ * /install.php
+*/
+
+// Define some constants for this environment.
+define('WHISPYFORUM', TRUE);
+define('REQUIRE_SAFEMODE', TRUE);
+define('WORKING_DIRECTORY', getcwd());
+define('UNIQUETOKEN', "installer environment");
+
+// Load and initialize the required libraries
+require("includes/functions.php");
+require("includes/language.php");
+//require("includes/module.php");
+//require("includes/mysql.php");
+//require("includes/tinycache.php");
+require("includes/template.php");
+require("includes/user.php");
+
+global $cache, $template, $sql, $user;
+//$cache = new cache;
+$template = new template;
+load_lang("core");
+$template->load_template("framework", TRUE);
+//$sql = new mysql( @$cfg['dbhost'], @$cfg['dbuser'], @$cfg['dbpass'], @$cfg['dbname'] );
+$user = new user(0, FALSE);
+
+load_lang("install");
+$template->load_template("install/install", TRUE);
+
+// Fetch the install configuration from session.
+if ( !is_array(@$_SESSION['install_config']) )
+{
+	$_SESSION['install_config'] = array(
+		'language'	=>	"english",
+		'theme_name'	=>	"tuvia",
+		'step'	=>	1);
+}
+
+if ( @$_POST['new_language'] != NULL || @$_POST['new_theme'] != NULL )
+{
+	// If we have an input from the introduction part (step one), to load a new theme/language,
+	// we alter the $_SESSION['install_config'] array so the system loads the new one.
+	$_SESSION['install_config']['language'] = ( @$_POST['new_language'] != NULL ? @$_POST['new_language'] : $_SESSION['install_config']['language'] );
+	$_SESSION['install_config']['theme_name'] = ( @$_POST['new_theme'] != NULL ? @$_POST['new_theme'] : $_SESSION['install_config']['theme_name'] );
+}
+
+if ( @$_POST['step'] != NULL )
+{
+	// If we receive a new "step" variable in the POST header, we save it as the current step,
+	// so the installer later on will load the wanted step properly.
+	$_SESSION['install_config']['step'] = intval(@$_POST['step']);
+}
+
+// Load the configuration-specific language.
+// This automatically overwrites the previously loaded (english) localization.
+load_lang("install", $_SESSION['install_config']['language']);
+
+prettyVar($_GET);
+prettyVar($_POST);
+prettyVar($_SESSION);
+
+print $template->parse_template("header", array(
+	'HEADER'	=>	NULL,
+	'GLOBAL_TITLE'	=>	lang_key("INSTALL GLOBAL TITLE"),
+	'THEME_NAME'	=>	$_SESSION['install_config']['theme_name']) );
+
+// Create two stacks to buffer the content.
+$template->create_stack("left");
+$template->create_stack("right");
+
+switch ( $_SESSION['install_config']['step'] )
+{
+	default:
+	case 0:
+	case 1:
+		/* Introduction */
+		$step_title = lang_key("INTRODUCTION TITLE");
+		$step_picture = "install.png";
+		$step_alt = lang_key("INTRODUCTION TITLE");
+		
+		// Fetch language options for the starter form
+		$template->create_stack("language options");
+		foreach ( scandir("language") as $subfolder )
+		{
+			if ( !in_array($subfolder, array(".", "..", ".svn")) && is_dir("language/".$subfolder) && is_readable("language/".$subfolder) )
+			{
+				// After we exclude some nonused folders, we open each subfolder searching for a defintion file.
+				if ( is_readable("language/".$subfolder."/definition.php") )
+				{
+					include("language/".$subfolder."/definition.php");
+					
+					$template->add_to_stack( $template->parse_template("introduction language option", array(
+						'SELECTED'	=>	($_SESSION['install_config']['language'] == $subfolder ? " selected " : " "),
+						'DIR_NAME'	=>	$subfolder,
+						'LOCALIZED_NAME'	=>	$definition['LOCALIZED_NAME'],
+						'SHORT_NAME'	=>	$definition['SHORT_NAME'],
+						'LANG_CODE'	=>	$definition['LANG_CODE']
+					) ), "language options");
+				}
+			}
+		}
+		
+		// Fetch theme options for the starter form
+		$template->create_stack("theme options");
+		foreach ( scandir("themes") as $subfolder )
+		{
+			if ( !in_array($subfolder, array(".", "..", ".svn")) && is_dir("themes/".$subfolder) && is_readable("themes/".$subfolder) )
+			{
+				// After we exclude some nonused folders, we open each subfolder searching for a defintion file.
+				if ( is_readable("themes/".$subfolder."/definition.php") )
+				{
+					include("themes/".$subfolder."/definition.php");
+					
+					$template->add_to_stack( $template->parse_template("introduction theme option", array(
+						'SELECTED'	=>	($_SESSION['install_config']['language'] == $subfolder ? " selected " : " "),
+						'DIR_NAME'	=>	$subfolder,
+						'NAME'	=>	$definition['NAME']
+					) ), "theme options");
+				}
+			}
+		}
+		
+		$template->add_to_stack(
+			$template->parse_template("introduction form", array(
+				'TRY_OUT_SETTINGS'	=>	lang_key("INTRODUCTION TRY OUT SETTINGS"),
+				'INTRODUCTION_LANGUAGE'	=>	lang_key("INTRODUCTION LANGUAGE"),
+				'LANGUAGES_EMBED'	=>	$template->get_stack("language options"),
+				'INTRODUCTION_THEME'	=>	lang_key("INTRODUCTION THEME"),
+				'THEMES_EMBED'	=>	$template->get_stack("theme options"),
+				'INTRODUCTION_MODIFY_SETTINGS'	=>	lang_key("INTRODUCTION MODIFY SETTINGS"),
+			) ), "left");
+		
+		// There are some mandatory checks to ensure that the system can work in this environment.
+		// The $superfail variable might be turned TRUE to prevent further installation.
+		$_SESSION['install_config']['superfail'] = FALSE;
+		
+		$template->create_stack("envchecks");
+		
+		$template->add_to_stack( $template->parse_template("introduction envcheck header", array('ENVCHECK_HEADER'	=>	lang_key("CHECK HEADER")) ), "envchecks");
+		
+		function envcheck( $type, $header, $message, $custom_image = NULL, $set_superfail = FALSE )
+		{
+			/**
+			 * This function adds one parsed template of one environment check event to the 'left' stack here.
+			*/
+			global $template, $cache;
+			
+			switch (strtolower($type))
+			{
+				case "critical":
+					$image = "critical.png";
+					break;
+				case "error":
+					$image = "error.png";
+					break;
+				case "warning":
+					$image = "warning.png";
+					break;
+				case "info":
+					$image = "info.png";
+					break;
+				case "success":
+					$image = "success.png";
+					break;
+			}
+			
+			if ( isset($custom_image) && $custom_image != NULL )
+			{
+				$image = $custom_image;
+			}
+			
+			// If call requested turning superfail on, we load the config cache and set superfail to TRUE.
+			if ( $set_superfail )
+				$_SESSION['install_config']['superfail'] = TRUE;
+			
+			$template->add_to_stack( $template->parse_template("introduction envcheck", array(
+				'TYPE'	=>	$type,
+				'STATUS'	=>	lang_key("CHECK " .strtoupper($type)),
+				'THEME_NAME'	=>	$_SESSION['install_config']['theme_name'],
+				'IMAGE'	=>	$image,
+				'TITLE'	=>	$header,
+				'MESSAGE'	=>	$message
+			) ), "envchecks");
+		}
+		
+		// Check PHP version. Current release needs at least PHP 4.3.0.
+		envcheck(
+			( version_compare(PHP_VERSION, "4.3.0") === -1 ? 'CRITICAL' : 'INFO' ),
+			lang_key("PHPVERSION"),
+			lang_key("PHPVERSION 1"),
+			NULL,
+			( version_compare(PHP_VERSION, "4.3.0") === -1 ? TRUE : FALSE ));
+		
+		// register_globals should be turned off, however it doesn't really matters.
+		envcheck(
+			( @ini_get('register_globals') == '1' || strtolower(@ini_get('register_globals')) == 'on' ? 'WARNING' : 'INFO' ),
+			lang_key("REGISTER GLOBALS"),
+			lang_key("REGISTER GLOBALS 1"),
+			NULL,
+			FALSE);
+		
+		// We need the mySQL extension to be loaded.
+		envcheck(
+			( !extension_loaded("mysql") ? 'CRITICAL' : 'INFO' ),
+			lang_key("CHECK MYSQL"),
+			lang_key("CHECK MYSQL 1"),
+			( !extension_loaded("mysql") ? NULL : "driver.png" ),
+			( !extension_loaded("mysql") ));
+		
+		// Check whether config.php is writable.
+		// (If the file already exists, we check whether it is writable -- installer will disallow rewrite,
+		// if it does not exist, we create an empty dummy file to check writableness.)
+		if ( file_exists("config.php") )
+			$cfg_check = is_writable("config.php");
+		
+		if ( !file_exists("config.php") )
+			$cfg_check = @file_put_contents("config.php", NULL);
+		
+		envcheck(
+			( $cfg_check === FALSE ? 'CRITICAL' : 'SUCCESS' ),
+			lang_key("WRITABLE CONFIG"),
+			lang_key("WRITABLE CONFIG 1"),
+			( $cfg_check === FALSE ? "locked.png" : "edit.png" ),
+			( $cfg_check === FALSE ));
+		
+		// Check whether /cache folder is writable.
+		envcheck(
+			( !is_writable("cache") ? 'CRITICAL' : 'SUCCESS' ),
+			lang_key("WRITABLE CACHE"),
+			lang_key("WRITABLE CACHE 1"),
+			( !is_writable("cache") ? "locked.png" : NULL ),
+			( !is_writable("cache") ));
+		
+		// Check whether /upload is writable.
+		envcheck(
+			( !is_writable("upload") ? 'CRITICAL' : 'SUCCESS' ),
+			lang_key("WRITABLE UPLOAD"),
+			lang_key("WRITABLE UPLOAD 1"),
+			( !is_writable("upload") ? "locked.png" : NULL ),
+			( !is_writable("upload") ));
+		
+		// Check whether the system is installed
+		@include("config.php");
+		if ( is_array(@$cfg) )
+		{
+			// If the system is installed, we output an error message for the user.
+			$template->add_to_stack( ambox('CRITICAL', lang_key("ALREADY INSTALLED TEXT"), lang_key("ALREADY INSTALLED HEAD"), "locked.png"), "left");
+		} else {
+			// If the system is not installed, we add the welcome screen.
+			
+			$template->add_to_stack(
+				$template->parse_template("introduction", array(
+					'INTRODUCTION_BODY'	=>	lang_key("INTRODUCTION BODY"),
+					'ENVIRONMENT_CHECKS'	=>	$template->get_stack("envchecks"),
+					// Until developer state is resolved, the ambox() should stay.
+					'DEVELOPER_STATE_BOX'	=>	ambox('CRITICAL', lang_key("DISCLAIMER TEXT"), lang_key("DISCLAIMER HEAD"))
+				) ), "left");
+			
+			// We need to reload the cached configuration from the disk.
+			/*if ( $_SESSION['install_config']['superfail'] === TRUE )
+			{
+				// If the previous environment checks resulted in a "superfailure",
+				// a condition which prevents us from continuing the installation, we block it.
+				$template->add_to_stack(
+					$template->parse_template("introduction superfail", array(
+						'SUPERFAIL_NOTICE'	=>	lang_key("SUPERFAIL NOTICE"),
+						'SUBMIT_CAPTION'	=>	lang_key("NEXT")
+					) ), "left");
+			} elseif ( $_SESSION['install_config']['superfail'] === FALSE )
+			*/{
+				$template->add_to_stack(
+					$template->parse_template("introduction forward form", array(
+						'SUBMIT_CAPTION'	=>	lang_key("NEXT")
+					) ), "left");
+			}
+		}
+		
+		break;
+	case 2:
+		/* Configuration file */
+		$step_title = lang_key("INTRODUCTION TITLE");
+		$step_picture = "configuration.png";
+		$step_alt = lang_key("INTRODUCTION TITLE");
+		
+		prettyVar($template->get_template_keys("config"));
+		$template->add_to_stack( $template->parse_template("config", array(
+			'CONFIG_INTRO'	=>	lang_key("CONFIG INTRO"),
+			'MANDATORY_VARIABLES'	=>	lang_key("MANDATORY VARIABLES"),
+			'DATABASE_CONFIG_DATA'	=>	lang_key("DATABASE CONFIG DATA"),
+			
+			'DATABASE_TYPE'	=>	lang_key("DATABASE TYPE"),
+			'MYSQL'	=>	lang_key("MYSQL"),
+			'DATABASE_HOST'	=>	lang_key("DATABASE HOST"),
+			'DATABASE_USER'	=>	lang_key("DATABASE USER"),
+			'DATABASE_PASS'	=>	lang_key("DATABASE PASS"),
+			'DATABASE_NAME'	=>	lang_key("DATABASE HOST"),
+			
+			'NEXT_CAPTION'	=>	lang_key("NEXT"),
+			
+			/** Database configuration **/
+			'DBHOST'	=>	6,
+			'DBUSER'	=>	7,
+			'DBPASS'	=>	8,
+			'DBNAME'	=>	9,
+		)), "left");
+		
+		break;
+}
+
+// Generate the installer menu
+$template->create_stack("install menu entries");
+for ($i = 1; $i <= 11; $i++)
+{
+	if ( $i < $_SESSION['install_config']['step'] )
+		$type = "done";
+	if ( $i == $_SESSION['install_config']['step'] )
+		$type = "actual";
+	if ( $i > $_SESSION['install_config']['step'] )
+		$type = "remain";
+	
+	$template->add_to_stack( $template->parse_template("install menu element", array(
+		'TYPE'	=>	$type,
+		'CAPTION'	=>	lang_key("INSTALL STEP ".$i) ) ), "install menu entries");
+}
+
+$template->add_to_stack( $template->parse_template("install menu", array(
+	'HEADER'	=>	lang_key("INSTALL MENU HEADER"),
+	'CONTENT'	=>	$template->get_stack("install menu entries") ) ), "right" );
+
+$template->delete_stack("install menu entries");
+
+// Output installer content using the buffered stacks
+print $template->parse_template("install", array(
+	'THEME_NAME'	=>	$_SESSION['install_config']['theme_name'],
+	'PICTURE'	=>	@$step_picture,
+	'ALT'	=>	@$step_alt,
+	'TITLE'	=>	@$step_title,
+	'LEFT_CONTENT'	=>	$template->get_stack("left"),
+	'RIGHT_CONTENT'	=>	$template->get_stack("right")
+	) );
+
+/*prettyVar($user);
+prettyVar($sql);
+prettyVar($template);
+prettyVar($cache);
+prettyVar($localization);*/
+// Unset the global classes and finalize execution.
+unset($user);
+unset($sql);
+unset($template);
+unset($cache);
+unset($localization);
+exit;
+?>
+
+<?php
+/*** OLD SCRIPT, DEPRECATED ***/
+die("Old script is deprecated");
  /**
  * WhispyForum script file - install.php
  * 
