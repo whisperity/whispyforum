@@ -24,8 +24,7 @@ if ( @$_POST['logout'] === "do_user_logout" )
 {
 	// Destroy the session's data.
 	// When the user loads the next page, user::_startup_session() will create a new, guest session.
-	session_unset();
-	session_destroy();
+	$user->logout();
 	
 	print ambox('SUCCESS', lang_key("LOGOUT SUCCESS"), NULL, "user.png", NULL);
 	print $template->parse_template("redirect", array(

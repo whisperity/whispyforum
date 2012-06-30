@@ -8,6 +8,8 @@
 if ( !defined("WHISPYFORUM") )
 	die("Direct opening.");
 
+define('USER_NO_KEY', -1);
+
 class user
 {
 	// The user class defines the user object itself and manages sessions.
@@ -28,7 +30,7 @@ class user
 	// Stores whether the instance opened the user's data only for reading
 	private $_readonly = TRUE;
 	
-	function __construct( $pointer = -1, $readOnly = TRUE )
+	public function __construct( $pointer = -1, $readOnly = TRUE )
 	{
 		/**
 		 * Constructor function, gets called every time a new
@@ -68,9 +70,6 @@ class user
 			
 			$this->_extract_data();
 		}
-		
-		// Define a constant for get_value()
-		@define('USER_NO_KEY', "requested-key-not-present");
 	}
 	
 	private function _init_session()
@@ -87,10 +86,10 @@ class user
 		if ( !isset($_SESSION['id']) )
 		{
 			$this->_setup_session();
-		} elseif ( $_SESSION['id'] > 0  )
+		} elseif ( isset($_SESSION['id']) )
 		{
 			$cl_side = $this->_check_client();
-			$sv_side = $this->_db_auth_user();
+			$sv_side = ($_SESSION['id'] > 0 ? $this->_db_auth_user() : TRUE);
 			
 			// If both checks confirm that the session is valid, request
 			// query and filling of the user's userdata array in the object.
@@ -99,14 +98,39 @@ class user
 				$this->userid = $_SESSION['id'];
 				$this->current = TRUE;
 				
-				$this->_extract_data();
+				if ( $_SESSION['id'] > 0 )
+					$this->_extract_data();
 			}
 			
+			// Forced logout the user if the cookie information is faulty.
 			if ( $cl_side === FALSE )
+			{
 				echo ambox('ERROR', lang_key("USER CLIENT ERROR"), lang_key("USER CLIENT ERROR TITLE"), "agent.png");
+				
+				// Due to this user object is generated at the very beginning of the script,
+				// we can unload the session right now and start with a new one.
+				
+				foreach ( array_keys($_SESSION) as $key )
+					unset($_SESSION[ $key ]);
+				
+				$this->_setup_session();
+				$this->_userid = 0;
+				$this->current = TRUE;
+			}
 			
 			if ( $sv_side === FALSE )
+			{
 				echo ambox('ERROR', lang_key("USER AUTH ERROR"), lang_key("USER AUTH ERROR TITLE"), "user.png");
+				
+				// Due to this user object is generated at the very beginning of the script,
+				// we can unload the session right now and start with a new one.
+				foreach ( array_keys($_SESSION) as $key )
+					unset($_SESSION[ $key ]);
+				
+				$this->_setup_session();
+				$this->_userid = 0;
+				$this->current = TRUE;
+			}
 		}
 	}
 	
@@ -125,6 +149,34 @@ class user
 			'user_agent'	=>	$_SERVER['HTTP_USER_AGENT'],
 			'site_uuid'	=>	UNIQUETOKEN
 		);
+	}
+	
+	public function logout()
+	{
+		/**
+		 * This function logs the user out (if it is the current user), and kills the session.
+		*/
+		
+		if ( $this->_current === TRUE && $this->_readonly === FALSE )
+			$this->_kill_session();
+	}
+	private function _kill_session()
+	{
+		/**
+		 * This function is internally used to unset, destroy and remove session data.
+		*/
+		
+		session_destroy();
+		
+		if (ini_get("session.use_cookies")) 
+		{
+			$params = session_get_cookie_params();
+			
+			setcookie(session_name(), '', time() - 42000,
+				$params["path"], $params["domain"],
+				$params["secure"], $params["httponly"]
+			);
+		}
 	}
 	
 	private function _check_client()
@@ -213,7 +265,7 @@ class user
 		}
 	}
 	
-	function get_value( $key, $past = FALSE )
+	public function get_value( $key, $past = FALSE )
 	{
 		/**
 		 * This function returns the requested key ($key) from _userdata.
@@ -248,7 +300,7 @@ class user
 		return $ret;
 	}
 	
-	function set_value( $key, $value )
+	public function set_value( $key, $value )
 	{
 		/**
 		 * This function sets the $key key of userdata to the new $value value.
@@ -269,7 +321,7 @@ class user
 		}
 	}
 	
-	function is_readonly()
+	public function is_readonly()
 	{
 		/**
 		 * This function returns whether the current object is read-only as a boolean.
@@ -368,7 +420,7 @@ class user
 		return ( $sql->num_rows() === 1 ? FALSE : TRUE );
 	}
 	
-	function __destruct()
+	public function __destruct()
 	{
 		/**
 		 * Destructor. Called each time the instance is deferenced
