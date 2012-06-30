@@ -8,6 +8,10 @@
 if ( !defined("WHISPYFORUM") )
 	die("Direct opening.");
 
+define('SQL_ASSOC', 1);
+define('SQL_NUM', 2);
+define('SQL_BOTH', 3);
+
 class mysql
 {
 	/**
@@ -23,7 +27,7 @@ class mysql
 	// $_fetch_types contain the type constants for fetch_array()
 	private $_fetch_types = array(1	=>	MYSQL_ASSOC, 2	=>	MYSQL_NUM, 3	=>	MYSQL_BOTH);
 	
-	function __construct( $dbhost, $dbuser, $dbpass, $dbname )
+	public function __construct( $dbhost, $dbuser, $dbpass, $dbname )
 	{
 		/**
 		 * Construction function loads the class and initializes the header of object.
@@ -41,14 +45,9 @@ class mysql
 		
 		mysql_select_db( $dbname, $this->link ) or
 			die("DB select error.");
-		
-		// Set up the SQL-specific constants
-		@define('SQL_ASSOC', 1);
-		@define('SQL_NUM', 2);
-		@define('SQL_BOTH', 3);
 	}
 	
-	function query( $query )
+	public function query( $query )
 	{
 		/**
 		 * Runs the argument $query on the database then stores the result in $res.
@@ -65,7 +64,7 @@ class mysql
 		return $res;
 	}
 	
-	function fetch_array( $res = NULL, $type = SQL_ASSOC )
+	public function fetch_array( $res = NULL, $type = SQL_ASSOC )
 	{
 		/**
 		 * Fetch an array from the given query result with the given type.
@@ -92,7 +91,7 @@ class mysql
 		}
 	}
 	
-	function num_rows( $res = NULL )
+	public function num_rows( $res = NULL )
 	{
 		/**
 		 * Return the number of rows in the result.
@@ -101,7 +100,7 @@ class mysql
 		return @mysql_num_rows( (isset($res) ? $res : $this->res) );
 	}
 	
-	function insert_id()
+	public function insert_id()
 	{
 		/**
 		 * This function returns the ID of the currently inserted row.
@@ -110,7 +109,7 @@ class mysql
 		return @mysql_insert_id($this->link);
 	}
 	
-	function escape( $string )
+	public function escape( $string )
 	{
 		/**
 		 * This function escapes certain characters to prevent SQL-injection attack.
@@ -119,7 +118,7 @@ class mysql
 		return @mysql_real_escape_string($string, $this->link);
 	}
 	
-	function seek( $res = NULL, $row = 0 )
+	public function seek( $res = NULL, $row = 0 )
 	{
 		/**
 		 * This function seeks the set $res result (or the internal property) to row number $row
@@ -128,7 +127,7 @@ class mysql
 		return @mysql_data_seek( (isset($res) ? $res : $this->res ), $row);
 	}
 	
-	function __destruct()
+	public function __destruct()
 	{
 		/**
 		 * The destructor releases the object at its dereference.

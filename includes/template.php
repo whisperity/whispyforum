@@ -8,6 +8,8 @@
 if ( !defined("WHISPYFORUM") )
 	die("Direct opening.");
 
+define('TEMPLATE_NO_KEY', -1);
+
 class template
 {
 	/**
@@ -54,13 +56,7 @@ class template
 	// This allows to cache the commonly used keys like 'THEME_NAME'.
 	private $_replace_archive = array();
 	
-	function __construct()
-	{
-		// Define a constant for get_archived_key()
-		@define('TEMPLATE_NO_KEY', "requested-key-not-present");
-	}
-	
-	function set_basedir( $basedir )
+	public function set_basedir( $basedir )
 	{
 		/**
 		 * This function sets the internal basedir to the $basedir argument.
@@ -69,7 +65,7 @@ class template
 		$this->_basedir = $basedir;
 	}
 	
-	function get_basedir()
+	public function get_basedir()
 	{
 		/**
 		 * This function returns the current _basedir property of the object.
@@ -78,7 +74,7 @@ class template
 		return $this->_basedir;
 	}
 	
-	function load_template( $file, $multi = FALSE )
+	public function load_template( $file, $multi = FALSE )
 	{
 		/**
 		 * This function loads the requested $file template from the filesystem.
@@ -128,7 +124,7 @@ class template
 		unset($data);
 	}
 	
-	function parse_template( $template, $replace = NULL )
+	public function parse_template( $template, $replace = NULL )
 	{
 		/**
 		 * This function parses the said $template with replacing the keys in the template file
@@ -160,7 +156,7 @@ class template
 		return $this->_output;
 	}
 	
-	function get_template_keys( $template )
+	public function get_template_keys( $template )
 	{
 		/**
 		 * This function fetches and returns every possible template key's name from the template given.
@@ -174,10 +170,10 @@ class template
 		
 		preg_match_all('/\{\[(.*?)\]\}/ix', $this->_templates[ $template ], $matches, PREG_PATTERN_ORDER);
 		
-		return $matches[1];
+		return array_flip($matches[1]);
 	}
 	
-	function get_archived_key( $key )
+	public function get_archived_key( $key )
 	{
 		/**
 		 * This function returns the value of given key from the replace archive.
@@ -186,7 +182,7 @@ class template
 		return ( array_key_exists($key, $this->_replace_archive) ? $this->_replace_archive[$key] : TEMPLATE_NO_KEY );
 	}
 	
-	function create_stack( $name = NULL )
+	public function create_stack( $name = NULL )
 	{
 		/**
 		 * This function creates a stack to contain templates for buffering purposes.
@@ -221,7 +217,7 @@ class template
 		return end($stack_keys);
 	}
 	
-	function delete_stack( $name = NULL )
+	public function delete_stack( $name = NULL )
 	{
 		/**
 		 * Remove the stack named $name, or, if not present, the most recent one.
@@ -239,7 +235,7 @@ class template
 		unset($this->_stack[ $name ]);
 	}
 	
-	function add_to_stack( $data = NULL, $stack = NULL )
+	public function add_to_stack( $data = NULL, $stack = NULL )
 	{
 		/**
 		 * Store $data into the stack named $stack.
@@ -262,7 +258,7 @@ class template
 		$this->_stack[ $stack ] .= "\n" .$data;
 	}
 	
-	function get_stack( $name = NULL )
+	public function get_stack( $name = NULL )
 	{
 		/**
 		 * Return the value of stack named $name, or the most recent one.

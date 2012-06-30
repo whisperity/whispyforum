@@ -41,7 +41,8 @@ function cache_set( $name, $content, $expiry = 3600 )
 	$filesize = strlen($content);
 	
 	// Create the file header
-	$header = "\x14" . $name . "\x7F" . $filesize . "\x7F" . (time() + $expiry) . "\x14" . "\x02";
+	$header = "\x14" . $name . "\x7F" . $filesize . "\x7F" . TC_MAX_CHUNK_SIZE . "\x7F" . (time() + $expiry) . "\x14" . "\x02";
+	$header = sprintf("%04d", strlen($header)) . $header;
 	
 	/**
 	 * Header explanation:
@@ -114,16 +115,17 @@ function cache_get( $name )
 	// Check whether the file exists, and if yes, open the file.
 	if ( is_readable(TC_BASEDIR ."/". $filename .".1") )
 	{
+		// Get the header of the file for examination.
 		$first_handle = fopen( TC_BASEDIR ."/". $filename .".1", "rb");
-		$first = fread($first_handle, filesize( TC_BASEDIR ."/". $filename .".1"));
-		fclose($first_handle);
+		$head_length = fread($first_handle, 4);
+		$head = fread($first_handle, $head_length);
 		
-		// $first contains the content of the first (.1) file.
+		// $head_length contains the first four bytes, the length of the header.
+		// Then, this length will be read into $head, the real header string.
 		
 		// Using the delimiter-based explode of string, we chunk the content
 		// and retrieve the header informations: name, size and expiry.
-		$exploded = explode("\x02", $first);
-		$header = explode("\x14", $exploded[0]);
+		$header = explode("\x14", $head);
 		$header = explode("\x7F", $header[1]);
 		
 		// Terminate retrieving if the loaded cache file is different than the one we want.
@@ -132,29 +134,39 @@ function cache_get( $name )
 			return TC_NO_KEY;
 		
 		// Also terminate retrieving if the cache has already expired.
-		if ( time() >= $header[2] )
+		if ( time() >= $header[3] )
 		{
 			// Running into an expired cache automatically triggers its removal.
 			cache_delete($name);
 			return TC_NO_KEY;
 		}
 		
+		// Terminate execution if the cache was created with a different
+		// chunk size than the current settings.
+		if ( $header[2] != TC_MAX_CHUNK_SIZE )
+		{
+			// This error also trigger the removal of the file.
+			cache_delete($name);
+			return TC_NO_KEY;
+		}
+		
+		// The pointer of $first_handle is now at the very beginning of the data,
+		// so we calculate how long the data is and then read the whole and put it in $data. 
+		$data = fread($first_handle, filesize( TC_BASEDIR ."/". $filename .".1" ) - strlen($head) - strlen($head_length) );
+		fclose($first_handle);
+		
 		if ( $header[1] <= TC_MAX_CHUNK_SIZE )
 		{
 			// If the size of the data in the file (excluding header) is smaller than
 			// the maximum chunk size, it means that this is a single-file cache.
-			
-			// We return the already-loaded (whole) data from the file.
-			// (By starting reading it from the end of the header
-			// and the header delimiter character (0 + strlen + 1).)
-			return substr($first, strlen($exploded[0]) + 1);
+			return $data;
 		} elseif ( $header[1] > TC_NO_KEY )
 		{
 			// If the size is bigger, it means that the cache has been chunked.
 			
 			// An internal buffer is created to store the data.
 			// (The first loaded content is appended automatically.)
-			$buffer = substr($first, strlen($exploded[0]) + 1);
+			$buffer = $data;
 			
 			// The number of chunks is the rounded-up value of the division.
 			// Example: if the division if 12.5, it means that we have 12 full and 1 half-sized files: total 13.
@@ -173,7 +185,7 @@ function cache_get( $name )
 		}
 	} else {
 		// If the file is unreadable, we return signifying that the cache does not exist.
-		return TINYCACHE_NO_KEY;
+		return TC_NO_KEY;
 	}
 }
 

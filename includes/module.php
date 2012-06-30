@@ -8,6 +8,8 @@
 if ( !defined("WHISPYFORUM") )
 	die("Direct opening.");
 
+define('MODCONF_NO_KEY', -1);
+
 class module
 {
 	/**
@@ -27,7 +29,7 @@ class module
 	// _module_file is the filename of the module script, relative to /modules
 	private $_module_file = NULL;
 	
-	function __construct( $mod_id = 0, $mod_file = NULL )
+	public function __construct( $mod_id = 0, $mod_file = NULL )
 	{
 		/**
 		 * The constructor executes automatically at referencing, and loads the instance.
@@ -80,12 +82,9 @@ class module
 			foreach ( unserialize($data[0]) as $k => $v )
 				$this->_modconf[$k] = $v;
 		}
-		
-		// Define a constant for get_value()
-		@define('MODCONF_NO_KEY', "requested-key-not-present");
 	}
 	
-	function execute( $part = "general_execute", $data = NULL )
+	public function execute( $part = "general_execute", $data = NULL )
 	{
 		/**
 		 * This function includes the module script with the set $part value.
@@ -100,7 +99,7 @@ class module
 		return ( isset($ret) ? $ret : NULL);
 	}
 	
-	function get_value( $key, $past = FALSE )
+	public function get_value( $key, $past = FALSE )
 	{
 		/**
 		 * This function returns the requested key ($key) from _modconf.
@@ -135,7 +134,7 @@ class module
 		return $ret;
 	}
 	
-	function set_value( $key, $value )
+	public function set_value( $key, $value )
 	{
 		/**
 		 * This function sets the $key key of modconf to the new $value value.
@@ -153,7 +152,7 @@ class module
 		}
 	}
 	
-	function __destruct()
+	public function __destruct()
 	{
 		/**
 		 * Destructor executes at dereference of the object.
