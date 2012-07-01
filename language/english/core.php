@@ -31,9 +31,9 @@ $localized = array(
 	'NONSTANDARD CONFIGURATION'	=>	"Your configuration seems to be non-standard. It might affect your users in a bad way!",
 	
 	'USER AUTH ERROR TITLE'	=>	"Authentication error",
-	'USER AUTH ERROR'	=>	"The credentials stored in your browser cookie are invalid. Due to this failure, you have been logged out.",
+	'USER AUTH ERROR'	=>	"The credentials stored in your browser cookie are invalid. Due to this failure, you have been logged out and given a guest session.",
 	'USER CLIENT ERROR TITLE'	=>	"Validation error",
-	'USER CLIENT ERROR'	=>	"The information stored in your browser cookie are invalid. Due to this failure, you have been logged out.",
+	'USER CLIENT ERROR'	=>	"The information stored in your browser cookie is invalid. Due to this failure, you have been logged out and given a guest session.",
 	'USER READONLY'	=>	"This instance of the user object is running in read-only mode.",
 	
 	'LANGUAGE NOT FOUND'	=>	"Requested language file {FILE} not found.",
@@ -49,7 +49,7 @@ $localized = array(
 	'TEMPLATE MISSING'	=>	"Template {TEMPLATE} is not loaded.",
 	'TEMPLATE STACK ALREADY'	=>	"The stack named {STACK} already exists.",
 	'TEMPLATE STACK MISSING'	=>	"The stack named {STACK} does not exist.",
-		
+	
 	'DIRECT TITLE'	=>	"Direct opening",
 	'DIRECT'	=>	"This page does not support direct opening.",
 	
