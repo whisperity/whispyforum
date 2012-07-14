@@ -96,28 +96,30 @@ class template
 		if ( ( !$multi && array_key_exists( $file, $this->_templates ) ) || ( $multi && in_array( $file, $this->_index_tpp ) ) )
 			return FALSE;
 		
-		// Load the file contents
+		// Load the file contents.
 		$handle = fopen( $this->_basedir.$file.$suffix, "rb" );
 		$data = fread( $handle, filesize($this->_basedir.$file.$suffix) );
 		fclose($handle);
 		
-		// Store the template data into memory
+		// Store the template data into memory.
 		if ( !$multi )
 		{
 			$this->_templates[ $file ] = $data;
 		} elseif ( $multi )
 		{
-			// Escape some strings in the
 			$data = str_replace( array('\\', '\'', "\n"), array('\\\\', '\\\'', ''), $data);
 			
-			// Chunk up the template package to individual template files and make an executable
-			// PHP code which will insert the loaded templates into memory.
-			$data = preg_replace('#<!--- BEGIN (.*?) -->(.*?)<!--- END (.*?) -->#', "\n" . '$this->_templates[\'\\1\'] = \'\\2\';', $data);
+			// Fetch the individual templates and store them in the _templates property.
+			$pattern = '#<!--- BEGIN (?P<key>\S.+) -->(?P<value>.+?)<!--- END (?P=key) -->#si';
+			if ( preg_match_all($pattern, $data, $matches, PREG_SET_ORDER) )
+			{
+				foreach ($matches as $match)
+				{
+					$this->_templates[ $match['key'] ] = $match['value'];
+				}
+			}
 			
-			// Run the previously created PHP code
-			eval($data);
-			
-			// Store the template package's name in the index
+			// Store the template package's name in the index.
 			$this->_index_tpp[] = $file;
 		}
 		
@@ -154,23 +156,6 @@ class template
 		}
 		
 		return $this->_output;
-	}
-	
-	public function get_template_keys( $template )
-	{
-		/**
-		 * This function fetches and returns every possible template key's name from the template given.
-		*/
-		
-		if ( !array_key_exists( $template, $this->_templates ) )
-		{
-			echo ambox('ERROR', lang_key("TEMPLATE MISSING", array('TEMPLATE'	=>	$template)) );
-			return FALSE;
-		}
-		
-		preg_match_all('/\{\[(.*?)\]\}/ix', $this->_templates[ $template ], $matches, PREG_PATTERN_ORDER);
-		
-		return array_flip($matches[1]);
 	}
 	
 	public function get_archived_key( $key )
@@ -307,14 +292,14 @@ function load_all_templates( $object = NULL, $tpf = TRUE, $tpp = TRUE, $htm = FA
 		if ( substr($file, 0, 2 ) === "./" )
 			$file = substr($file, 2, strlen($file));
 		
-		// Load TPF files if requested
+		// Load TPF files if requested.
 		if ( pathinfo($file, PATHINFO_EXTENSION) === "tpf" && $tpf === TRUE )
 		{
 			$file = substr($file, 0, strpos($file, ".tpf"));
 			$object->load_template($file, FALSE);
 		}
 		
-		// Load TPP files if requested
+		// Load TPP files if requested.
 		if ( pathinfo($file, PATHINFO_EXTENSION) === "tpp" && $tpp === TRUE )
 		{
 			$file = substr($file, 0, strpos($file, ".tpp"));
@@ -329,12 +314,12 @@ function load_all_templates( $object = NULL, $tpf = TRUE, $tpp = TRUE, $htm = FA
 			// Set up a temporary path and copy-paste the file into the temporary folder.
 			$tmpdir = ini_get("upload_tmp_dir")."/";
 			$token = token();
-			$tmppath = $tmpdir.$token.".tpp";
+			$tmppath = $tmpdir.md5($file).".tpp";
 			file_put_contents($tmppath, file_get_contents($file));
 			
 			// With setting the basedir back and forth, we load the temporary file.
 			$object->set_basedir($tmpdir);
-			$object->load_template($token, TRUE);
+			$object->load_template(md5($file), TRUE);
 			$object->set_basedir("./");
 			
 			// Remove the temporary file.
@@ -342,7 +327,7 @@ function load_all_templates( $object = NULL, $tpf = TRUE, $tpp = TRUE, $htm = FA
 		}
 	}
 	
-	// Set the basedir back to the original one
+	// Set the basedir back to the original one.
 	$object->set_basedir($old_basedir);	
 }
 ?>
