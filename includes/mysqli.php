@@ -26,7 +26,7 @@ class db
 	private $_res;
 	
 	// $_fetch_types contain the type constants for fetch_array()
-	private $_fetch_types = array(1	=>	MYSQLI_ASSOC, 2	=>	MYSQLI_NUM, 3	=>	MYSQLI_BOTH);
+	private $_fetch_types = array(SQL_ASSOC	=>	MYSQLI_ASSOC, SQL_NUM	=>	MYSQLI_NUM, SQL_BOTHí	=>	MYSQLI_BOTH);
 	
 	public function __construct( $dbhost, $dbuser, $dbpass, $dbname )
 	{

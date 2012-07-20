@@ -48,7 +48,7 @@ $localized = array(
 	'INTRODUCTION MODIFY SETTINGS'	=>	"Modify language and theme",
 	'INTRODUCTION BODY'	=>	"Thank you for choosing WhispyForum. This version is the successor of the first WhispyForum, a PHP based portal/forum engine. We think you and your users will delight in the use of this system.",
 	'DISCLAIMER HEAD'	=>	"Disclaimer! <small>Please read carefully!</small>",
-	'DISCLAIMER TEXT'	=>	"This system is in-developement state, hence there are no stable release. There can be unexpected, unforseen and imminent data losses, which can lead to system instability.\n
+	'DISCLAIMER TEXT'	=>	"This system is in developement state, hence there are no stable release. There can be unexpected, unforseen and imminent data losses, which can lead to system instability.\n
 While using the system, you're well advised to create data backups regurarly, in case if you (unfortunately) have to restore.\n
 This package is provided as is. By using this package, you hereby accept our disclaimer. Until we push a stable release, we cannot guarantee that you won't experience any data loss.\n
 <small>You've been warned...</small>",
@@ -63,19 +63,21 @@ Before we can move on installing the system, you have to make your data safe. Cr
 	'CHECK WARNING'	=>	"Warning",
 	'CHECK INFO'	=>	"Notice/Information",
 	'CHECK SUCCESS'	=>	"Success",
-	'PHPVERSION'	=>	"PHP version is at least 4.3.0",
-	'PHPVERSION 1'	=>	"WhispyForum needs at least PHP 4.3.0 to operate properly.\nHaving a lower version installed might produce critical errors, and it is well advised to update your installation.",
-	'REGISTER GLOBALS'	=>	"<tt>register_globals</tt> is turned off.",
-	'REGISTER GLOBALS 1'	=>	"To lift some security concerns, it is advised to turn register_globals off. WhispyForum will operate if it is turned on nontheless.",
-	'CHECK MYSQL'	=>	"MySQL extension is loaded.",
-	'CHECK MYSQL 1'	=>	"WhispyForum needs the MySQL extension to be loaded, as that is the current layer to access the database. Without it, there is no chance for a proper operation.",
-	'WRITABLE CONFIG'	=>	"Configuration file is writable.",
-	'WRITABLE CONFIG 1'	=>	"<tt>config.php</tt> needs to be writable by the webserver for the installation to complete.",
-	'WRITABLE CACHE'	=>	"Cache is writable.",
-	'WRITABLE CACHE 1'	=>	"Make sure that <tt>cache/</tt> is writable by the webserver's user (usually <tt>www-data</tt>).\nWithout it, the caching system will not work.",
-	'WRITABLE UPLOAD'	=>	"Upload folder is writable.",
-	'WRITABLE UPLOAD 1'	=>	"Make sure that <tt>upload/</tt>, and all subfolders inside are writable by the webserver's user (usually <tt>www-data</tt>).\nNo access to the upload folder will cause failure in the system, as there will be no chance of uploading content like avatars or attachments.",
-	'SUPERFAIL NOTICE'	=>	"There were one or more errors checking the environment in which the system will operate. Some errors point out lacks of mandatory settings in the configuration and thus, the installation cannot continue.\nPlease revise the output above and resolve the errors.",
+	'PHPVERSION FAIL'	=>	"PHP version is less than {REQUIRED_VERSION}",
+	'PHPVERSION FAIL BODY'	=>	"WhispyForum needs at least PHP {REQUIRED_VERSION} to operate properly. Current version is {CURRENT_VERSION}.\nHaving an older version installed might produce critical errors, and it is well advised to update your installation for general compatibility.",
+	'PHPVERSION OK'	=>	"PHP version is {CURRENT_VERSION}",
+	'PHPVERSION OK BODY'	=>	"Your server seems to have PHP version {CURRENT_VERSION} installed.",
+	'EXTENSION FAIL'	=>	"No database extensions found.",
+	'EXTENSION FAIL BODY'	=>	"The checker was unable to find any database extensions which are known by the system and loaded on the server. Please make sure that at least one of the following extensions (specifically the one you will use to access your database host) is loaded: {EXTENSIONS}.",
+	'EXTENSION OK'	=>	"Found compatible database extensions.",
+	'EXTENSION OK BODY'	=>	"At least one database extension was found loaded on the server and known by the system. You will be able to use the following extensions: {EXTENSIONS}.",
+	'CONFIG FAIL'	=>	"Failed to write configuration file.",
+	'CONFIG FAIL BODY'	=>	"The webserver's user needs to have access to write the <tt>config.php</tt> file in the document root folder.",
+	'CONFIG OK'	=>	"Configuration file is writable.",
+	'UPLOAD FAIL'	=>	"Failed to write user upload folder.",
+	'UPLOAD FAIL BODY'	=>	"The webserver's user needs to have access to write the <tt>upload/</tt> folder in the document root folder for user uploads to work properly.",
+	'UPLOAD OK'	=>	"Upload folder is writable.",
+	'SUPERFAIL NOTICE'	=>	"There were one or more errors checking the environment in which the system will operate and thus the installation cannot continue.\nPlease revise the output above and resolve the errors.",
 	
 	/* Step 2: Configuration file */
 	'CONFIG INTRO'	=>	"The configuration file stores the basic configuration values of your site, like database connection information. Values which are not obtainable from the database are stored on the server's hard drive in this file.",

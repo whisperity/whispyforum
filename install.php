@@ -15,21 +15,26 @@ define('UNIQUETOKEN', "installer environment");
 require("includes/functions.php");
 require("includes/language.php");
 //require("includes/module.php");
-//require("includes/mysql.php");
 //require("includes/tinycache.php");
 require("includes/template.php");
 require("includes/user.php");
 
-global $cache, $template, $sql, $user;
-//$cache = new cache;
+global $template, $user;
 $template = new template;
 load_lang("core");
 $template->load_template("framework", TRUE);
-//$sql = new mysql( @$cfg['dbhost'], @$cfg['dbuser'], @$cfg['dbpass'], @$cfg['dbname'] );
 $user = new user(0, FALSE);
 
 load_lang("install");
 $template->load_template("install/install", TRUE);
+
+// The list of database layers installed into the system.
+$layers_includes = array('mysqli');
+
+// The list of layers known by the system and installed on the server
+foreach ( $layers_includes as $v )
+	if ( extension_loaded($v) && file_exists("includes/" .$v. ".php") )
+		$layers_available[] = $v;
 
 // Fetch the install configuration from session.
 if ( !is_array(@$_SESSION['install_config']) )
@@ -146,8 +151,14 @@ switch ( $_SESSION['install_config']['step'] )
 		{
 			/**
 			 * This function adds one parsed template of one environment check event to the 'left' stack here.
+			 * 
+			 * $type can either be 'CRITICAL', 'ERROR', 'WARNING', 'INFO' or 'SUCCESS' defining the type of check
+			 * $header and $message are the text output of the box
+			 * $custom_image can override the image printed
+			 * $set_superfail will lock the user to 'superfail' state if set to TRUE
 			*/
-			global $template, $cache;
+			
+			global $template;
 			
 			switch (strtolower($type))
 			{
@@ -169,9 +180,7 @@ switch ( $_SESSION['install_config']['step'] )
 			}
 			
 			if ( isset($custom_image) && $custom_image != NULL )
-			{
 				$image = $custom_image;
-			}
 			
 			// If call requested turning superfail on, we load the config cache and set superfail to TRUE.
 			if ( $set_superfail )
@@ -187,29 +196,40 @@ switch ( $_SESSION['install_config']['step'] )
 			) ), "envchecks");
 		}
 		
-		// Check PHP version. Current release needs at least PHP 4.3.0.
-		envcheck(
-			( version_compare(PHP_VERSION, "4.3.0") === -1 ? 'CRITICAL' : 'INFO' ),
-			lang_key("PHPVERSION"),
-			lang_key("PHPVERSION 1"),
-			NULL,
-			( version_compare(PHP_VERSION, "4.3.0") === -1 ? TRUE : FALSE ));
+		// Check PHP version. Current release needs at least PHP 5.4.4.
+		$current = PHP_VERSION;
+		$required= "5.4.4";
+		$compare = version_compare($current, $required, ">=");
 		
-		// register_globals should be turned off, however it doesn't really matters.
 		envcheck(
-			( @ini_get('register_globals') == '1' || strtolower(@ini_get('register_globals')) == 'on' ? 'WARNING' : 'INFO' ),
-			lang_key("REGISTER GLOBALS"),
-			lang_key("REGISTER GLOBALS 1"),
+			( !$compare ? 'CRITICAL' : 'INFO' ),
+			( !$compare 
+				? lang_key("PHPVERSION FAIL", array(
+					'REQUIRED_VERSION'	=>	$required))
+				: lang_key("PHPVERSION OK", array(
+					'CURRENT_VERSION'	=>	$current)) ),
+			( !$compare 
+				? lang_key("PHPVERSION FAIL BODY", array(
+					'CURRENT_VERSION'	=>	$current,
+					'REQUIRED_VERSION'	=>	$required) )
+				: lang_key("PHPVERSION OK BODY", array(
+					'CURRENT_VERSION'	=>	$current)) ),
 			NULL,
-			FALSE);
+			( !$compare ));
 		
-		// We need the mySQL extension to be loaded.
+		// Check database extension layers availability
+		$extensions = count($layers_available);
+		
 		envcheck(
-			( !extension_loaded("mysql") ? 'CRITICAL' : 'INFO' ),
-			lang_key("CHECK MYSQL"),
-			lang_key("CHECK MYSQL 1"),
-			( !extension_loaded("mysql") ? NULL : "driver.png" ),
-			( !extension_loaded("mysql") ));
+			( $extensions === 0 ? 'CRITICAL' : 'INFO' ),
+			( $extensions === 0 ? lang_key("EXTENSION FAIL") : lang_key("EXTENSION OK") ),
+			( $extensions === 0 
+				? lang_key("EXTENSION FAIL BODY", array(
+					'EXTENSIONS'	=>	implode(", ", $layers_includes)) )
+				: lang_key("EXTENSION OK BODY", array(
+					'EXTENSIONS'	=>	implode(", ", $layers_available)) ) ),
+			"driver.png",
+			( $extensions === 0 ));
 		
 		// Check whether config.php is writable.
 		// (If the file already exists, we check whether it is writable -- installer will disallow rewrite,
@@ -221,30 +241,22 @@ switch ( $_SESSION['install_config']['step'] )
 			$cfg_check = @file_put_contents("config.php", NULL);
 		
 		envcheck(
-			( $cfg_check === FALSE ? 'CRITICAL' : 'SUCCESS' ),
-			lang_key("WRITABLE CONFIG"),
-			lang_key("WRITABLE CONFIG 1"),
-			( $cfg_check === FALSE ? "locked.png" : "edit.png" ),
-			( $cfg_check === FALSE ));
+			( !$cfg_check ? 'CRITICAL' : 'SUCCESS' ),
+			( !$cfg_check ? lang_key("CONFIG FAIL") : lang_key("CONFIG OK") ),
+			( !$cfg_check ? lang_key("CONFIG FAIL BODY") : NULL ),
+			( !$cfg_check ? "locked.png" : "edit.png" ),
+			( !$cfg_check ));
 		
-		// Check whether /cache folder is writable.
+		// Check whether upload/ is writable.
 		envcheck(
-			( !is_writable("cache") ? 'CRITICAL' : 'SUCCESS' ),
-			lang_key("WRITABLE CACHE"),
-			lang_key("WRITABLE CACHE 1"),
-			( !is_writable("cache") ? "locked.png" : NULL ),
-			( !is_writable("cache") ));
-		
-		// Check whether /upload is writable.
-		envcheck(
-			( !is_writable("upload") ? 'CRITICAL' : 'SUCCESS' ),
-			lang_key("WRITABLE UPLOAD"),
-			lang_key("WRITABLE UPLOAD 1"),
+			( !is_writable("upload") ? 'ERROR' : 'SUCCESS' ),
+			( !is_writable("upload") ? lang_key("UPLOAD FAIL") : lang_key("UPLOAD OK") ),
+			( !is_writable("upload") ? lang_key("UPLOAD FAIL BODY") : NULL ),
 			( !is_writable("upload") ? "locked.png" : NULL ),
-			( !is_writable("upload") ));
+			FALSE);
 		
 		// Check whether the system is installed
-		@include("config.php");
+		include "config.php";
 		if ( is_array(@$cfg) )
 		{
 			// If the system is installed, we output an error message for the user.
@@ -261,7 +273,7 @@ switch ( $_SESSION['install_config']['step'] )
 				) ), "left");
 			
 			// We need to reload the cached configuration from the disk.
-			/*if ( $_SESSION['install_config']['superfail'] === TRUE )
+			if ( $_SESSION['install_config']['superfail'] === TRUE )
 			{
 				// If the previous environment checks resulted in a "superfailure",
 				// a condition which prevents us from continuing the installation, we block it.
@@ -271,7 +283,7 @@ switch ( $_SESSION['install_config']['step'] )
 						'SUBMIT_CAPTION'	=>	lang_key("NEXT")
 					) ), "left");
 			} elseif ( $_SESSION['install_config']['superfail'] === FALSE )
-			*/{
+			{
 				$template->add_to_stack(
 					$template->parse_template("introduction forward form", array(
 						'SUBMIT_CAPTION'	=>	lang_key("NEXT")
