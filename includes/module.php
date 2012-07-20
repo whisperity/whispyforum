@@ -8,6 +8,7 @@
 if ( !defined("WHISPYFORUM") )
 	die("Direct opening.");
 
+// Constants for module::get_value().
 define('MODCONF_NO_KEY', -1);
 
 class module
@@ -38,7 +39,7 @@ class module
 		 * $mod_file is the filename of the module script relative to /modules
 		*/
 		
-		global $sql;
+		global $db;
 		
 		// Set up module ID and module filename.
 		if ( $mod_id === 0 && $mod_file === NULL )
@@ -72,8 +73,8 @@ class module
 		// Extract module configuration from database.
 		if ( $mod_id !== 0 )
 		{
-			$result = $sql->query("SELECT `extra_data` FROM `modules` WHERE `id`=" .$sql->escape($mod_id). " LIMIT 1;");
-			$data = $sql->fetch_array($result, SQL_NUM);
+			$result = $db->query("SELECT `extra_data` FROM `modules` WHERE `id`=" .$db->escape($mod_id). " LIMIT 1;");
+			$data = $db->fetch_array($result, SQL_NUM);
 			
 			// If there is no extra data, we create an empty array.
 			if ( !is_array( @unserialize($data[0]) ) )
@@ -159,17 +160,17 @@ class module
 		 * This codeblock saves the modified _modconf keys (_modconf_diff), if any.
 		*/
 		
-		global $sql;
-		
 		// If there are no keys to modify, we return FALSE.
 		if ( count( $this->_modconf_diff ) === 0 )
 			return FALSE;
+		
+		global $db;
 		
 		// Merge the new values into the array of old values.
 		foreach ( $this->_modconf_diff as $k => $v )
 			$this->_modconf[$k] = $v;
 		
-		$sql->query("UPDATE `modules` SET `extra_data`='" .$sql->escape( serialize($this->_modconf) ). "' WHERE `id`=" .$sql->escape($this->_module_id). " LIMIT 1;");
+		$db->query("UPDATE `modules` SET `extra_data`='" .$db->escape( serialize($this->_modconf) ). "' WHERE `id`=" .$db->escape($this->_module_id). " LIMIT 1;");
 	}
 }
 ?>

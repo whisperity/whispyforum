@@ -32,17 +32,16 @@ if ( !is_array(@$cfg) )
 require("includes/functions.php");
 require("includes/language.php");
 require("includes/module.php");
-require("includes/mysql.php");
 require("includes/tinycache.php");
 require("includes/template.php");
 require("includes/user.php");
+// Load database layer //
 
-global $cache, $template, $sql, $user;
-$cache = new cache;
+global $template, $db, $user;
 $template = new template;
 load_lang("core");
 $template->load_template("framework", TRUE);
-$sql = new mysql( @$cfg['dbhost'], @$cfg['dbuser'], @$cfg['dbpass'], @$cfg['dbname'] );
+$db = new db( @$cfg['dbhost'], @$cfg['dbuser'], @$cfg['dbpass'], @$cfg['dbname'] );
 $user = new user(0, FALSE);
 
 /* DEVELOPEMENT */
@@ -80,16 +79,16 @@ $left_bar = array();
 
 // Check whether there is a userbox module somewhere in the module table.
 // If there isn't, we forcedly load such module (to prevent locking out users) to the top of the left menubar.
-$sql->query("SELECT `id` FROM `modules` WHERE `module`='userbox';");
-if ( $sql->num_rows() === 0 )
+$db->query("SELECT `id` FROM `modules` WHERE `module`='userbox';");
+if ( $db->num_rows() === 0 )
 {
 	echo ambox('INFO', lang_key("USERBOX NOT FOUND"), lang_key("NONSTANDARD CONFIGURATION"), "configuration.png");
 	$left_bar[] = array('id'	=>	0,	'module'	=>	'userbox');
 }
 
 // Load all the modules in align order from the database and then execute them.
-$sql->query("SELECT `id`, `module` FROM `modules` WHERE `side`='left' ORDER BY `align` ASC;");
-while ( $module = $sql->fetch_array() )
+$db->query("SELECT `id`, `module` FROM `modules` WHERE `side`='left' ORDER BY `align` ASC;");
+while ( $module = $db->fetch_array() )
 	$left_bar[] = $module;
 
 if ( REQUIRE_SAFEMODE )
@@ -118,7 +117,7 @@ function footer()
 	 * after the frontend code generated the center.
 	*/
 	
-	global $cache, $template, $sql, $user, $localization;
+	global $template, $db, $user, $localization;
 	
 	// Because footer is executed as a shutdown function,
 	// and Apache servers are likely to change the working folder for shutdown functions,
@@ -129,8 +128,8 @@ function footer()
 	$template->create_stack("right");
 	$right_bar = array();
 	
-	$sql->query("SELECT `id`, `module` FROM `modules` WHERE `side`='right' ORDER BY `align` ASC;");
-	while ( $module = $sql->fetch_array() )
+	$db->query("SELECT `id`, `module` FROM `modules` WHERE `side`='right' ORDER BY `align` ASC;");
+	while ( $module = $db->fetch_array() )
 		$right_bar[] = $module;
 	
 	if ( REQUIRE_SAFEMODE )
@@ -156,13 +155,13 @@ function footer()
 		'FOOTER'	=>	NULL ));
 	
 	prettyVar($user);
-	prettyVar($sql);
+	prettyVar($db);
 	prettyVar($template);
 	prettyVar($cache);
 	prettyVar($localization);
 	// Unset the global classes and finalize execution.
 	unset($user);
-	unset($sql);
+	unset($db);
 	unset($template);
 	unset($cache);
 	unset($localization);

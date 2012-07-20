@@ -213,14 +213,14 @@ class user
 		 * Otherwise, FALSE is returned.
 		*/
 		
-		global $sql;
+		global $db;
 		
-		$sql->query("SELECT id FROM `users` WHERE 
-			`id`=" .$sql->escape(@$_SESSION['id']). " AND
-			`username`='" .$sql->escape(@$_SESSION['username']). "' AND
-			`pwd`='" .$sql->escape(@$_SESSION['password']). "';");
+		$db->query("SELECT id FROM `users` WHERE 
+			`id`=" .$db->escape(@$_SESSION['id']). " AND
+			`username`='" .$db->escape(@$_SESSION['username']). "' AND
+			`pwd`='" .$db->escape(@$_SESSION['password']). "';");
 		
-		return ( $sql->num_rows() === 1 ? TRUE : FALSE );
+		return ( $db->num_rows() === 1 ? TRUE : FALSE );
 	}
 	
 	private function _extract_data()
@@ -230,18 +230,18 @@ class user
 		 * and fills the _userdata array with it for further usage.
 		*/
 		
-		global $sql;
+		global $db;
 		
 		if ( $this->current )
 		{
-			$row = $sql->fetch_array($sql->query("SELECT * FROM `users` WHERE 
-				`id`=" .$sql->escape($_SESSION['id']). " AND
-				`username`='" .$sql->escape($_SESSION['username']). "' AND
-				`pwd`='" .$sql->escape($_SESSION['password']). "' LIMIT 1;"), SQL_ASSOC);
+			$row = $db->fetch_array($db->query("SELECT * FROM `users` WHERE 
+				`id`=" .$db->escape($_SESSION['id']). " AND
+				`username`='" .$db->escape($_SESSION['username']). "' AND
+				`pwd`='" .$db->escape($_SESSION['password']). "' LIMIT 1;"), SQL_ASSOC);
 		} elseif ( !$this->current )
 		{
-			$row = $sql->fetch_array($sql->query("SELECT * FROM `users` WHERE 
-				`id`=" .$sql->escape($this->userid). " LIMIT 1;"), SQL_ASSOC);
+			$row = $db->fetch_array($db->query("SELECT * FROM `users` WHERE 
+				`id`=" .$db->escape($this->userid). " LIMIT 1;"), SQL_ASSOC);
 		}
 		
 		if ( !$row )
@@ -336,7 +336,7 @@ class user
 		 * This function checks the changes of the userdata in memory and updates the database.
 		*/
 		
-		global $sql;
+		global $db;
 		
 		// If there are no keys to modify, we return FALSE.
 		if ( count( $this->_userdata_diff ) === 0 )
@@ -351,7 +351,7 @@ class user
 		{
 			if ( $this->_check_for_extra($k) === FALSE )
 			{
-				$updates .= "`" .$k."`='" .$sql->escape($v)."',\n";
+				$updates .= "`" .$k."`='" .$db->escape($v)."',\n";
 				unset( $this->_userdata_diff[$k] );
 			} elseif ( $this->_check_for_extra($k) === TRUE )
 			{
@@ -368,7 +368,7 @@ class user
 			foreach ( $this->_userdata_diff as $k => $v )
 				$arrExtra[$k] = $v;
 			
-			$updates .= "`extra_data`='" .$sql->escape(serialize( $arrExtra )). "'";
+			$updates .= "`extra_data`='" .$db->escape(serialize( $arrExtra )). "'";
 		}
 		
 		$updates = rtrim($updates, "\n");
@@ -376,17 +376,17 @@ class user
 		
 		if ( $this->current )
 		{
-			$query = "UPDATE `users` SET " .$sql->escape( rtrim($updates, ",") ). " WHERE 
-				`id`=" .$sql->escape($_SESSION['id']). " AND
-				`username`='" .$sql->escape($_SESSION['username']). "' AND
-				`pwd`='" .$sql->escape($_SESSION['password']). "' LIMIT 1;";
+			$query = "UPDATE `users` SET " .$db->escape( rtrim($updates, ",") ). " WHERE 
+				`id`=" .$db->escape($_SESSION['id']). " AND
+				`username`='" .$db->escape($_SESSION['username']). "' AND
+				`pwd`='" .$db->escape($_SESSION['password']). "' LIMIT 1;";
 		} elseif ( !$this->current )
 		{
-			$query = "UPDATE `users` SET " .$sql->escape( rtrim($updates, ",") ). " WHERE 
-				`id`=" .$sql->escape($this->userid). " LIMIT 1;";
+			$query = "UPDATE `users` SET " .$db->escape( rtrim($updates, ",") ). " WHERE 
+				`id`=" .$db->escape($this->userid). " LIMIT 1;";
 		}
 		
-		$result = $sql->query($query);
+		$result = $db->query($query);
 		
 		return $result;
 	}
@@ -413,11 +413,11 @@ class user
 					For example: module configuration like `forum_topics_per_page` is an extra field.
 		**/
 		
-		global $sql;
+		global $db;
 		
-		$sql->query("SHOW COLUMNS FROM `users` LIKE '" .$sql->escape($key). "';");
+		$db->query("SHOW COLUMNS FROM `users` LIKE '" .$db->escape($key). "';");
 		
-		return ( $sql->num_rows() === 1 ? FALSE : TRUE );
+		return ( $db->num_rows() === 1 ? FALSE : TRUE );
 	}
 	
 	public function __destruct()
