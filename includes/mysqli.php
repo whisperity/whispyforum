@@ -2,30 +2,31 @@
 /**
  * WhispyForum
  * 
- * /includes/mysql.php
+ * /includes/mysqli.php
 */
 
 if ( !defined("WHISPYFORUM") )
 	die("Direct opening.");
 
+// Constants for db::fetch_array().
 define('SQL_ASSOC', 1);
 define('SQL_NUM', 2);
 define('SQL_BOTH', 3);
 
-class mysql
+class db
 {
 	/**
-	 * Database handler on the mySQL layer.
+	 * Database handler to connect to MySQL servers using the mysqli extension.
 	*/
 	
 	// Link identifier for current connection.
-	public $link;
+	private $_link;
 	
 	// Resource container for the current query
-	public $res;
+	private $_res;
 	
 	// $_fetch_types contain the type constants for fetch_array()
-	private $_fetch_types = array(1	=>	MYSQL_ASSOC, 2	=>	MYSQL_NUM, 3	=>	MYSQL_BOTH);
+	private $_fetch_types = array(1	=>	MYSQLI_ASSOC, 2	=>	MYSQLI_NUM, 3	=>	MYSQLI_BOTH);
 	
 	public function __construct( $dbhost, $dbuser, $dbpass, $dbname )
 	{
@@ -40,11 +41,12 @@ class mysql
 		*/
 		
 		// Connect to the host and select the database
-		$this->link = mysql_connect( $dbhost, $dbuser, $dbpass ) or
-			die("Connect error.");
+		$this->_link = @mysqli_connect( $dbhost, $dbuser, $dbpass, $dbname );
 		
-		mysql_select_db( $dbname, $this->link ) or
-			die("DB select error.");
+		if ( mysqli_connect_error() )
+			die("Unable to connect to database " .$dbuser. "@" .$dbhost. " (using password: " .(isset($dbpass) ? "yes" : "no"). "): " .mysqli_connect_errno(). " - " .mysqli_connect_error());
+		
+		mysqli_set_charset($this->_link, mysqli_character_set_name($this->_link) );
 	}
 	
 	public function query( $query )
@@ -55,16 +57,18 @@ class mysql
 		 * Returns TRUE if the query was successfully executed, FALSE if not.
 		*/
 		
-		$res = @mysql_query($query, $this->link)
-			or print( ambox('WARNING', lang_key("QUERY ERROR", array(
-				'ERROR'	=>	mysql_error(),
+		$res = mysqli_query($this->_link, $query);
+		
+		if ( $res === FALSE )
+			print( ambox('WARNING', lang_key("QUERY ERROR", array(
+				'ERROR'	=>	mysqli_error($this->_link),
 				'QUERY'	=>	$query) )) );
 		
-		$this->res = $res;
+		$this->_res = $res;
 		return $res;
 	}
 	
-	public function fetch_array( $res = NULL, $type = SQL_ASSOC )
+	public function fetch_array( $res = NULL, $type = SQL_BOTH )
 	{
 		/**
 		 * Fetch an array from the given query result with the given type.
@@ -78,13 +82,13 @@ class mysql
 		 * Returns the fetched array or FALSE if failed to fetch.
 		*/
 		
-		if ( isset($res) && is_resource($res) )
+		if ( isset($res) && @get_class($res) === "mysqli_result" )
 		{
-			return @mysql_fetch_array( $res, $this->_fetch_types[$type] );
+			return mysqli_fetch_array( $res, $this->_fetch_types[$type] );
 		} else {
-			if ( isset($this->res) )
+			if ( $res === NULL && @get_class($res) === "mysqli_result" )
 			{
-				return @mysql_fetch_array( $this->res, $this->_fetch_types[$type] );
+				return mysqli_fetch_array( $this->_res, $this->_fetch_types[$type] );
 			} else {
 				return FALSE;
 			}
@@ -97,7 +101,7 @@ class mysql
 		 * Return the number of rows in the result.
 		*/
 		
-		return @mysql_num_rows( (isset($res) ? $res : $this->res) );
+		return mysqli_num_rows( (isset($res) ? $res : $this->_res) );
 	}
 	
 	public function insert_id()
@@ -106,16 +110,16 @@ class mysql
 		 * This function returns the ID of the currently inserted row.
 		*/
 		
-		return @mysql_insert_id($this->link);
+		return mysqli_insert_id($this->_link);
 	}
 	
-	public function escape( $string )
+	public function escape( $str )
 	{
 		/**
 		 * This function escapes certain characters to prevent SQL-injection attack.
 		*/
 		
-		return @mysql_real_escape_string($string, $this->link);
+		return mysqli_real_escape_string($this->_link, $str);
 	}
 	
 	public function seek( $res = NULL, $row = 0 )
@@ -124,9 +128,18 @@ class mysql
 		 * This function seeks the set $res result (or the internal property) to row number $row
 		*/
 		
-		return @mysql_data_seek( (isset($res) ? $res : $this->res ), $row);
+		return mysqli_data_seek( (isset($res) ? $res : $this->_res ), $row);
 	}
 	
+	public function free_result( $res = NULL )
+	{
+		/**
+		 * Frees the result container associated with $res.
+		*/
+		
+		mysqli_free_result( (isset($res) ? $res : $this->_res) );
+	}
+		
 	public function __destruct()
 	{
 		/**
@@ -134,7 +147,7 @@ class mysql
 		 * This function closes the database link and readies the class for dereference.
 		*/
 		
-		@mysql_close($this->link);
+		mysqli_close($this->_link);
 	}
 }
 ?>
