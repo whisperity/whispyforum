@@ -58,10 +58,11 @@ if ( ( @$_POST['new_language'] != NULL || @$_POST['new_theme'] != NULL ) && $_SE
 }
 
 // The list of database layers installed into the system.
-// Only needed if we are on step 2 or 3.
-if ( $_SESSION['install_config']['step'] == 2 || $_SESSION['install_config']['step'] == 3 )
+// Only needed if we are on step 1 or 2.
+if ( $_SESSION['install_config']['step'] == 1 || $_SESSION['install_config']['step'] == 2 )
 {
 	$layers_includes = array('mysqli');
+	$layers_available = array();
 	
 	// The list of layers known by the system and installed on the server
 	foreach ( $layers_includes as $v )
