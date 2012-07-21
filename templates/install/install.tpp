@@ -100,7 +100,9 @@
 
 <form method="POST" action="install.php">
 	<span class="form-header">{[DATABASE_CONFIG_DATA]}</span><br>
-	{[DATABASE_TYPE]}<span class="red-star">*</span>: <select size="1" disabled="disabled"><option value="mysql" selected="selected" disabled="disabled">{[MYSQL]}</option></select><br>
+	{[DATABASE_TYPE]}<span class="red-star">*</span>: <select size="1" name="dbtype">
+		{[DBTYPE_OPTIONS]}
+	</select><br>
 	{[DATABASE_HOST]}<span class="red-star">*</span>: <input type="text" name="dbhost" value="{[DBHOST]}" size="35"><br>
 	{[DATABASE_USER]}<span class="red-star">*</span>: <input type="text" name="dbuser" value="{[DBUSER]}" size="35"><br>
 	{[DATABASE_PASS]}<span class="red-star">*</span>: <input type="password" name="dbpass" value="{[DBPASS]}" size="35"><br>
@@ -109,3 +111,7 @@
 	<input type="hidden" name="step" value="3">
 </form>
 <!--- END config -->
+
+<!--- BEGIN config dbtype option -->
+	<option value="{[VALUE]}">{[CAPTION]}</option>
+<!--- END config dbtype option -->

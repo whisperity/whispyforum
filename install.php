@@ -28,14 +28,6 @@ $user = new user(0, FALSE);
 load_lang("install");
 $template->load_template("install/install", TRUE);
 
-// The list of database layers installed into the system.
-$layers_includes = array('mysqli');
-
-// The list of layers known by the system and installed on the server
-foreach ( $layers_includes as $v )
-	if ( extension_loaded($v) && file_exists("includes/" .$v. ".php") )
-		$layers_available[] = $v;
-
 // Fetch the install configuration from session.
 if ( !is_array(@$_SESSION['install_config']) )
 {
@@ -45,14 +37,6 @@ if ( !is_array(@$_SESSION['install_config']) )
 		'step'	=>	1);
 }
 
-if ( @$_POST['new_language'] != NULL || @$_POST['new_theme'] != NULL )
-{
-	// If we have an input from the introduction part (step one), to load a new theme/language,
-	// we alter the $_SESSION['install_config'] array so the system loads the new one.
-	$_SESSION['install_config']['language'] = ( @$_POST['new_language'] != NULL ? @$_POST['new_language'] : $_SESSION['install_config']['language'] );
-	$_SESSION['install_config']['theme_name'] = ( @$_POST['new_theme'] != NULL ? @$_POST['new_theme'] : $_SESSION['install_config']['theme_name'] );
-}
-
 if ( @$_POST['step'] != NULL )
 {
 	// If we receive a new "step" variable in the POST header, we save it as the current step,
@@ -60,13 +44,36 @@ if ( @$_POST['step'] != NULL )
 	$_SESSION['install_config']['step'] = intval(@$_POST['step']);
 }
 
-// Load the configuration-specific language.
-// This automatically overwrites the previously loaded (english) localization.
-load_lang("install", $_SESSION['install_config']['language']);
-
+// Developer dumps.
 prettyVar($_GET);
 prettyVar($_POST);
 prettyVar($_SESSION);
+
+// If we are on step one and got a new language and theme option, we set it
+// so the installer will automatically load the new ones.
+if ( ( @$_POST['new_language'] != NULL || @$_POST['new_theme'] != NULL ) && $_SESSION['install_config']['step'] == 1 )
+{
+	$_SESSION['install_config']['language'] = ( @$_POST['new_language'] != NULL ? @$_POST['new_language'] : $_SESSION['install_config']['language'] );
+	$_SESSION['install_config']['theme_name'] = ( @$_POST['new_theme'] != NULL ? @$_POST['new_theme'] : $_SESSION['install_config']['theme_name'] );
+}
+
+// The list of database layers installed into the system.
+// Only needed if we are on step 2 or 3.
+if ( $_SESSION['install_config']['step'] == 2 || $_SESSION['install_config']['step'] == 3 )
+{
+	$layers_includes = array('mysqli');
+	
+	// The list of layers known by the system and installed on the server
+	foreach ( $layers_includes as $v )
+		if ( extension_loaded($v) && file_exists("includes/" .$v. ".php") )
+			$layers_available[] = $v;
+	
+	sort($layers_available);
+}
+
+// Load the configuration-specific language.
+// This automatically overwrites the previously loaded (english) localization.
+load_lang("install", $_SESSION['install_config']['language']);
 
 print $template->parse_template("header", array(
 	'HEADER'	=>	NULL,
@@ -298,14 +305,20 @@ switch ( $_SESSION['install_config']['step'] )
 		$step_picture = "configuration.png";
 		$step_alt = lang_key("INTRODUCTION TITLE");
 		
-		prettyVar($template->get_template_keys("config"));
+		// Generate list of available SQL handlers.
+		$template->create_stack("sqlhandlers");
+		foreach ( $layers_available as $v )
+			$template->add_to_stack( $template->parse_template("config dbtype option", array(
+				'VALUE'	=>	$v,
+				'CAPTION'	=>	lang_key(strtoupper($v))
+			) ), "sqlhandlers");
+		
 		$template->add_to_stack( $template->parse_template("config", array(
 			'CONFIG_INTRO'	=>	lang_key("CONFIG INTRO"),
 			'MANDATORY_VARIABLES'	=>	lang_key("MANDATORY VARIABLES"),
 			'DATABASE_CONFIG_DATA'	=>	lang_key("DATABASE CONFIG DATA"),
 			
 			'DATABASE_TYPE'	=>	lang_key("DATABASE TYPE"),
-			'MYSQL'	=>	lang_key("MYSQL"),
 			'DATABASE_HOST'	=>	lang_key("DATABASE HOST"),
 			'DATABASE_USER'	=>	lang_key("DATABASE USER"),
 			'DATABASE_PASS'	=>	lang_key("DATABASE PASS"),
@@ -314,11 +327,14 @@ switch ( $_SESSION['install_config']['step'] )
 			'NEXT_CAPTION'	=>	lang_key("NEXT"),
 			
 			/** Database configuration **/
-			'DBHOST'	=>	6,
-			'DBUSER'	=>	7,
-			'DBPASS'	=>	8,
-			'DBNAME'	=>	9,
+			'DBTYPE_OPTIONS'	=>	$template->get_stack("sqlhandlers"),
+			'DBHOST'	=>	NULL,
+			'DBUSER'	=>	NULL,
+			'DBPASS'	=>	NULL,
+			'DBNAME'	=>	NULL,
 		)), "left");
+		
+		$template->delete_stack("sqlhandlers");
 		
 		break;
 }

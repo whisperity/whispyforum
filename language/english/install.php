@@ -87,5 +87,7 @@ Before we can move on installing the system, you have to make your data safe. Cr
 	'DATABASE USER'	=>	"Username",
 	'DATABASE PASS'	=>	"Password",
 	'DATABASE NAME'	=>	"Name of database",
+	
+	'MYSQLI'	=>	"MySQL improved",
 );
 ?>
