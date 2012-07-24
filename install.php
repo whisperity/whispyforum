@@ -54,13 +54,6 @@ if ( !isset($_POST['ins_thm']) )
 	echo '<link rel="stylesheet" type="text/css" href="themes/' .$_POST['ins_thm']. '/style.css">';
 }
 
-/* DEVELOPEMENT */
-// PH, workaround: output HTTP POST and GET arrays
-print "<h4>GET</h4>";
-print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_GET,true))."<br>"; 
-print "<h4>POST</h4>";
-print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_POST,true))."<br>"; 
-echo "\n\n\n";
 // Set install poistion
 if (!isset($_POST['instPos']))
 {

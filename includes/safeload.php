@@ -56,35 +56,10 @@ $Cusers = new class_users;
 require("includes/functions.php");
 /* Libraries */
 
-/* DEVELOPEMENT */
-// PH, workaround: output HTTP POST and GET arrays
-print "<h4>GET</h4>";
-prettyVar($_GET, true);
-print "<h4>POST</h4>";
-prettyVar($_POST, true);
-print "<h4>FILES</h4>";
-prettyVar($_FILES, true);
-
 /* START GENERATION */
 $Cmysql->Connect(); // Connect to database
 $Cusers->Initialize(); // We initialize the userdata
 // User initialization also loads the language file
-
-/* DEVELOPEMENT */
-print "<h4>SESSION</h4>";
-prettyVar($_SESSION, true);
-// print "<h4>SERVER</h4>";
-// prettyVar($_SERVER, true);
-// print "<h4>REQUEST</h4>";
-// prettyVar($_REQUEST, true);
-// print "<h4>ENVIRONMENT</h4>";
-// prettyVar($_ENV, true);
-// print "<h4>COOKIES</h4>";
-// prettyVar($_COOKIE, true);
-// print "<h4>Configuration</h4>";
-// prettyVar($cfg, true);
-// print "<h4>Localization</h4>";
-// prettyVar($wf_lang, true);
 
 /* FRAMEWORK */
 // Load a lite version of head (will load the title and the stylesheet)

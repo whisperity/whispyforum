@@ -32,6 +32,23 @@ class class_mysql
 			@mysql_select_db($cfg['dbname']) // We select the database set in config
 				or $this->__giveDBSelectError(); // If we can't, give error message
 		}
+		
+		if ( $compare = version_compare(PHP_VERSION, '5.3.0', ">=") )
+		{
+			global $Ctemplate;
+			
+			if ( is_object($Ctemplate) && get_class($Ctemplate) === "class_template" )
+			{
+				$Ctemplate->useTemplate("errormessage", array(
+					'PICTURE_NAME'	=>	"Nuvola_devices_nfs_mount.png",
+					'TITLE'	=>	"Relying on this extension is highly discouraged", // Error title
+					'BODY'	=>	"This system is using the <tt>mysql</tt> extension which is deprecated since PHP 5.3.0. Current PHP version is " .PHP_VERSION. ".", // Error text
+					'ALT'	=>	"" // Alternate picture text
+				), FALSE);
+			} else {
+				echo "This system is using the <tt>mysql</tt> extension which is deprecated since PHP 5.3.0. Current PHP version is " .PHP_VERSION. ".<br>Relying on this extension is highly discouraged.";
+			}
+		}
 	}
 	
 	function TestConnection()
