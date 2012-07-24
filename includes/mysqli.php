@@ -13,7 +13,7 @@ define('SQL_ASSOC', 1);
 define('SQL_NUM', 2);
 define('SQL_BOTH', 3);
 
-class db
+class db_mysqli
 {
 	/**
 	 * Database handler to connect to MySQL servers using the mysqli extension.
@@ -26,7 +26,7 @@ class db
 	private $_res;
 	
 	// $_fetch_types contain the type constants for fetch_array()
-	private $_fetch_types = array(SQL_ASSOC	=>	MYSQLI_ASSOC, SQL_NUM	=>	MYSQLI_NUM, SQL_BOTHí	=>	MYSQLI_BOTH);
+	private $_fetch_types = array(SQL_ASSOC	=>	MYSQLI_ASSOC, SQL_NUM	=>	MYSQLI_NUM, SQL_BOTH	=>	MYSQLI_BOTH);
 	
 	public function __construct( $dbhost, $dbuser, $dbpass, $dbname )
 	{
