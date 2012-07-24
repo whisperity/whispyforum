@@ -6,19 +6,7 @@
 */
 
 /**
- * *********************************************************
- * * IMPORTANT! PLEASE READ BEFORE TRANSLATING! IMPORTANT! *
- * *********************************************************
- * 
- * Please do not translate the words between { and } characters
- * (like {LANG_LEFT}, {TITLE} and so on...) and HTML elements.
- * Line breaks are specified as "\n".
- * 
- * Some localization values are having variables in them, which
- * variables are given value by the frontend. You should familiarize
- * yourself with the values given so they can be output in good order
- * in the newly translated file.
- * (See lang_key() in /includes/language.php)
+ * For translation information, see core.php in the localization folder.
 */
 
 // The array to be loaded is called $localized.
@@ -42,11 +30,11 @@ $localized = array(
 	
 	/* Step 1: Introduction */
 	'INTRODUCTION TITLE'	=>	"Introduction",
-	'INTRODUCTION TRY OUT SETTINGS'	=>	"You now have a brief opportunity to try out the themes and languages currently installed on the server. You can now change the way the Installer appears. These language and theme preferences will be carried on as the defaults of the main system.",
+	'INTRODUCTION TRY OUT SETTINGS'	=>	"You now have a brief opportunity to try out the themes and languages currently installed on the server. You can now change the way the installer appears. These language and theme preferences will be carried on as the defaults for the main system.",
 	'INTRODUCTION LANGUAGE'	=>	"Language:",
 	'INTRODUCTION THEME'	=>	"Theme:",
 	'INTRODUCTION MODIFY SETTINGS'	=>	"Modify language and theme",
-	'INTRODUCTION BODY'	=>	"Thank you for choosing WhispyForum. This version is the successor of the first WhispyForum, a PHP based portal/forum engine. We think you and your users will delight in the use of this system.",
+	'INTRODUCTION BODY'	=>	"Welcome to the installer, which will help and guide you through setting up this copy of WhispyForum, with getting the database and other subsystems configured.",
 	'DISCLAIMER HEAD'	=>	"Disclaimer! <small>Please read carefully!</small>",
 	'DISCLAIMER TEXT'	=>	"This system is in developement state, hence there are no stable release. There can be unexpected, unforseen and imminent data losses, which can lead to system instability.\n
 While using the system, you're well advised to create data backups regurarly, in case if you (unfortunately) have to restore.\n
@@ -58,6 +46,7 @@ Reinstalling the system can produce a lot of stability and incompatibility issue
 Before we can move on installing the system, you have to make your data safe. Create a database backup, and drop every tables from the database. After that, delete <tt>config.php</tt> from the server root directory.\n
 <small>Existing configuration detected. Setup process terminated.</small>",
 	'CHECK HEADER'	=>	"Environment checks",
+	'CHECK BODY'	=>	"Every software has a set of system recommendations (even web applications), and WhispyForum is not different. Before the installation could continue, some environmental checks will be ran on your server installation.",
 	'CHECK CRITICAL'	=>	"Critical error",
 	'CHECK ERROR'	=>	"Error",
 	'CHECK WARNING'	=>	"Warning",
@@ -72,12 +61,12 @@ Before we can move on installing the system, you have to make your data safe. Cr
 	'EXTENSION OK'	=>	"Found compatible database extensions.",
 	'EXTENSION OK BODY'	=>	"At least one database extension was found loaded on the server and known by the system. You will be able to use the following extensions: {EXTENSIONS}.",
 	'CONFIG FAIL'	=>	"Failed to write configuration file.",
-	'CONFIG FAIL BODY'	=>	"The webserver's user needs to have access to write the <tt>config.php</tt> file in the document root folder.",
+	'CONFIG FAIL BODY'	=>	"The webserver's user (usually <tt>www-data</tt>) needs to have access to write the <tt>config.php</tt> file in the document root folder.",
 	'CONFIG OK'	=>	"Configuration file is writable.",
 	'UPLOAD FAIL'	=>	"Failed to write user upload folder.",
-	'UPLOAD FAIL BODY'	=>	"The webserver's user needs to have access to write the <tt>upload/</tt> folder in the document root folder for user uploads to work properly.",
+	'UPLOAD FAIL BODY'	=>	"The webserver's user (usually <tt>www-data</tt>) needs to have access to write the <tt>upload/</tt> folder in the document root folder for user uploads to work properly.\nYou can neglect this error, but doing so will wind up further malfunction in production.",
 	'UPLOAD OK'	=>	"Upload folder is writable.",
-	'SUPERFAIL NOTICE'	=>	"There were one or more errors checking the environment in which the system will operate and thus the installation cannot continue.\nPlease revise the output above and resolve the errors.",
+	'SUPERFAIL NOTICE'	=>	"There were one or more errors checking the environment in which the software should operate and thus the installation cannot continue.\nPlease revise the output above and resolve the found errors.",
 	
 	/* Step 2: Configuration file */
 	'CONFIG INTRO'	=>	"The configuration file stores the basic configuration values of your site, like database connection information. Values which are not obtainable from the database are stored on the server's hard drive in this file.",

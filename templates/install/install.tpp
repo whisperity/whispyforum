@@ -67,6 +67,7 @@
 
 <!--- BEGIN introduction envcheck header -->
 <h3 class="subtitle">{[ENVCHECK_HEADER]}</h3>
+{[ENVCHECK_DESCRIPTION]}
 <!--- END introduction envcheck header -->
 
 <!--- BEGIN introduction envcheck -->

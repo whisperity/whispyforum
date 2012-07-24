@@ -139,6 +139,7 @@ switch ( $_SESSION['install_config']['step'] )
 		
 		$template->add_to_stack(
 			$template->parse_template("introduction form", array(
+				'TITLE'	=>	lang_key("INTRODUCTION SETTING HEADER"),
 				'TRY_OUT_SETTINGS'	=>	lang_key("INTRODUCTION TRY OUT SETTINGS"),
 				'INTRODUCTION_LANGUAGE'	=>	lang_key("INTRODUCTION LANGUAGE"),
 				'LANGUAGES_EMBED'	=>	$template->get_stack("language options"),
@@ -153,7 +154,10 @@ switch ( $_SESSION['install_config']['step'] )
 		
 		$template->create_stack("envchecks");
 		
-		$template->add_to_stack( $template->parse_template("introduction envcheck header", array('ENVCHECK_HEADER'	=>	lang_key("CHECK HEADER")) ), "envchecks");
+		$template->add_to_stack( $template->parse_template("introduction envcheck header", array(
+			'ENVCHECK_HEADER'	=>	lang_key("CHECK HEADER"),
+			'ENVCHECK_DESCRIPTION'	=>	lang_key("CHECK BODY")
+		) ), "envchecks");
 		
 		function envcheck( $type, $header, $message, $custom_image = NULL, $set_superfail = FALSE )
 		{
