@@ -81,7 +81,7 @@ class db_mysqli
 		
 		if ( $res === FALSE )
 			print( ambox('WARNING', lang_key("QUERY ERROR", array(
-				'ERROR'	=>	mysqli_error($this->_link),
+				'ERROR'	=>	mysqli_errno($this->_link). " - " .mysqli_error($this->_link),
 				'QUERY'	=>	$query) )) );
 		
 		$this->_res = $res;

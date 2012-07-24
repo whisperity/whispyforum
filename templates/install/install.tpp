@@ -121,7 +121,7 @@
 {[MESSAGE]}
 <form method="POST" action="install.php">
 	<input type="hidden" name="dbtype" value="{[DBTYPE]}">
-	<input type="hidden" name="dbhost" value="{[DBHOST]}"><br>
+	<input type="hidden" name="dbhost" value="{[DBHOST]}">
 	<input type="hidden" name="dbuser" value="{[DBUSER]}">
 	<input type="hidden" name="dbpass" value="{[DBPASS]}">
 	<input type="hidden" name="dbname" value="{[DBNAME]}">
@@ -136,3 +136,10 @@
 	<input type="submit" value="{[SUBMIT_CAPTION]}">
 </form>
 <!--- END config forward form -->
+
+<!--- BEGIN dbcreate forward form -->
+<form method="POST" action="install.php">
+	<input type="hidden" name="step" value="5">
+	<input type="submit" value="{[SUBMIT_CAPTION]}">
+</form>
+<!--- END dbcreate forward form -->

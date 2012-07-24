@@ -15,5 +15,5 @@ $cfg = array(
 	'dbname'	=>	"{[DBNAME]}"
 );
 
-define('UNIQUETOKEN', "{[TOKEN]}");
+{[DISABLE_UNIQUETOKEN]}define('UNIQUETOKEN', "{[TOKEN]}");
 ?>

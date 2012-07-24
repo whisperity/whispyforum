@@ -41,7 +41,7 @@ $localized = array(
 	
 	'LANGUAGE NOT FOUND'	=>	"Requested language file {FILE} not found.",
 	
-	'QUERY ERROR'	=>	"There were an error executing the SQL query.\nThe error message was: {ERROR}.\nThe query was: {QUERY}",
+	'QUERY ERROR'	=>	"There were an error executing the SQL query.\nThe error message was: <tt>{ERROR}</tt>.\nThe query was: <tt>{QUERY}</tt>.",
 	
 	'MODULE NO ID NO FILE'	=>	"Unable to load unspecified new module. Filename is missing.",
 	'MODULE NO FILE'	=>	"Module filename was not specified for ID #{ID}.",

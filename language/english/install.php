@@ -18,17 +18,12 @@ $localized = array(
 	'INSTALL MENU HEADER'	=>	"Installer steps",
 	'INSTALL STEP 1'	=>	"1. Introduction",
 	'INSTALL STEP 2'	=>	"2. Configuration file",
-	'INSTALL STEP 3'	=>	"3. Writing configuration file",
-	'INSTALL STEP 4'	=>	"4. Testing database connection",
-	'INSTALL STEP 5'	=>	"5. Creating database",
-	'INSTALL STEP 6'	=>	"6. Creating tables",
-	'INSTALL STEP 7'	=>	"7. Adminisrator user",
-	'INSTALL STEP 8'	=>	"8. Registering administrator user",
-	'INSTALL STEP 9'	=>	"9. Site configuration",
-	'INSTALL STEP 10'	=>	"10. Saving site configuration",
-	'INSTALL STEP 11'	=>	"11. Finish",
+	'INSTALL STEP 3'	=>	"3. Setting up database",
+	'INSTALL STEP 4'	=>	"4. Registering adminisrator user",
+	'INSTALL STEP 5'	=>	"5. Configurating the site",
+	'INSTALL STEP 6'	=>	"6. Finish",
 	
-	/* Step 1: Introduction */
+	/* Introduction */
 	'INTRODUCTION TITLE'	=>	"Introduction",
 	'INTRODUCTION TRY OUT SETTINGS'	=>	"You now have a brief opportunity to try out the themes and languages currently installed on the server. You can now change the way the installer appears. These language and theme preferences will be carried on as the defaults for the main system.",
 	'INTRODUCTION LANGUAGE'	=>	"Language:",
@@ -68,7 +63,8 @@ Before we can move on installing the system, you have to make your data safe. Cr
 	'UPLOAD OK'	=>	"Upload folder is writable.",
 	'SUPERFAIL NOTICE'	=>	"There were one or more errors checking the environment in which the software should operate and thus the installation cannot continue.\nPlease revise the output above and resolve the found errors.",
 	
-	/* Step 2: Configuration file */
+	/* Configuration file */
+	'CONFIG TITLE'	=>	"Configuration file",
 	'CONFIG INTRO'	=>	"The configuration file stores the basic configuration values of your site, like database connection information. Values which are not obtainable from the database are stored on the server's hard drive in this file.",
 	'DATABASE CONFIG DATA'	=>	"Database connection configuration",
 	'DATABASE TYPE'	=>	"Type of database",
@@ -79,11 +75,18 @@ Before we can move on installing the system, you have to make your data safe. Cr
 	
 	'MYSQLI'	=>	"MySQL improved",
 	
-	/* Step 3: Writing Configuration file */
-	'WRITECONFIG TITLE'	=>	"Writing configuration file",
+	/* Writing configuration file */
+	'WRITECONFIG TITLE'	=>	"Configuration file",
 	'WRITECONFIG RETURN BODY'	=>	"To revise the configuration details and to try again, click the button below.",
 	'WRITECONFIG CONNECTION ERROR'	=>	"Unable to connect to the database",
 	'WRITECONFIG CONNECTION ERROR BODY'	=>	"Using <tt>{LAYER}</tt>, the server responded <tt>{ERROR_MESSAGE}</tt>.",
 	'WRITECONFIG CONFIG WRITTEN'	=>	"Successfully written configuration file.",
+	
+	/* Creating database */
+	'DBCREATE TITLE'	=>	"Creating database",
+	'DBCREATE SUCCESS'	=>	"The database has been successfully created or it is already existing.",
+	'DBCREATE FAIL'	=>	"Failed to create the database",
+	'DBCREATE FAIL BODY'	=>	"This error usually indicates inability to connect to the database or lack of <tt>CREATE</tt> privilege of the current user.",
+	'DBCREATE FAIL MESSAGE'	=>	"To revise database configuration settings, click the button below.",
 );
 ?>

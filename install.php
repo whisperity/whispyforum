@@ -93,6 +93,7 @@ switch ( $_SESSION['install_config']['step'] )
 		$step_title = lang_key("INTRODUCTION TITLE");
 		$step_picture = "install.png";
 		$step_alt = lang_key("INTRODUCTION TITLE");
+		$step_number = 1; // This is the first step.
 		
 		// Fetch language options for the starter form
 		$template->create_stack("language options");
@@ -305,9 +306,10 @@ switch ( $_SESSION['install_config']['step'] )
 		break;
 	case 2:
 		/* Configuration file */
-		$step_title = lang_key("INTRODUCTION TITLE");
+		$step_title = lang_key("CONFIG TITLE");
 		$step_picture = "configuration.png";
-		$step_alt = lang_key("INTRODUCTION TITLE");
+		$step_alt = lang_key("CONFIG TITLE");
+		$step_number = 2; // This is the second step.
 		
 		// Generate list of available SQL handlers.
 		$template->create_stack("sqlhandlers");
@@ -347,6 +349,7 @@ switch ( $_SESSION['install_config']['step'] )
 		$step_title = lang_key("WRITECONFIG TITLE");
 		$step_picture = "edit.png";
 		$step_alt = lang_key("WRITECONFIG TITLE");
+		$step_number = 2; // While technically this is the third step, we list it as the second again.
 		
 		$mandatory_variable_fail = FALSE;
 		$mandatory_variables = array('dbtype', 'dbhost', 'dbuser', 'dbpass', 'dbname');
@@ -380,7 +383,6 @@ switch ( $_SESSION['install_config']['step'] )
 			if ( !array_search($_POST['dbtype'], $layers_available) )
 			{
 				$layer_name = "db_" .$_POST['dbtype'];
-				
 				include "includes/" .$_POST['dbtype']. ".php";
 				
 				$connection = $layer_name::test_connection($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass']);
@@ -408,11 +410,12 @@ switch ( $_SESSION['install_config']['step'] )
 					'DBUSER'	=>	$_POST['dbuser'],
 					'DBPASS'	=>	$_POST['dbpass'],
 					'DBNAME'	=>	$_POST['dbname'],
+					'DISABLE_UNIQUETOKEN'	=>	"//", // Disable the UNIQUETOKEN define() in the file for now.
 					'TOKEN'	=>	token()
 				) ) );
 				fclose($configfile);
 				
-				$template->add_to_stack( ambox('SUCCESS', NULL, lang_key("WRITECONFIG CONFIG WRITTEN")), "left");
+				$template->add_to_stack( ambox('SUCCESS', lang_key("WRITECONFIG CONFIG WRITTEN")), "left");
 				
 				$template->add_to_stack( $template->parse_template("config forward form", array(
 					'SUBMIT_CAPTION'	=>	lang_key("NEXT")
@@ -421,17 +424,68 @@ switch ( $_SESSION['install_config']['step'] )
 		}
 		
 		break;
+	case 4:
+		/* Creating database */
+		$step_title = lang_key("DBCREATE TITLE");
+		$step_picture = "database.png";
+		$step_alt = lang_key("DBCREATE TITLE");
+		$step_number = 3;
+		
+		// Connect to the database server.
+		include "config.php";
+		include "includes/" .$cfg['dbtype']. ".php";
+		$layer_name = "db_" . $cfg['dbtype'];
+		$db = new $layer_name($cfg['dbhost'], $cfg['dbuser'], $cfg['dbpass'], NULL);
+		
+		// Fetch whether the database we need exists or not.
+		$check = $db->query('SELECT schema_name FROM information_schema.schemata WHERE schema_name = "' .$db->escape($cfg['dbname']). '"');
+		
+		if ( $db->num_rows($check) === 0 )
+			// Create the database
+			$db->query("CREATE DATABASE " .$db->escape($cfg['dbname']). " DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci");
+		
+		$db->free_result($check);
+		
+		// Check again to ensure proper creation.
+		$check_again = $db->query('SELECT schema_name FROM information_schema.schemata WHERE schema_name = "' .$db->escape($cfg['dbname']). '"');
+		
+		if ( $db->num_rows($check_again) === 1 )
+		{
+			$template->add_to_stack( ambox('SUCCESS', lang_key("DBCREATE SUCCESS")), "left");
+			
+			$template->add_to_stack( $template->parse_template("dbcreate forward form", array(
+				'SUBMIT_CAPTION'	=>	lang_key("NEXT")
+			) ), "left");
+		} elseif ( $db->num_rows($check_again) !== 1 )
+		{
+			$template->add_to_stack( ambox('CRITICAL', lang_key("DBCREATE FAIL BODY"), lang_key("DBCREATE FAIL"), "locked.png"), "left");
+			
+			$template->add_to_stack( $template->parse_template("config error return", array(
+				'DBTYPE'	=>	$cfg['dbtype'],
+				'DBHOST'	=>	$cfg['dbhost'],
+				'DBUSER'	=>	$cfg['dbuser'],
+				'DBPASS'	=>	$cfg['dbpass'],
+				'DBNAME'	=>	$cfg['dbname'],
+				'MESSAGE'	=>	lang_key("DBCREATE FAIL MESSAGE"),
+				'SUBMIT_CAPTION'	=>	lang_key("BACK")
+			) ), "left");
+		}
+		
+		$db->free_result($check_again);
+		unset($db);
+		
+		break;
 }
-
+//session_destroy();
 // Generate the installer menu
 $template->create_stack("install menu entries");
-for ($i = 1; $i <= 11; $i++)
+for ($i = 1; $i <= 6; $i++)
 {
-	if ( $i < $_SESSION['install_config']['step'] )
+	if ( $i < $step_number )
 		$type = "done";
-	if ( $i == $_SESSION['install_config']['step'] )
+	if ( $i == $step_number )
 		$type = "actual";
-	if ( $i > $_SESSION['install_config']['step'] )
+	if ( $i > $step_number )
 		$type = "remain";
 	
 	$template->add_to_stack( $template->parse_template("install menu element", array(
@@ -444,7 +498,6 @@ $template->add_to_stack( $template->parse_template("install menu", array(
 	'CONTENT'	=>	$template->get_stack("install menu entries") ) ), "right" );
 
 $template->delete_stack("install menu entries");
-
 // Output installer content using the buffered stacks
 print $template->parse_template("install", array(
 	'THEME_NAME'	=>	$_SESSION['install_config']['theme_name'],
