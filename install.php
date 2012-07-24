@@ -383,8 +383,7 @@ switch ( $_SESSION['install_config']['step'] )
 				
 				include "includes/" .$_POST['dbtype']. ".php";
 				
-				//$connection = $layer_name::test_connection($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass']);
-				$connection = TRUE;
+				$connection = $layer_name::test_connection($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass']);
 				if ( $connection === TRUE )
 					// If database connection is successful, write configuration file.
 					$writefile = TRUE;
@@ -400,7 +399,6 @@ switch ( $_SESSION['install_config']['step'] )
 			} elseif ( $writefile )
 			{
 				// Write configuration file.
-				
 				$template->load_template("install/config_php");
 				
 				$configfile = fopen("config.php", "w");
