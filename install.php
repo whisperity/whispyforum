@@ -250,7 +250,11 @@ switch ( $_SESSION['install_config']['step'] )
 			$cfg_check = is_writable("config.php");
 		
 		if ( !file_exists("config.php") )
-			$cfg_check = @file_put_contents("config.php", NULL);
+		{
+			$cfg_check = @file_put_contents("config.php", "<?php\n\t\$dummy = TRUE;\n?>");
+			if ( $cfg_check !== FALSE )
+				$cfg_check = TRUE;
+		}
 		
 		envcheck(
 			( !$cfg_check ? 'CRITICAL' : 'SUCCESS' ),
@@ -476,7 +480,7 @@ switch ( $_SESSION['install_config']['step'] )
 		
 		break;
 }
-//session_destroy();
+
 // Generate the installer menu
 $template->create_stack("install menu entries");
 for ($i = 1; $i <= 6; $i++)
