@@ -1,0 +1,19 @@
+<?php
+/**
+ * WhispyForum
+ * 
+ * config.php
+*/
+
+global $cfg;
+
+$cfg = array(
+	'dbtype'	=>	"{[DBTYPE]}",
+	'dbhost'	=>	"{[DBHOST]}",
+	'dbuser'	=>	"{[DBUSER]}",
+	'dbpass'	=>	"{[DBPASS]}",
+	'dbname'	=>	"{[DBNAME]}"
+);
+
+define('UNIQUETOKEN', "{[TOKEN]}");
+?>

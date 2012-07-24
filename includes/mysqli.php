@@ -49,6 +49,26 @@ class db_mysqli
 		mysqli_set_charset($this->_link, mysqli_character_set_name($this->_link) );
 	}
 	
+	public static function test_connection ( $dbhost, $dbuser, $dbpass )
+	{
+		/**
+		 * This function initiates a test connection using the same method as it would be
+		 * using the __construct() fuction, but immediately closes the connection.
+		 * 
+		 * TRUE returned if the connection is successful. If not, an error message string is returned.
+		*/
+		
+		$link = @mysqli_connect($dbhost, $dbuser, $dbpass);
+		
+		if ( mysqli_connect_error() )
+		{
+			return mysqli_connect_errno(). " - " .mysqli_connect_error();
+		} else {
+			@mysqli_close($link);
+			return TRUE;
+		}
+	}
+	
 	public function query( $query )
 	{
 		/**
@@ -147,7 +167,8 @@ class db_mysqli
 		 * This function closes the database link and readies the class for dereference.
 		*/
 		
-		mysqli_close($this->_link);
+		if ( @get_class($this->_link) === "mysqli" )
+			mysqli_close($this->_link);
 	}
 }
 ?>

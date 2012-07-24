@@ -24,9 +24,12 @@
 // The array to be loaded is called $localized.
 // It is merged into the global $localization array by load_lang().
 $localized = array(
+	'BACK'	=>	"Back",
 	'NEXT'	=>	"Next",
 	
 	'MANDATORY VARIABLES'	=>	"Fields marked with a red star (" .'<span class="red-star">*</span>'. ") are mandatory.",
+	'VARIABLE ERROR'	=>	"The variable <tt>{VARIABLE}</tt> has not been entered.",
+	'VARIABLE ERROR MULTI'	=>	"One or more mandatory variables have been left empty.",
 	
 	'NONSTANDARD CONFIGURATION'	=>	"Your configuration seems to be non-standard. It might affect your users in a bad way!",
 	
@@ -38,7 +41,6 @@ $localized = array(
 	
 	'LANGUAGE NOT FOUND'	=>	"Requested language file {FILE} not found.",
 	
-	'MYSQL'	=>	"MySQL",
 	'QUERY ERROR'	=>	"There were an error executing the SQL query.\nThe error message was: {ERROR}.\nThe query was: {QUERY}",
 	
 	'MODULE NO ID NO FILE'	=>	"Unable to load unspecified new module. Filename is missing.",

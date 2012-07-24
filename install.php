@@ -58,8 +58,7 @@ if ( ( @$_POST['new_language'] != NULL || @$_POST['new_theme'] != NULL ) && $_SE
 }
 
 // The list of database layers installed into the system.
-// Only needed if we are on step 1 or 2.
-if ( $_SESSION['install_config']['step'] == 1 || $_SESSION['install_config']['step'] == 2 )
+if ( $_SESSION['install_config']['step'] == 1 || $_SESSION['install_config']['step'] == 2 || $_SESSION['install_config']['step'] == 3 )
 {
 	$layers_includes = array('mysqli');
 	$layers_available = array();
@@ -315,7 +314,8 @@ switch ( $_SESSION['install_config']['step'] )
 		foreach ( $layers_available as $v )
 			$template->add_to_stack( $template->parse_template("config dbtype option", array(
 				'VALUE'	=>	$v,
-				'CAPTION'	=>	lang_key(strtoupper($v))
+				'CAPTION'	=>	lang_key(strtoupper($v)),
+				'SELECTED'	=>	( ( isset($_POST['error_return']) && $_POST['dbtype'] == $v ) ? 'selected="selected"' : NULL )
 			) ), "sqlhandlers");
 		
 		$template->add_to_stack( $template->parse_template("config", array(
@@ -327,19 +327,100 @@ switch ( $_SESSION['install_config']['step'] )
 			'DATABASE_HOST'	=>	lang_key("DATABASE HOST"),
 			'DATABASE_USER'	=>	lang_key("DATABASE USER"),
 			'DATABASE_PASS'	=>	lang_key("DATABASE PASS"),
-			'DATABASE_NAME'	=>	lang_key("DATABASE HOST"),
+			'DATABASE_NAME'	=>	lang_key("DATABASE NAME"),
 			
 			'NEXT_CAPTION'	=>	lang_key("NEXT"),
 			
 			/** Database configuration **/
 			'DBTYPE_OPTIONS'	=>	$template->get_stack("sqlhandlers"),
-			'DBHOST'	=>	NULL,
-			'DBUSER'	=>	NULL,
-			'DBPASS'	=>	NULL,
-			'DBNAME'	=>	NULL,
+			'DBHOST'	=>	( isset($_POST['error_return']) ? @$_POST['dbhost'] : "localhost" ),
+			'DBUSER'	=>	( isset($_POST['error_return']) ? @$_POST['dbuser'] : "" ),
+			'DBPASS'	=>	( isset($_POST['error_return']) ? @$_POST['dbpass'] : "" ),
+			'DBNAME'	=>	( isset($_POST['error_return']) ? @$_POST['dbname'] : "whispyforum" ),
 		)), "left");
 		
 		$template->delete_stack("sqlhandlers");
+		
+		break;
+	case 3:
+		/* Writing configuration file */
+		$step_title = lang_key("WRITECONFIG TITLE");
+		$step_picture = "edit.png";
+		$step_alt = lang_key("WRITECONFIG TITLE");
+		
+		$mandatory_variable_fail = FALSE;
+		$mandatory_variables = array('dbtype', 'dbhost', 'dbuser', 'dbpass', 'dbname');
+		
+		foreach ( $mandatory_variables as $v )
+			if ( !isset($_POST[$v]) )
+				$mandatory_variable_fail = TRUE;
+		
+		// Prepare an 'error return' form.
+		$error_return = $template->parse_template("config error return", array(
+				'DBTYPE'	=>	@$_POST['dbtype'],
+				'DBHOST'	=>	@$_POST['dbhost'],
+				'DBUSER'	=>	@$_POST['dbuser'],
+				'DBPASS'	=>	@$_POST['dbpass'],
+				'DBNAME'	=>	@$_POST['dbname'],
+				
+				'MESSAGE'	=>	lang_key("WRITECONFIG RETURN BODY"),
+				'SUBMIT_CAPTION'	=>	lang_key("BACK")
+			) );
+		
+		if ( $mandatory_variable_fail )
+		{
+			$template->add_to_stack( ambox('ERROR', lang_key("VARIABLE ERROR MULTI"), NULL), "left");
+			
+			$template->add_to_stack( $error_return, "left");
+		} elseif ( !$mandatory_variable_fail )
+		{
+			$writefile = FALSE;
+			
+			// Check database connection
+			if ( !array_search($_POST['dbtype'], $layers_available) )
+			{
+				$layer_name = "db_" .$_POST['dbtype'];
+				
+				include "includes/" .$_POST['dbtype']. ".php";
+				
+				//$connection = $layer_name::test_connection($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass']);
+				$connection = TRUE;
+				if ( $connection === TRUE )
+					// If database connection is successful, write configuration file.
+					$writefile = TRUE;
+			}
+			
+			if ( !$writefile )
+			{
+				$template->add_to_stack( ambox('CRITICAL', lang_key("WRITECONFIG CONNECTION ERROR BODY", array(
+					'LAYER'	=>	$_POST['dbtype'],
+					'ERROR_MESSAGE'	=>	$connection) ), lang_key("WRITECONFIG CONNECTION ERROR"), "driver.png"), "left");
+				
+				$template->add_to_stack( $error_return, "left");
+			} elseif ( $writefile )
+			{
+				// Write configuration file.
+				
+				$template->load_template("install/config_php");
+				
+				$configfile = fopen("config.php", "w");
+				fwrite($configfile, $template->parse_template("install/config_php", array(
+					'DBTYPE'	=>	$_POST['dbtype'],
+					'DBHOST'	=>	$_POST['dbhost'],
+					'DBUSER'	=>	$_POST['dbuser'],
+					'DBPASS'	=>	$_POST['dbpass'],
+					'DBNAME'	=>	$_POST['dbname'],
+					'TOKEN'	=>	token()
+				) ) );
+				fclose($configfile);
+				
+				$template->add_to_stack( ambox('SUCCESS', NULL, lang_key("WRITECONFIG CONFIG WRITTEN")), "left");
+				
+				$template->add_to_stack( $template->parse_template("config forward form", array(
+					'SUBMIT_CAPTION'	=>	lang_key("NEXT")
+				) ), "left");
+			}
+		}
 		
 		break;
 }

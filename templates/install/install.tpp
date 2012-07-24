@@ -114,5 +114,25 @@
 <!--- END config -->
 
 <!--- BEGIN config dbtype option -->
-	<option value="{[VALUE]}">{[CAPTION]}</option>
+	<option value="{[VALUE]}"{[SELECTED]}>{[CAPTION]}</option>
 <!--- END config dbtype option -->
+
+<!--- BEGIN config error return -->
+{[MESSAGE]}
+<form method="POST" action="install.php">
+	<input type="hidden" name="dbtype" value="{[DBTYPE]}">
+	<input type="hidden" name="dbhost" value="{[DBHOST]}"><br>
+	<input type="hidden" name="dbuser" value="{[DBUSER]}">
+	<input type="hidden" name="dbpass" value="{[DBPASS]}">
+	<input type="hidden" name="dbname" value="{[DBNAME]}">
+	<input type="hidden" name="step" value="2">
+	<input type="submit" name="error_return" value="{[SUBMIT_CAPTION]}">
+</form>
+<!--- END config error return -->
+
+<!--- BEGIN config forward form -->
+<form method="POST" action="install.php">
+	<input type="hidden" name="step" value="4">
+	<input type="submit" value="{[SUBMIT_CAPTION]}">
+</form>
+<!--- END config forward form -->

@@ -78,5 +78,12 @@ Before we can move on installing the system, you have to make your data safe. Cr
 	'DATABASE NAME'	=>	"Name of database",
 	
 	'MYSQLI'	=>	"MySQL improved",
+	
+	/* Step 3: Writing Configuration file */
+	'WRITECONFIG TITLE'	=>	"Writing configuration file",
+	'WRITECONFIG RETURN BODY'	=>	"To revise the configuration details and to try again, click the button below.",
+	'WRITECONFIG CONNECTION ERROR'	=>	"Unable to connect to the database",
+	'WRITECONFIG CONNECTION ERROR BODY'	=>	"Using <tt>{LAYER}</tt>, the server responded <tt>{ERROR_MESSAGE}</tt>.",
+	'WRITECONFIG CONFIG WRITTEN'	=>	"Successfully written configuration file.",
 );
 ?>
