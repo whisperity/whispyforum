@@ -37,7 +37,7 @@ if ( !is_array(@$_SESSION['install_config']) )
 		'step'	=>	1);
 }
 
-if ( @$_POST['step'] != NULL )
+if ( isset($_POST['step']) )
 {
 	// If we receive a new "step" variable in the POST header, we save it as the current step,
 	// so the installer later on will load the wanted step properly.
@@ -264,6 +264,9 @@ switch ( $_SESSION['install_config']['step'] )
 			( !$cfg_check ));
 		
 		// Check whether upload/ is writable.
+		if ( !is_writable("upload") )
+			@mkdir("upload");
+		
 		envcheck(
 			( !is_writable("upload") ? 'ERROR' : 'SUCCESS' ),
 			( !is_writable("upload") ? lang_key("UPLOAD FAIL") : lang_key("UPLOAD OK") ),
@@ -476,6 +479,145 @@ switch ( $_SESSION['install_config']['step'] )
 		}
 		
 		$db->free_result($check_again);
+		unset($db);
+		
+		break;
+	case 5:
+		/* Creating tables */
+		$step_title = lang_key("DBTABLES TITLE");
+		$step_picture = "database.png";
+		$step_alt = lang_key("DBTABLES TITLE");
+		$step_number = 3;
+		
+		// Connect to the database server.
+		include "config.php";
+		include "includes/" .$cfg['dbtype']. ".php";
+		$layer_name = "db_" . $cfg['dbtype'];
+		$db = new $layer_name($cfg['dbhost'], $cfg['dbuser'], $cfg['dbpass'], $cfg['dbname']);
+		
+		$database_setup = " ## Database setup.
+		CREATE TABLE IF NOT EXISTS users (
+			`id` int(10) NOT NULL AUTO_INCREMENT,
+			`username` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+			`pwd` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+			`email` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+			`extra_data` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+			`loggedin` tinyint(1) NOT NULL DEFAULT '0',
+			`activated` tinyint(1) NOT NULL DEFAULT '0',
+			`token` varchar(49) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+			`userLevel` tinyint(2) NOT NULL DEFAULT '0',
+			`avatar_filename` varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+			`language` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+			`theme` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+			`post_count` int(6) NOT NULL DEFAULT '0',
+			`news_comment_count` int(6) NOT NULL DEFAULT '0',
+			PRIMARY KEY (`id`),
+			UNIQUE KEY `username` (`username`),
+			UNIQUE KEY `email` (`email`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+		
+		CREATE TABLE IF NOT EXISTS config (
+			`variable` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+			`value` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+			UNIQUE KEY `variable` (`variable`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+		
+		CREATE TABLE IF NOT EXISTS modules (
+			`id` int(10) NOT NULL AUTO_INCREMENT,
+			`module` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+			`extra_data` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+			`align` tinyint(2) NOT NULL DEFAULT '0',
+			`side` enum('left', 'right') NOT NULL DEFAULT 'left',
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+		
+		CREATE TABLE IF NOT EXISTS menus (
+			`id` int(10) NOT NULL AUTO_INCREMENT,
+			`header` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+		
+		CREATE TABLE IF NOT EXISTS menu_entries (
+			`id` int(10) NOT NULL AUTO_INCREMENT,
+			`menu_id` int(10) NOT NULL,
+			`label` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+			`href` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+		
+		CREATE TABLE IF NOT EXISTS forums (
+			`id` int(10) NOT NULL AUTO_INCREMENT,
+			`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+			`info` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+			`minLevel` enum('0', '1', '2', '3') NOT NULL DEFAULT '0',
+			`createdate` int(16) NOT NULL DEFAULT '0',
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+		
+		CREATE TABLE IF NOT EXISTS topics (
+			`id` int(10) NOT NULL AUTO_INCREMENT,
+			`forumid` int(10) NOT NULL,
+			`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+			`createuser` int(10) NOT NULL,
+			`createdate` int(16) NOT NULL DEFAULT '0',
+			`locked` tinyint(1) NOT NULL DEFAULT '0',
+			`highlighted` tinyint(1) NOT NULL DEFAULT '0',
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+		CREATE TABLE IF NOT EXISTS posts (
+			`id` int(10) NOT NULL AUTO_INCREMENT,
+			`topicid` int(10) NOT NULL,
+			`forumid` int(10) NOT NULL,
+			`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+			`createuser` int(10) NOT NULL,
+			`createdate` int(16) NOT NULL DEFAULT '0',
+			`content` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+		
+		CREATE TABLE IF NOT EXISTS news (
+			`id` int(10) NOT NULL AUTO_INCREMENT,
+			`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+			`createuser` int(10) NOT NULL,
+			`createdate` int(16) NOT NULL DEFAULT '0',
+			`description` VARCHAR(512) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+			`content` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+			`commentable` tinyint(1) NOT NULL DEFAULT '0',
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+		
+		CREATE TABLE IF NOT EXISTS news_comments (
+			`id` int(10) NOT NULL AUTO_INCREMENT,
+			`news_id` int(10) NOT NULL,
+			`createuser` int(10) NOT NULL,
+			`createdate` int(16) NOT NULL DEFAULT '0',
+			`content` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;";
+		
+		$result = $db->multi_query($database_setup);
+		if ( $result === FALSE )
+		{
+			$template->add_to_stack( ambox('CRITICAL', lang_key("DBCREATE FAIL BODY"), lang_key("DBTABLES FAIL"), "locked.png"), "left");
+			
+			$template->add_to_stack( $template->parse_template("config error return", array(
+				'DBTYPE'	=>	$cfg['dbtype'],
+				'DBHOST'	=>	$cfg['dbhost'],
+				'DBUSER'	=>	$cfg['dbuser'],
+				'DBPASS'	=>	$cfg['dbpass'],
+				'DBNAME'	=>	$cfg['dbname'],
+				'MESSAGE'	=>	lang_key("DBCREATE FAIL MESSAGE"),
+				'SUBMIT_CAPTION'	=>	lang_key("BACK")
+			) ), "left");
+		} else {
+			$template->add_to_stack( ambox('SUCCESS', lang_key("DBTABLES SUCCESS")), "left");
+			
+			$template->add_to_stack( $template->parse_template("dbtables forward form", array(
+				'SUBMIT_CAPTION'	=>	lang_key("NEXT")
+			) ), "left");
+		}
+		
 		unset($db);
 		
 		break;

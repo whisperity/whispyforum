@@ -143,3 +143,10 @@
 	<input type="submit" value="{[SUBMIT_CAPTION]}">
 </form>
 <!--- END dbcreate forward form -->
+
+<!--- BEGIN dbtables forward form -->
+<form method="POST" action="install.php">
+	<input type="hidden" name="step" value="6">
+	<input type="submit" value="{[SUBMIT_CAPTION]}">
+</form>
+<!--- END dbtables forward form -->

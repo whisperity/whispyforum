@@ -88,6 +88,23 @@ class db_mysqli
 		return $res;
 	}
 	
+	public function multi_query( $query )
+	{
+		/**
+		 * Executes multiple queries from one string.
+		*/
+		
+		$res = mysqli_multi_query($this->_link, $query);
+		
+		if ( $res === FALSE )
+			print( ambox('WARNING', lang_key("QUERY ERROR", array(
+				'ERROR'	=>	mysqli_errno($this->_link). " - " .mysqli_error($this->_link),
+				'QUERY'	=>	$query) )) );
+		
+		$this->_res = $res;
+		return $res;
+	}
+	
 	public function fetch_array( $res = NULL, $type = SQL_BOTH )
 	{
 		/**

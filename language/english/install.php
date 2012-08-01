@@ -15,13 +15,13 @@ $localized = array(
 	'INSTALL GLOBAL TITLE'	=>	"WhispyForum Installer",
 	
 	/* Installer menu */
-	'INSTALL MENU HEADER'	=>	"Installer steps",
-	'INSTALL STEP 1'	=>	"1. Introduction",
-	'INSTALL STEP 2'	=>	"2. Configuration file",
-	'INSTALL STEP 3'	=>	"3. Setting up database",
-	'INSTALL STEP 4'	=>	"4. Registering adminisrator user",
-	'INSTALL STEP 5'	=>	"5. Configurating the site",
-	'INSTALL STEP 6'	=>	"6. Finish",
+	'INSTALL MENU HEADER'	=>	"Installer",
+	'INSTALL STEP 1'	=>	"Introduction",
+	'INSTALL STEP 2'	=>	"Configuration file",
+	'INSTALL STEP 3'	=>	"Setting up database",
+	'INSTALL STEP 4'	=>	"Registering administrator user",
+	'INSTALL STEP 5'	=>	"Configurating the site",
+	'INSTALL STEP 6'	=>	"Finish",
 	
 	/* Introduction */
 	'INTRODUCTION TITLE'	=>	"Introduction",
@@ -31,10 +31,7 @@ $localized = array(
 	'INTRODUCTION MODIFY SETTINGS'	=>	"Modify language and theme",
 	'INTRODUCTION BODY'	=>	"Welcome to the installer, which will help and guide you through setting up this copy of WhispyForum, with getting the database and other subsystems configured.",
 	'DISCLAIMER HEAD'	=>	"Disclaimer! <small>Please read carefully!</small>",
-	'DISCLAIMER TEXT'	=>	"This system is in developement state, hence there are no stable release. There can be unexpected, unforseen and imminent data losses, which can lead to system instability.\n
-While using the system, you're well advised to create data backups regurarly, in case if you (unfortunately) have to restore.\n
-This package is provided as is. By using this package, you hereby accept our disclaimer. Until we push a stable release, we cannot guarantee that you won't experience any data loss.\n
-<small>You've been warned...</small>",
+	'DISCLAIMER TEXT'	=>	"This package is provided as-is, with no obligatory warranty. The current release is marked a development release. Data safety or system stability could not be guaranateed.\n\nAlways use the system with taking necessary precautions in form of backup and stability monitoring.",
 	'ALREADY INSTALLED HEAD'	=>	"WhispyForum is already installed",
 	'ALREADY INSTALLED TEXT'	=>	"It seems that WhispyForum is already installed.\n
 Reinstalling the system can produce a lot of stability and incompatibility issues. Primarily, when the installer creates the database table entries, it can truncate/rewrite/append tables that shouldn't be accessed in such ways. On the other hand, the configuration file can get corrupted.\n
@@ -80,13 +77,18 @@ Before we can move on installing the system, you have to make your data safe. Cr
 	'WRITECONFIG RETURN BODY'	=>	"To revise the configuration details and to try again, click the button below.",
 	'WRITECONFIG CONNECTION ERROR'	=>	"Unable to connect to the database",
 	'WRITECONFIG CONNECTION ERROR BODY'	=>	"Using <tt>{LAYER}</tt>, the server responded <tt>{ERROR_MESSAGE}</tt>.",
-	'WRITECONFIG CONFIG WRITTEN'	=>	"Successfully written configuration file.",
+	'WRITECONFIG CONFIG WRITTEN'	=>	"Successfully created configuration file.",
 	
 	/* Creating database */
 	'DBCREATE TITLE'	=>	"Creating database",
-	'DBCREATE SUCCESS'	=>	"The database has been successfully created or it is already existing.",
+	'DBCREATE SUCCESS'	=>	"The database has been successfully created or it was already there.",
 	'DBCREATE FAIL'	=>	"Failed to create the database",
 	'DBCREATE FAIL BODY'	=>	"This error usually indicates inability to connect to the database or lack of <tt>CREATE</tt> privilege of the current user.",
 	'DBCREATE FAIL MESSAGE'	=>	"To revise database configuration settings, click the button below.",
+	
+	/* Creating database tables */
+	'DBTABLES TITLE'	=>	"Creating tables",
+	'DBTABLES FAIL'	=>	"Failed to create database structure",
+	'DBTABLES SUCCESS'	=>	"The database tables were created successfully",
 );
 ?>
