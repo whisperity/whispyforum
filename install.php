@@ -92,7 +92,6 @@ switch ( $_SESSION['install_config']['step'] )
 		/* Introduction */
 		$step_title = lang_key("INTRODUCTION TITLE");
 		$step_picture = "install.png";
-		$step_alt = lang_key("INTRODUCTION TITLE");
 		$step_number = 1; // This is the first step.
 		
 		// Fetch language options for the starter form
@@ -315,7 +314,6 @@ switch ( $_SESSION['install_config']['step'] )
 		/* Configuration file */
 		$step_title = lang_key("CONFIG TITLE");
 		$step_picture = "configuration.png";
-		$step_alt = lang_key("CONFIG TITLE");
 		$step_number = 2; // This is the second step.
 		
 		// Generate list of available SQL handlers.
@@ -355,7 +353,6 @@ switch ( $_SESSION['install_config']['step'] )
 		/* Writing configuration file */
 		$step_title = lang_key("WRITECONFIG TITLE");
 		$step_picture = "edit.png";
-		$step_alt = lang_key("WRITECONFIG TITLE");
 		$step_number = 2; // While technically this is the third step, we list it as the second again.
 		
 		$mandatory_variable_fail = FALSE;
@@ -435,7 +432,6 @@ switch ( $_SESSION['install_config']['step'] )
 		/* Creating database */
 		$step_title = lang_key("DBCREATE TITLE");
 		$step_picture = "database.png";
-		$step_alt = lang_key("DBCREATE TITLE");
 		$step_number = 3;
 		
 		// Connect to the database server.
@@ -486,7 +482,6 @@ switch ( $_SESSION['install_config']['step'] )
 		/* Creating tables */
 		$step_title = lang_key("DBTABLES TITLE");
 		$step_picture = "database.png";
-		$step_alt = lang_key("DBTABLES TITLE");
 		$step_number = 3;
 		
 		// Connect to the database server.
@@ -647,9 +642,9 @@ $template->delete_stack("install menu entries");
 // Output installer content using the buffered stacks
 print $template->parse_template("install", array(
 	'THEME_NAME'	=>	$_SESSION['install_config']['theme_name'],
-	'PICTURE'	=>	@$step_picture,
-	'ALT'	=>	@$step_alt,
-	'TITLE'	=>	@$step_title,
+	'PICTURE'	=>	$step_picture,
+	'ALT'	=>	$step_title,
+	'TITLE'	=>	$step_title,
 	'LEFT_CONTENT'	=>	$template->get_stack("left"),
 	'RIGHT_CONTENT'	=>	$template->get_stack("right")
 	) );
