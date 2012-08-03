@@ -362,20 +362,20 @@ switch ( $_SESSION['install_config']['step'] )
 		$mandatory_variables = array('dbtype', 'dbhost', 'dbuser', 'dbpass', 'dbname');
 		
 		foreach ( $mandatory_variables as $v )
-			if ( !isset($_POST[$v]) )
+			if ( !isset($_POST[$v]) || @$_POST[$v] == NULL )
 				$mandatory_variable_fail = TRUE;
 		
 		// Prepare an 'error return' form.
 		$error_return = $template->parse_template("config error return", array(
-				'DBTYPE'	=>	@$_POST['dbtype'],
-				'DBHOST'	=>	@$_POST['dbhost'],
-				'DBUSER'	=>	@$_POST['dbuser'],
-				'DBPASS'	=>	@$_POST['dbpass'],
-				'DBNAME'	=>	@$_POST['dbname'],
-				
-				'MESSAGE'	=>	lang_key("WRITECONFIG RETURN BODY"),
-				'SUBMIT_CAPTION'	=>	lang_key("BACK")
-			) );
+			'DBTYPE'	=>	@$_POST['dbtype'],
+			'DBHOST'	=>	@$_POST['dbhost'],
+			'DBUSER'	=>	@$_POST['dbuser'],
+			'DBPASS'	=>	@$_POST['dbpass'],
+			'DBNAME'	=>	@$_POST['dbname'],
+			
+			'MESSAGE'	=>	lang_key("WRITECONFIG RETURN BODY"),
+			'SUBMIT_CAPTION'	=>	lang_key("BACK")
+		) );
 		
 		if ( $mandatory_variable_fail )
 		{
