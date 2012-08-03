@@ -14,8 +14,8 @@ define('UNIQUETOKEN', "installer environment");
 // Load and initialize the required libraries
 require("includes/functions.php");
 require("includes/language.php");
-//require("includes/module.php");
-//require("includes/tinycache.php");
+require("includes/module.php");
+require("includes/tinycache.php");
 require("includes/template.php");
 require("includes/user.php");
 
@@ -26,7 +26,7 @@ $template->load_template("framework", TRUE);
 $user = new user(0, FALSE);
 
 load_lang("install");
-$template->load_template("install/install", TRUE);
+$template->load_template("install", TRUE);
 
 // Fetch the install configuration from session.
 if ( !is_array(@$_SESSION['install_config']) )
@@ -34,7 +34,8 @@ if ( !is_array(@$_SESSION['install_config']) )
 	$_SESSION['install_config'] = array(
 		'language'	=>	"english",
 		'theme_name'	=>	"tuvia",
-		'step'	=>	1);
+		'step'	=>	1
+	);
 }
 
 if ( isset($_POST['step']) )
@@ -42,6 +43,8 @@ if ( isset($_POST['step']) )
 	// If we receive a new "step" variable in the POST header, we save it as the current step,
 	// so the installer later on will load the wanted step properly.
 	$_SESSION['install_config']['step'] = intval(@$_POST['step']);
+} else {
+	$_SESSION['install_config']['step'] = 1;
 }
 
 // Developer dumps.
@@ -405,10 +408,9 @@ switch ( $_SESSION['install_config']['step'] )
 			} elseif ( $writefile )
 			{
 				// Write configuration file.
-				$template->load_template("install/config_php");
 				
 				$configfile = fopen("config.php", "w");
-				fwrite($configfile, $template->parse_template("install/config_php", array(
+				fwrite($configfile, $template->parse_template("config file", array(
 					'DBTYPE'	=>	$_POST['dbtype'],
 					'DBHOST'	=>	$_POST['dbhost'],
 					'DBUSER'	=>	$_POST['dbuser'],
@@ -646,7 +648,8 @@ print $template->parse_template("install", array(
 	'ALT'	=>	$step_title,
 	'TITLE'	=>	$step_title,
 	'LEFT_CONTENT'	=>	$template->get_stack("left"),
-	'RIGHT_CONTENT'	=>	$template->get_stack("right")
+	'RIGHT_CONTENT'	=>	$template->get_stack("right"),
+	'FOOTER'	=>	NULL
 	) );
 
 /*prettyVar($user);

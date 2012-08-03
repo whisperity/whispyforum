@@ -16,6 +16,11 @@
 </td>
 </tr>
 </table>
+<div class="footerbox">
+{[FOOTER]}
+</div>
+</body>
+</html>
 <!--- END install -->
 
 <!--- BEGIN install menu -->
@@ -76,7 +81,7 @@
 	<img src="themes/{[THEME_NAME]}/{[IMAGE]}" height="32" width="32" alt="{[STATUS]}" align="left" />
 	<h4 style="border-bottom: 1px solid gray; margin: 0px 0px 0px 36px;">{[TITLE]}</h4>
 		<div align="right">
-			<b>{[STATUS]}</b>	
+			<b>{[STATUS]}</b>
 		</div>
 	
 	<p>{[MESSAGE]}</p>
@@ -112,6 +117,28 @@
 	<input type="hidden" name="step" value="3">
 </form>
 <!--- END config -->
+
+<!--- BEGIN config file -->
+<?php
+/**
+ * WhispyForum
+ * 
+ * config.php
+*/
+
+global $cfg;
+
+$cfg = array(
+	'dbtype'	=>	"{[DBTYPE]}",
+	'dbhost'	=>	"{[DBHOST]}",
+	'dbuser'	=>	"{[DBUSER]}",
+	'dbpass'	=>	"{[DBPASS]}",
+	'dbname'	=>	"{[DBNAME]}"
+);
+
+{[DISABLE_UNIQUETOKEN]}define('UNIQUETOKEN', "{[TOKEN]}");
+?>
+<!--- END config file -->
 
 <!--- BEGIN config dbtype option -->
 	<option value="{[VALUE]}"{[SELECTED]}>{[CAPTION]}</option>

@@ -107,8 +107,6 @@ class template
 			$this->_templates[ $file ] = $data;
 		} elseif ( $multi )
 		{
-			$data = str_replace( array('\\', '\'', "\n"), array('\\\\', '\\\'', ''), $data);
-			
 			// Fetch the individual templates and store them in the _templates property.
 			$pattern = '#<!--- BEGIN (?P<key>\S.+) -->(?P<value>.+?)<!--- END (?P=key) -->#si';
 			if ( preg_match_all($pattern, $data, $matches, PREG_SET_ORDER) )
