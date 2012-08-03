@@ -618,6 +618,99 @@ switch ( $_SESSION['install_config']['step'] )
 		unset($db);
 		
 		break;
+	case 6:
+		/* Administrator user */
+		$step_title = lang_key("ADMINUSER TITLE");
+		$step_picture = "user.png";
+		$step_number = 4;
+		
+		$template->add_to_stack( $template->parse_template("adminuser", array(
+			'ADMINUSER_INTRO'	=>	lang_key("ADMINUSER INFO"),
+			'MANDATORY_VARIABLES'	=>	lang_key("MANDATORY VARIABLES"),
+			'ADMINUSER_DATA'	=>	lang_key("ADMINUSER DATA"),
+			
+			'LABEL_USERNAME'	=>	lang_key("USERNAME"),
+			'LABEL_PASSWORD'	=>	lang_key("PASSWORD"),
+			'LABEL_PASSWORD_RETYPE'	=>	lang_key("PASSWORD RETYPE"),
+			'LABEL_EMAIL_ADDRESS'	=>	lang_key("EMAIL ADDRESS"),
+			
+			'NEXT_CAPTION'	=>	lang_key("NEXT"),
+			
+			/* Administrator user credentials */
+			'USERNAME'	=>	( isset($_POST['error_return']) ? @$_POST['username'] : NULL ),
+			'PASSWORD'	=>	( isset($_POST['error_return']) ? @$_POST['password'] : NULL ),
+			'PASSWORD_2'	=>	( isset($_POST['error_return']) ? @$_POST['password_2'] : NULL ),
+			'EMAIL'	=>	( isset($_POST['error_return']) ? @$_POST['email'] : NULL )
+		) ), "left");
+		
+		break;
+	case 7:
+		/* Registering administrator user */
+		$step_title = lang_key("ADMINUSER TITLE");
+		$step_picture = "user.png";
+		$step_number = 4;
+		
+		$mandatory_variable_fail = FALSE;
+		$mandatory_variables = array('username', 'password', 'password_2', 'email');
+		
+		foreach ( $mandatory_variables as $v )
+			if ( !isset($_POST[$v]) || @$_POST[$v] == NULL )
+				$mandatory_variable_fail = TRUE;
+		
+		// Prepare an 'error return' form.
+		$error_return = $template->parse_template("adminuser error return", array(
+			'USERNAME'	=>	@$_POST['username'],
+			'PASSWORD'	=>	@$_POST['password'],
+			'PASSWORD_2'	=>	@$_POST['password_2'],
+			'EMAIL'	=>	@$_POST['email'],
+			
+			'MESSAGE'	=>	lang_key("ADMINUSER RETURN BODY"),
+			'SUBMIT_CAPTION'	=>	lang_key("BACK")
+		) );
+		
+		if ( $mandatory_variable_fail )
+		{
+			$template->add_to_stack( ambox('ERROR', lang_key("VARIABLE ERROR MULTI"), NULL), "left");
+			
+			$template->add_to_stack( $error_return, "left");
+		} elseif ( !$mandatory_variable_fail )
+		{
+			if ( $_POST['password'] !== $_POST['password_2'] )
+			{
+				$template->add_to_stack( ambox('ERROR', lang_key("PASSWORD NO MATCH"), NULL), "left");
+				
+				$template->add_to_stack( $error_return, "left");
+			} else {
+				// Connect to the database server.
+				include "config.php";
+				include "includes/" .$cfg['dbtype']. ".php";
+				$layer_name = "db_" . $cfg['dbtype'];
+				$db = new $layer_name($cfg['dbhost'], $cfg['dbuser'], $cfg['dbpass'], $cfg['dbname']);
+				
+				$result = $db->query('INSERT INTO users(username, pwd, email, userLevel) VALUES (
+					"' .$db->escape($_POST['username']). '",
+					"' .$db->escape($_POST['password']). '",
+					"' .$db->escape($_POST['email']). '", 4)');
+				
+				if ( !$result )
+				{
+					$template->add_to_stack( ambox('CRITICAL', lang_key("ADMINUSER REGISTER ERROR"), NULL, "locked.png"), "left");
+					
+					$template->add_to_stack( $error_return, "left");
+				} elseif ( $result )
+				{
+					$template->add_to_stack( ambox('SUCCESS', lang_key("ADMINUSER SUCCESS")), "left");
+					
+					$template->add_to_stack( $template->parse_template("adminuser forward form", array(
+						'SUBMIT_CAPTION'	=>	lang_key("NEXT")
+					) ), "left");
+				}
+				
+				unset($db);
+			}
+		}
+		
+		break;
 }
 
 // Generate the installer menu

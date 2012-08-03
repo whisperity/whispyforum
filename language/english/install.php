@@ -90,5 +90,15 @@ Before we can move on installing the system, you have to make your data safe. Cr
 	'DBTABLES TITLE'	=>	"Creating tables",
 	'DBTABLES FAIL'	=>	"Failed to create database structure",
 	'DBTABLES SUCCESS'	=>	"The database tables were created successfully",
+	
+	/* Administrator user */
+	'ADMINUSER TITLE'	=>	"Administrator user",
+	'ADMINUSER DATA'	=>	"Administrator user credentials",
+	'ADMINUSER INFO'	=>	"The administrator user created now will serve as the first user of the system. With this user, you will be able to access every configuration directive while using the system.",
+	
+	/* Registering administrator user */
+	'ADMINUSER RETURN BODY'	=>	"To revise the credentials and to try again, click the button below.",
+	'ADMINUSER REGISTER ERROR'	=>	"Failed to register the administrator user.",
+	'ADMINUSER SUCCESS'	=>	"Your administrator user was registered successfully.",
 );
 ?>

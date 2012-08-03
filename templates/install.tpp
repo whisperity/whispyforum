@@ -177,3 +177,37 @@ $cfg = array(
 	<input type="submit" value="{[SUBMIT_CAPTION]}">
 </form>
 <!--- END dbtables forward form -->
+
+<!--- BEGIN adminuser -->
+{[ADMINUSER_INTRO]}<br>
+<font class="emphasis">{[MANDATORY_VARIABLES]}</font>
+
+<form method="POST" action="install.php">
+	<span class="form-header">{[ADMINUSER_DATA]}</span><br>
+	{[LABEL_USERNAME]}<span class="red-star">*</span>: <input type="text" name="username" value="{[USERNAME]}" size="35"><br>
+	{[LABEL_PASSWORD]}<span class="red-star">*</span>: <input type="password" name="password" value="{[PASSWORD]}" size="35"><br>
+	{[LABEL_PASSWORD_RETYPE]}<span class="red-star">*</span>: <input type="password" name="password_2" value="{[PASSWORD_2]}" size="35"><br>
+	{[LABEL_EMAIL_ADDRESS]}<span class="red-star">*</span>: <input type="text" name="email" value="{[EMAIL]}" size="35"><br>
+	<input type="submit" value="{[NEXT_CAPTION]}">
+	<input type="hidden" name="step" value="7">
+</form>
+<!--- END adminuser -->
+
+<!--- BEGIN adminuser error return -->
+{[MESSAGE]}
+<form method="POST" action="install.php">
+	<input type="hidden" name="username" value="{[USERNAME]}">
+	<input type="hidden" name="password" value="{[PASSWORD]}">
+	<input type="hidden" name="password_2" value="{[PASSWORD_2]}">
+	<input type="hidden" name="email" value="{[EMAIL]}">
+	<input type="hidden" name="step" value="6">
+	<input type="submit" name="error_return" value="{[SUBMIT_CAPTION]}">
+</form>
+<!--- END adminuser error return -->
+
+<!--- BEGIN adminuser forward form -->
+<form method="POST" action="install.php">
+	<input type="hidden" name="step" value="8">
+	<input type="submit" value="{[SUBMIT_CAPTION]}">
+</form>
+<!--- END adminuser forward form -->

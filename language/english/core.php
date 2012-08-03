@@ -59,6 +59,8 @@ $localized = array(
 	
 	'USERNAME'	=>	"Username",
 	'PASSWORD'	=>	"Password",
+	'PASSWORD RETYPE'	=>	"Password (retyped)",
+	'EMAIL ADDRESS'	=>	"E-mail address",
 	
 	'MENU INVALID'	=>	"Invalid menu!",
 	'MENU WRONG ID'	=>	"The module is configured to show menu ID #{ID}, but such menu does not exist.",
@@ -83,5 +85,7 @@ $localized = array(
 	
 	'LOGOUT NOT LOGGED IN'	=>	"You are not logged in.",
 	'LOGOUT SUCCESS'	=>	"You have successfully logged out.",
+	
+	'PASSWORD NO MATCH'	=>	"The entered passwords do not match.",
 );
 ?>
