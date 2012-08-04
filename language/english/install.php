@@ -20,8 +20,7 @@ $localized = array(
 	'INSTALL STEP 2'	=>	"Configuration file",
 	'INSTALL STEP 3'	=>	"Setting up database",
 	'INSTALL STEP 4'	=>	"Registering administrator user",
-	'INSTALL STEP 5'	=>	"Configurating the site",
-	'INSTALL STEP 6'	=>	"Finish",
+	'INSTALL STEP 5'	=>	"Finish",
 	
 	/* Introduction */
 	'INTRODUCTION TITLE'	=>	"Introduction",
@@ -100,5 +99,10 @@ Before we can move on installing the system, you have to make your data safe. Cr
 	'ADMINUSER RETURN BODY'	=>	"To revise the credentials and to try again, click the button below.",
 	'ADMINUSER REGISTER ERROR'	=>	"Failed to register the administrator user.",
 	'ADMINUSER SUCCESS'	=>	"Your administrator user was registered successfully.",
+	
+	/* Finish */
+	'FINISH TITLE'	=>	"Finish",
+	'FINISH BODY'	=>	"The installer has finished setting up your system. You will be able to finetune the settings after logging into your previously created administrator user.",
+	'FINISH CONTINUE MESSAGE'	=>	"Clicking this button will lead you to the main site."
 );
 ?>

@@ -711,11 +711,24 @@ switch ( $_SESSION['install_config']['step'] )
 		}
 		
 		break;
+	case 8:
+		/* Finish */
+		$step_title = lang_key("FINISH TITLE");
+		$step_picture = "success.png";
+		$step_number = 5;
+		
+		$template->add_to_stack( $template->parse_template("finish", array(
+			'BODY'	=>	lang_key("FINISH BODY"),
+			'MESSAGE'	=>	lang_key("FINISH CONTINUE MESSAGE"),
+			'SUBMIT_CAPTION'	=>	lang_key("FINISH")
+		) ), "left");
+		
+		break;
 }
 
 // Generate the installer menu
 $template->create_stack("install menu entries");
-for ($i = 1; $i <= 6; $i++)
+for ($i = 1; $i <= 5; $i++)
 {
 	if ( $i < $step_number )
 		$type = "done";

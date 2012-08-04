@@ -26,6 +26,7 @@
 $localized = array(
 	'BACK'	=>	"Back",
 	'NEXT'	=>	"Next",
+	'FINISH'	=>	"Finish",
 	
 	'MANDATORY VARIABLES'	=>	"Fields marked with a red star (" .'<span class="red-star">*</span>'. ") are mandatory.",
 	'VARIABLE ERROR'	=>	"The variable <tt>{VARIABLE}</tt> has not been entered.",

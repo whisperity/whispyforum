@@ -211,3 +211,12 @@ $cfg = array(
 	<input type="submit" value="{[SUBMIT_CAPTION]}">
 </form>
 <!--- END adminuser forward form -->
+
+<!--- BEGIN finish -->
+{[BODY]}<br>
+<br>
+{[MESSAGE]}
+<form method="GET" action="index.php">
+	<input type="submit" name="error_return" value="{[SUBMIT_CAPTION]}">
+</form>
+<!--- END finish -->
