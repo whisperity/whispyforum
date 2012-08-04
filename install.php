@@ -9,7 +9,6 @@
 define('WHISPYFORUM', TRUE);
 define('REQUIRE_SAFEMODE', TRUE);
 define('WORKING_DIRECTORY', getcwd());
-define('UNIQUETOKEN', "installer environment");
 
 // Load and initialize the required libraries
 require("includes/functions.php");
@@ -409,7 +408,6 @@ switch ( $_SESSION['install_config']['step'] )
 					'DBUSER'	=>	$_POST['dbuser'],
 					'DBPASS'	=>	$_POST['dbpass'],
 					'DBNAME'	=>	$_POST['dbname'],
-					'DISABLE_UNIQUETOKEN'	=>	"//", // Disable the UNIQUETOKEN define() in the file for now.
 					'TOKEN'	=>	token()
 				) ) );
 				fclose($configfile);

@@ -136,7 +136,7 @@ $cfg = array(
 	'dbname'	=>	"{[DBNAME]}"
 );
 
-{[DISABLE_UNIQUETOKEN]}define('UNIQUETOKEN', "{[TOKEN]}");
+define('UNIQUETOKEN', "{[TOKEN]}");
 ?>
 <!--- END config file -->
 
