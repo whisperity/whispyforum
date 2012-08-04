@@ -217,6 +217,6 @@ $cfg = array(
 <br>
 {[MESSAGE]}
 <form method="GET" action="index.php">
-	<input type="submit" name="error_return" value="{[SUBMIT_CAPTION]}">
+	<input type="submit" value="{[SUBMIT_CAPTION]}">
 </form>
 <!--- END finish -->
