@@ -35,13 +35,16 @@ require("includes/module.php");
 require("includes/tinycache.php");
 require("includes/template.php");
 require("includes/user.php");
-// Load database layer //
+
+// Load database layer
+include "includes/" .$cfg['dbtype']. ".php";
+$layer_name = "db_" . $cfg['dbtype'];
 
 global $template, $db, $user;
 $template = new template;
 load_lang("core");
 $template->load_template("framework", TRUE);
-$db = new db( @$cfg['dbhost'], @$cfg['dbuser'], @$cfg['dbpass'], @$cfg['dbname'] );
+$db = new $layer_name( @$cfg['dbhost'], @$cfg['dbuser'], @$cfg['dbpass'], @$cfg['dbname'] );
 $user = new user(0, FALSE);
 
 /* DEVELOPEMENT */
