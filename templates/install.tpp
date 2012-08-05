@@ -135,8 +135,6 @@ $cfg = array(
 	'dbpass'	=>	"{[DBPASS]}",
 	'dbname'	=>	"{[DBNAME]}"
 );
-
-define('UNIQUETOKEN', "{[TOKEN]}");
 ?>
 <!--- END config file -->
 

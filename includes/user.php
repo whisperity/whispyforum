@@ -146,8 +146,7 @@ class user
 			'password'	=>	NULL,
 			'ip'	=>	$_SERVER['REMOTE_ADDR'],
 			'sessid'	=>	session_id(),
-			'user_agent'	=>	$_SERVER['HTTP_USER_AGENT'],
-			'site_uuid'	=>	UNIQUETOKEN
+			'user_agent'	=>	$_SERVER['HTTP_USER_AGENT']
 		);
 	}
 	
@@ -191,8 +190,7 @@ class user
 		
 		if ( @$_SESSION['ip'] === $_SERVER['REMOTE_ADDR'] &&
 			 @$_SESSION['user_agent'] === $_SERVER['HTTP_USER_AGENT'] &&
-			 @$_SESSION['sessid'] === $_COOKIE[session_name()] &&
-			 @$_SESSION['site_uuid'] === UNIQUETOKEN
+			 @$_SESSION['sessid'] === $_COOKIE[session_name()]
 			)
 		{
 			$res = 1;

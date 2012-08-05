@@ -11,10 +11,10 @@ define('REQUIRE_SAFEMODE', TRUE);
 define('WORKING_DIRECTORY', getcwd());
 
 // Load and initialize the required libraries
-require("includes/functions.php");
-require("includes/language.php");
-require("includes/template.php");
-require("includes/user.php");
+require "includes/functions.php";
+require "includes/language.php";
+require "includes/template.php";
+require "includes/user.php";
 
 global $template, $user;
 $template = new template;
@@ -53,7 +53,7 @@ if ( ( @$_POST['new_language'] != NULL || @$_POST['new_theme'] != NULL ) && $_SE
 }
 
 // The list of database layers installed into the system.
-if ( $_SESSION['install_config']['step'] == 1 || $_SESSION['install_config']['step'] == 2 || $_SESSION['install_config']['step'] == 3 )
+if ( in_array($_SESSION['install_config']['step'], array(1, 2, 3), TRUE) )
 {
 	$layers_includes = array('mysqli');
 	$layers_available = array();
@@ -382,7 +382,7 @@ switch ( $_SESSION['install_config']['step'] )
 			if ( !array_search($_POST['dbtype'], $layers_available) )
 			{
 				$layer_name = "db_" .$_POST['dbtype'];
-				include "includes/" .$_POST['dbtype']. ".php";
+				require "includes/" .$_POST['dbtype']. ".php";
 				
 				$connection = $layer_name::test_connection($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass']);
 				if ( $connection === TRUE )
@@ -427,9 +427,8 @@ switch ( $_SESSION['install_config']['step'] )
 		$step_picture = "database.png";
 		$step_number = 3;
 		
-		// Connect to the database server.
-		include "config.php";
-		include "includes/" .$cfg['dbtype']. ".php";
+		require "config.php";
+		require "includes/" .$cfg['dbtype']. ".php";
 		$layer_name = "db_" . $cfg['dbtype'];
 		$db = new $layer_name($cfg['dbhost'], $cfg['dbuser'], $cfg['dbpass'], NULL);
 		
@@ -477,9 +476,8 @@ switch ( $_SESSION['install_config']['step'] )
 		$step_picture = "database.png";
 		$step_number = 3;
 		
-		// Connect to the database server.
-		include "config.php";
-		include "includes/" .$cfg['dbtype']. ".php";
+		require "config.php";
+		require "includes/" .$cfg['dbtype']. ".php";
 		$layer_name = "db_" . $cfg['dbtype'];
 		$db = new $layer_name($cfg['dbhost'], $cfg['dbuser'], $cfg['dbpass'], $cfg['dbname']);
 		
@@ -672,9 +670,8 @@ switch ( $_SESSION['install_config']['step'] )
 				
 				$template->add_to_stack( $error_return, "left");
 			} else {
-				// Connect to the database server.
-				include "config.php";
-				include "includes/" .$cfg['dbtype']. ".php";
+				require "config.php";
+				require "includes/" .$cfg['dbtype']. ".php";
 				$layer_name = "db_" . $cfg['dbtype'];
 				$db = new $layer_name($cfg['dbhost'], $cfg['dbuser'], $cfg['dbpass'], $cfg['dbname']);
 				
