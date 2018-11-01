@@ -1,0 +1,20 @@
+<!--- BEGIN admin users import -->
+<!--- Usage: acp users csv import page -->
+<p>
+	A felhasználók importáláshoz készítsen egy CSV (tabulátorokkal tagolt szöveg) fájlt, a következő struktúrában:
+	<pre>
+		"username","pwd","f_class","email"
+		"user1","pass1","1. A","email1@doma.in"
+		"user2","pass2","12. X","email2@doma.in"
+	</pre>
+
+	(Az	elválasztó karakter <tt>,</tt> (vessző), a sorvége karakter normál sorvége karakter, a mezők határolókaraktere pedig <tt>"</tt> (idézőjel).
+</p>
+
+<form method="POST" action="control_admin.php" enctype="multipart/form-data">
+	<input type="file" name="csv" size="50" accept="text/comma-separated-values" />
+	<input type="hidden" name="site" value="users" />
+	<input type="hidden" name="action" value="import" />
+	<input type="submit" value="Feltöltés" />
+</form>
+<!--- END admin users import -->

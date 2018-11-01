@@ -45,7 +45,7 @@ if ( $_SESSION['log_bool'] == FALSE )
 					'ALT'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_DIRECT_OPENING}"
 				), FALSE); // Output an error message
 				$Ctemplate->useStaticTemplate("freeuniversity/schedule_retry_button", FALSE);
-			} elseif ( ( @$_POST['id'] != NULL ) && ( !in_array(@$_POST['hour'], array(1, 2, 3, 4, 12, 23, 34)) ) )
+			} elseif ( ( @$_POST['id'] != NULL ) && ( !in_array(@$_POST['hour'], array(1, 2, 3, 4, 12, 23, 34, 123, 234, 1234)) ) )
 			{
 				// Another possible mishap: ID is present but the hour variable points to an invalid hour
 				$Ctemplate->useTemplate("errormessage", array(
@@ -55,7 +55,7 @@ if ( $_SESSION['log_bool'] == FALSE )
 					'ALT'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_INVALID_HOUR}"
 				), FALSE); // Output an error message
 				$Ctemplate->useStaticTemplate("freeuniversity/schedule_retry_button", FALSE);
-			} elseif ( ( @$_POST['id'] != NULL ) && ( in_array(@$_POST['hour'], array(1, 2, 3, 4, 12, 23, 34)) ) )
+			} elseif ( ( @$_POST['id'] != NULL ) && ( in_array(@$_POST['hour'], array(1, 2, 3, 4, 12, 23, 34, 123, 234, 1234)) ) )
 			{
 				// The lecture ID is present and the hour variable points to a valid option
 				// This means that we are allowed to attend the lecture, but before doing so
@@ -127,6 +127,9 @@ if ( $_SESSION['log_bool'] == FALSE )
 							
 							if ( $signedUp === TRUE )
 							{
+								log_append('A(z) ' .$lTitle[0]. ' (#' .$_POST['id']. ') előadásra ' .$_SESSION['username']. ' (#' .$_SESSION['uid']. ')' .
+										' jelentkezett a(z) ' .$_POST['hour']. '. órában.');
+								
 								// If the user was able to sign up, we output a success message
 								$Ctemplate->useTemplate("successbox", array(
 									'PICTURE_NAME'	=>	"Nuvola_apps_korganizer.png",
@@ -237,6 +240,219 @@ if ( $_SESSION['log_bool'] == FALSE )
 							
 							if ( $signedUp === TRUE )
 							{
+								log_append('A(z) ' .$lTitle[0]. ' (#' .$_POST['id']. ') előadásra ' .$_SESSION['username']. ' (#' .$_SESSION['uid']. ')' .
+										' jelentkezett a(z) ' .$hour1. '-' .$hour2. '. órában.');
+								
+								// If the user was able to sign up, we output a success message
+								$Ctemplate->useTemplate("successbox", array(
+									'PICTURE_NAME'	=>	"Nuvola_apps_korganizer.png",
+									'TITLE'	=>	$wf_lang['{LANG_FREEUNIVERSITY_SCHEDULE_SIGNEDUP}'],
+									'BODY'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_SIGNEDUP_BODY}",
+									'ALT'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_SIGNEDUP}",
+									'LECTURE_TITLE'	=>	$lTitle[0]
+								), FALSE);
+								$Ctemplate->useStaticTemplate("freeuniversity/schedule_retry_button", FALSE);
+							} elseif ( $signedUp === FALSE )
+							{
+								// If we were unable to sign up the user
+								// (at this point due to an SQL error),
+								// we output an error message
+								$Ctemplate->useTemplate("errormessage", array(
+									'PICTURE_NAME'	=>	"Nuvola_apps_error.png",
+									'TITLE'	=>	$wf_lang['{LANG_FREEUNIVERSITY_SCHEDULE_UNABLE_SIGNUP}'],
+									'BODY'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_UNABLE_SIGNUP_BODY}",
+									'ALT'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_UNABLE_SIGNUP}",
+									'LECTURE_TITLE'	=>	$lTitle[0]
+								), FALSE);
+								$Ctemplate->useStaticTemplate("freeuniversity/schedule_retry_button", FALSE);
+							}
+						} else {
+							// If the user is unable to attend due to one or more of the conditions
+							// not fitting, we output an error message.
+							
+							$Ctemplate->useTemplate("errormessage", array(
+								'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png",
+								'TITLE'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_CANNOT_ATTEND}",
+								'BODY'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_CANNOT_ATTEND_BODY}",
+								'ALT'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_CANNOT_ATTEND}",
+							), FALSE);
+							$Ctemplate->useStaticTemplate("freeuniversity/schedule_retry_button", FALSE);
+						}
+						
+						break;
+					case 123:
+					case 234:
+						if ( $_POST['hour'] === "123" )
+						{
+							$hour1 = "1";
+							$hour2 = "2";
+							$hour3 = "3";
+						} elseif ( $_POST['hour'] === "234" )
+						{
+							$hour1 = "2";
+							$hour2 = "3";
+							$hour3 = "4";
+						}
+						
+						// Get whether the lecture is a double-hour lecture and perform a check on it
+						$lectTriple = mysql_fetch_row($Cmysql->Query("SELECT lect" .$hour1.$hour2.$hour3. " FROM f_lectures WHERE id='" .$Cmysql->EscapeString($_POST['id']). "'"));
+						
+						if ( $lectTriple[0] === "0" )
+						{
+							// If there is lecture is not a double-hour lecture, we terminate execution with an error message
+							$Ctemplate->useTemplate("errormessage", array(
+								'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png",
+								'TITLE'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_INVALID_HOUR}",
+								'BODY'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_INVALID_HOUR_BODY}",
+								'ALT'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_INVALID_HOUR}"
+							), FALSE);
+							$Ctemplate->useStaticTemplate("freeuniversity/schedule_retry_button", FALSE);
+							
+							$Ctemplate->useStaticTemplate("freeuniversity/schedule_foot", FALSE);
+							DoFooter();
+							exit;
+						}
+						
+						// Get the user's attendance lecture ID for hour #
+						$uLectureID = mysql_fetch_row($Cmysql->Query("SELECT f_hour" .$hour1. ", f_hour" .$hour2. ", f_hour" .$hour3. " FROM users WHERE id='" .$Cmysql->EscapeString($_SESSION['uid']). "'"));
+						
+						// Get whether the lecture is held in hour #
+						$lectHeld = mysql_fetch_row($Cmysql->Query("SELECT hour" .$hour1. ", hour" .$hour2. ", hour" .$hour3. " FROM f_lectures WHERE id='" .$Cmysql->EscapeString($_POST['id']). "'"));
+						
+						// Get the lecture limit for said hour
+						$limit = mysql_fetch_row($Cmysql->Query("SELECT limit" .$hour1. ", limit" .$hour2. ", limit" .$hour3. " FROM f_lectures WHERE id='" .$Cmysql->EscapeString($_POST['id']). "'"));
+						
+						// Get the number of students attending said lecture in said hour
+						$numStudents[0] = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM users WHERE f_hour" .$hour1. "='" .$Cmysql->EscapeString($_POST['id']). "'"));
+						$numStudents[1] = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM users WHERE f_hour" .$hour2. "='" .$Cmysql->EscapeString($_POST['id']). "'"));
+						$numStudents[2] = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM users WHERE f_hour" .$hour3. "='" .$Cmysql->EscapeString($_POST['id']). "'"));
+						
+						// Perform checks (we need all of them to be TRUE to continue)
+						if (
+							( $uLectureID[0] === "0" ) && ( $uLectureID[1] === "0" ) && ( $uLectureID[2] === "0" ) &&
+							( $lectHeld[0] === "1" ) && ( $lectHeld[1] === "1" ) && ( $lectHeld[2] === "1" ) &&
+							( ( $numStudents[0][0] < $limit[0] ) || ( $limit[0] === "0" ) ) &&
+							( ( $numStudents[1][0] < $limit[1] ) || ( $limit[1] === "0" ) ) &&
+							( ( $numStudents[2][0] < $limit[2] ) || ( $limit[2] === "0" ) )
+						)
+						{
+							// If all conditions are met, we allow the user to sign up (for both hours)
+							if ( config("freeuniversity_allow") == "on" )
+							{
+								$signedUp = $Cmysql->Query("UPDATE users SET f_hour" .$hour1. "='" .$Cmysql->EscapeString($_POST['id']). "', f_hour" .$hour2. "='" .$Cmysql->EscapeString($_POST['id']). "', f_hour" .$hour3. "='" .$Cmysql->EscapeString($_POST['id']). "' WHERE id='" .$Cmysql->EscapeString($_SESSION['uid']). "'");
+							} elseif ( config("freeuniversity_allow") == "off" )
+							{
+								// Disallow non-read access to Freeuniversity database if it is finalized.
+								$signedUp = FALSE;
+							}
+							
+							if ( $signedUp === TRUE )
+							{
+								log_append('A(z) ' .$lTitle[0]. ' (#' .$_POST['id']. ') előadásra ' .$_SESSION['username']. ' (#' .$_SESSION['uid']. ')' .
+										' jelentkezett a(z) ' .$hour1. '-' .$hour2. '-' .$hour3. '. órában.');
+								
+								// If the user was able to sign up, we output a success message
+								$Ctemplate->useTemplate("successbox", array(
+									'PICTURE_NAME'	=>	"Nuvola_apps_korganizer.png",
+									'TITLE'	=>	$wf_lang['{LANG_FREEUNIVERSITY_SCHEDULE_SIGNEDUP}'],
+									'BODY'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_SIGNEDUP_BODY}",
+									'ALT'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_SIGNEDUP}",
+									'LECTURE_TITLE'	=>	$lTitle[0]
+								), FALSE);
+								$Ctemplate->useStaticTemplate("freeuniversity/schedule_retry_button", FALSE);
+							} elseif ( $signedUp === FALSE )
+							{
+								// If we were unable to sign up the user
+								// (at this point due to an SQL error),
+								// we output an error message
+								$Ctemplate->useTemplate("errormessage", array(
+									'PICTURE_NAME'	=>	"Nuvola_apps_error.png",
+									'TITLE'	=>	$wf_lang['{LANG_FREEUNIVERSITY_SCHEDULE_UNABLE_SIGNUP}'],
+									'BODY'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_UNABLE_SIGNUP_BODY}",
+									'ALT'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_UNABLE_SIGNUP}",
+									'LECTURE_TITLE'	=>	$lTitle[0]
+								), FALSE);
+								$Ctemplate->useStaticTemplate("freeuniversity/schedule_retry_button", FALSE);
+							}
+						} else {
+							// If the user is unable to attend due to one or more of the conditions
+							// not fitting, we output an error message.
+							
+							$Ctemplate->useTemplate("errormessage", array(
+								'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png",
+								'TITLE'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_CANNOT_ATTEND}",
+								'BODY'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_CANNOT_ATTEND_BODY}",
+								'ALT'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_CANNOT_ATTEND}",
+							), FALSE);
+							$Ctemplate->useStaticTemplate("freeuniversity/schedule_retry_button", FALSE);
+						}
+						
+						break;
+					case 1234:
+						$hour1 = "1";
+						$hour2 = "2";
+						$hour3 = "3";
+						$hour4 = "4";
+						
+						// Get whether the lecture is a double-hour lecture and perform a check on it
+						$lectQuad = mysql_fetch_row($Cmysql->Query("SELECT lect" .$hour1.$hour2.$hour3.$hour4. " FROM f_lectures WHERE id='" .$Cmysql->EscapeString($_POST['id']). "'"));
+						
+						if ( $lectQuad[0] === "0" )
+						{
+							// If there is lecture is not a double-hour lecture, we terminate execution with an error message
+							$Ctemplate->useTemplate("errormessage", array(
+								'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png",
+								'TITLE'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_INVALID_HOUR}",
+								'BODY'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_INVALID_HOUR_BODY}",
+								'ALT'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_INVALID_HOUR}"
+							), FALSE);
+							$Ctemplate->useStaticTemplate("freeuniversity/schedule_retry_button", FALSE);
+							
+							$Ctemplate->useStaticTemplate("freeuniversity/schedule_foot", FALSE);
+							DoFooter();
+							exit;
+						}
+						
+						// Get the user's attendance lecture ID for hour #
+						$uLectureID = mysql_fetch_row($Cmysql->Query("SELECT f_hour" .$hour1. ", f_hour" .$hour2. ", f_hour" .$hour3. ", f_hour" .$hour4. " FROM users WHERE id='" .$Cmysql->EscapeString($_SESSION['uid']). "'"));
+						
+						// Get whether the lecture is held in hour #
+						$lectHeld = mysql_fetch_row($Cmysql->Query("SELECT hour" .$hour1. ", hour" .$hour2. ", hour" .$hour3. ", hour" .$hour4. " FROM f_lectures WHERE id='" .$Cmysql->EscapeString($_POST['id']). "'"));
+						
+						// Get the lecture limit for said hour
+						$limit = mysql_fetch_row($Cmysql->Query("SELECT limit" .$hour1. ", limit" .$hour2. ", limit" .$hour3. ", limit" .$hour4. " FROM f_lectures WHERE id='" .$Cmysql->EscapeString($_POST['id']). "'"));
+						
+						// Get the number of students attending said lecture in said hour
+						$numStudents[0] = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM users WHERE f_hour" .$hour1. "='" .$Cmysql->EscapeString($_POST['id']). "'"));
+						$numStudents[1] = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM users WHERE f_hour" .$hour2. "='" .$Cmysql->EscapeString($_POST['id']). "'"));
+						$numStudents[2] = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM users WHERE f_hour" .$hour3. "='" .$Cmysql->EscapeString($_POST['id']). "'"));
+						$numStudents[3] = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM users WHERE f_hour" .$hour4. "='" .$Cmysql->EscapeString($_POST['id']). "'"));
+						
+						// Perform checks (we need all of them to be TRUE to continue)
+						if (
+							( $uLectureID[0] === "0" ) && ( $uLectureID[1] === "0" ) && ( $uLectureID[2] === "0" ) && ( $uLectureID[3] === "0" ) &&
+							( $lectHeld[0] === "1" ) && ( $lectHeld[1] === "1" ) && ( $lectHeld[2] === "1" ) && ( $lectHeld[3] === "1" ) &&
+							( ( $numStudents[0][0] < $limit[0] ) || ( $limit[0] === "0" ) ) &&
+							( ( $numStudents[1][0] < $limit[1] ) || ( $limit[1] === "0" ) ) &&
+							( ( $numStudents[2][0] < $limit[2] ) || ( $limit[2] === "0" ) ) &&
+							( ( $numStudents[3][0] < $limit[3] ) || ( $limit[3] === "0" ) )
+						)
+						{
+							// If all conditions are met, we allow the user to sign up (for both hours)
+							if ( config("freeuniversity_allow") == "on" )
+							{
+								$signedUp = $Cmysql->Query("UPDATE users SET f_hour" .$hour1. "='" .$Cmysql->EscapeString($_POST['id']). "', f_hour" .$hour2. "='" .$Cmysql->EscapeString($_POST['id']). "', f_hour" .$hour3. "='" .$Cmysql->EscapeString($_POST['id']). "', f_hour" .$hour4. "='" .$Cmysql->EscapeString($_POST['id']). "' WHERE id='" .$Cmysql->EscapeString($_SESSION['uid']). "'");
+							} elseif ( config("freeuniversity_allow") == "off" )
+							{
+								// Disallow non-read access to Freeuniversity database if it is finalized.
+								$signedUp = FALSE;
+							}
+							
+							if ( $signedUp === TRUE )
+							{
+								log_append('A(z) ' .$lTitle[0]. ' (#' .$_POST['id']. ') előadásra ' .$_SESSION['username']. ' (#' .$_SESSION['uid']. ')' .
+										' jelentkezett a(z) ' .$hour1. '-' .$hour2. '-' .$hour3. '-' .$hour4. '. órában.');
+								
 								// If the user was able to sign up, we output a success message
 								$Ctemplate->useTemplate("successbox", array(
 									'PICTURE_NAME'	=>	"Nuvola_apps_korganizer.png",
@@ -292,7 +508,7 @@ if ( $_SESSION['log_bool'] == FALSE )
 					'ALT'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_DIRECT_OPENING}"
 				), FALSE); // Output an error message
 				$Ctemplate->useStaticTemplate("freeuniversity/schedule_retry_button", FALSE);
-			} elseif ( ( @$_POST['id'] != NULL ) && ( !in_array(@$_POST['hour'], array(1, 2, 3, 4, 12, 23, 34)) ) )
+			} elseif ( ( @$_POST['id'] != NULL ) && ( !in_array(@$_POST['hour'], array(1, 2, 3, 4, 12, 23, 34, 123, 234, 1234)) ) )
 			{
 				// Another possible mishap: ID is present but the hour variable points to an invalid hour
 				$Ctemplate->useTemplate("errormessage", array(
@@ -302,7 +518,7 @@ if ( $_SESSION['log_bool'] == FALSE )
 					'ALT'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_INVALID_HOUR}"
 				), FALSE); // Output an error message
 				$Ctemplate->useStaticTemplate("freeuniversity/schedule_retry_button", FALSE);
-			} elseif ( ( @$_POST['id'] != NULL ) && ( in_array(@$_POST['hour'], array(1, 2, 3, 4, 12, 23, 34)) ) )
+			} elseif ( ( @$_POST['id'] != NULL ) && ( in_array(@$_POST['hour'], array(1, 2, 3, 4, 12, 23, 34, 123, 234, 1234)) ) )
 			{
 				// The lecture ID is present and the hour variable points to a valid option
 				// This means that we are allowed to resign from attending the lecture.
@@ -346,6 +562,9 @@ if ( $_SESSION['log_bool'] == FALSE )
 						
 						if ( $resigned === TRUE )
 						{
+							log_append('A(z) ' .$lTitle[0]. ' (#' .$_POST['id']. ') előadásról ' .$_SESSION['username']. ' (#' .$_SESSION['uid']. ')' .
+										' leiratkozott a(z) ' .$_POST['hour']. '. órában.');
+							
 							// If the user was able to resign, we output a success message
 							$Ctemplate->useTemplate("successbox", array(
 								'PICTURE_NAME'	=>	"Nuvola_apps_korganizer.png",
@@ -422,6 +641,147 @@ if ( $_SESSION['log_bool'] == FALSE )
 						
 						if ( $resigned === TRUE )
 						{
+							log_append('A(z) ' .$lTitle[0]. ' (#' .$_POST['id']. ') előadásról ' .$_SESSION['username']. ' (#' .$_SESSION['uid']. ')' .
+										' leiratkozott a(z) ' .$hour1. '-' .$hour2. '. órában.');
+							
+							// If the user was able to resign, we output a success message
+							$Ctemplate->useTemplate("successbox", array(
+								'PICTURE_NAME'	=>	"Nuvola_apps_korganizer.png",
+								'TITLE'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_RESIGNED}",
+								'BODY'	=>	$wf_lang['{LANG_FREEUNIVERSITY_SCHEDULE_RESIGNED_BODY}'],
+								'ALT'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_RESIGNED}",
+								'LECTURE_TITLE'	=>	$lTitle[0]
+							), FALSE);
+							$Ctemplate->useStaticTemplate("freeuniversity/schedule_retry_button", FALSE);
+						} elseif ( $resigned === FALSE )
+						{
+							// If we were unable to resign the user
+							// (at this point due to an SQL error),
+							// we output an error message
+							$Ctemplate->useTemplate("errormessage", array(
+								'PICTURE_NAME'	=>	"Nuvola_apps_error.png",
+								'TITLE'	=>	$wf_lang['{LANG_FREEUNIVERSITY_SCHEDULE_UNABLE_RESIGN}'],
+								'BODY'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_UNABLE_RESIGN_BODY}",
+								'ALT'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_UNABLE_RESIGN}",
+								'LECTURE_TITLE'	=>	$lTitle[0]
+							), FALSE);
+							$Ctemplate->useStaticTemplate("freeuniversity/schedule_retry_button", FALSE);
+						}
+						
+						break;
+					case 123:
+					case 234:
+						if ( $_POST['hour'] === "123" )
+						{
+							$hour1 = "1";
+							$hour2 = "2";
+							$hour3 = "3";
+						} elseif ( $_POST['hour'] === "234" )
+						{
+							$hour1 = "2";
+							$hour2 = "3";
+							$hour3 = "4";
+						}
+						
+						// Get whether the lecture is a double-hour lecture and perform a check on it
+						$lectTriple = mysql_fetch_row($Cmysql->Query("SELECT lect" .$hour1.$hour2.$hour3. " FROM f_lectures WHERE id='" .$Cmysql->EscapeString($_POST['id']). "'"));
+						
+						if ( $lectTriple[0] === "0" )
+						{
+							// If there is lecture is not a double-hour lecture, we terminate execution with an error message
+							$Ctemplate->useTemplate("errormessage", array(
+								'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png",
+								'TITLE'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_INVALID_HOUR}",
+								'BODY'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_INVALID_HOUR_BODY}",
+								'ALT'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_INVALID_HOUR}"
+							), FALSE);
+							$Ctemplate->useStaticTemplate("freeuniversity/schedule_retry_button", FALSE);
+							
+							$Ctemplate->useStaticTemplate("freeuniversity/schedule_foot", FALSE);
+							DoFooter();
+							exit;
+						}
+						
+						// Resign the user
+						if ( config("freeuniversity_allow") == "on" )
+						{
+							$resigned = $Cmysql->Query("UPDATE users SET f_hour" .$hour1. "='0', f_hour" .$hour2. "='0', f_hour" .$hour3. "='0' WHERE id='" .$Cmysql->EscapeString($_SESSION['uid']). "'");
+						} elseif ( config("freeuniversity_allow") == "off" )
+						{
+							// Disallow non-read access to Freeuniversity database if it is finalized.
+							$resigned = FALSE;
+						}
+						
+						if ( $resigned === TRUE )
+						{
+							log_append('A(z) ' .$lTitle[0]. ' (#' .$_POST['id']. ') előadásról ' .$_SESSION['username']. ' (#' .$_SESSION['uid']. ')' .
+										' leiratkozott a(z) ' .$hour1. '-' .$hour2. '-' .$hour3. '. órában.');
+							
+							// If the user was able to resign, we output a success message
+							$Ctemplate->useTemplate("successbox", array(
+								'PICTURE_NAME'	=>	"Nuvola_apps_korganizer.png",
+								'TITLE'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_RESIGNED}",
+								'BODY'	=>	$wf_lang['{LANG_FREEUNIVERSITY_SCHEDULE_RESIGNED_BODY}'],
+								'ALT'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_RESIGNED}",
+								'LECTURE_TITLE'	=>	$lTitle[0]
+							), FALSE);
+							$Ctemplate->useStaticTemplate("freeuniversity/schedule_retry_button", FALSE);
+						} elseif ( $resigned === FALSE )
+						{
+							// If we were unable to resign the user
+							// (at this point due to an SQL error),
+							// we output an error message
+							$Ctemplate->useTemplate("errormessage", array(
+								'PICTURE_NAME'	=>	"Nuvola_apps_error.png",
+								'TITLE'	=>	$wf_lang['{LANG_FREEUNIVERSITY_SCHEDULE_UNABLE_RESIGN}'],
+								'BODY'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_UNABLE_RESIGN_BODY}",
+								'ALT'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_UNABLE_RESIGN}",
+								'LECTURE_TITLE'	=>	$lTitle[0]
+							), FALSE);
+							$Ctemplate->useStaticTemplate("freeuniversity/schedule_retry_button", FALSE);
+						}
+						
+						break;
+					case 1234:
+						$hour1 = "1";
+						$hour2 = "2";
+						$hour3 = "3";
+						$hour4 = "4";
+						
+						// Get whether the lecture is a double-hour lecture and perform a check on it
+						$lectQuad = mysql_fetch_row($Cmysql->Query("SELECT lect" .$hour1.$hour2.$hour3.$hour4. " FROM f_lectures WHERE id='" .$Cmysql->EscapeString($_POST['id']). "'"));
+						
+						if ( $lectQuad[0] === "0" )
+						{
+							// If there is lecture is not a double-hour lecture, we terminate execution with an error message
+							$Ctemplate->useTemplate("errormessage", array(
+								'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png",
+								'TITLE'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_INVALID_HOUR}",
+								'BODY'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_INVALID_HOUR_BODY}",
+								'ALT'	=>	"{LANG_FREEUNIVERSITY_SCHEDULE_INVALID_HOUR}"
+							), FALSE);
+							$Ctemplate->useStaticTemplate("freeuniversity/schedule_retry_button", FALSE);
+							
+							$Ctemplate->useStaticTemplate("freeuniversity/schedule_foot", FALSE);
+							DoFooter();
+							exit;
+						}
+						
+						// Resign the user
+						if ( config("freeuniversity_allow") == "on" )
+						{
+							$resigned = $Cmysql->Query("UPDATE users SET f_hour" .$hour1. "='0', f_hour" .$hour2. "='0', f_hour" .$hour3. "='0', f_hour" .$hour4. "='0' WHERE id='" .$Cmysql->EscapeString($_SESSION['uid']). "'");
+						} elseif ( config("freeuniversity_allow") == "off" )
+						{
+							// Disallow non-read access to Freeuniversity database if it is finalized.
+							$resigned = FALSE;
+						}
+						
+						if ( $resigned === TRUE )
+						{
+							log_append('A(z) ' .$lTitle[0]. ' (#' .$_POST['id']. ') előadásról ' .$_SESSION['username']. ' (#' .$_SESSION['uid']. ')' .
+										' leiratkozott a(z) ' .$hour1. '-' .$hour2. '-' .$hour3. '-' .$hour4. '. órában.');
+							
 							// If the user was able to resign, we output a success message
 							$Ctemplate->useTemplate("successbox", array(
 								'PICTURE_NAME'	=>	"Nuvola_apps_korganizer.png",
@@ -469,7 +829,7 @@ if ( $_SESSION['log_bool'] == FALSE )
 				$double[12] = mysql_fetch_row($Cmysql->Query("SELECT lect1_2 FROM f_lectures WHERE id='" .$uLect['f_hour1']. "'"));
 				
 				// Get the title and the description of this lecture
-				$lect[1] = mysql_fetch_assoc($Cmysql->Query("SELECT title, description FROM f_lectures WHERE id='" .$uLect['f_hour1']. "'"));
+				$lect[1] = mysql_fetch_assoc($Cmysql->Query("SELECT id, title, description FROM f_lectures WHERE id='" .$uLect['f_hour1']. "'"));
 				
 				if ( ( $double[12][0] === "1" ) && ( $uLect['f_hour2'] === $uLect['f_hour1'] ) )
 				{
@@ -480,9 +840,9 @@ if ( $_SESSION['log_bool'] == FALSE )
 						'ID'	=>	$uLect['f_hour1'], // ID of the lecture
 						'HOUR'	=>	12, // The # of hour the button represents
 						'TITLE'	=>	$lect[1]['title'], // Title of the lecture
-						'DESCRIPTION'	=>	( $lect[1]['description'] === "" ? NULL :
+						'DESCRIPTION'	=>	( $lect[1]['description'] === "" || $lect[1]['description'] === null ? NULL :
 							$Ctemplate->useTemplate("freeuniversity/schedule_table_row_lecturedescription", array(
-								'DESCRIPTION'	=>	bbDecode($lect[1]['description'])
+								'LECTURE_ID'	=>	$lect[1]['id']
 							), TRUE) ), // Description of the lecture (if present)
 						'HEIGHT'	=>	40, // Height of the row (2x20 because double-hour)
 						'DISABLED'	=>	( config("freeuniversity_allow") == "on" ? NULL : " disabled")
@@ -495,11 +855,45 @@ if ( $_SESSION['log_bool'] == FALSE )
 						'ID'	=>	$uLect['f_hour1'], // ID of the lecture
 						'HOUR'	=>	1, // The # of hour the button represents
 						'TITLE'	=>	$lect[1]['title'], // Title of the lecture
-						'DESCRIPTION'	=>	( $lect[1]['description'] === "" ? NULL :
+						'DESCRIPTION'	=>	( $lect[1]['description'] === "" || $lect[1]['description'] === null ? NULL :
 							$Ctemplate->useTemplate("freeuniversity/schedule_table_row_lecturedescription", array(
-								'DESCRIPTION'	=>	bbDecode($lect[1]['description'])
+								'LECTURE_ID'	=>	$lect[1]['id']
 							), TRUE) ), // Description of the lecture (if present)
 						'HEIGHT'	=>	20, // Height of row (1x20 becuase single-hour)
+						'DISABLED'	=>	( config("freeuniversity_allow") == "on" ? NULL : " disabled")
+					), TRUE);
+				}
+				
+				$triple[123] = mysql_fetch_row($Cmysql->Query("SELECT lect123 FROM f_lectures WHERE id='" .$uLect['f_hour1']. "'"));
+				if ( ( $triple[123][0] === "1" ) && ( $uLect['f_hour2'] === $uLect['f_hour1'] ) && ( $uLect['f_hour3'] === $uLect['f_hour1'] ) )
+				{
+					$rRow[1] = $Ctemplate->useTemplate("freeuniversity/schedule_resign_row_button", array(
+						'ROWSPAN'	=>	3, // Row span of cell (2 because double-hour)
+						'ID'	=>	$uLect['f_hour1'], // ID of the lecture
+						'HOUR'	=>	123, // The # of hour the button represents
+						'TITLE'	=>	$lect[1]['title'], // Title of the lecture
+						'DESCRIPTION'	=>	( $lect[1]['description'] === "" || $lect[1]['description'] === null ? NULL :
+							$Ctemplate->useTemplate("freeuniversity/schedule_table_row_lecturedescription", array(
+								'LECTURE_ID'	=>	$lect[1]['id']
+							), TRUE) ), // Description of the lecture (if present)
+						'HEIGHT'	=>	40, // Height of the row (2x20 because double-hour)
+						'DISABLED'	=>	( config("freeuniversity_allow") == "on" ? NULL : " disabled")
+					), TRUE);
+				}
+				
+				$quad[1234] =  mysql_fetch_row($Cmysql->Query("SELECT lect1234 FROM f_lectures WHERE id='" .$uLect['f_hour1']. "'"));
+				if ( ( $quad[1234][0] === "1" ) && ( $uLect['f_hour2'] === $uLect['f_hour1'] ) && ( $uLect['f_hour3'] === $uLect['f_hour1'] ) && ( $uLect['f_hour4'] === $uLect['f_hour1'] ) )
+				{
+					$rRow[1] = $Ctemplate->useTemplate("freeuniversity/schedule_resign_row_button", array(
+						'ROWSPAN'	=>	4, // Row span of cell (2 because double-hour)
+						'ID'	=>	$uLect['f_hour1'], // ID of the lecture
+						'HOUR'	=>	1234, // The # of hour the button represents
+						'TITLE'	=>	$lect[1]['title'], // Title of the lecture
+						'DESCRIPTION'	=>	( $lect[1]['description'] === "" || $lect[1]['description'] === null ? NULL :
+							$Ctemplate->useTemplate("freeuniversity/schedule_table_row_lecturedescription", array(
+								'LECTURE_ID'	=>	$lect[1]['id']
+							), TRUE) ), // Description of the lecture (if present)
+						'HEIGHT'	=>	40, // Height of the row (2x20 because double-hour)
 						'DISABLED'	=>	( config("freeuniversity_allow") == "on" ? NULL : " disabled")
 					), TRUE);
 				}
@@ -514,7 +908,10 @@ if ( $_SESSION['log_bool'] == FALSE )
 			{
 				$double[12] = mysql_fetch_row($Cmysql->Query("SELECT lect1_2 FROM f_lectures WHERE id='" .$uLect['f_hour2']. "'"));
 				$double[23] = mysql_fetch_row($Cmysql->Query("SELECT lect2_3 FROM f_lectures WHERE id='" .$uLect['f_hour2']. "'"));
-				$lect[2] = mysql_fetch_assoc($Cmysql->Query("SELECT title, description FROM f_lectures WHERE id='" .$uLect['f_hour2']. "'"));
+				$triple[123] = mysql_fetch_row($Cmysql->Query("SELECT lect123 FROM f_lectures WHERE id='" .$uLect['f_hour2']. "'"));
+				$triple[234] = mysql_fetch_row($Cmysql->Query("SELECT lect234 FROM f_lectures WHERE id='" .$uLect['f_hour2']. "'"));
+				$quad[1234] =  mysql_fetch_row($Cmysql->Query("SELECT lect1234 FROM f_lectures WHERE id='" .$uLect['f_hour2']. "'"));
+				$lect[2] = mysql_fetch_assoc($Cmysql->Query("SELECT id, title, description FROM f_lectures WHERE id='" .$uLect['f_hour2']. "'"));
 				
 				if ( ( $double[12][0] === "1" ) && ( $uLect['f_hour1'] === $uLect['f_hour2'] ) )
 				{
@@ -523,6 +920,12 @@ if ( $_SESSION['log_bool'] == FALSE )
 					// because the row is already filled when the previous hour was checked.
 					
 					$rRow[2] = NULL;
+				} elseif ( ( $triple[123][0] === "1" ) && ( $uLect['f_hour1'] === $uLect['f_hour2'] ) && ( $uLect['f_hour3'] === $uLect['f_hour2'] ) )
+				{
+					$rRow[2] = NULL;
+				} elseif ( ( $quad[1234][0] === "1" ) && ( $uLect['f_hour1'] === $uLect['f_hour2'] ) && ( $uLect['f_hour3'] === $uLect['f_hour1'] ) && ( $uLect['f_hour4'] === $uLect['f_hour2'] ) )
+				{
+					$rRow[2] = NULL;
 				} elseif ( ( $double[23][0] === "1" ) && ( $uLect['f_hour3'] === $uLect['f_hour2'] ) )
 				{
 					$rRow[2] = $Ctemplate->useTemplate("freeuniversity/schedule_resign_row_button", array(
@@ -530,9 +933,9 @@ if ( $_SESSION['log_bool'] == FALSE )
 						'ID'	=>	$uLect['f_hour2'],
 						'HOUR'	=>	23,
 						'TITLE'	=>	$lect[2]['title'],
-						'DESCRIPTION'	=>	( $lect[2]['description'] === "" ? NULL :
+						'DESCRIPTION'	=>	( $lect[2]['description'] === "" || $lect[2]['description'] === null ? NULL :
 							$Ctemplate->useTemplate("freeuniversity/schedule_table_row_lecturedescription", array(
-								'DESCRIPTION'	=>	bbDecode($lect[2]['description'])
+								'LECTURE_ID'	=>	$lect[2]['id']
 							), TRUE) ),
 						'HEIGHT'	=>	40,
 						'DISABLED'	=>	( config("freeuniversity_allow") == "on" ? NULL : " disabled")
@@ -544,11 +947,27 @@ if ( $_SESSION['log_bool'] == FALSE )
 						'ID'	=>	$uLect['f_hour2'],
 						'HOUR'	=>	2,
 						'TITLE'	=>	$lect[2]['title'],
-						'DESCRIPTION'	=>	( $lect[2]['description'] === "" ? NULL :
+						'DESCRIPTION'	=>	( $lect[2]['description'] === "" || $lect[2]['description'] === null ? NULL :
 							$Ctemplate->useTemplate("freeuniversity/schedule_table_row_lecturedescription", array(
-								'DESCRIPTION'	=>	bbDecode($lect[2]['description'])
+								'LECTURE_ID'	=>	$lect[2]['id']
 							), TRUE) ),
 						'HEIGHT'	=>	20,
+						'DISABLED'	=>	( config("freeuniversity_allow") == "on" ? NULL : " disabled")
+					), TRUE);
+				}
+				
+				if ( ( $triple[234][0] === "1" ) && ( $uLect['f_hour3'] === $uLect['f_hour2'] ) && ( $uLect['f_hour4'] === $uLect['f_hour2'] ) )
+				{
+					$rRow[2] = $Ctemplate->useTemplate("freeuniversity/schedule_resign_row_button", array(
+						'ROWSPAN'	=>	3, // Row span of cell (2 because double-hour)
+						'ID'	=>	$uLect['f_hour2'], // ID of the lecture
+						'HOUR'	=>	234, // The # of hour the button represents
+						'TITLE'	=>	$lect[2]['title'], // Title of the lecture
+						'DESCRIPTION'	=>	( $lect[2]['description'] === "" || $lect[2]['description'] === null ? NULL :
+							$Ctemplate->useTemplate("freeuniversity/schedule_table_row_lecturedescription", array(
+								'LECTURE_ID'	=>	$lect[2]['id']
+							), TRUE) ), // Description of the lecture (if present)
+						'HEIGHT'	=>	40, // Height of the row (2x20 because double-hour)
 						'DISABLED'	=>	( config("freeuniversity_allow") == "on" ? NULL : " disabled")
 					), TRUE);
 				}
@@ -561,9 +980,21 @@ if ( $_SESSION['log_bool'] == FALSE )
 			{
 				$double[23] = mysql_fetch_row($Cmysql->Query("SELECT lect2_3 FROM f_lectures WHERE id='" .$uLect['f_hour3']. "'"));
 				$double[34] = mysql_fetch_row($Cmysql->Query("SELECT lect3_4 FROM f_lectures WHERE id='" .$uLect['f_hour3']. "'"));
-				$lect[3] = mysql_fetch_assoc($Cmysql->Query("SELECT title, description FROM f_lectures WHERE id='" .$uLect['f_hour3']. "'"));
+				$triple[123] = mysql_fetch_row($Cmysql->Query("SELECT lect123 FROM f_lectures WHERE id='" .$uLect['f_hour3']. "'"));
+				$triple[234] = mysql_fetch_row($Cmysql->Query("SELECT lect234 FROM f_lectures WHERE id='" .$uLect['f_hour3']. "'"));
+				$quad[1234] =  mysql_fetch_row($Cmysql->Query("SELECT lect1234 FROM f_lectures WHERE id='" .$uLect['f_hour3']. "'"));
+				$lect[3] = mysql_fetch_assoc($Cmysql->Query("SELECT id, title, description FROM f_lectures WHERE id='" .$uLect['f_hour3']. "'"));
 				
 				if ( ( $double[23][0] === "1" ) && ( $uLect['f_hour2'] === $uLect['f_hour3'] ) )
+				{
+					$rRow[3] = NULL;
+				} elseif ( ( $triple[123][0] === "1" ) && ( $uLect['f_hour1'] === $uLect['f_hour3'] ) && ( $uLect['f_hour2'] === $uLect['f_hour3'] ) )
+				{
+					$rRow[3] = NULL;
+				} elseif ( ( $triple[234][0] === "1" ) && ( $uLect['f_hour2'] === $uLect['f_hour3'] ) && ( $uLect['f_hour4'] === $uLect['f_hour3'] ) )
+				{
+					$rRow[3] = NULL;
+				} elseif ( ( $quad[1234][0] === "1" ) && ( $uLect['f_hour1'] === $uLect['f_hour3'] ) && ( $uLect['f_hour2'] === $uLect['f_hour3'] ) && ( $uLect['f_hour4'] === $uLect['f_hour3'] ) )
 				{
 					$rRow[3] = NULL;
 				} elseif ( ( $double[34][0] === "1" ) && ( $uLect['f_hour4'] === $uLect['f_hour3'] ) )
@@ -573,9 +1004,9 @@ if ( $_SESSION['log_bool'] == FALSE )
 						'ID'	=>	$uLect['f_hour3'],
 						'HOUR'	=>	34,
 						'TITLE'	=>	$lect[3]['title'],
-						'DESCRIPTION'	=>	( $lect[3]['description'] === "" ? NULL :
+						'DESCRIPTION'	=>	( $lect[3]['description'] === "" || $lect[3]['description'] === null ? NULL :
 							$Ctemplate->useTemplate("freeuniversity/schedule_table_row_lecturedescription", array(
-								'DESCRIPTION'	=>	bbDecode($lect[3]['description'])
+								'LECTURE_ID'	=>	$lect[3]['id']
 							), TRUE) ),
 						'HEIGHT'	=>	40,
 						'DISABLED'	=>	( config("freeuniversity_allow") == "on" ? NULL : " disabled")
@@ -587,9 +1018,9 @@ if ( $_SESSION['log_bool'] == FALSE )
 						'ID'	=>	$uLect['f_hour3'],
 						'HOUR'	=>	3,
 						'TITLE'	=>	$lect[3]['title'],
-						'DESCRIPTION'	=>	( $lect[3]['description'] === "" ? NULL :
+						'DESCRIPTION'	=>	( $lect[3]['description'] === "" || $lect[3]['description'] === null ? NULL :
 							$Ctemplate->useTemplate("freeuniversity/schedule_table_row_lecturedescription", array(
-								'DESCRIPTION'	=>	bbDecode($lect[3]['description'])
+								'LECTURE_ID'	=>	$lect[3]['id']
 							), TRUE) ),
 						'HEIGHT'	=>	20,
 						'DISABLED'	=>	( config("freeuniversity_allow") == "on" ? NULL : " disabled")
@@ -603,9 +1034,17 @@ if ( $_SESSION['log_bool'] == FALSE )
 			if ( $uLect['f_hour4'] != 0 )
 			{
 				$double[34] = mysql_fetch_row($Cmysql->Query("SELECT lect3_4 FROM f_lectures WHERE id='" .$uLect['f_hour4']. "'"));
-				$lect[4] = mysql_fetch_assoc($Cmysql->Query("SELECT title, description FROM f_lectures WHERE id='" .$uLect['f_hour4']. "'"));
+				$triple[234] = mysql_fetch_row($Cmysql->Query("SELECT lect234 FROM f_lectures WHERE id='" .$uLect['f_hour4']. "'"));
+				$quad[1234] =  mysql_fetch_row($Cmysql->Query("SELECT lect1234 FROM f_lectures WHERE id='" .$uLect['f_hour4']. "'"));
+				$lect[4] = mysql_fetch_assoc($Cmysql->Query("SELECT id, title, description FROM f_lectures WHERE id='" .$uLect['f_hour4']. "'"));
 				
 				if ( ( $double[34][0] === "1" ) && ( $uLect['f_hour4'] === $uLect['f_hour3'] ) )
+				{
+					$rRow[4] = NULL;
+				} elseif ( ( $triple[234][0] === "1" ) && ( $uLect['f_hour2'] === $uLect['f_hour4'] ) && ( $uLect['f_hour3'] === $uLect['f_hour4'] ) )
+				{
+					$rRow[4] = NULL;
+				} elseif ( ( $quad[1234][0] === "1" ) && ( $uLect['f_hour1'] === $uLect['f_hour4'] ) && ( $uLect['f_hour2'] === $uLect['f_hour4'] ) && ( $uLect['f_hour3'] === $uLect['f_hour4'] ) )
 				{
 					$rRow[4] = NULL;
 				} elseif ( $double[34][0] === "0" )
@@ -615,9 +1054,9 @@ if ( $_SESSION['log_bool'] == FALSE )
 						'ID'	=>	$uLect['f_hour4'],
 						'HOUR'	=>	4,
 						'TITLE'	=>	$lect[4]['title'],
-						'DESCRIPTION'	=>	( $lect[4]['description'] === "" ? NULL :
+						'DESCRIPTION'	=>	( $lect[4]['description'] === "" || $lect[4]['description'] === null ? NULL :
 							$Ctemplate->useTemplate("freeuniversity/schedule_table_row_lecturedescription", array(
-								'DESCRIPTION'	=>	bbDecode($lect[4]['description'])
+								'LECTURE_ID'	=>	$lect[4]['id']
 							), TRUE) ),
 						'HEIGHT'	=>	20,
 						'DISABLED'	=>	( config("freeuniversity_allow") == "on" ? NULL : " disabled")
@@ -641,7 +1080,7 @@ if ( $_SESSION['log_bool'] == FALSE )
 			$Ctemplate->useStaticTemplate("freeuniversity/schedule_table_open", FALSE);
 			
 			// Get every lecture into a MySQL result
-			$lectures_result = $Cmysql->Query("SELECT id, title, description, hour1, hour2, hour3, hour4, limit1, limit2, limit3, limit4, lect1_2, lect2_3, lect3_4 FROM f_lectures ORDER BY title ASC");
+			$lectures_result = $Cmysql->Query("SELECT id, title, description, hour1, hour2, hour3, hour4, limit1, limit2, limit3, limit4, lect1_2, lect2_3, lect3_4, lect123, lect234, lect1234 FROM f_lectures ORDER BY title ASC");
 			
 			while ( $lRow = mysql_fetch_assoc($lectures_result) )
 			{
@@ -663,7 +1102,10 @@ if ( $_SESSION['log_bool'] == FALSE )
 					4	=>	FALSE,
 					12	=>	FALSE,
 					23	=>	FALSE,
-					34	=>	FALSE
+					34	=>	FALSE,
+					123	=>	FALSE,
+					234	=>	FALSE,
+					1234	=>	FALSE
 				);
 				
 				// Get the students attending the said lecture in every hour
@@ -706,6 +1148,9 @@ if ( $_SESSION['log_bool'] == FALSE )
 						// lecture on single-hour, further messing up the database.
 						$userCanGo[1] = FALSE;
 						$userCanGo[2] = FALSE;
+						$userCanGo[123] = FALSE;
+						$userCanGo[234] = FALSE;
+						$userCanGo[1234] = FALSE;
 						
 						if (
 							( $lRow['hour2'] === "1" ) &&
@@ -716,6 +1161,54 @@ if ( $_SESSION['log_bool'] == FALSE )
 							// If every condition is met on the second hour,
 							// we set the userCanGo array on 1-2 double hour
 							$userCanGo[12] = TRUE;
+						}
+					}
+					
+					if ($lRow['lect123'] === "1")
+					{
+						$userCanGo[1] = FALSE;
+						$userCanGo[2] = FALSE;
+						$userCanGo[3] = FALSE;
+						$userCanGo[12] = FALSE;
+						$userCanGo[23] = FALSE;
+						$userCanGo[234] = FALSE;
+						$userCanGo[1234] = FALSE;
+						
+						if (
+							( $lRow['hour2'] === "1" ) && ( $lRow['hour3'] === "1" ) &&
+							( ( $numStud[2] < $lRow['limit2'] ) || ( $lRow['limit2'] === "0" ) ) &&
+							( ( $numStud[3] < $lRow['limit3'] ) || ( $lRow['limit3'] === "0" ) ) &&
+							( $uLect['f_hour2'] === "0" ) &&
+							( $uLect['f_hour3'] === "0" )
+						)
+						{
+							$userCanGo[123] = TRUE;
+						}
+					}
+					
+					if ($lRow['lect1234'] === "1")
+					{
+						$userCanGo[1] = FALSE;
+						$userCanGo[2] = FALSE;
+						$userCanGo[3] = FALSE;
+						$userCanGo[4] = FALSE;
+						$userCanGo[12] = FALSE;
+						$userCanGo[23] = FALSE;
+						$userCanGo[34] = FALSE;
+						$userCanGo[123] = FALSE;
+						$userCanGo[234] = FALSE;
+						
+						if (
+							( $lRow['hour2'] === "1" ) && ( $lRow['hour3'] === "1" ) && ( $lRow['hour4'] === "1" ) &&
+							( ( $numStud[2] < $lRow['limit2'] ) || ( $lRow['limit2'] === "0" ) ) &&
+							( ( $numStud[3] < $lRow['limit3'] ) || ( $lRow['limit3'] === "0" ) ) &&
+							( ( $numStud[4] < $lRow['limit4'] ) || ( $lRow['limit4'] === "0" ) ) &&
+							( $uLect['f_hour2'] === "0" ) &&
+							( $uLect['f_hour3'] === "0" ) &&
+							( $uLect['f_hour4'] === "0" )
+						)
+						{
+							$userCanGo[1234] = TRUE;
 						}
 					}
 				}
@@ -734,6 +1227,9 @@ if ( $_SESSION['log_bool'] == FALSE )
 					{
 						$userCanGo[1] = FALSE;
 						$userCanGo[2] = FALSE;
+						$userCanGo[123] = FALSE;
+						$userCanGo[234] = FALSE;
+						$userCanGo[1234] = FALSE;
 						
 						if (
 							( $lRow['hour1'] === "1" ) &&
@@ -750,6 +1246,9 @@ if ( $_SESSION['log_bool'] == FALSE )
 					{
 						$userCanGo[2] = FALSE;
 						$userCanGo[3] = FALSE;
+						$userCanGo[123] = FALSE;
+						$userCanGo[234] = FALSE;
+						$userCanGo[1234] = FALSE;
 						
 						if (
 							( $lRow['hour3'] === "1" ) &&
@@ -758,6 +1257,76 @@ if ( $_SESSION['log_bool'] == FALSE )
 						)
 						{
 							$userCanGo[23] = TRUE;
+						}
+					}
+					
+					if ($lRow['lect123'] === "1")
+					{
+						$userCanGo[1] = FALSE;
+						$userCanGo[2] = FALSE;
+						$userCanGo[3] = FALSE;
+						$userCanGo[12] = FALSE;
+						$userCanGo[23] = FALSE;
+						$userCanGo[234] = FALSE;
+						$userCanGo[1234] = FALSE;
+						
+						if (
+							( $lRow['hour1'] === "1" ) && ( $lRow['hour3'] === "1" ) &&
+							( ( $numStud[1] < $lRow['limit1'] ) || ( $lRow['limit1'] === "0" ) ) &&
+							( ( $numStud[3] < $lRow['limit3'] ) || ( $lRow['limit3'] === "0" ) ) &&
+							( $uLect['f_hour1'] === "0" ) &&
+							( $uLect['f_hour3'] === "0" )
+						)
+						{
+							$userCanGo[123] = TRUE;
+						}
+					}
+					
+					if ($lRow['lect234'] === "1")
+					{
+						$userCanGo[2] = FALSE;
+						$userCanGo[3] = FALSE;
+						$userCanGo[4] = FALSE;
+						$userCanGo[23] = FALSE;
+						$userCanGo[34] = FALSE;
+						$userCanGo[123] = FALSE;
+						$userCanGo[1234] = FALSE;
+						
+						if (
+							( $lRow['hour3'] === "1" ) && ( $lRow['hour4'] === "1" ) &&
+							( ( $numStud[3] < $lRow['limit3'] ) || ( $lRow['limit3'] === "0" ) ) &&
+							( ( $numStud[4] < $lRow['limit4'] ) || ( $lRow['limit4'] === "0" ) ) &&
+							( $uLect['f_hour3'] === "0" ) &&
+							( $uLect['f_hour4'] === "0" )
+						)
+						{
+							$userCanGo[234] = TRUE;
+						}
+					}
+					
+					if ($lRow['lect1234'] === "1")
+					{
+						$userCanGo[1] = FALSE;
+						$userCanGo[2] = FALSE;
+						$userCanGo[3] = FALSE;
+						$userCanGo[4] = FALSE;
+						$userCanGo[12] = FALSE;
+						$userCanGo[23] = FALSE;
+						$userCanGo[34] = FALSE;
+						$userCanGo[123] = FALSE;
+						$userCanGo[234] = FALSE;
+						
+						if (
+							( $lRow['hour1'] === "1" ) && ( $lRow['hour3'] === "1" ) && ( $lRow['hour4'] === "1" ) &&
+							( ( $numStud[1] < $lRow['limit1'] ) || ( $lRow['limit1'] === "0" ) ) &&
+							( ( $numStud[3] < $lRow['limit3'] ) || ( $lRow['limit3'] === "0" ) ) &&
+							( ( $numStud[4] < $lRow['limit4'] ) || ( $lRow['limit4'] === "0" ) ) &&
+							( $uLect['f_hour1'] === "0" ) &&
+							( $uLect['f_hour3'] === "0" ) &&
+							( $uLect['f_hour4'] === "0" )
+						)
+						{
+							$userCanGo[1234] = TRUE;
 						}
 					}
 				}
@@ -775,6 +1344,9 @@ if ( $_SESSION['log_bool'] == FALSE )
 					{
 						$userCanGo[2] = FALSE;
 						$userCanGo[3] = FALSE;
+						$userCanGo[123] = FALSE;
+						$userCanGo[234] = FALSE;
+						$userCanGo[1234] = FALSE;
 						
 						if (
 							( $lRow['hour2'] === "1" ) &&
@@ -791,6 +1363,9 @@ if ( $_SESSION['log_bool'] == FALSE )
 					{
 						$userCanGo[3] = FALSE;
 						$userCanGo[4] = FALSE;
+						$userCanGo[123] = FALSE;
+						$userCanGo[234] = FALSE;
+						$userCanGo[1234] = FALSE;
 						
 						if (
 							( $lRow['hour4'] === "1" ) &&
@@ -799,6 +1374,76 @@ if ( $_SESSION['log_bool'] == FALSE )
 						)
 						{
 							$userCanGo[34] = TRUE;
+						}
+					}
+					
+					if ($lRow['lect123'] === "1")
+					{
+						$userCanGo[1] = FALSE;
+						$userCanGo[2] = FALSE;
+						$userCanGo[3] = FALSE;
+						$userCanGo[12] = FALSE;
+						$userCanGo[23] = FALSE;
+						$userCanGo[234] = FALSE;
+						$userCanGo[1234] = FALSE;
+						
+						if (
+							( $lRow['hour1'] === "1" ) && ( $lRow['hour2'] === "1" ) &&
+							( ( $numStud[1] < $lRow['limit1'] ) || ( $lRow['limit1'] === "0" ) ) &&
+							( ( $numStud[2] < $lRow['limit2'] ) || ( $lRow['limit2'] === "0" ) ) &&
+							( $uLect['f_hour1'] === "0" ) &&
+							( $uLect['f_hour2'] === "0" )
+						)
+						{
+							$userCanGo[123] = TRUE;
+						}
+					}
+					
+					if ($lRow['lect234'] === "1")
+					{
+						$userCanGo[2] = FALSE;
+						$userCanGo[3] = FALSE;
+						$userCanGo[4] = FALSE;
+						$userCanGo[23] = FALSE;
+						$userCanGo[34] = FALSE;
+						$userCanGo[123] = FALSE;
+						$userCanGo[1234] = FALSE;
+						
+						if (
+							( $lRow['hour2'] === "1" ) && ( $lRow['hour4'] === "1" ) &&
+							( ( $numStud[2] < $lRow['limit2'] ) || ( $lRow['limit2'] === "0" ) ) &&
+							( ( $numStud[4] < $lRow['limit4'] ) || ( $lRow['limit4'] === "0" ) ) &&
+							( $uLect['f_hour2'] === "0" ) &&
+							( $uLect['f_hour4'] === "0" )
+						)
+						{
+							$userCanGo[234] = TRUE;
+						}
+					}
+					
+					if ($lRow['lect1234'] === "1")
+					{
+						$userCanGo[1] = FALSE;
+						$userCanGo[2] = FALSE;
+						$userCanGo[3] = FALSE;
+						$userCanGo[4] = FALSE;
+						$userCanGo[12] = FALSE;
+						$userCanGo[23] = FALSE;
+						$userCanGo[34] = FALSE;
+						$userCanGo[123] = FALSE;
+						$userCanGo[234] = FALSE;
+						
+						if (
+							( $lRow['hour1'] === "1" ) && ( $lRow['hour2'] === "1" ) && ( $lRow['hour4'] === "1" ) &&
+							( ( $numStud[1] < $lRow['limit1'] ) || ( $lRow['limit1'] === "0" ) ) &&
+							( ( $numStud[2] < $lRow['limit2'] ) || ( $lRow['limit2'] === "0" ) ) &&
+							( ( $numStud[4] < $lRow['limit4'] ) || ( $lRow['limit4'] === "0" ) ) &&
+							( $uLect['f_hour1'] === "0" ) &&
+							( $uLect['f_hour2'] === "0" ) &&
+							( $uLect['f_hour4'] === "0" )
+						)
+						{
+							$userCanGo[1234] = TRUE;
 						}
 					}
 				}
@@ -816,6 +1461,9 @@ if ( $_SESSION['log_bool'] == FALSE )
 					{
 						$userCanGo[3] = FALSE;
 						$userCanGo[4] = FALSE;
+						$userCanGo[123] = FALSE;
+						$userCanGo[234] = FALSE;
+						$userCanGo[1234] = FALSE;
 						
 						if (
 							( $lRow['hour3'] === "1" ) &&
@@ -824,6 +1472,54 @@ if ( $_SESSION['log_bool'] == FALSE )
 						)
 						{
 							$userCanGo[34] = TRUE;
+						}
+					}
+					
+					if ($lRow['lect234'] === "1")
+					{
+						$userCanGo[2] = FALSE;
+						$userCanGo[3] = FALSE;
+						$userCanGo[4] = FALSE;
+						$userCanGo[23] = FALSE;
+						$userCanGo[34] = FALSE;
+						$userCanGo[123] = FALSE;
+						$userCanGo[1234] = FALSE;
+						
+						if (
+							( $lRow['hour2'] === "1" ) && ( $lRow['hour3'] === "1" ) &&
+							( ( $numStud[2] < $lRow['limit2'] ) || ( $lRow['limit2'] === "0" ) ) &&
+							( ( $numStud[3] < $lRow['limit3'] ) || ( $lRow['limit3'] === "0" ) ) &&
+							( $uLect['f_hour2'] === "0" ) &&
+							( $uLect['f_hour3'] === "0" )
+						)
+						{
+							$userCanGo[234] = TRUE;
+						}
+					}
+					
+					if ($lRow['lect1234'] === "1")
+					{
+						$userCanGo[1] = FALSE;
+						$userCanGo[2] = FALSE;
+						$userCanGo[3] = FALSE;
+						$userCanGo[4] = FALSE;
+						$userCanGo[12] = FALSE;
+						$userCanGo[23] = FALSE;
+						$userCanGo[34] = FALSE;
+						$userCanGo[123] = FALSE;
+						$userCanGo[234] = FALSE;
+						
+						if (
+							( $lRow['hour1'] === "1" ) && ( $lRow['hour2'] === "1" ) && ( $lRow['hour3'] === "1" ) &&
+							( ( $numStud[1] < $lRow['limit1'] ) || ( $lRow['limit1'] === "0" ) ) &&
+							( ( $numStud[2] < $lRow['limit2'] ) || ( $lRow['limit2'] === "0" ) ) &&
+							( ( $numStud[3] < $lRow['limit3'] ) || ( $lRow['limit3'] === "0" ) ) &&
+							( $uLect['f_hour1'] === "0" ) &&
+							( $uLect['f_hour2'] === "0" ) &&
+							( $uLect['f_hour3'] === "0" )
+						)
+						{
+							$userCanGo[1234] = TRUE;
 						}
 					}
 				}
@@ -854,6 +1550,27 @@ if ( $_SESSION['log_bool'] == FALSE )
 					// Error example one: double-hour and single-hour setup in the same time
 					$panic = TRUE;
 				}
+				
+				if (
+					( ( $userCanGo[12] === TRUE ) && ( $userCanGo[123] === TRUE ) ) ||
+					( ( $userCanGo[23] === TRUE ) && ( $userCanGo[123] === TRUE ) ) ||
+					( ( $userCanGo[34] === TRUE ) && ( $userCanGo[123] === TRUE ) ) ||
+						
+					( ( $userCanGo[12] === TRUE ) && ( $userCanGo[234] === TRUE ) ) ||
+					( ( $userCanGo[23] === TRUE ) && ( $userCanGo[234] === TRUE ) ) ||
+					( ( $userCanGo[34] === TRUE ) && ( $userCanGo[234] === TRUE ) )
+				)
+				{
+					$panic = TRUE;
+				}
+				
+				if (
+					( ($userCanGo[1234] === TRUE) && (($userCanGo[1]===TRUE) || ($userCanGo[2]===TRUE) || ($userCanGo[3]===TRUE) || ($userCanGo[4]===TRUE)) )
+				)
+				{
+					$panic = TRUE;
+				}
+				
 				
 				// If there was at least one error (so panic is TRUE), we rewrite the userCanGo array
 				// and output a panic row instead of the buttons.
@@ -895,7 +1612,23 @@ if ( $_SESSION['log_bool'] == FALSE )
 							'HOUR'	=>	12, // The # of hour the button represents
 							'DISABLED'	=>	( config("freeuniversity_allow") == "on" ? NULL : " disabled")
 						), TRUE);
-					} elseif ( ( $userCanGo[1] === FALSE ) && ( $userCanGo[12] === FALSE ) )
+					} elseif ( $userCanGo[123] === TRUE )
+					{
+						$tRow[1] = $Ctemplate->useTemplate("freeuniversity/schedule_table_row_button", array(
+							'COLSPAN'	=>	3, // Column span of row
+							'ID'	=>	$lRow['id'], // ID of the lecture
+							'HOUR'	=>	123, // The # of hour the button represents
+							'DISABLED'	=>	( config("freeuniversity_allow") == "on" ? NULL : " disabled")
+						), TRUE);
+					} elseif ( $userCanGo[1234] === TRUE )
+					{
+						$tRow[1] = $Ctemplate->useTemplate("freeuniversity/schedule_table_row_button", array(
+							'COLSPAN'	=>	4, // Column span of row
+							'ID'	=>	$lRow['id'], // ID of the lecture
+							'HOUR'	=>	1234, // The # of hour the button represents
+							'DISABLED'	=>	( config("freeuniversity_allow") == "on" ? NULL : " disabled")
+						), TRUE);
+					} elseif ( ( $userCanGo[1] === FALSE ) && ( $userCanGo[12] === FALSE ) && ( $userCanGo[123] === FALSE ) && ( $userCanGo[1234] === FALSE ) )
 					{
 						// If the user cannot go on the first hour no matter what, the row is empty
 						$tRow[1] = $Ctemplate->useTemplate("freeuniversity/schedule_table_row_empty", array(
@@ -919,6 +1652,17 @@ if ( $_SESSION['log_bool'] == FALSE )
 						// the second hour's column has to be empty (because the double-column
 						// has been already set up when checking hour #1)
 						$tRow[2] = NULL;
+					} elseif ( $userCanGo[123] === TRUE )
+					{
+						$tRow[2] = NULL;
+					} elseif ( $userCanGo[234] === TRUE )
+					{
+						$tRow[2] = $Ctemplate->useTemplate("freeuniversity/schedule_table_row_button", array(
+							'COLSPAN'	=>	3, // Column span of row
+							'ID'	=>	$lRow['id'], // ID of the lecture
+							'HOUR'	=>	234, // The # of hour the button represents
+							'DISABLED'	=>	( config("freeuniversity_allow") == "on" ? NULL : " disabled")
+						), TRUE);
 					} elseif ( ( $userCanGo[2] === FALSE ) && ( $userCanGo[23] === TRUE ) )
 					{
 						// If the user cannot go on the second hour alone but can go on double-hour 23,
@@ -929,7 +1673,10 @@ if ( $_SESSION['log_bool'] == FALSE )
 							'HOUR'	=>	23, // The # of hour the button represents
 							'DISABLED'	=>	( config("freeuniversity_allow") == "on" ? NULL : " disabled")
 						), TRUE);
-					} elseif ( ( $userCanGo[2] === FALSE ) && ( $userCanGo[12] === FALSE ) && ( $userCanGo[23] === FALSE ) )
+					} elseif ( $userCanGo[1234] === TRUE )
+					{
+						$tRow[2] = null;
+					} elseif ( ( $userCanGo[2] === FALSE ) && ( $userCanGo[12] === FALSE ) && ( $userCanGo[23] === FALSE ) && ( $userCanGo[123] === FALSE ) && ( $userCanGo[234] === FALSE ) && ( $userCanGo[1234] === FALSE ) )
 					{
 						// If the user cannot go on the second hour no matter what, the row is empty
 						$tRow[2] = $Ctemplate->useTemplate("freeuniversity/schedule_table_row_empty", array(
@@ -963,7 +1710,16 @@ if ( $_SESSION['log_bool'] == FALSE )
 							'HOUR'	=>	34, // The # of hour the button represents
 							'DISABLED'	=>	( config("freeuniversity_allow") == "on" ? NULL : " disabled")
 						), TRUE);
-					} elseif ( ( $userCanGo[3] === FALSE ) && ( $userCanGo[23] === FALSE ) && ( $userCanGo[34] === FALSE ) )
+					} elseif ( $userCanGo[123] === TRUE )
+					{
+						$tRow[3] = null;
+					} elseif ( $userCanGo[234] === TRUE )
+					{
+						$tRow[3] = null;
+					} elseif ( $userCanGo[1234] === TRUE )
+					{
+						$tRow[3] = null;
+					} elseif ( ( $userCanGo[3] === FALSE ) && ( $userCanGo[23] === FALSE ) && ( $userCanGo[34] === FALSE ) && ( $userCanGo[123] === FALSE ) && ( $userCanGo[234] === FALSE ) && ( $userCanGo[1234] === FALSE ) )
 					{
 						// If the user cannot go on the third hour no matter what, the row is empty
 						$tRow[3] = $Ctemplate->useTemplate("freeuniversity/schedule_table_row_empty", array(
@@ -987,7 +1743,13 @@ if ( $_SESSION['log_bool'] == FALSE )
 						// the fourth hour's column has to be empty (because the double-column
 						// has been already set up when checking hour #3)
 						$tRow[4] = NULL;
-					} elseif ( ( $userCanGo[4] === FALSE ) && ( $userCanGo[34] === FALSE ) )
+					} elseif ( $userCanGo[234] === TRUE )
+					{
+						$tRow[4] = null;
+					} elseif ( $userCanGo[1234] === TRUE )
+					{
+						$tRow[4] = null;
+					} elseif ( ( $userCanGo[4] === FALSE ) && ( $userCanGo[34] === FALSE ) && ( $userCanGo[234] === FALSE ) && ( $userCanGo[1234] === FALSE ) )
 					{
 						// If the user cannot go on the fourth hour no matter what, the row is empty
 						$tRow[4] = $Ctemplate->useTemplate("freeuniversity/schedule_table_row_empty", array(
@@ -1000,9 +1762,9 @@ if ( $_SESSION['log_bool'] == FALSE )
 					'LECTURE_NAME'	=>
 						$Ctemplate->useTemplate("freeuniversity/schedule_table_row_lecturename", array(
 							'TITLE'	=>	$lRow['title'], // Title of the lecture
-							'DESCRIPTION'	=>	( $lRow['description'] === "" ? NULL :
+							'DESCRIPTION'	=>	( $lRow['description'] === "" || $lRow['description'] == null ? NULL :
 								$Ctemplate->useTemplate("freeuniversity/schedule_table_row_lecturedescription", array(
-									'DESCRIPTION'	=>	bbDecode($lRow['description'])
+									'LECTURE_ID'	=>	$lRow['id']
 								), TRUE) ) // Description of the lecture (appears in hover box, only if present)
 						), TRUE), // Title of the lecture
 					

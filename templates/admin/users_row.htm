@@ -1,0 +1,24 @@
+<!--- BEGIN admin users row -->
+<!--- Usage: acp user page table row -->
+	<tr>
+		<td>{NAME} ({CLASS})</td>
+		<td>{RANK}</td>
+		<td>{RANKFORM}</td>
+		<td>
+			<form method="POST" action="control_admin.php">
+				<input type="hidden" name="site" value="users" />
+				<input type="hidden" name="id" value="{ID}" />
+				<input type="hidden" name="action" value="pass" />
+				<input type="submit" value="{LANG_PWDRECOVER_LINK}" />
+			</form>
+		</td>
+		<td>
+			<form method="POST" action="control_admin.php">
+				<input type="hidden" name="site" value="users" />
+				<input type="hidden" name="id" value="{ID}" />
+				<input type="hidden" name="action" value="delete" />
+				<input type="submit" value="{LANG_DELETE}" />
+			</form>
+		</td>
+	</tr>
+<!--- END admin users row -->

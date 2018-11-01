@@ -57,7 +57,7 @@ if ( $uLvl < 2 )
 				'BODY'  =>      "{LANG_FREEUNIVERSITY_SCHEDULE_DIRECT_OPENING_BODY}",
 				'ALT'   =>      "{LANG_FREEUNIVERSITY_SCHEDULE_DIRECT_OPENING}"
 			), FALSE); // Output an error message
-		} elseif ( ( @$_GET['id'] != NULL ) && ( !in_array(@$_GET['hour'], array(1, 2, 3, 4, 12, 23, 34)) ) )
+		} elseif ( ( @$_GET['id'] != NULL ) && ( !in_array(@$_GET['hour'], array(1, 2, 3, 4, 12, 23, 34, 123, 234, 1234)) ) )
 		{
 			// Another possible mishap: ID is present but the hour variable points to an invalid hour
 			$Ctemplate->useTemplate("errormessage", array(
@@ -66,7 +66,7 @@ if ( $uLvl < 2 )
 				'BODY'  =>      "{LANG_FREEUNIVERSITY_SCHEDULE_INVALID_HOUR_BODY}",
 				'ALT'   =>      "{LANG_FREEUNIVERSITY_SCHEDULE_INVALID_HOUR}"
 			), FALSE); // Output an error message
-		} elseif ( ( @$_GET['id'] != NULL ) && ( in_array(@$_GET['hour'], array(1, 2, 3, 4, 12, 23, 34)) ) )
+		} elseif ( ( @$_GET['id'] != NULL ) && ( in_array(@$_GET['hour'], array(1, 2, 3, 4, 12, 23, 34, 123, 234, 1234)) ) )
 		{
 			// Query the lecture's title from the database
 			$lRow = mysql_fetch_row($Cmysql->Query("SELECT title FROM f_lectures WHERE id='" .$Cmysql->EscapeString($_GET['id']). "'"));
@@ -121,6 +121,34 @@ if ( $uLvl < 2 )
 
 					// Get the list of students
 					$students = $Cmysql->Query("SELECT username, f_class FROM users WHERE f_hour" .$hour1. "='" .$Cmysql->EscapeString($_GET['id']). "' AND f_hour" .$hour2. "='" .$Cmysql->EscapeString($_GET['id']) ."' ORDER BY username ASC");
+					
+					break;
+				case 123:
+				case 234:
+					if ( $_GET['hour'] === "123" )
+					{
+						$hour1 = 1;
+						$hour2 = 2;
+						$hour3 = 3;
+					} elseif ( $_GET['hour'] === "234" )
+					{
+						$hour1 = 2;
+						$hour2 = 3;
+						$hour3 = 4;
+					}
+
+					// Get the list of students
+					$students = $Cmysql->Query("SELECT username, f_class FROM users WHERE f_hour" .$hour1. "='" .$Cmysql->EscapeString($_GET['id']). "' AND f_hour" .$hour2. "='" .$Cmysql->EscapeString($_GET['id']) ."' AND f_hour" .$hour3. "='" .$Cmysql->EscapeString($_GET['id']) ."' ORDER BY username ASC");
+					
+					break;
+				case 1234:
+					$hour1 = 1;
+					$hour2 = 2;
+					$hour3 = 3;
+					$hour4 = 4;
+
+					// Get the list of students
+					$students = $Cmysql->Query("SELECT username, f_class FROM users WHERE f_hour" .$hour1. "='" .$Cmysql->EscapeString($_GET['id']). "' AND f_hour" .$hour2. "='" .$Cmysql->EscapeString($_GET['id']) ."' AND f_hour" .$hour3. "='" .$Cmysql->EscapeString($_GET['id']) ."' AND f_hour" .$hour4. "='" .$Cmysql->EscapeString($_GET['id']) ."' ORDER BY username ASC");
 					
 					break;
 			}
@@ -184,7 +212,7 @@ if ( $uLvl < 2 )
 			// Get the data of lectures for the 4 lectures the student is attending
 			for ( $i = 1; $i <= 4; $i++ )
 			{
-				$lRow[$i] = mysql_fetch_assoc($Cmysql->Query("SELECT title, lect1_2, lect2_3, lect3_4 FROM f_lectures WHERE id='" .$studRow['f_hour' .$i]. "'"));
+				$lRow[$i] = mysql_fetch_assoc($Cmysql->Query("SELECT title, lect1_2, lect2_3, lect3_4, lect123, lect234, lect1234 FROM f_lectures WHERE id='" .$studRow['f_hour' .$i]. "'"));
 			}
 			
 			// Define an empty container for every hour-cell of the current row
@@ -201,6 +229,20 @@ if ( $uLvl < 2 )
 					$hRow[1] = $Ctemplate->useTemplate("freeuniversity/roster_row_hour", array(
 						'WIDTH'	=>	40, // Width of cell (2x20 because double-hour)
 						'COLSPAN'	=>	2, // Column spanning (2 because double-hour)
+						'LECTURE_TITLE'	=>	$lRow[1]['title'] // Title of the lecture
+					), TRUE);
+				} elseif ( $lRow[1]['lect123'] === "1" )
+				{
+					$hRow[1] = $Ctemplate->useTemplate("freeuniversity/roster_row_hour", array(
+						'WIDTH'	=>	60, // Width of cell
+						'COLSPAN'	=>	3, // Column spanning
+						'LECTURE_TITLE'	=>	$lRow[1]['title'] // Title of the lecture
+					), TRUE);
+				} elseif ( $lRow[1]['lect1234'] === "1" )
+				{
+					$hRow[1] = $Ctemplate->useTemplate("freeuniversity/roster_row_hour", array(
+						'WIDTH'	=>	80, // Width of cell
+						'COLSPAN'	=>	4, // Column spanning
 						'LECTURE_TITLE'	=>	$lRow[1]['title'] // Title of the lecture
 					), TRUE);
 				} elseif ( $lRow[1]['lect1_2'] === "0" )
@@ -225,6 +267,19 @@ if ( $uLvl < 2 )
 				{
 					// If the lecture is a double-hour one, fill in empty row because
 					// the row was already filled when checking the previous one
+					$hRow[2] = NULL;
+				} elseif ( $lRow[2]['lect123'] === "1" )
+				{
+					$hRow[2] = NULL;
+				} elseif ( $lRow[2]['lect234'] === "1" )
+				{
+					$hRow[2] = $Ctemplate->useTemplate("freeuniversity/roster_row_hour", array(
+						'WIDTH'	=>	60, // Width of cell
+						'COLSPAN'	=>	3, // Column spanning
+						'LECTURE_TITLE'	=>	$lRow[2]['title'] // Title of the lecture
+					), TRUE);
+				} elseif ( $lRow[2]['lect1234'] === "1" )
+				{
 					$hRow[2] = NULL;
 				} elseif ( ( $lRow[2]['lect1_2'] === "0" ) && ( $lRow[2]['lect2_3'] === "1" ) )
 				{
@@ -251,6 +306,15 @@ if ( $uLvl < 2 )
 				if ( ( $lRow[3]['lect2_3'] === "1" ) && ( $lRow[3]['lect3_4'] === "0" ) )
 				{
 					$hRow[3] = NULL;
+				} elseif ( $lRow[3]['lect123'] === "1" )
+				{
+					$hRow[3] = NULL;
+				} elseif ( $lRow[3]['lect234'] === "1" )
+				{
+					$hRow[3] = NULL;
+				} elseif ( $lRow[3]['lect1234'] === "1" )
+				{
+					$hRow[3] = NULL;
 				} elseif ( ( $lRow[3]['lect2_3'] === "0" ) && ( $lRow[3]['lect3_4'] === "1" ) )
 				{
 					$hRow[3] = $Ctemplate->useTemplate("freeuniversity/roster_row_hour", array(
@@ -274,6 +338,12 @@ if ( $uLvl < 2 )
 			if ( $lRow[4] !== FALSE )
 			{
 				if ( $lRow[4]['lect3_4'] === "1" )
+				{
+					$hRow[4] = NULL;
+				} elseif ( $lRow[4]['lect234'] === "1" )
+				{
+					$hRow[4] = NULL;
+				} elseif ( $lRow[4]['lect1234'] === "1" )
 				{
 					$hRow[4] = NULL;
 				} elseif ( $lRow[4]['lect3_4'] === "0" )
@@ -388,7 +458,23 @@ if ( $uLvl < 2 )
 								// Lecture limits (capita)
 								'LIMIT12'	=>	@$_POST['limit12'],
 								'LIMIT23'	=>	@$_POST['limit23'],
-								'LIMIT34'	=>	@$_POST['limit34']
+								'LIMIT34'	=>	@$_POST['limit34'],
+								
+								/* Tripe-hour lecture setup */
+								// Defines whether lecture is held in said hour
+								'HOUR123_CHECKED'	=>	( @$_POST['hour123'] === "1" ? " checked" : NULL ),
+								'HOUR234_CHECKED'	=>	( @$_POST['hour234'] === "1" ? " checked" : NULL ),
+								
+								// Lecture limits (capita)
+								'LIMIT123'	=>	@$_POST['limit123'],
+								'LIMIT234'	=>	@$_POST['limit234'],
+								
+								/* Quad-hour lecture setup */
+								// Defines whether lecture is held in said hour
+								'HOUR1234_CHECKED'	=>	( @$_POST['hour1234'] === "1" ? " checked" : NULL ),
+								
+								// Lecture limits (capita)
+								'LIMIT1234'	=>	@$_POST['limit1234']
 							), FALSE);
 						} else {
 							// Request is a plain one, we create a general form
@@ -419,7 +505,23 @@ if ( $uLvl < 2 )
 								// Lecture limits (capita)
 								'LIMIT12'	=>	0,
 								'LIMIT23'	=>	0,
-								'LIMIT34'	=>	0
+								'LIMIT34'	=>	0,
+								
+								/* Tripe-hour lecture setup */
+								// Defines whether lecture is held in said hour
+								'HOUR123_CHECKED'	=>	NULL,
+								'HOUR234_CHECKED'	=>	NULL,
+								
+								// Lecture limits (capita)
+								'LIMIT123'	=>	0,
+								'LIMIT234'	=>	0,
+								
+								/* Quad-hour lecture setup */
+								// Defines whether lecture is held in said hour
+								'HOUR1234_CHECKED'	=>	NULL,
+								
+								// Lecture limits (capita)
+								'LIMIT1234'	=>	0
 							), FALSE);
 						}
 						
@@ -617,10 +719,48 @@ if ( $uLvl < 2 )
 							$dLecture['hour34'] = TRUE;
 						}
 						
+						if ( @$_POST['hour123'] === "1" )
+						{
+							$dLecture['hour1'] = TRUE;
+							$dLecture['hour2'] = TRUE;
+							$dLecture['hour3'] = TRUE;
+							$dLecture['limit1'] = @$_POST['limit123'];
+							$dLecture['limit2'] = @$_POST['limit123'];
+							$dLecture['limit3'] = @$_POST['limit123'];
+							
+							$dLecture['hour123'] = TRUE;
+						}
+						
+						if ( @$_POST['hour234'] === "1" )
+						{
+							$dLecture['hour2'] = TRUE;
+							$dLecture['hour3'] = TRUE;
+							$dLecture['hour4'] = TRUE;
+							$dLecture['limit2'] = @$_POST['limit234'];
+							$dLecture['limit3'] = @$_POST['limit234'];
+							$dLecture['limit4'] = @$_POST['limit234'];
+							
+							$dLecture['hour234'] = TRUE;
+						}
+						
+						if ( @$_POST['hour1234'] === "1" )
+						{
+							$dLecture['hour1'] = TRUE;
+							$dLecture['hour2'] = TRUE;
+							$dLecture['hour3'] = TRUE;
+							$dLecture['hour4'] = TRUE;
+							$dLecture['limit1'] = @$_POST['limit1234'];
+							$dLecture['limit2'] = @$_POST['limit1234'];
+							$dLecture['limit3'] = @$_POST['limit1234'];
+							$dLecture['limit4'] = @$_POST['limit1234'];
+							
+							$dLecture['hour1234'] = TRUE;
+						}
+						
 						// Add $dLecture into the database
 						if ( config("freeuniversity_allow") == "on" )
 						{
-							$lectAdd = $Cmysql->Query("INSERT INTO f_lectures(title, description, hour1, hour2, hour3, hour4, limit1, limit2, limit3, limit4, lect1_2, lect2_3, lect3_4) VALUES (
+							$lectAdd = $Cmysql->Query("INSERT INTO f_lectures(title, description, hour1, hour2, hour3, hour4, limit1, limit2, limit3, limit4, lect1_2, lect2_3, lect3_4, lect123, lect234, lect1234) VALUES (
 							'" .$Cmysql->EscapeString($dLecture['title']). "',
 							'" .$Cmysql->EscapeString(str_replace("'", "\'", $dLecture['description'])). "',
 							'" .$dLecture['hour1']. "',
@@ -633,7 +773,10 @@ if ( $uLvl < 2 )
 							'" .$dLecture['limit4']. "',
 							'" .$dLecture['hour12']. "',
 							'" .$dLecture['hour23']. "',
-							'" .$dLecture['hour34']. "')");
+							'" .$dLecture['hour34']. "',
+							'" .$dLecture['hour123']. "',
+							'" .$dLecture['hour234']. "',
+							'" .$dLecture['hour1234']. "')");
 						} elseif ( config("freeuniversity_allow") == "off" )
 						{
 							// Disallow non-read access to Freeuniversity database if it is finalized.
@@ -670,12 +813,31 @@ if ( $uLvl < 2 )
 								// Lecture limits (capita)
 								'LIMIT12'	=>	@$_POST['limit12'],
 								'LIMIT23'	=>	@$_POST['limit23'],
-								'LIMIT34'	=>	@$_POST['limit34']
+								'LIMIT34'	=>	@$_POST['limit34'],
+								
+								/* Tripe-hour lecture setup */
+								// Defines whether lecture is held in said hour
+								'HOUR123'	=>	@$_POST['hour123'],
+								'HOUR234'	=>	@$_POST['hour234'],
+								
+								// Lecture limits (capita)
+								'LIMIT123'	=>	@$_POST['limit123'],
+								'LIMIT234'	=>	@$_POST['limit234'],
+								
+								/* Quad-hour lecture setup */
+								// Defines whether lecture is held in said hour
+								'HOUR1234'	=>	@$_POST['hour1234'],
+								
+								// Lecture limits (capita)
+								'LIMIT1234'	=>	@$_POST['limit1234']
 							), FALSE);
 						} elseif ( $lectAdd === TRUE )
 						{
 							// If succeeded, notice the user
 							$Ctemplate->useStaticTemplate("freeuniversity/new_success", FALSE);
+							
+							log_append('Új előadás hozzáadva ' .$_SESSION['username']. ' (#' .$_SESSION['uid']. ') által.<br>
+								Adatok: <br>' .str_replace("'", "\'", $Cmysql->EscapeString(prettyVar($dLecture, false))) );
 						}
 						
 						break;
@@ -716,7 +878,7 @@ if ( $uLvl < 2 )
 				}
 				
 				// Check whether the lecture we want to edit exists
-				$lecture = mysql_fetch_assoc($Cmysql->Query("SELECT title, description, hour1, hour2, hour3, hour4, limit1, limit2, limit3, limit4, lect1_2, lect2_3, lect3_4 FROM f_lectures WHERE id='" .$Cmysql->EscapeString($_POST['id']). "'"));
+				$lecture = mysql_fetch_assoc($Cmysql->Query("SELECT title, description, hour1, hour2, hour3, hour4, limit1, limit2, limit3, limit4, lect1_2, lect2_3, lect3_4, lect123, lect234, lect1234 FROM f_lectures WHERE id='" .$Cmysql->EscapeString($_POST['id']). "'"));
 				
 				// Check whether the lecture we wanted to edit exists, if not, return with an error
 				if ( $lecture === FALSE )
@@ -751,7 +913,10 @@ if ( $uLvl < 2 )
 						4	=>	$lecture['limit4'],
 						12	=>	0,
 						23	=>	0,
-						34	=>	0
+						34	=>	0,
+						123	=>	0,
+						234	=>	0,
+						1234	=>	0
 					),
 					'held'	=>	array(
 						1	=>	( $lecture['hour1'] === "1" ? TRUE : FALSE ),
@@ -760,7 +925,10 @@ if ( $uLvl < 2 )
 						4	=>	( $lecture['hour4'] === "1" ? TRUE : FALSE ),
 						12	=>	FALSE,
 						23	=>	FALSE,
-						34	=>	FALSE
+						34	=>	FALSE,
+						123	=>	FALSE,
+						234	=>	FALSE,
+						1234	=>	FALSE
 					),
 					'numstud'	=>	array(
 						1	=>	$numStud[1][0],
@@ -769,7 +937,10 @@ if ( $uLvl < 2 )
 						4	=>	$numStud[4][0],
 						12	=>	0,
 						23	=>	0,
-						34	=>	0
+						34	=>	0,
+						123	=>	0,
+						234	=>	0,
+						1234	=>	0
 					)
 				);
 				
@@ -781,14 +952,26 @@ if ( $uLvl < 2 )
 					
 					$lData['limits'][1] = 0;
 					$lData['limits'][2] = 0;
+					$lData['limits'][23] = 0;
+					$lData['limits'][123] = 0;
+					$lData['limits'][234] = 0;
+					$lData['limits'][1234] = 0;
 					$lData['limits'][12] = $lecture['limit1'];
 					
 					$lData['held'][1] = FALSE;
 					$lData['held'][2] = FALSE;
+					$lData['held'][23] = FALSE;
+					$lData['held'][123] = FALSE;
+					$lData['held'][234] = FALSE;
+					$lData['held'][1234] = FALSE;
 					$lData['held'][12] = TRUE;
 					
 					$lData['numstud'][1] = 0;
 					$lData['numstud'][2] = 0;
+					$lData['numstud'][23] = 0;
+					$lData['numstud'][123] = 0;
+					$lData['numstud'][234] = 0;
+					$lData['numstud'][1234] = 0;
 					$lData['numstud'][12] = $numStud[1][0];
 				}
 				
@@ -796,14 +979,29 @@ if ( $uLvl < 2 )
 				{
 					$lData['limits'][2] = 0;
 					$lData['limits'][3] = 0;
+					$lData['limits'][12] = 0;
+					$lData['limits'][34] = 0;
+					$lData['limits'][123] = 0;
+					$lData['limits'][234] = 0;
+					$lData['limits'][1234] = 0;
 					$lData['limits'][23] = $lecture['limit2'];
 					
 					$lData['held'][2] = FALSE;
 					$lData['held'][3] = FALSE;
+					$lData['held'][12] = FALSE;
+					$lData['held'][34] = FALSE;
+					$lData['held'][123] = FALSE;
+					$lData['held'][234] = FALSE;
+					$lData['held'][1234] = FALSE;
 					$lData['held'][23] = TRUE;
 					
 					$lData['numstud'][2] = 0;
 					$lData['numstud'][3] = 0;
+					$lData['numstud'][12] = 0;
+					$lData['numstud'][34] = 0;
+					$lData['numstud'][123] = 0;
+					$lData['numstud'][234] = 0;
+					$lData['numstud'][1234] = 0;
 					$lData['numstud'][23] = $numStud[2][0];
 				}
 				
@@ -811,15 +1009,129 @@ if ( $uLvl < 2 )
 				{
 					$lData['limits'][3] = 0;
 					$lData['limits'][4] = 0;
+					$lData['limits'][23] = 0;
+					$lData['limits'][123] = 0;
+					$lData['limits'][234] = 0;
+					$lData['limits'][1234] = 0;
 					$lData['limits'][34] = $lecture['limit3'];
 					
 					$lData['held'][3] = FALSE;
 					$lData['held'][4] = FALSE;
+					$lData['held'][23] = FALSE;
+					$lData['held'][123] = FALSE;
+					$lData['held'][234] = FALSE;
+					$lData['held'][1234] = FALSE;
 					$lData['held'][34] = TRUE;
 					
 					$lData['numstud'][3] = 0;
 					$lData['numstud'][4] = 0;
+					$lData['numstud'][23] = 0;
+					$lData['numstud'][123] = 0;
+					$lData['numstud'][234] = 0;
+					$lData['numstud'][1234] = 0;
 					$lData['numstud'][34] = $numStud[3][0];
+				}
+				
+				if ( $lecture['lect123'] == "1" )
+				{
+					$lData['limits'][1] = 0;
+					$lData['limits'][2] = 0;
+					$lData['limits'][3] = 0;
+					$lData['limits'][12] = 0;
+					$lData['limits'][23] = 0;
+					$lData['limits'][34] = 0;
+					$lData['limits'][234] = 0;
+					$lData['limits'][1234] = 0;
+					$lData['limits'][123] = $lecture['limit1'];
+					
+					$lData['held'][1] = FALSE;
+					$lData['held'][2] = FALSE;
+					$lData['held'][3] = FALSE;
+					$lData['held'][12] = FALSE;
+					$lData['held'][23] = FALSE;
+					$lData['held'][34] = FALSE;
+					$lData['held'][234] = FALSE;
+					$lData['held'][1234] = FALSE;
+					$lData['held'][123] = TRUE;
+					
+					$lData['numstud'][1] = 0;
+					$lData['numstud'][2] = 0;
+					$lData['numstud'][3] = 0;
+					$lData['numstud'][12] = 0;
+					$lData['numstud'][23] = 0;
+					$lData['numstud'][34] = 0;
+					$lData['numstud'][234] = 0;
+					$lData['numstud'][1234] = 0;
+					$lData['numstud'][123] = $numStud[1][0];
+				}
+				
+				if ( $lecture['lect234'] == "1" )
+				{
+					$lData['limits'][2] = 0;
+					$lData['limits'][3] = 0;
+					$lData['limits'][4] = 0;
+					$lData['limits'][12] = 0;
+					$lData['limits'][23] = 0;
+					$lData['limits'][34] = 0;
+					$lData['limits'][123] = 0;
+					$lData['limits'][1234] = 0;
+					$lData['limits'][234] = $lecture['limit2'];
+					
+					$lData['held'][2] = FALSE;
+					$lData['held'][3] = FALSE;
+					$lData['held'][4] = FALSE;
+					$lData['held'][12] = FALSE;
+					$lData['held'][23] = FALSE;
+					$lData['held'][34] = FALSE;
+					$lData['held'][123] = FALSE;
+					$lData['held'][1234] = FALSE;
+					$lData['held'][234] = TRUE;
+					
+					$lData['numstud'][2] = 0;
+					$lData['numstud'][3] = 0;
+					$lData['numstud'][4] = 0;
+					$lData['numstud'][12] = 0;
+					$lData['numstud'][23] = 0;
+					$lData['numstud'][34] = 0;
+					$lData['numstud'][123] = 0;
+					$lData['numstud'][1234] = 0;
+					$lData['numstud'][234] = $numStud[2][0];
+				}
+				
+				if ( $lecture['lect1234'] == "1" )
+				{
+					$lData['limits'][1] = 0;
+					$lData['limits'][2] = 0;
+					$lData['limits'][3] = 0;
+					$lData['limits'][4] = 0;
+					$lData['limits'][12] = 0;
+					$lData['limits'][23] = 0;
+					$lData['limits'][34] = 0;
+					$lData['limits'][123] = 0;
+					$lData['limits'][234] = 0;
+					$lData['limits'][1234] = $lecture['limit1'];
+					
+					$lData['held'][1] = FALSE;
+					$lData['held'][2] = FALSE;
+					$lData['held'][3] = FALSE;
+					$lData['held'][4] = FALSE;
+					$lData['held'][12] = FALSE;
+					$lData['held'][23] = FALSE;
+					$lData['held'][34] = FALSE;
+					$lData['held'][123] = FALSE;
+					$lData['held'][234] = FALSE;
+					$lData['held'][1234] = TRUE;
+					
+					$lData['numstud'][1] = 0;
+					$lData['numstud'][2] = 0;
+					$lData['numstud'][3] = 0;
+					$lData['numstud'][4] = 0;
+					$lData['numstud'][12] = 0;
+					$lData['numstud'][23] = 0;
+					$lData['numstud'][34] = 0;
+					$lData['numstud'][123] = 0;
+					$lData['numstud'][1234] = 0;
+					$lData['numstud'][234] = $numStud[2][0];
 				}
 				
 				switch ( @$_POST['step'] )
@@ -873,7 +1185,30 @@ if ( $uLvl < 2 )
 								// Lecture limits (capita)
 								'LIMIT12'	=>	@$_POST['limit12'],
 								'LIMIT23'	=>	@$_POST['limit23'],
-								'LIMIT34'	=>	@$_POST['limit34']
+								'LIMIT34'	=>	@$_POST['limit34'],
+									
+								/* Triple-hour lecture setup */
+								// Defines whether lecture is held in said hour
+								'HOUR123_CHECKED'	=>	( @$_POST['hour123'] === "1" ? " checked" : NULL ),
+								'HOUR234_CHECKED'	=>	( @$_POST['hour234'] === "1" ? " checked" : NULL ),
+								
+								// Students currently attending the lectures
+								'NUMSTUD_123'	=>	$lData['numstud'][123],
+								'NUMSTUD_234'	=>	$lData['numstud'][234],
+								
+								// Lecture limits (capita)
+								'LIMIT123'	=>	@$_POST['limit123'],
+								'LIMIT234'	=>	@$_POST['limit234'],
+								
+								/* Quad-hour lecture setup */
+								// Defines whether lecture is held in said hour
+								'HOUR1234_CHECKED'	=>	( @$_POST['hour1234'] === "1" ? " checked" : NULL ),
+								
+								// Students currently attending the lectures
+								'NUMSTUD_1234'	=>	$lData['numstud'][1234],
+								
+								// Lecture limits (capita)
+								'LIMIT1234'	=>	@$_POST['limit1234']
 							), FALSE);
 						} else {
 							// Request is a plain one, we create a general form with the current data
@@ -917,7 +1252,30 @@ if ( $uLvl < 2 )
 								// Lecture limits (capita)
 								'LIMIT12'	=>	$lData['limits'][12],
 								'LIMIT23'	=>	$lData['limits'][23],
-								'LIMIT34'	=>	$lData['limits'][34]
+								'LIMIT34'	=>	$lData['limits'][34],
+								
+								/* Triple-hour lecture setup */
+								// Defines whether lecture is held in said hour
+								'HOUR123_CHECKED'	=>	( $lData['held'][123] === TRUE ? " checked" : NULL ),
+								'HOUR234_CHECKED'	=>	( $lData['held'][234] === TRUE ? " checked" : NULL ),
+								
+								// Students currently attending the lectures
+								'NUMSTUD_123'	=>	$lData['numstud'][123],
+								'NUMSTUD_234'	=>	$lData['numstud'][234],
+								
+								// Lecture limits (capita)
+								'LIMIT123'	=>	$lData['limits'][123],
+								'LIMIT234'	=>	$lData['limits'][234],
+								
+								/* Quad-hour lecture setup */
+								// Defines whether lecture is held in said hour
+								'HOUR1234_CHECKED'	=>	( $lData['held'][1234] === TRUE ? " checked" : NULL ),
+								
+								// Students currently attending the lectures
+								'NUMSTUD_1234'	=>	$lData['numstud'][1234],
+								
+								// Lecture limits (capita)
+								'LIMIT1234'	=>	$lData['limits'][1234]
 							), FALSE);
 						}
 						
@@ -959,7 +1317,23 @@ if ( $uLvl < 2 )
 								// Lecture limits (capita)
 								'LIMIT12'	=>	@$_POST['limit12'],
 								'LIMIT23'	=>	@$_POST['limit23'],
-								'LIMIT34'	=>	@$_POST['limit34']
+								'LIMIT34'	=>	@$_POST['limit34'],
+								
+								/* Tripe-hour lecture setup */
+								// Defines whether lecture is held in said hour
+								'HOUR123'	=>	@$_POST['hour123'],
+								'HOUR234'	=>	@$_POST['hour234'],
+								
+								// Lecture limits (capita)
+								'LIMIT123'	=>	@$_POST['limit123'],
+								'LIMIT234'	=>	@$_POST['limit234'],
+								
+								/* Quad-hour lecture setup */
+								// Defines whether lecture is held in said hour
+								'HOUR1234'	=>	@$_POST['hour1234'],
+								
+								// Lecture limits (capita)
+								'LIMIT1234'	=>	@$_POST['limit1234']
 							), FALSE);
 							
 							// Terminate execution
@@ -973,9 +1347,14 @@ if ( $uLvl < 2 )
 						// or in 2-3 and 3-4.
 						// Don't let the user meddle with the timeline.
 						if ( 
-							( ( @$_POST['hour12'] == "1" ) && ( @$_POST['hour23'] == "1" ) )
-							||
-							( ( @$_POST['hour23'] == "1" ) && ( @$_POST['hour34'] == "1" ) )
+							(
+								( ( @$_POST['hour12'] == "1" ) && ( @$_POST['hour23'] == "1" ) )
+								||
+								( ( @$_POST['hour23'] == "1" ) && ( @$_POST['hour34'] == "1" ) )
+								||
+								( ( @$_POST['hour123'] == "1" ) && ( @$_POST['hour234'] == "1" ) )
+							)
+								&& ( @$_POST['hour1234'] == "1" )
 						)
 						{
 							// Output an error message prompting the user to fix the imput
@@ -1006,7 +1385,23 @@ if ( $uLvl < 2 )
 								// Lecture limits (capita)
 								'LIMIT12'	=>	@$_POST['limit12'],
 								'LIMIT23'	=>	@$_POST['limit23'],
-								'LIMIT34'	=>	@$_POST['limit34']
+								'LIMIT34'	=>	@$_POST['limit34'],
+								
+								/* Tripe-hour lecture setup */
+								// Defines whether lecture is held in said hour
+								'HOUR123'	=>	@$_POST['hour123'],
+								'HOUR234'	=>	@$_POST['hour234'],
+								
+								// Lecture limits (capita)
+								'LIMIT123'	=>	@$_POST['limit123'],
+								'LIMIT234'	=>	@$_POST['limit234'],
+								
+								/* Quad-hour lecture setup */
+								// Defines whether lecture is held in said hour
+								'HOUR1234'	=>	@$_POST['hour1234'],
+								
+								// Lecture limits (capita)
+								'LIMIT1234'	=>	@$_POST['limit1234']
 							), FALSE);
 							
 							// Terminate execution
@@ -1023,6 +1418,9 @@ if ( $uLvl < 2 )
 							( @$_POST['limit12'] < 0 ) ||
 							( @$_POST['limit23'] < 0 ) ||
 							( @$_POST['limit34'] < 0 ) ||
+							( @$_POST['limit123'] < 0 ) ||
+							( @$_POST['limit234'] < 0 ) ||
+							( @$_POST['limit1234'] < 0 ) ||
 							
 							( @$_POST['limit1'] < $lData['numstud'][1] ) ||
 							( @$_POST['limit2'] < $lData['numstud'][2] ) ||
@@ -1030,7 +1428,10 @@ if ( $uLvl < 2 )
 							( @$_POST['limit4'] < $lData['numstud'][4] ) ||
 							( @$_POST['limit12'] < $lData['numstud'][12] ) ||
 							( @$_POST['limit23'] < $lData['numstud'][23] ) ||
-							( @$_POST['limit34'] < $lData['numstud'][34] )
+							( @$_POST['limit34'] < $lData['numstud'][34] ) ||
+							( @$_POST['limit123'] < $lData['numstud'][123] ) ||
+							( @$_POST['limit234'] < $lData['numstud'][234] ) ||
+							( @$_POST['limit1234'] < $lData['numstud'][1234] )
 						)
 						{
 							$Ctemplate->useTemplate("freeuniversity/edit_limit_error", array(
@@ -1060,7 +1461,23 @@ if ( $uLvl < 2 )
 								// Lecture limits (capita)
 								'LIMIT12'	=>	@$_POST['limit12'],
 								'LIMIT23'	=>	@$_POST['limit23'],
-								'LIMIT34'	=>	@$_POST['limit34']
+								'LIMIT34'	=>	@$_POST['limit34'],
+								
+								/* Tripe-hour lecture setup */
+								// Defines whether lecture is held in said hour
+								'HOUR123'	=>	@$_POST['hour123'],
+								'HOUR234'	=>	@$_POST['hour234'],
+								
+								// Lecture limits (capita)
+								'LIMIT123'	=>	@$_POST['limit123'],
+								'LIMIT234'	=>	@$_POST['limit234'],
+								
+								/* Quad-hour lecture setup */
+								// Defines whether lecture is held in said hour
+								'HOUR1234'	=>	@$_POST['hour1234'],
+								
+								// Lecture limits (capita)
+								'LIMIT1234'	=>	@$_POST['limit1234']
 							), FALSE);
 							
 							// Terminate execution
@@ -1090,7 +1507,11 @@ if ( $uLvl < 2 )
 							/* Double-hour setup (off by default) */
 							'hour12'	=>	FALSE,
 							'hour23'	=>	FALSE,
-							'hour34'	=>	FALSE
+							'hour34'	=>	FALSE,
+							
+							'hour123'	=>	FALSE,
+							'hour234'	=>	FALSE,
+							'hour1234'	=>	FALSE
 						);
 						
 						// After the single-hour setup has been stored into $dLecture,
@@ -1134,92 +1555,169 @@ if ( $uLvl < 2 )
 							$dLecture['hour34'] = TRUE;
 						}
 						
-						if ( ( $lData['held'][1] === TRUE ) && ( $dLecture['hour1'] === FALSE ) )
+						if ( @$_POST['hour123'] === "1" )
 						{
-							// If the lecture was previously held in the first hour, but now it is not
-							// we release every student attending.
+							$dLecture['hour1'] = TRUE;
+							$dLecture['hour2'] = TRUE;
+							$dLecture['hour3'] = TRUE;
+							$dLecture['limit1'] = @$_POST['limit123'];
+							$dLecture['limit2'] = @$_POST['limit123'];
+							$dLecture['limit3'] = @$_POST['limit123'];
 							
-							$release[1] = $Cmysql->Query("UPDATE users SET f_hour1=0 WHERE f_hour1='" .$dLecture['id']. "'");
-							
-							if ( $release[1] === TRUE )
-							{
-								// If we successfully released, we output a small message
-								$Ctemplate->useTemplate("freeuniversity/edit_released", array(
-									'HOUR'	=>	"{LANG_FREEUNIVERSITY_HOUR_1}"
-								), FALSE);
-							}
+							$dLecture['hour123'] = TRUE;
 						}
 						
-						// Do the same for the rest of the hours
-						if ( ( $lData['held'][2] === TRUE ) && ( $dLecture['hour2'] === FALSE ) )
+						if ( @$_POST['hour234'] === "1" )
 						{
-							$release[2] = $Cmysql->Query("UPDATE users SET f_hour2=0 WHERE f_hour2='" .$dLecture['id']. "'");
+							$dLecture['hour2'] = TRUE;
+							$dLecture['hour3'] = TRUE;
+							$dLecture['hour4'] = TRUE;
+							$dLecture['limit2'] = @$_POST['limit234'];
+							$dLecture['limit3'] = @$_POST['limit234'];
+							$dLecture['limit4'] = @$_POST['limit234'];
 							
-							if ( $release[2] === TRUE )
-							{
-								$Ctemplate->useTemplate("freeuniversity/edit_released", array(
-									'HOUR'	=>	"{LANG_FREEUNIVERSITY_HOUR_2}"
-								), FALSE);
-							}
+							$dLecture['hour234'] = TRUE;
 						}
 						
-						if ( ( $lData['held'][3] === TRUE ) && ( $dLecture['hour3'] === FALSE ) )
+						if ( @$_POST['hour1234'] === "1" )
 						{
-							$release[3] = $Cmysql->Query("UPDATE users SET f_hour3=0 WHERE f_hour3='" .$dLecture['id']. "'");
+							$dLecture['hour1'] = TRUE;
+							$dLecture['hour2'] = TRUE;
+							$dLecture['hour3'] = TRUE;
+							$dLecture['hour4'] = TRUE;
+							$dLecture['limit1'] = @$_POST['limit1234'];
+							$dLecture['limit2'] = @$_POST['limit1234'];
+							$dLecture['limit3'] = @$_POST['limit1234'];
+							$dLecture['limit4'] = @$_POST['limit1234'];
 							
-							if ( $release[3] === TRUE )
-							{
-								$Ctemplate->useTemplate("freeuniversity/edit_released", array(
-									'HOUR'	=>	"{LANG_FREEUNIVERSITY_HOUR_3}"
-								), FALSE);
-							}
+							$dLecture['hour1234'] = TRUE;
 						}
 						
-						if ( ( $lData['held'][4] === TRUE ) && ( $dLecture['hour4'] === FALSE ) )
+						if ( config("freeuniversity_allow") == "on" )
 						{
-							$release[4] = $Cmysql->Query("UPDATE users SET f_hour4=0 WHERE f_hour4='" .$dLecture['id']. "'");
-							
-							if ( $release[4] === TRUE )
+							if ( ( $lData['held'][1] === TRUE ) && ( $dLecture['hour1'] === FALSE ) )
 							{
-								$Ctemplate->useTemplate("freeuniversity/edit_released", array(
-									'HOUR'	=>	"{LANG_FREEUNIVERSITY_HOUR_4}"
-								), FALSE);
+								// If the lecture was previously held in the first hour, but now it is not
+								// we release every student attending.
+
+								$release[1] = $Cmysql->Query("UPDATE users SET f_hour1=0 WHERE f_hour1='" .$dLecture['id']. "'");
+
+								if ( $release[1] === TRUE )
+								{
+									// If we successfully released, we output a small message
+									$Ctemplate->useTemplate("freeuniversity/edit_released", array(
+										'HOUR'	=>	"{LANG_FREEUNIVERSITY_HOUR_1}"
+									), FALSE);
+								}
 							}
-						}
-						
-						if ( ( $lData['held'][12] === TRUE ) && ( $dLecture['hour12'] === FALSE ) )
-						{
-							$release[12] = $Cmysql->Query("UPDATE users SET f_hour1=0, f_hour2=0 WHERE f_hour1='" .$dLecture['id']. "' AND f_hour2='" .$dLecture['id']. "'");
-							
-							if ( $release[12] === TRUE )
+
+							// Do the same for the rest of the hours
+							if ( ( $lData['held'][2] === TRUE ) && ( $dLecture['hour2'] === FALSE ) )
 							{
-								$Ctemplate->useTemplate("freeuniversity/edit_released", array(
-									'HOUR'	=>	"{LANG_FREEUNIVERSITY_HOUR_12}"
-								), FALSE);
+								$release[2] = $Cmysql->Query("UPDATE users SET f_hour2=0 WHERE f_hour2='" .$dLecture['id']. "'");
+
+								if ( $release[2] === TRUE )
+								{
+									$Ctemplate->useTemplate("freeuniversity/edit_released", array(
+										'HOUR'	=>	"{LANG_FREEUNIVERSITY_HOUR_2}"
+									), FALSE);
+								}
 							}
-						}
-						
-						if ( ( $lData['held'][23] === TRUE ) && ( $dLecture['hour23'] === FALSE ) )
-						{
-							$release[23] = $Cmysql->Query("UPDATE users SET f_hour2=0, f_hour3=0 WHERE f_hour2='" .$dLecture['id']. "' AND f_hour3='" .$dLecture['id']. "'");
-							
-							if ( $release[23] === TRUE )
+
+							if ( ( $lData['held'][3] === TRUE ) && ( $dLecture['hour3'] === FALSE ) )
 							{
-								$Ctemplate->useTemplate("freeuniversity/edit_released", array(
-									'HOUR'	=>	"{LANG_FREEUNIVERSITY_HOUR_23}"
-								), FALSE);
+								$release[3] = $Cmysql->Query("UPDATE users SET f_hour3=0 WHERE f_hour3='" .$dLecture['id']. "'");
+
+								if ( $release[3] === TRUE )
+								{
+									$Ctemplate->useTemplate("freeuniversity/edit_released", array(
+										'HOUR'	=>	"{LANG_FREEUNIVERSITY_HOUR_3}"
+									), FALSE);
+								}
 							}
-						}
-						
-						if ( ( $lData['held'][34] === TRUE ) && ( $dLecture['hour34'] === FALSE ) )
-						{
-							$release[34] = $Cmysql->Query("UPDATE users SET f_hour3=0, f_hour4=0 WHERE f_hour3='" .$dLecture['id']. "' AND f_hour4='" .$dLecture['id']. "'");
-							
-							if ( $release[34] === TRUE )
+
+							if ( ( $lData['held'][4] === TRUE ) && ( $dLecture['hour4'] === FALSE ) )
 							{
-								$Ctemplate->useTemplate("freeuniversity/edit_released", array(
-									'HOUR'	=>	"{LANG_FREEUNIVERSITY_HOUR_34}"
-								), FALSE);
+								$release[4] = $Cmysql->Query("UPDATE users SET f_hour4=0 WHERE f_hour4='" .$dLecture['id']. "'");
+
+								if ( $release[4] === TRUE )
+								{
+									$Ctemplate->useTemplate("freeuniversity/edit_released", array(
+										'HOUR'	=>	"{LANG_FREEUNIVERSITY_HOUR_4}"
+									), FALSE);
+								}
+							}
+
+							if ( ( $lData['held'][12] === TRUE ) && ( $dLecture['hour12'] === FALSE ) )
+							{
+								$release[12] = $Cmysql->Query("UPDATE users SET f_hour1=0, f_hour2=0 WHERE f_hour1='" .$dLecture['id']. "' AND f_hour2='" .$dLecture['id']. "'");
+
+								if ( $release[12] === TRUE )
+								{
+									$Ctemplate->useTemplate("freeuniversity/edit_released", array(
+										'HOUR'	=>	"{LANG_FREEUNIVERSITY_HOUR_12}"
+									), FALSE);
+								}
+							}
+
+							if ( ( $lData['held'][23] === TRUE ) && ( $dLecture['hour23'] === FALSE ) )
+							{
+								$release[23] = $Cmysql->Query("UPDATE users SET f_hour2=0, f_hour3=0 WHERE f_hour2='" .$dLecture['id']. "' AND f_hour3='" .$dLecture['id']. "'");
+
+								if ( $release[23] === TRUE )
+								{
+									$Ctemplate->useTemplate("freeuniversity/edit_released", array(
+										'HOUR'	=>	"{LANG_FREEUNIVERSITY_HOUR_23}"
+									), FALSE);
+								}
+							}
+
+							if ( ( $lData['held'][34] === TRUE ) && ( $dLecture['hour34'] === FALSE ) )
+							{
+								$release[34] = $Cmysql->Query("UPDATE users SET f_hour3=0, f_hour4=0 WHERE f_hour3='" .$dLecture['id']. "' AND f_hour4='" .$dLecture['id']. "'");
+
+								if ( $release[34] === TRUE )
+								{
+									$Ctemplate->useTemplate("freeuniversity/edit_released", array(
+										'HOUR'	=>	"{LANG_FREEUNIVERSITY_HOUR_34}"
+									), FALSE);
+								}
+							}
+
+							if ( ( $lData['held'][123] === TRUE ) && ( $dLecture['hour123'] === FALSE ) )
+							{
+								$release[123] = $Cmysql->Query("UPDATE users SET f_hour1=0, f_hour2=0, f_hour3=0 WHERE f_hour1='" .$dLecture['id']. "' AND f_hour2='" .$dLecture['id']. "' AND f_hour3='" .$dLecture['id']. "'");
+
+								if ( $release[123] === TRUE )
+								{
+									$Ctemplate->useTemplate("freeuniversity/edit_released", array(
+										'HOUR'	=>	"{LANG_FREEUNIVERSITY_HOUR_123}"
+									), FALSE);
+								}
+							}
+
+							if ( ( $lData['held'][234] === TRUE ) && ( $dLecture['hour234'] === FALSE ) )
+							{
+								$release[234] = $Cmysql->Query("UPDATE users SET f_hour2=0, f_hour3=0, f_hour4=0 WHERE f_hour2='" .$dLecture['id']. "' AND f_hour3='" .$dLecture['id']. "' AND f_hour4='" .$dLecture['id']. "'");
+
+								if ( $release[234] === TRUE )
+								{
+									$Ctemplate->useTemplate("freeuniversity/edit_released", array(
+										'HOUR'	=>	"{LANG_FREEUNIVERSITY_HOUR_234}"
+									), FALSE);
+								}
+							}
+
+							if ( ( $lData['held'][1234] === TRUE ) && ( $dLecture['hour1234'] === FALSE ) )
+							{
+								$release[1234] = $Cmysql->Query("UPDATE users SET f_hour1=0, f_hour2=0, f_hour3=0, f_hour4=0 WHERE f_hour1='" .$dLecture['id']. "' AND f_hour2='" .$dLecture['id']. "' AND f_hour3='" .$dLecture['id']. "' AND f_hour4='" .$dLecture['id']. "'");
+
+								if ( $release[1234] === TRUE )
+								{
+									$Ctemplate->useTemplate("freeuniversity/edit_released", array(
+										'HOUR'	=>	"{LANG_FREEUNIVERSITY_HOUR_1234}"
+									), FALSE);
+								}
 							}
 						}
 						
@@ -1239,7 +1737,10 @@ if ( $uLvl < 2 )
 							limit4='" .$dLecture['limit4']. "',
 							lect1_2='" .$dLecture['hour12']. "',
 							lect2_3='" .$dLecture['hour23']. "',
-							lect3_4='" .$dLecture['hour34']. "' WHERE id='" .$Cmysql->EscapeString($dLecture['id']). "'");
+							lect3_4='" .$dLecture['hour34']. "',
+							lect123='" .$dLecture['hour123']. "',
+							lect234='" .$dLecture['hour234']. "',
+							lect1234='" .$dLecture['hour1234']. "' WHERE id='" .$Cmysql->EscapeString($dLecture['id']). "'");
 						} elseif ( config("freeuniversity_allow") == "off" )
 						{
 							// Disallow non-read access to Freeuniversity database if it is finalized.
@@ -1277,7 +1778,23 @@ if ( $uLvl < 2 )
 								// Lecture limits (capita)
 								'LIMIT12'	=>	@$_POST['limit12'],
 								'LIMIT23'	=>	@$_POST['limit23'],
-								'LIMIT34'	=>	@$_POST['limit34']
+								'LIMIT34'	=>	@$_POST['limit34'],
+								
+								/* Tripe-hour lecture setup */
+								// Defines whether lecture is held in said hour
+								'HOUR123'	=>	@$_POST['hour123'],
+								'HOUR234'	=>	@$_POST['hour234'],
+								
+								// Lecture limits (capita)
+								'LIMIT123'	=>	@$_POST['limit123'],
+								'LIMIT234'	=>	@$_POST['limit234'],
+								
+								/* Quad-hour lecture setup */
+								// Defines whether lecture is held in said hour
+								'HOUR1234'	=>	@$_POST['hour1234'],
+								
+								// Lecture limits (capita)
+								'LIMIT1234'	=>	@$_POST['limit1234']
 							), FALSE);
 						} elseif ( $lectEdit === TRUE )
 						{
@@ -1285,6 +1802,9 @@ if ( $uLvl < 2 )
 							$Ctemplate->useTemplate("freeuniversity/edit_success", array(
 								'LECTURE_TITLE'	=>	$dLecture['title']
 							), FALSE);
+							
+							log_append('A(z) ' .$lecture['title']. ' (#' .$_POST['id']. ') előadást ' .$_SESSION['username']. ' (#' .$_SESSION['uid']. ') megváltoztatta.<br>
+								Az új adatok: <br>' .str_replace("'", "\'", $Cmysql->EscapeString(prettyVar($dLecture, false))) );
 						}
 						
 						break;
@@ -1367,6 +1887,8 @@ if ( $uLvl < 2 )
 							'LECTURE_TITLE'	=>	$lTitle[0]
 						), FALSE);
 						$Ctemplate->useStaticTemplate("freeuniversity/manage_retry_button", FALSE);
+						
+						log_append('A(z) ' .$lTitle[0]. ' (#' .$_POST['id']. ') előadást ' .$_SESSION['username']. ' (#' .$_SESSION['uid']. ') törölte.');
 					} elseif ( $lectRemove === FALSE )
 					{
 						// If we were unable to remove the lecture, output error and return button
@@ -1424,7 +1946,7 @@ if ( $uLvl < 2 )
 			$Ctemplate->useStaticTemplate("freeuniversity/manage_table_open", FALSE);
 			
 			// Get every lecture into a MySQL result
-			$lectures_result = $Cmysql->Query("SELECT id, title, description, hour1, hour2, hour3, hour4, limit1, limit2, limit3, limit4, lect1_2, lect2_3, lect3_4 FROM f_lectures ORDER BY title ASC");
+			$lectures_result = $Cmysql->Query("SELECT id, title, description, hour1, hour2, hour3, hour4, limit1, limit2, limit3, limit4, lect1_2, lect2_3, lect3_4, lect123, lect234, lect1234 FROM f_lectures ORDER BY title ASC");
 			
 			while ( $lRow = mysql_fetch_assoc($lectures_result) )
 			{
@@ -1475,6 +1997,30 @@ if ( $uLvl < 2 )
 							'LIMIT'	=>	($lRow['limit1'] === "0" ? NULL : "/".$lRow['limit1']) // Limit of students
 						), TRUE);
 					}
+					
+					if ( $lRow['lect123'] === "1" )
+					{
+						$hours[1] = $Ctemplate->useTemplate("freeuniversity/manage_table_row-embed", array(
+							'ID'	=>	$lRow['id'], // ID of the lecture
+							'HOUR'	=>	123, // # of hour
+							'WIDTH'	=>	30, // Width of cell
+							'COLSPAN'	=>	3, // Column spanning
+							'STUDENT'	=>	$numStud[1], // Number of students attending
+							'LIMIT'	=>	($lRow['limit1'] === "0" ? NULL : "/".$lRow['limit1']) // Limit of students
+						), TRUE);
+					}
+					
+					if ( $lRow['lect1234'] === "1" )
+					{
+						$hours[1] = $Ctemplate->useTemplate("freeuniversity/manage_table_row-embed", array(
+							'ID'	=>	$lRow['id'], // ID of the lecture
+							'HOUR'	=>	1234, // # of hour
+							'WIDTH'	=>	40, // Width of cell
+							'COLSPAN'	=>	4, // Column spanning
+							'STUDENT'	=>	$numStud[1], // Number of students attending
+							'LIMIT'	=>	($lRow['limit1'] === "0" ? NULL : "/".$lRow['limit1']) // Limit of students
+						), TRUE);
+					}
 				} elseif ( $lRow['hour1'] === "0" )
 				{
 					// If the lecture is not held in the first hour, prepare table
@@ -1489,6 +2035,22 @@ if ( $uLvl < 2 )
 						// If the lecture is a double-hour one, fill in empty row because
 						// the row was already filled when checking the previous one
 						$hours[2] = NULL;
+					} elseif ( $lRow['lect123'] === "1" )
+					{
+						$hours[2] = NULL;
+					} elseif ( $lRow['lect1234'] === "1" )
+					{
+						$hours[2] = NULL;
+					} elseif ( $lRow['lect234'] === "1" )
+					{
+						$hours[2] = $Ctemplate->useTemplate("freeuniversity/manage_table_row-embed", array(
+							'ID'	=>	$lRow['id'], // ID of the lecture
+							'HOUR'	=>	234, // # of hour
+							'WIDTH'	=>	30, // Width of cell
+							'COLSPAN'	=>	3, // Column spanning
+							'STUDENT'	=>	$numStud[2], // Number of students attending
+							'LIMIT'	=>	($lRow['limit2'] === "0" ? NULL : "/".$lRow['limit2']) // Limit of students
+						), TRUE);
 					} elseif ( ( $lRow['lect1_2'] === "0" ) && ( $lRow['lect2_3'] === "1" ) )
 					{
 						$hours[2] = $Ctemplate->useTemplate("freeuniversity/manage_table_row-embed", array(
@@ -1518,6 +2080,15 @@ if ( $uLvl < 2 )
 				if ( $lRow['hour3'] === "1" )
 				{
 					if ( ( $lRow['lect2_3'] === "1" ) && ( $lRow['lect3_4'] === "0" ) )
+					{
+						$hours[3] = NULL;
+					} elseif ( $lRow['lect123'] === "1" )
+					{
+						$hours[3] = NULL;
+					} elseif ( $lRow['lect234'] === "1" )
+					{
+						$hours[3] = NULL;
+					} elseif ( $lRow['lect1234'] === "1" )
 					{
 						$hours[3] = NULL;
 					} elseif ( ( $lRow['lect2_3'] === "0" ) && ( $lRow['lect3_4'] === "1" ) )
@@ -1551,6 +2122,12 @@ if ( $uLvl < 2 )
 					if ( $lRow['lect3_4'] === "1" )
 					{
 						$hours[4] = NULL;
+					} elseif ( $lRow['lect234'] === "1" )
+					{
+						$hours[4] = NULL;
+					} elseif ( $lRow['lect1234'] === "1" )
+					{
+						$hours[4] = NULL;
 					} elseif ( $lRow['lect3_4'] === "0" )
 					{
 						$hours[4] = $Ctemplate->useTemplate("freeuniversity/manage_table_row-embed", array(
@@ -1570,9 +2147,9 @@ if ( $uLvl < 2 )
 				// All the stuff is prepared, so we output the row itself
 				$Ctemplate->useTemplate("freeuniversity/manage_table_row", array(
 					'TITLE'	=>	$lRow['title'],
-					'DESCRIPTION'	=>	( $lRow['description'] === "" ? NULL :
+					'DESCRIPTION'	=>	( $lRow['description'] === "" || $lRow['description'] === null ? NULL :
 						$Ctemplate->useTemplate("freeuniversity/schedule_table_row_lecturedescription", array(
-							'DESCRIPTION'	=>	bbDecode($lRow['description'])
+							'LECTURE_ID'	=>	$lRow['id']
 						), TRUE) ), // Description of the lecture (appears in hover box, only if present)
 					'HOUR1'	=>	$hours[1],
 					'HOUR2'	=>	$hours[2],

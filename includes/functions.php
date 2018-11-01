@@ -458,9 +458,9 @@ function fClassFix( $value )
 	*/
 	
 	// Format the f_class variable
-	$f_class_fixed = strtoupper(preg_replace("/([0-9][0-9]?)(\.\s*|,\s*|\/\s*|:\s*|\.\s?_*|\s?|_|\.\/)([A-Ea-e])(\.|,)?/","$1. $3", $value));
+	$f_class_fixed = strtoupper(preg_replace("/([0-9][0-9]?)(\.\s*|,\s*|\/\s*|:\s*|\.\s?_*|\s?|_|\.\/)([A-Za-z]*)(\.|,)?/","$1. $3", $value));
 	
-	// Valid f_class values
+	/*// Valid f_class values
 	$f_class_valid = array("TANáR",
 		"9. A", "9. B", "9. C", "9. D", "9. E",
 		"10. A", "10. B", "10. C", "10. D", "10. E",
@@ -479,9 +479,9 @@ function fClassFix( $value )
 		
 		die("Worker thread received <tt>SIGCLUSTERFUCK</tt> (killcode <tt>0x1981</tt>), execution halted. Going nowhere without my <tt>init()</tt>.");
 	} elseif ( in_array($f_class_fixed, $f_class_valid) )
-	{
+	{*/
 		return $f_class_fixed;
-	}
+	//}
 }
 
 function selfURL()
@@ -505,5 +505,15 @@ function selfURL()
 	
 	// Fetch a proper URL from the data and the current request
 	return $protocol."://".$_SERVER['SERVER_NAME'].$port.$_SERVER['REQUEST_URI'];
+}
+
+function log_append($text, $time = 0)
+{
+	if ($time === 0)
+		$time = time();
+	
+	global $Cmysql;
+	
+	$Cmysql->Query("INSERT INTO log(logdate, log) VALUES ('" .$time. "', '" .$Cmysql->EscapeString($text). "')");
 }
 ?>

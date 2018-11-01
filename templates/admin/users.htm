@@ -1,0 +1,21 @@
+<!--- BEGIN admin users -->
+<!--- Usage: acp user page -->
+<form method="POST" action="control_admin.php">
+	<input type="hidden" name="site" value="users" />
+	<input type="hidden" name="action" value="new" />
+	<input type="submit" value="{LANG_ADMINUSERS_NEW}" />
+</form>
+<form method="POST" action="control_admin.php">
+	<input type="hidden" name="site" value="users" />
+	<input type="hidden" name="action" value="import" />
+	<input type="submit" value="Importálás" />
+</form>
+<table border="0" class="forums-table">
+	<tr class="forums-head">
+		<th>Felhasználó neve</th>
+		<th>Rang</th>
+		<th colspan="3">Műveletek</th>
+	</tr>
+	{ROWS}
+</table>
+<!--- END admin users -->

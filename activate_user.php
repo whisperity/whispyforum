@@ -28,22 +28,21 @@ if ( $_SESSION['log_bool'] == TRUE )
 // This script does the activation of fresh users
 // It needs to have two input from HTTP GET
 
-if ( ( @$_GET['username'] == NULL ) || ( @$_GET['token'] == NULL ) || ( @$_GET['f_class'] == NULL ) )
+if ( ( @$_GET['username'] == NULL ) || ( @$_GET['token'] == NULL ) )
 {
 	// If either the username or the token is missing (it includes the BOTH sceniaro)
 	// Output form, and fill it in with the known data
 	$Ctemplate->useTemplate("user/activate_form", array(
 		'USERNAME'	=>	@$_GET['username'],
-		'TOKEN'	=>	@$_GET['token'],
-		'F_CLASS'	=>	@$_GET['f_class']
+		'TOKEN'	=>	@$_GET['token']
 	), FALSE);
-} elseif ( ( @$_GET['username'] != NULL ) && ( @$_GET['token'] != NULL ) && ( @$_GET['f_class'] != NULL ) )
+} elseif ( ( @$_GET['username'] != NULL ) && ( @$_GET['token'] != NULL ) )
 {
 	// If we have all the variables
 	// Do the activation
 	
 	// First, select the user from database
-	$check = mysql_fetch_assoc($Cmysql->Query("SELECT id, token, activated FROM users WHERE username='" .$Cmysql->EscapeString($_GET['username']). "' AND f_class='" .$Cmysql->EscapeString(fClassFix($_GET['f_class'])). "'")); // This will be FALSE if the username is unknown or the token is invalid, and TRUE if we're successful to find the user
+	$check = mysql_fetch_assoc($Cmysql->Query("SELECT id, token, activated FROM users WHERE username='" .$Cmysql->EscapeString($_GET['username']). "'")); // This will be FALSE if the username is unknown or the token is invalid, and TRUE if we're successful to find the user
 	
 	if ( $check === FALSE )
 	{

@@ -48,7 +48,6 @@ class class_users
 		
 		$_SESSION['username'] = ""; // Empty username
 		$_SESSION['pwd'] = ""; // Empty password
-		$_SESSION['class'] = ""; // Empty class
 		$_SESSION['uid'] = ""; // Empty user id
 		$_SESSION['curr_ip'] = $_SERVER['REMOTE_ADDR']; // IP address
 		$_SESSION['curr_sessid'] = session_id(); // Session id
@@ -97,7 +96,7 @@ class class_users
 		
 		global $Cmysql, $Ctemplate; // We need to declare the mySQL and template class
 		
-		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "' AND f_class='" .$Cmysql->EscapeString($_SESSION['class']). "'"));
+		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'"));
 		if ( $userDBArray == FALSE )
 		{
 			// If we cannot do the query (because it contains false data or empty session)
@@ -120,7 +119,7 @@ class class_users
 				// also redirecting him/her to the homepage
 				$Ctemplate->useStaticTemplate("user/ip_id_forced_logout", FALSE);
 					
-				$this->Logout($userDBArray['username'], $userDBArray['f_class']); // We purge the user's session
+				$this->Logout($userDBArray['username']); // We purge the user's session
 				
 				// We need to recreate a new session
 				$this->__createSession();
@@ -175,16 +174,17 @@ class class_users
 		
 		global $Ctemplate, $Cmysql; // We need to declare the templates and mySQL class
 		
+		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'")); // We query the user's data
+		
 		$Ctemplate->useTemplate("user/userform_head", array(
 			'USERNAME'	=>	$_SESSION['username'], // Username (from session)
+			'F_CLASS'	=>	$userDBArray['f_class'],
 			'AVATAR_FILENAME'	=>	$_SESSION['avatar_filename'] // Avatar file
 		), FALSE); // Beginning divs of userbox
 		
 		$Ctemplate->useTemplate("user/userform_user-cp_link", array(
 			'USERID'	=>	$_SESSION['uid']
 		), FALSE); // User control panel link
-		
-		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "' AND f_class='" .$Cmysql->EscapeString($_SESSION['class']). "'")); // We query the user's data
 		
 		// If the user has Admin (3) or higher levels, output link to administrator panel
 		if ( $userDBArray['userLevel'] >= 3 )
@@ -211,32 +211,30 @@ class class_users
 		$Ctemplate->useStaticTemplate("user/userform_foot", FALSE); // Close divs
 	}
 	
-	function Login($username, $password, $class)
+	function Login($username, $password)
 	{
 		/**
 		 * This function makes the user logged in
 		 * 
 		 * @inputs: $username - (string) login username
 		 * 			$password - (string) login password (without encryption)
-		 *			$class - (string) freeuniversity organizer school class
 		 */
 		
 		global $Cmysql; // We need to declare the mySQL class
 		
-		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .$Cmysql->EscapeString($username). "' AND pwd='" .$Cmysql->EscapeString($password). "' AND f_class='" .$Cmysql->EscapeString($class). "'")); // We query the user's data
+		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .$Cmysql->EscapeString($username). "' AND pwd='" .$Cmysql->EscapeString($password). "'")); // We query the user's data
 		
 		if  ( $userDBArray == TRUE ) 
 		{
 			// If the login info was correct and the user is activated
 			
 			// Check wether the user is activated
-			if ( $userDBArray['activated'] == "1" )
+			if ( $userDBArray['activated'] == "1" && $userDBArray['userLevel'] >= 1 )
 			{
 				// If yes
 				// we fill up the session
 				$_SESSION['username'] = $userDBArray['username'];
 				$_SESSION['pwd'] = $userDBArray['pwd'];
-				$_SESSION['class'] = $userDBArray['f_class'];
 				$_SESSION['uid'] = $userDBArray['id'];
 				$_SESSION['log_status'] = "user";
 				$_SESSION['log_bool'] = TRUE;
@@ -298,6 +296,10 @@ class class_users
 			{
 				// If the login informations are OK, but the user is not activated, 
 				return "activate";
+			} elseif ( $userDBArray['userLevel'] == "0" )
+			{
+				// If the user is activated, but the user level is 0 (banned/guest) then
+				return "guest";
 			}
 		} elseif ( $userDBArray == FALSE )
 		{
@@ -307,18 +309,17 @@ class class_users
 		}
 	}
 	
-	function Logout($username, $class)
+	function Logout($username)
 	{
 		/**
 		 * This function makes the user logged out
 		 * 
 		 * @inputs: $username - (string) logout username
-		 *			$class - (string) freeuniversity organizer school class
 		 */
 		
 		global $Cmysql; // We need to declare the mySQL class
 		
-		$bLogout = $Cmysql->Query("UPDATE users SET curr_ip='0.0.0.0', curr_sessid='', loggedin=0 WHERE id='" .$_SESSION['uid']. "' AND username='" .$Cmysql->EscapeString($username). "' AND f_class='" .$Cmysql->EscapeString($class). "'"); // Clear session connections from database
+		$bLogout = $Cmysql->Query("UPDATE users SET curr_ip='0.0.0.0', curr_sessid='', loggedin=0 WHERE id='" .$_SESSION['uid']. "' AND username='" .$Cmysql->EscapeString($username). "'"); // Clear session connections from database
 		
 		if ( $bLogout == FALSE )
 		{
@@ -355,7 +356,7 @@ class class_users
 		
 		global $Cmysql; // Hook MySQL class here
 		
-		$userLevel = mysql_fetch_row($Cmysql->Query("SELECT userLevel FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "' AND f_class='" .$Cmysql->EscapeString($_SESSION['class']). "'"));
+		$userLevel = mysql_fetch_row($Cmysql->Query("SELECT userLevel FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'"));
 		
 		if ( $userLevel == FALSE )
 		{

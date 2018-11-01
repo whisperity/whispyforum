@@ -31,7 +31,7 @@ if ( $_POST['returnto'] == NULL )
 if ( $_POST['logout'] == "do_user_logout" )
 {
 	// If the proper POST value was given, we logout the user
-	$logsuccess = $Cusers->Logout($_SESSION['username'], $_SESSION['class']); // We call the logout function.
+	$logsuccess = $Cusers->Logout($_SESSION['username']); // We call the logout function.
 	
 	// $logsuccess is TRUE if the user successfully logged out
 	// $logsuccess is FALSE if there were errors during logout

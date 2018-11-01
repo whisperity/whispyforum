@@ -154,6 +154,7 @@ if ( $i != 4 )
 
 $Ctemplate->useTemplate("user/profile_body", array(
 	'USERNAME'	=>	$userData['username'],
+	'F_CLASS'	=>	$userData['f_class'],
 	'EMAIL'	=>	str_replace(
 		array("@", "."),
 		array(" (at) ", " (dot) "),

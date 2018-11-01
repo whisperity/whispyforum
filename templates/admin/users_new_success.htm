@@ -1,0 +1,19 @@
+<!--- BEGIN admin users new success -->
+<!--- Usage: registration succes form -->
+<table class="successbox"> <!--- copying the successbox template -->
+	<tr>
+		<td class="successpicture"><img src="themes/{THEME_NAME}/Nuvola_apps_kgpg.png" alt="{LANG_SUCCESS_EXCLAMATION}"></td>
+		<td class="successtitle">{LANG_REG_SUCCESS_TITLE}</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="successbody">{LANG_REG_SUCCESS_BODY}</td>
+	</tr>
+</table> <!--- copying the successbox template -->
+
+{LANG_PROCEED_CLICK_BUTTON_BELOW}
+<form method="GET" action="control_admin.php">
+<input type="hidden" name="site" value="users" />
+<input type="submit" value="{LANG_NEXT_NN}">
+</form>
+<!--- END admin users new success -->

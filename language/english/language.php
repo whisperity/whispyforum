@@ -51,8 +51,8 @@ $wf_lang = array(
 	'{LANG_TEXT}'	=>	"Text",
 	'{LANG_TEXT_LOWERCASE}'	=>	"text",
 	'{LANG_USING_LOWERCASE}'	=>	"using",
-	'{LANG_USERNAME}'	=>	"Full name",
-	'{LANG_USERNAME_LOWERCASE}'	=>	"full name",
+	'{LANG_USERNAME}'	=>	"Username",
+	'{LANG_USERNAME_LOWERCASE}'	=>	"username",
 	'{LANG_PASSWORD}'	=>	"Password",
 	'{LANG_PASSWORD_LOWERCASE}'	=>	"password",
 	'{LANG_PASSWORD_AGAIN}'	=>	"Password (again)",
@@ -257,6 +257,8 @@ Before we can move on installing the system, you have to make your data safe. Cr
 	'{LANG_LOGIN_PLEASEUSEBOX}'	=>	"Please use the login box to login to the site.",
 	'{LANG_LOGIN_WRONGPASSWORD}'	=>	"The user you entered does not exist, or you supplied wrong login credentials.",
 	'{LANG_LOGIN_ACTIVATE}'	=>	"The user you wanted to log in to haven't been activated yet. Please follow the details which were sent to you via email to activate your account.",
+	'{LANG_LOGIN_GUEST}'	=>	"This user account is banned. You can't log in using a banned account.<br>
+This infraction has been registered.",
 	'{LANG_LOGIN_CRITICAL_FOR}'	=>	"You did not enter {VARIABLE_BODY}. This variable is critical to properly log you in.",
 	'{LANG_LOGIN_DIRECT_OPENING}'	=>	"It seems to be a direct opening of the login page.<br>
 When you login, you're automatically redirected through this page by the engine passing vital variables. Those variables cannot be get.",
@@ -718,7 +720,7 @@ When you logout, you're automatically redirected through this page by the engine
 	/* Freeuniversity Organizer */
 	'{LANG_REG_CITROMAIL_ERROR}'	=>	"The e-mail domain you wanted to use (<tt>{EMAIL_DOMAIN}</tt>) is banned on this system due to technical (activation e-mail receiving) difficulties.",
 	'{LANG_CLASS}'	=>	"Class",
-	'{LANG_CLASS_FORMAT}'	=>	'(Example: <font class="emphasis">12. A</font>, staff members use <font class="emphasis">Tanár</font>)',
+	'{LANG_CLASS_FORMAT}'	=>	'(Example: <font class="emphasis">12. A</font>, <font class="emphasis">ADULT SCHOOL</font> staff members use <font class="emphasis">Tanï¿½r</font>)',
 	'{LANG_NOT_ACTIVATED}'	=>	"Not activated",
 	'{LANG_FREEUNIVERSITY_INVALID}'	=>	"Nonexistant lecture",
 	'{LANG_FREEUNIVERSITY_INVALID_BODY}'	=>	"The lecture you wanted to access is not present in the database.",
@@ -732,11 +734,18 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_FREEUNIVERSITY_HOUR_12}'	=>	"#1-#2",
 	'{LANG_FREEUNIVERSITY_HOUR_23}'	=>	"#2-#3",
 	'{LANG_FREEUNIVERSITY_HOUR_34}'	=>	"#3-#4",
+	'{LANG_FREEUNIVERSITY_HOUR_123}'	=>	"#1-#2-#3",
+	'{LANG_FREEUNIVERSITY_HOUR_234}'	=>	"#2-#3-#4",
+	'{LANG_FREEUNIVERSITY_HOUR_1234}'	=>	"#1-#2-#3-#4",
 	'{LANG_FREEUNIVERSITY_LECTURE_HOUR_HOSTED}'	=>	"Held?",
 	'{LANG_FREEUNIVERSITY_LECTURE_HOUR_LIMIT}'	=>	"Limit (capita)",
 	'{LANG_FREEUNIVERSITY_LECTURE_SINGLEHOUR}'	=>	"Single-hour setup",
 	'{LANG_FREEUNIVERSITY_LECTURE_DOUBLEHOUR}'	=>	"Double-hour setup",
 	'{LANG_FREEUNIVERSITY_LECTURE_DOUBLEHOUR_WARNING}'	=>	'<span class="red-star">'."WARNING! ".'</span>'."Double-hour setups are overriding anything entered into the single-hour setup conflicting with said double-hour one.<br>For example: If single-hour hour 1 and 2 is set along with double-hour 1-2, the double-hour 1-2 will be stored.",
+	'{LANG_FREEUNIVERSITY_LECTURE_TRIPLEHOUR}'	=>	"Triple-hour setup",
+	'{LANG_FREEUNIVERSITY_LECTURE_TRIPLEHOUR_WARNING}'	=>	'<span class="red-star">'."WARNING! ".'</span>'."Similarly, triple-hour setups are overriding anything entered into the single- or double-hour setup conflicting with said triple-hour one.",
+	'{LANG_FREEUNIVERSITY_LECTURE_QUADHOUR}'	=>	"Quad-hour setup",
+	'{LANG_FREEUNIVERSITY_LECTURE_QUADHOUR_WARNING}'	=>	'<span class="red-star">'."WARNING! ".'</span>'."Similarly, quad-hour setups are overriding anything entered into the single-, double- or triple-hour setup conflicting with said quad-hour one.",
 	'{LANG_FREEUNIVERSITY_ATTENDEES}'	=>	"# students attending",
 	'{LANG_FREEUNIVERSITY_MANAGE}'	=>	"Manage",
 	'{LANG_FREEUNIVERSITY_MANAGE_USAGE}'	=>	"This table lists all the lectures in the database. You can see the number of students attending the lecture, and, if present, the limit set. To obtain a register, click on the number of students. To edit or delete the lecture, click on the appropriate button. If the cell is empty, the lecture is not held in that hour.",
@@ -755,7 +764,7 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_FREEUNIVERSITY_NEWLECTURE_HEADER}'	=>	"Adding a new lecture",
 	'{LANG_FREEUNIVERSITY_NEWLECTURE_POST}'	=>	"Add new lecture",
 	'{LANG_FREEUNIVERSITY_NEWLECTURE_ERROR}'	=>	"There were errors executing the SQL query to add the entry. Press the button to try again.",
-	'{LANG_FREEUNIVERSITY_NEWLECTURE_MULTIPLE_DOUBLEHOUR}'	=>	"You have selected multiple, conflicting double-hour settings. This error usually prevents adding the lecture to the database if 1-2 and 2-3 or 2-3 and 3-4 is turned on at the same time.",
+	'{LANG_FREEUNIVERSITY_NEWLECTURE_MULTIPLE_DOUBLEHOUR}'	=>	"You have selected multiple, conflicting settings.",
 	'{LANG_FREEUNIVERSITY_NEWLECTURE_VARIABLE_ERROR}'	=>	"The lecture addition cannot be done until every required variable is entered.",
 	'{LANG_FREEUNIVERSITY_NEWLECTURE_LIMIT_ERROR}'	=>	"A limit entered into the lecture's configuration is lower than 0. There can not be negative limits.<br>If you want unlimited lectures, use 0 (zero) as limit.",
 	'{LANG_FREEUNIVERSITY_NEWLECTURE_SUCCESS}'	=>	"Successfully added the lecture to the database.",
@@ -790,6 +799,18 @@ When you logout, you're automatically redirected through this page by the engine
 	'{LANG_FREEUNIVERSITY_EDITLECTURE_RELEASED}'	=>	"Released students",
 	'{LANG_FREEUNIVERSITY_EDITLECTURE_RELEASED_1}'	=>	"There might have been students attending this lecture in the <tt>{HOUR}</tt> hour. Because the lecture is no longer held in this hour, the students were automatically released.",
 	'{LANG_FREEUNIVERSITY_EDITLECTURE_SUCCESS}'	=>	"Successfully edited the lecture <tt>{LECTURE_TITLE}</tt>.",
-	'{LANG_FREEUNIVERSITY_ALLOW}'	=>	"Allow people to modify the Freeuniversity database. Untick to finalize and lock the tables from any modification."
+	'{LANG_FREEUNIVERSITY_ALLOW}'	=>	"Allow people to modify the Freeuniversity database. Untick to finalize and lock the tables from any modification.",
+	
+	/* Admin user manager */
+	'{LANG_ADMINUSERS}'	=>	"Users",
+	'{LANG_ADMINUSERS_NEW}'	=>	"Add new user",
+	'{LANG_ADMINUSERS_NEW_INFO}'	=>	"Fill the form with the user's details. The new user will automatically be activated and of normal rights.",
+	'{LANG_ADMINUSER_CONFIRM_DELETION}'	=>	"Please confirm removal of user: ",
+	'{LANG_ADMINUSER_CONFIRM_DELETE}'	=>	"By deleting the user, all related information will be dangling.",
+	'{LANG_ADMINUSER_DELETE_ERROR}'	=>	"Unable to delete the user.",
+	'{LANG_ADMINUSER_DELETE_SUCCESS}'	=>	"Successfully deleted the user!",
+	'{LANG_ADMINUSER_RANK_ERROR}'	=>	"Failed to modify rank",
+	'{LANG_ADMINUSER_RANK_SUCCESS}'	=>	"Successfully modified the user's rank!"
+	
 );
 ?>

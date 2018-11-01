@@ -1,0 +1,18 @@
+<!--- BEGIN admin users new userdata -->
+<!--- Usage: user registration information form -->
+{LANG_ADMINUSERS_NEW_INFO}<br>
+<font class="emphasis">{LANG_MANDATORY_VARIABLES_REDSTAR}</font>
+<br><br>
+<form method="POST" action="control_admin.php">
+<span class="form-header">{LANG_REG_DATA_FORM_HEADER}</span><br>
+{LANG_USERNAME}<span class="red-star">*</span>: <input type="text" name="username" value="{USERNAME}" size=35><br>
+{LANG_PASSWORD}<span class="red-star">*</span>: <input type="password" name="password" value="{PASSWORD}" size=35><br>
+{LANG_EMAIL}<span class="red-star">*</span>: <input type="text" name="email" value="{EMAIL}" size=35><br>
+{LANG_CLASS}<span class="red-star">*</span>: <input type="text" name="class" value="{CLASS}" size=5><br>
+<font class="emphasis">{LANG_PROCEED_CLICK_BUTTON_BELOW}</font><br>
+<input type="hidden" name="action" value="new" />
+<input type="hidden" name="submit" value="mhm" />
+<input type="hidden" name="site" value="users" />
+<input type="submit" value="{LANG_NEXT_NN}">
+</form>
+<!--- END admin users new userdata -->

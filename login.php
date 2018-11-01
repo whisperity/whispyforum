@@ -56,21 +56,7 @@ if ( $_POST['user_password'] == NULL )
 	exit; // We terminate the script
 }
 
-if ( $_POST['user_class'] == NULL )
-{
-	// If user wants to login without class
-	// give error message
-	
-	$Ctemplate->useTemplate("user/login_err_novalue", array(
-		'RETURN_TO_URL'	=>	$returnURI, // Return URI
-		'VARIABLE_HEADER'	=>	"{LANG_CLASS}", // Unentered variable (uppercase)
-		'VARIABLE_BODY'	=>	"{LANG_CLASS}" // Unentered variable (lowercase)
-	), FALSE);
-	
-	exit; // We terminate the script
-}
-
-$logsuccess = $Cusers->Login($_POST['user_loginname'], $_POST['user_password'], fClassFix($_POST['user_class'])); // We call the login function.
+$logsuccess = $Cusers->Login($_POST['user_loginname'], $_POST['user_password']); // We call the login function.
 
 // $logsuccess is TRUE if the user successfully logged in
 // $logsuccess is FALSE if there were errors during login
@@ -85,6 +71,12 @@ if ( $logsuccess === FALSE )
 {
 	// If the user is not activated
 	$Ctemplate->useTemplate("user/login_error_activate", array(
+		'RETURN_TO_URL'	=>	$returnURI // Return URI
+	), FALSE); // Output specific error message
+} elseif ( $logsuccess === "guest" )
+{
+	// If the user is a guest (userLevel = 0) account
+	$Ctemplate->useTemplate("user/login_error_guest", array(
 		'RETURN_TO_URL'	=>	$returnURI // Return URI
 	), FALSE); // Output specific error message
 } elseif ( $logsuccess === TRUE )

@@ -410,7 +410,7 @@ switch ($instPos)
 			`f_hour3` int(10) NOT NULL COMMENT 'lecture in hour three (f_lectures.id)',
 			`f_hour4` int(10) NOT NULL COMMENT 'lecture in hour four (f_lectures.id)',
 			PRIMARY KEY (`id`),
-			UNIQUE KEY `username` (`username`, `f_class`),
+			UNIQUE KEY `username` (`username`),
 			UNIQUE KEY `email` (`email`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'userdata'"); // $dbtables_user sets to true if we succeeded creating a table
 		
@@ -777,6 +777,9 @@ switch ($instPos)
 			`lect1_2` tinyint(1) DEFAULT '0' NOT NULL COMMENT 'double-lecturize the first and second hour',
 			`lect2_3` tinyint(1) DEFAULT '0' NOT NULL COMMENT 'double-lecturize the second and third hour',
 			`lect3_4` tinyint(1) DEFAULT '0' NOT NULL COMMENT 'double-lecturize the third and fourth hour',
+			`lect123` tinyint(1) DEFAULT '0' NOT NULL,
+			`lect234` tinyint(1) DEFAULT '0' NOT NULL,
+			`lect1234` tinyint(1) DEFAULT '0' NOT NULL,
 			PRIMARY KEY (`id`),
 			UNIQUE (`title`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'lecture database'"); // $dbtables_f_lectures sets to true if we succeeded creating a table
@@ -802,6 +805,38 @@ switch ($instPos)
 			), FALSE);
 		}
 		/* Freeuniversity lectures table */
+		
+		/* Logging */
+		// Stores the logs
+		$dbtables_log = FALSE; // We failed creating the table first
+		$dbtables_log = $Cmysql->Query("CREATE TABLE IF NOT EXISTS log (
+			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+			`logdate` int(16) NOT NULL COMMENT 'time of log',
+			`log` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'the log entry',
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'logging entries (beta)'"); // $dbtables_log sets to true if we succeeded creating a table
+		
+		
+		// We check config table creation
+		if ( $dbtables_log == FALSE )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
+				'TABLENAME'	=>	"log" // Table name
+			), FALSE);
+			
+			// We set the creation global error variable to false
+			$tablecreation = FALSE;
+			
+			$tablelist[] = "log"; // Append f_lectures table name to fail-list
+		} elseif ( $dbtables_log != FALSE )
+		{
+			// Give success
+			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
+				'TABLENAME'	=>	"log" // Table name
+			), FALSE);
+		}
+		/* Logging */
 		
 		// Check global variable status
 		if ( $tablecreation == FALSE )
@@ -1143,7 +1178,8 @@ switch ($instPos)
 			('forum_post_count_per_page', '" .$Cmysql->EscapeString($_POST['forum_post_count_per_page']). "'),
 			('module_news', '" .(@$_POST['module_news'] == "on" ? "on" : "off"). "'),
 			('news_split_value', '" .$Cmysql->EscapeString($_POST['news_split_value']). "'),
-			('module_freeuniversity', '" .(@$_POST['module_freeuniversity'] == "on" ? "on" : "off"). "')"); // $sConfig is true if we are successful
+			('module_freeuniversity', '" .(@$_POST['module_freeuniversity'] == "on" ? "on" : "off"). "'),
+			('freeuniversity_allow', 'off')"); // $sConfig is true if we are successful
 		
 		// Give return or proceed forms based on success
 		if ( $sConfig == FALSE )

@@ -142,7 +142,7 @@ switch ($site)
 			if ( ( $_POST['set_type'] == "language" ) && ( isset($_POST['new_lang']) ) )
 			{
 				// Change the language in the database
-				$Lmod = $Cmysql->Query("UPDATE users SET language='" .$Cmysql->EscapeString($_POST['new_lang']). "' WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "' AND f_class='" .$Cmysql->EscapeString($_SESSION['class']). "'");
+				$Lmod = $Cmysql->Query("UPDATE users SET language='" .$Cmysql->EscapeString($_POST['new_lang']). "' WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'");
 				
 				// $Lmod is TRUE if we succeed and FALSE if we fail
 				if ( $Lmod == FALSE )
@@ -177,7 +177,7 @@ switch ($site)
 			if ( ( $_POST['set_type'] == "theme" ) && ( isset($_POST['new_theme']) ) )
 			{
 				// Change the theme in the database
-				$Tmod = $Cmysql->Query("UPDATE users SET theme='" .$Cmysql->EscapeString($_POST['new_theme']). "' WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "' AND f_class='" .$Cmysql->EscapeString($_SESSION['class']). "'");
+				$Tmod = $Cmysql->Query("UPDATE users SET theme='" .$Cmysql->EscapeString($_POST['new_theme']). "' WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'");
 				
 				// $Tmod is TRUE if we succeed and FALSE if we fail
 				if ( $Tmod == FALSE )
@@ -374,7 +374,7 @@ switch ($site)
 			$mod = $Cmysql->Query("UPDATE users SET ".
 				"forum_topic_count_per_page='" .$Cmysql->EscapeString($_POST['new_topic_switch_value']). "', ".
 				"forum_post_count_per_page='" .$Cmysql->EscapeString($_POST['new_post_switch_value']). "' ".
-				"WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "' AND f_class='" .$Cmysql->EscapeString($_SESSION['class']). "'");
+				"WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'");
 			
 			// $mod is TRUE if we succeed and FALSE if we fail
 			if ( $mod == FALSE )
@@ -440,7 +440,7 @@ switch ($site)
 			// Change the preference
 			$mod = $Cmysql->Query("UPDATE users SET ".
 				"news_split_value ='" .$Cmysql->EscapeString($_POST['new_news_split_value']). "' ".
-				"WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "' AND f_class='" .$Cmysql->EscapeString($_SESSION['class']). "'");
+				"WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'");
 			
 			// $mod is TRUE if we succeed and FALSE if we fail
 			if ( $mod == FALSE )

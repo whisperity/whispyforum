@@ -1,0 +1,16 @@
+<!--- BEGIN admin users pass -->
+<!--- Usage: user password reset form -->
+<font class="emphasis">{LANG_MANDATORY_VARIABLES_REDSTAR}</font>
+<br><br>
+<form method="POST" action="control_admin.php">
+<span class="form-header">{LANG_REG_DATA_FORM_HEADER}</span><br>
+{LANG_USERNAME}: {USERNAME}<br>
+{LANG_PASSWORD}<span class="red-star">*</span>: <input type="password" name="password" value="{PASSWORD}" size=35><br>
+<font class="emphasis">{LANG_PROCEED_CLICK_BUTTON_BELOW}</font><br>
+<input type="hidden" name="action" value="pass" />
+<input type="hidden" name="submit" value="mhm" />
+<input type="hidden" name="site" value="users" />
+<input type="hidden" name="id" value="{ID}" />
+<input type="submit" value="{LANG_NEXT_NN}">
+</form>
+<!--- END admin users pass -->

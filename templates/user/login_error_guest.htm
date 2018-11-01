@@ -1,0 +1,17 @@
+<!--- BEGIN user login error guest -->
+<!--- Usage: user login error box (error: guest login) -->
+<meta HTTP-EQUIV="REFRESH" content="5; url={RETURN_TO_URL}"> <!--- redirect to last page -->
+
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_apps_agent.png" alt="{LANG_LOGIN_ERROR}"></td>
+		<td class="errortitle">{LANG_LOGIN_ERROR}</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">{LANG_LOGIN_GUEST}
+		<br><br>{LANG_LOGIN_PLEASEUSEBOX} {LANG_REDIRECT_WHERE_LEFTOFF}<br>
+		<a href="{RETURN_TO_URL}">{LANG_REDIRECT_RETURN_LINK}</a></td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+<!--- END user login error guest -->

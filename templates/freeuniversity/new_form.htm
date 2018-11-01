@@ -54,6 +54,45 @@
 		</tr>
 	</table>
 	<br style="clear: both">
+	<table border="1" style="width: 100%">
+		<tr>
+			<th>{LANG_FREEUNIVERSITY_LECTURE_TRIPLEHOUR}</th>
+			<th>{LANG_FREEUNIVERSITY_HOUR_123}</th>
+			<th>{LANG_FREEUNIVERSITY_HOUR_234}</th>
+		</tr>
+		<tr>
+			<th>{LANG_FREEUNIVERSITY_LECTURE_HOUR_HOSTED}</th>
+			<td align="center"><input type="checkbox" name="hour123" value="1"{HOUR123_CHECKED}></td>
+			<td align="center"><input type="checkbox" name="hour234" value="1"{HOUR234_CHECKED}></td>
+		</tr>
+		<tr>
+			<th>{LANG_FREEUNIVERSITY_LECTURE_HOUR_LIMIT}</th>
+			<td align="center"><input type="text" name="limit123" value="{LIMIT123}" size="3"></td>
+			<td align="center"><input type="text" name="limit234" value="{LIMIT234}" size="3"></td>
+		</tr>
+		<tr>
+			<td colspan="3" align="center" valign="center">{LANG_FREEUNIVERSITY_LECTURE_TRIPLEHOUR_WARNING}</td>
+		</tr>
+	</table>
+	<br style="clear: both">
+	<table border="1" style="width: 100%">
+		<tr>
+			<th>{LANG_FREEUNIVERSITY_LECTURE_QUADHOUR}</th>
+			<th>{LANG_FREEUNIVERSITY_HOUR_1234}</th>
+		</tr>
+		<tr>
+			<th>{LANG_FREEUNIVERSITY_LECTURE_HOUR_HOSTED}</th>
+			<td align="center"><input type="checkbox" name="hour1234" value="1"{HOUR1234_CHECKED}></td>
+		</tr>
+		<tr>
+			<th>{LANG_FREEUNIVERSITY_LECTURE_HOUR_LIMIT}</th>
+			<td align="center"><input type="text" name="limit1234" value="{LIMIT1234}" size="3"></td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center" valign="center">{LANG_FREEUNIVERSITY_LECTURE_QUADHOUR_WARNING}</td>
+		</tr>
+	</table>
+	<br style="clear: both">
 	<input type="hidden" name="action" value="newlecture">
 	<input type="hidden" name="step" value="store-lecture">
 	<input type="submit" value="{LANG_FREEUNIVERSITY_NEWLECTURE_POST}">

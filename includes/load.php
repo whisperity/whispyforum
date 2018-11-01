@@ -6,7 +6,12 @@
  * 
  * WhispyForum
  */
- 
+
+global $start_time;
+$mtime = microtime();
+$mtime = explode(' ',$mtime);
+$start_time = $mtime[1] + $mtime[0];
+
 /* Libraries */
 // Template conductor (we load it before everything because templates are needed to get error messages)
 require("templates.class.php");
@@ -73,6 +78,10 @@ global $Cbadges; // Class is global
 $Cbadges = new class_badges;
 $Cbadges->Init(); // Load and define the badge array
 
+// Disable caching.
+//header("Cache-Control: no-cache, must-revalidate");
+//header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
+
 // Generate framework header
 $Ctemplate->useTemplate("framework/header", array(
 	'GLOBAL_TITLE'	=>	config("global_title")
@@ -114,7 +123,16 @@ function DoFooter()
 	$Ctemplate->useStaticTemplate("framework/footer", FALSE); // Close right menubar and generate footer
 	/* FOOTER */
 	
-	$Ctemplate->useStaticTemplate("framework/footer_close", FALSE); // Close footer
+	global $start_time;
+	$mtime = microtime();
+	$mtime = explode(' ',$mtime);
+	$current_time = $mtime[1] + $mtime[0];
+	$gentime = round($current_time - $start_time, 3);
+	
+	$Ctemplate->useTemplate("framework/footer_close", array(
+		'QUERY'	=>	$gentime,
+		'SIZE'	=>	DecodeSize(memory_get_peak_usage())
+	) ); // Close footer
 	
 	$Cmysql->Disconnect(); // Disconnect from database
 	

@@ -1120,6 +1120,291 @@ switch ($site) // Outputs and scripts are based on the site variable
 		break;
 	/* * CONFIGURATION * */
 	/* --------------------------- */
+	/* * USER MANAGEMENT * */
+	case "users":
+		$action = NULL;
+		if (isset($_POST['action']))
+		{
+			$action = $_POST['action'];
+		}
+		
+		switch ($action)
+		{
+			default:
+				$buffer = null;
+
+				$users = $Cmysql->query("SELECT id, username, f_class, userLevel FROM users ORDER BY username ASC");
+
+				while ($row = mysql_fetch_assoc($users))
+				{
+					$rankform = null;
+					
+					switch ($row['userLevel'])
+					{
+						case "1":
+							$rank = '{LANG_USER}';
+							$rankform = '<form method="POST" action="control_admin.php">
+								<input type="hidden" name="site" value="users"/>
+								<input type="hidden" name="id" value="' .$row['id']. '"/>
+								<input type="hidden" name="action" value="makemod"/>
+								<input type="submit" value="Moderátorrá tesz"/>
+							</form>';
+							break;
+						case "2":
+							$rank = '{LANG_MODERATOR}';
+							$rankform = '<form method="POST" action="control_admin.php">
+								<input type="hidden" name="site" value="users"/>
+								<input type="hidden" name="id" value="' .$row['id']. '"/>
+								<input type="hidden" name="action" value="makeuser"/>
+								<input type="submit" value="Felhasználóvá tesz"/>
+							</form>';
+							break;
+						case "3":
+							$rank = '{LANG_ADMINISTRATOR}';
+							break;
+						case "4":
+							$rank = '{LANG_ROOT}';
+							break;
+					}
+
+					$buffer .= $Ctemplate->useTemplate("admin/users_row", array(
+						'ID'	=>	$row['id'],
+						'NAME'	=>	$row['username'],
+						'CLASS'	=>	$row['f_class'],
+						'RANK'	=>	$rank,
+						'RANKFORM'	=>	$rankform
+					), TRUE);
+				}
+
+				$Ctemplate->useTemplate("admin/users", array(
+					'ROWS'	=>	$buffer
+				), FALSE);
+				
+				break;
+			case "new":
+				if (@$_POST['submit'] == "mhm")
+				{
+					$insert = mysql_query('INSERT INTO users(username, f_class, pwd, email, regdate, activated, userLevel)
+						VALUES('.
+						'"' .$Cmysql->EscapeString($_POST['username']). '", '.
+						'"' .$Cmysql->EscapeString($_POST['class']). '", '.
+						'"' .$Cmysql->EscapeString($_POST['password']). '", '.
+						'"' .$Cmysql->EscapeString($_POST['email']). '", '.
+						'"' .time(). '", "1", "1")');
+					
+					if (mysql_error() || $insert === FALSE)
+					{
+						$Ctemplate->useTemplate("admin/users_new_error", array(
+							'USERNAME'	=>	@$_POST['username'],
+							'PASSWORD'	=>	@$_POST['password'],
+							'EMAIL'	=>	@$_POST['email'],
+							'CLASS'	=>	@$_POST['class'],
+							'ERR'	=>	mysql_error()
+						), FALSE);
+					}
+					else
+					{
+						$Ctemplate->useStaticTemplate("admin/users_new_success", FALSE);
+					}
+				}
+				else
+				{
+					$Ctemplate->useTemplate("admin/users_new", array(
+						'USERNAME'	=>	(@$_POST['error_goback'] == "yes" ? @$_POST['username']: null),
+						'PASSWORD'	=>	(@$_POST['error_goback'] == "yes" ? @$_POST['password']: null),
+						'EMAIL'	=>	(@$_POST['error_goback'] == "yes" ? @$_POST['email']: null),
+						'CLASS'	=>	(@$_POST['error_goback'] == "yes" ? @$_POST['class']: null),
+					), FALSE);
+				}
+				
+				break;
+			case "pass":
+				if (!isset($_POST['id']))
+				{
+					$Ctemplate->useTemplate("errormessage", array(
+						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png",
+						'TITLE'	=>	"{LANG_MISSING_PARAMETERS}",
+						'BODY'	=>	"{LANG_MISSING_PARAMETERS_BODY}",
+						'ALT'	=>	"{LANG_MISSING_PARAMETERS}"
+					), FALSE);
+				}
+				else
+				{
+					$user = mysql_fetch_row(
+							$Cmysql->query("SELECT username FROM users WHERE id=" .$Cmysql->EscapeString($_POST['id']))
+						);
+					
+					if (@$_POST['submit'] == "mhm")
+					{
+						$update = mysql_query('UPDATE users SET pwd="' .$Cmysql->EscapeString($_POST['password']).
+								'" WHERE id="' .$Cmysql->EscapeString($_POST['id']). '"');
+						
+						if (mysql_error() || $update === FALSE)
+						{
+							$Ctemplate->useTemplate("admin/users_pass_error", array(
+								'ID'	=>	$_POST['id'],
+								'PASSWORD'	=>	@$_POST['password'],
+								'ERR'	=>	mysql_error()
+							), FALSE);
+						}
+						else
+						{
+							$Ctemplate->useStaticTemplate("admin/users_pass_success", FALSE);
+						}
+					}
+					else
+					{
+						$Ctemplate->useTemplate("admin/users_pass", array(
+							'USERNAME'	=>	$user[0],
+							'PASSWORD'	=>	(@$_POST['error_goback'] == "yes" ? @$_POST['password'] : null),
+							'ID'	=>	$_POST['id']
+						), FALSE);
+					}
+				}
+				
+				break;
+			case "delete":
+				if (!isset($_POST['id']))
+				{
+					$Ctemplate->useTemplate("errormessage", array(
+						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png",
+						'TITLE'	=>	"{LANG_MISSING_PARAMETERS}",
+						'BODY'	=>	"{LANG_MISSING_PARAMETERS_BODY}",
+						'ALT'	=>	"{LANG_MISSING_PARAMETERS}"
+					), FALSE);
+				}
+				else
+				{
+					$user = mysql_fetch_row(
+							$Cmysql->query("SELECT username FROM users WHERE id=" .$Cmysql->EscapeString($_POST['id']))
+						);
+					
+					if (@$_POST['submit'] == "mhm")
+					{
+						$delete = mysql_query('DELETE FROM users WHERE id="' .$Cmysql->EscapeString($_POST['id']). '"');
+						
+						if (mysql_error() || $delete === FALSE)
+						{
+							$Ctemplate->useTemplate("admin/users_delete_error", array(
+								'ID'	=>	$_POST['id'],
+								'ERR'	=>	mysql_error()
+							), FALSE);
+						}
+						else
+						{
+							$Ctemplate->useStaticTemplate("admin/users_delete_success", FALSE);
+						}
+					}
+					else
+					{
+						$Ctemplate->useTemplate("admin/users_delete", array(
+							'USERNAME'	=>	$user[0],
+							'ID'	=>	$_POST['id']
+						), FALSE);
+					}
+				}
+				
+				break;
+			case "makeuser":
+			case "makemod":
+				if (!isset($_POST['id']))
+				{
+					$Ctemplate->useTemplate("errormessage", array(
+						'PICTURE_NAME'	=>	"Nuvola_apps_terminal.png",
+						'TITLE'	=>	"{LANG_MISSING_PARAMETERS}",
+						'BODY'	=>	"{LANG_MISSING_PARAMETERS_BODY}",
+						'ALT'	=>	"{LANG_MISSING_PARAMETERS}"
+					), FALSE);
+				}
+				else
+				{
+					if ($_POST['action'] == "makeuser")
+					{
+						$newrank = 1;
+					}
+					else if ($_POST['action'] == "makemod" )
+					{
+						$newrank = 2;
+					}
+					
+					$rank = mysql_query('UPDATE users SET userLevel="' .$newrank. '" WHERE id="' .$Cmysql->EscapeString($_POST['id']). '"');
+
+					if (mysql_error() || $rank === FALSE)
+					{
+						$Ctemplate->useTemplate("admin/users_rank_error", array(
+							'ID'	=>	$_POST['id'],
+							'ERR'	=>	mysql_error()
+						), FALSE);
+					}
+					else
+					{
+						$Ctemplate->useStaticTemplate("admin/users_rank_success", FALSE);
+					}
+				}
+				break;
+			case "import":
+				if (!isset($_FILES['csv']))
+				{
+					$Ctemplate->useStaticTemplate("admin/users_import", FALSE);
+				}
+				else
+				{
+					$file = fopen($_FILES['csv']['tmp_name'], "r");
+					
+					$header = fgetcsv($file); // This will move the file pointer to the next, real row.
+					
+					if ($header != array("username", "pwd", "f_class", "email"))
+					{
+						echo "Ervenytelen fajlformatum!";
+					}
+					else
+					{
+						$imported = 0;
+						$failed = array();
+						
+						while ( ($row = fgetcsv($file)) !== FALSE )
+						{
+							$query = mysql_query("INSERT INTO users(username, pwd, f_class, email, regdate, activated, userLevel, language, theme)
+								VALUES('" .$Cmysql->EscapeString($row[0]). "',
+									'" .$Cmysql->EscapeString($row[1]). "',
+									'" .fClassFix($Cmysql->EscapeString($row[2])). "',
+									'" .$Cmysql->EscapeString($row[3]). "',
+									'" .time(). "', '1', '1', 'hungarian', 'winky')");
+							
+							if (mysql_error() || $query === FALSE)
+							{
+								$failed[] = "Nem sikerult hozzaadni " .$row[0]. " -t, mert " .mysql_errno(). " : " .mysql_error(). ".";
+							}
+							else
+							{
+								$imported++;
+							}
+						}
+						
+						if ($imported > 0)
+						{
+							echo $imported . " felhasznalo sikeresen hozzaadva. Oket automatikusan aktivaltuk.";
+						}
+						
+						if (count($failed) > 0)
+						{
+							echo "<br />" .count($failed). " felhasznalo importalasa meghiusult:";
+							foreach ($failed as $fail)
+							{
+								echo "<br />".$fail;
+							}
+						}
+					}
+					
+					fclose($file);
+					echo "<br />Importalas befejezve.";
+				}
+				break;
+		}
+		
+		break;
+	/* * USER MANAGEMENT * */
+	/* --------------------------- */
 	/* * FORUM SETTINGS * */
 	case "forum":
 		// If the FORUM module is disabled, prevent execution
@@ -1240,6 +1525,73 @@ switch ($site) // Outputs and scripts are based on the site variable
 		break;
 	/* * NEWS SETTINGS * */
 	/* --------------------------- */
+	/* * LOG DUMP * */
+	case "logdump":
+		echo '<table border="0" class="forums-table">
+			<tr class="forums-head">
+				<th>Időpont<br />(csökkenő sorrendben)</th>
+				<th>Bejegyzés</th>
+			</tr>';
+		
+		/**
+		 * The log list is split
+		 * Because of it, we need to generate a page switcher by using the 'LIMIT start, count'
+		 * syntax.
+		 */
+		
+		$usr_log_split_value = 100;
+		
+		// Query the total number of NORMAL (not highlighted) topics in the current forum
+		$log_count = mysql_fetch_row($Cmysql->Query("SELECT COUNT(id) FROM log ORDER BY logdate DESC"));
+		
+		// Generate the number of pages (we need to ceil it up because we need to have integer pages)
+		$log_pages = ceil($log_count[0] / $usr_log_split_value);
+		
+		// Generate the start_at value
+		if ( @$_GET['start_at'] == NULL )
+		{
+			// If the value is missing, we will assume 0 as the start
+			$log_start = 0;
+		} elseif ( @$_GET['start_at'] != NULL )
+		{
+			// If we have start value, multiply it with the split value so it'll show the correct page
+			$log_start = $_GET['start_at'] * $usr_log_split_value;
+		}
+		
+		$log_result = $Cmysql->Query("SELECT logdate, log FROM log ORDER BY logdate DESC LIMIT " .$log_start.", " .$Cmysql->EscapeString($usr_log_split_value));
+		
+		while ( $row = mysql_fetch_row($log_result) )
+		{
+			echo '<tr>
+					<th>' .fDate($row[0]). '</th>
+					<td>' .$row[1]. '</td>
+				</tr>';
+		}
+		
+		echo '</table>';
+		
+		/* Pager */
+		if ( $log_pages > 0 )
+		{
+			// If we have more than one topic list page
+			
+			// Generate embedded pager
+			$pages = ""; // Define the variable
+			for ( $p = 0; $p <= ($log_pages-1); $p++ )
+			{
+				$pages .= '<td class="post-pager"><a href="control_admin.php?site=logdump&start_at=' .$p. '">' .($p+1). '</a></td>';
+			}
+			
+			// Output switcher table
+			$Ctemplate->useTemplate("forum/posts_pages_table", array(
+				'CURRENT_PAGE'	=>	(@$_GET['start_at']+1), // Number of current page
+				'PAGES_EMBED'	=>	$pages, // Embedding the generated pages box
+				'PAGE_TOTAL'	=>	$log_pages
+			), FALSE);
+		}
+		/* Pager */
+		
+		break;
 }
 }
 $Ctemplate->useStaticTemplate("admin/admin_foot", FALSE); // Footer
