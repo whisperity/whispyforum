@@ -1,0 +1,132 @@
+<!--- BEGIN freeuniversity3 survey form -->
+<!--- Usage: survey form -->
+<font class="emphasis">A vörös csillaggal (<span class="red-star">*</span>) jelölt mezőket kötelezően ki kell tölteni.</font>
+<form method="POST" action="freeuni3_survey.php">
+
+<table border="0" style="width: 100%">
+<tr>
+	<th colspan="5">Mennyire tetszett a szabadegyetem?&nbsp;<span class="red-star">*</span></th>
+</tr>
+<tr>
+	<td><input type="radio" name="tetszes" value="1" {TETSZES_1}>1 - Egyáltalán nem</td>
+	<td><input type="radio" name="tetszes" value="2" {TETSZES_2}>2</td>
+	<td><input type="radio" name="tetszes" value="3" {TETSZES_3}>3</td>
+	<td><input type="radio" name="tetszes" value="4" {TETSZES_4}>4</td>
+	<td><input type="radio" name="tetszes" value="5" {TETSZES_5}>5 - Nagyon tetszett</td>
+</tr>
+</table>
+
+<table border="0" style="width: 100%">
+<tr>
+	<th colspan="2">Szeretnéd, hogy jövőre is megszervezzük?&nbsp;<span class="red-star">*</span></th>
+</tr>
+<tr>
+	<td><input type="radio" name="ujra" value="0" {UJRA_0}>Nem</td>
+	<td><input type="radio" name="ujra" value="1" {UJRA_1}>Igen</td>
+</tr>
+</table>
+
+<table border="0" style="width: 100%">
+<tr>
+	<th colspan="5">Hasznos volt-e a számodra, tanultál-e valami újat?&nbsp;<span class="red-star">*</span></th>
+</tr>
+<tr>
+	<td><input type="radio" name="hasznos" value="1" {HASZNOS_1}>1 - Nem volt hasznos</td>
+	<td><input type="radio" name="hasznos" value="2" {HASZNOS_2}>2</td>
+	<td><input type="radio" name="hasznos" value="3" {HASZNOS_3}>3</td>
+	<td><input type="radio" name="hasznos" value="4" {HASZNOS_4}>4</td>
+	<td><input type="radio" name="hasznos" value="5" {HASZNOS_5}>5 - Nagyon hasznos volt</td>
+</tr>
+</table>
+
+<table border="0" style="width: 100%">
+<tr>
+	<th>Melyik előadás/program volt a kedvenced?&nbsp;<span class="red-star">*</span></th>
+</tr>
+<tr>
+	<td align="center">
+		<select name="liked" size="1">
+			{LIKED_OPTIONS}
+		</select>
+	</td>
+</tr>
+</table>
+
+<table border="0" style="width: 100%">
+<tr>
+	<th>Melyik előadás/program nyerte el a tetszésed legkevésbé?&nbsp;<span class="red-star">*</span></th>
+</tr>
+<tr>
+	<td align="center">
+		<select name="not_liked" size="1">
+			{NOT_LIKED_OPTIONS}
+		</select>
+	</td>
+</tr>
+</table>
+
+<table border="0" style="width: 100%">
+<tr>
+	<th>Szeretnél-e több programot, és ha igen, mik lennének azok?</th>
+</tr>
+<tr>
+	<td><input type="text" name="moreprograms" size="64">{MOREPROGRAMS}</td>
+</tr>
+</table>
+
+<table border="0" style="width: 100%">
+<tr>
+	<th colspan="6">Tartottál-e előadást/programot, és ha igen, hogyan értékelnéd a hallgatóság figyelmét/részvételét a tevékenységben?&nbsp;<span class="red-star">*</span></th>
+</tr>
+<tr>
+	<td><input type="radio" name="audience" value="0" {AUDIENCE_0}>0 - Nem tartottam előadást</td>
+	<td><input type="radio" name="audience" value="1" {AUDIENCE_1}>1 - Borzalmasak</td>
+	<td><input type="radio" name="audience" value="2" {AUDIENCE_2}>2</td>
+	<td><input type="radio" name="audience" value="3" {AUDIENCE_3}>3</td>
+	<td><input type="radio" name="audience" value="4" {AUDIENCE_4}>4</td>
+	<td><input type="radio" name="audience" value="5" {AUDIENCE_5}>5 - Nagyon aktívak</td>
+</tr>
+</table>
+
+<table border="0" style="width: 100%">
+<tr>
+	<th>Lenne-e valamilyen javaslatod a rendezvénnyel kapcsolatban?</th>
+</tr>
+<tr>
+	<td><textarea name="tip" rows="8" cols="25">{TIP}</textarea></td>
+</tr>
+</table>
+
+<table border="0" style="width: 100%">
+<tr>
+	<th>Unatkoztál-e valamelyik előadáson, és ha igen, miért?</th>
+</tr>
+<tr>
+	<td><textarea name="boring" rows="8" cols="25">{BORING}</textarea></td>
+</tr>
+</table>
+
+<table border="0" style="width: 100%">
+<tr>
+	<th>Szerinted mi a célja a szabadegyetemnek?</th>
+</tr>
+<tr>
+	<td><textarea name="aim" rows="8" cols="25">{AIM}</textarea></td>
+</tr>
+</table>
+
+<table border="0" style="width: 100%">
+<tr>
+	<th colspan="3">Milyen lett a január 16-án lejárt Activia?&nbsp;<span class="red-star">*</span></th>
+</tr>
+<tr>
+	<td><input type="radio" name="activia" value="1" {ACTIVIA_1}>Élőflórás lett</td>
+	<td><input type="radio" name="activia" value="2" {ACTIVIA_2}>Jól idomítható</td>
+	<td><input type="radio" name="activia" value="3" {ACTIVIA_3}>Nem változott</td>
+</tr>
+</table>
+
+<input type="hidden" name="survey_sent" value="yes">
+<input type="submit" value="Beküldés">&nbsp;<input type="reset" value="Alaphelyzet (a beírt módosítások törlése)">
+</form>
+<!--- END freeuniversity3 survey form -->

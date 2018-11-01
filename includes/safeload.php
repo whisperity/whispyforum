@@ -9,9 +9,36 @@
  * 
  * WhispyForum
  */
-echo '<link rel="stylesheet" type="text/css" href="themes/winky/style.css">'."\n"; // We load the default stylesheet
+echo '<head>
+	<title>Nagy László Gimnázium Diákönkormányzata</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	</head>
+<link rel="stylesheet" type="text/css" href="themes/winky/style.css">'."\n"; // We load the default stylesheet
 
 /* Libraries */
+
+/* Free univesity phase configuartion file */
+require("freeuniversity_phases.php"); // Load the file
+
+switch ( FREEUNI_PHASE )
+{
+	// Based on the phase variable, we 
+	// define a verbal value as well
+	case 0:
+		define('FREEUNI_PHASE_TEXT', "Előkészületek");
+		break;
+	case 1:
+		define('FREEUNI_PHASE_TEXT', "Előadók szervezése");
+		break;
+	case 2:
+		define('FREEUNI_PHASE_TEXT', "Előadásokra jelentkezés");
+		break;
+	case 3:
+		define('FREEUNI_PHASE_TEXT', "Befejezés");
+		break;
+}
+/* Free univesity phase configuartion file */
+
 // Template conductor (we load it before everything because templates are needed to get error messages)
 require("templates.class.php");
 global $Ctemplate; // Class is global
@@ -28,20 +55,22 @@ if ( file_exists("config.php") == 1 )
 	if ( !defined('WHISPYFORUM') ) // There is a "DEFINE()" constant in config.php which is a random UUID generated on install
 	{
 		$Ctemplate->useTemplate("errormessage", array(
+			'THEME_NAME'	=>	"winky", // Theme name
 			'PICTURE_NAME'	=>	"Nuvola_apps_package_settings.png", // Text file icon
-			'TITLE'	=>	"{LANG_LOAD_CORRUPTION}", // Error title
-			'BODY'	=>	"{LANG_LOAD_CORRUPTION_BODY}", // Error text
-			'ALT'	=>	"{LANG_LOAD_CORRUPTION_ALT}" // Alternate picture text
+			'TITLE'	=>	"Corruption!", // Error title
+			'BODY'	=>	"WhispyForum appears to be installed, however, the configuration file lacks some important variables. It's advised to reinstall the system. ".'You can install it by clicking <a href="install.php" alt="Install WhispyForum">here</a> and running the install script.', // Error text
+			'ALT'	=>	"Corrupt configuration" // Alternate picture text
 	), FALSE ); // We output an error message
 	exit; // Terminate the script
 	} // Else: do nothing
 } elseif ( file_exists("config.php") == 0 ) // If not
 {
 	$Ctemplate->useTemplate("errormessage", array(
+		'THEME_NAME'	=>	"winky", // Theme name
 		'PICTURE_NAME'	=>	"Nuvola_filesystems_folder_locked.png", // Unaviable file icon
-		'TITLE'	=>	"{LANG_LOAD_NOCFG}", // Error title
-		'BODY'	=>	"{LANG_LOAD_NOCFG_BODY}", // Error text
-		'ALT'	=>	"{LANG_FILE_UNAVIABLE}" // Alternate picture text
+		'TITLE'	=>	"Configuration file not found!", // Error title
+		'BODY'	=>	"The site's configuration file is missing. It usally means that the engine isn't installed properly. Without configuration, the engine cannot be used, because it can't connect to the database. ".'You can install it by clicking <a href="install.php" alt="Install WhispyForum">here</a> and running the install script.', // Error text
+		'ALT'	=>	"File unaviable" // Alternate picture text
 	), FALSE ); // We output an error message
 	exit; // Terminate the script
 }
@@ -63,23 +92,22 @@ $Cusers = new class_users;
 require("includes/functions.php");
 /* Libraries */
 
-/* DEVELOPEMENT */
+/* DEVELOPEMENT 
 // PH, workaround: output HTTP POST and GET arrays
 print "<h4>GET</h4>";
 print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_GET,true))."<br>";
 print "<h4>POST</h4>";
 print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_POST,true))."<br>";
 print "<h4>FILES</h4>";
-print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_FILES,true))."<br>";
+print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_FILES,true))."<br>"; */
 
 /* START GENERATION */
 $Cmysql->Connect(); // Connect to database
 $Cusers->Initialize(); // We initialize the userdata
-// User initialization also loads the language file
 
-/* DEVELOPEMENT */
+/* DEVELOPEMENT 
 print "<h4>SESSION</h4>";
-print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_SESSION,true))."<br>";
+print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_SESSION,true))."<br>"; */
 
 /* FRAMEWORK */
 

@@ -28,13 +28,14 @@ $Cmysql = new class_mysql;
 require("includes/functions.php");
 /* Libraries */
 
-/* DEVELOPEMENT */
+/* DEVELOPEMENT 
 // PH, workaround: output HTTP POST and GET arrays
 print "<h4>GET</h4>";
 print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_GET,true))."<br>"; 
 print "<h4>POST</h4>";
 print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_POST,true))."<br>"; 
 echo "\n\n\n";
+*/
 // Set install poistion
 if (!isset($_POST['instPos']))
 {
@@ -239,8 +240,8 @@ switch ($instPos)
 		$tablelist = ""; // Uncreated tables' name list
 		
 		/* Users table */
-		// Stores the user's data
-		$dbtables_user = FALSE; // We failed creating the tables first
+		// Stores the users' data
+		$dbtables_user = FALSE; // We failed creating the table first
 		$dbtables_user = $Cmysql->Query("CREATE TABLE IF NOT EXISTS users (
 			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
 			`username` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'user loginname',
@@ -252,11 +253,17 @@ switch ($instPos)
 			`loggedin` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1 if user is currently logged in, 0 if not',
 			`userLevel` tinyint(2) NOT NULL DEFAULT '0' COMMENT 'clearance level',
 			`avatar_filename` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'avatar picture filename',
-			`language` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'english' COMMENT 'user preferred language',
-			PRIMARY KEY (`id`)
+			`osztaly` VARCHAR(10) NOT NULL COMMENT 'class of the user',
+			`hour1` INT(10) NULL COMMENT 'lecture id for hour #1 (fu2_lectures.id)',
+			`hour2` INT(10) NULL COMMENT 'lecture id for hour #2 (fu2_lectures.id)',
+			`hour3` INT(10) NULL COMMENT 'lecture id for hour #3 (fu2_lectures.id)',
+			`hour4` INT(10) NULL COMMENT 'lecture id for hour #4 (fu2_lectures.id)',
+			PRIMARY KEY (`id`),
+			UNIQUE KEY `username` (`username`),
+			UNIQUE KEY `email` (`email`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'userdata'"); // $dbtables_user sets to true if we succeeded creating a table
 		
-		// We check users table creation
+		// We check table creation
 		if ( $dbtables_user == FALSE )
 		{
 			// Give error
@@ -278,8 +285,8 @@ switch ($instPos)
 		/* Users table */
 		
 		/* Menus table */
-		// Stores the menu's data
-		$dbtables_menu = FALSE; // We failed creating the tables first
+		// Stores the menus' data
+		$dbtables_menu = FALSE; // We failed creating the table first
 		$dbtables_menu = $Cmysql->Query("CREATE TABLE IF NOT EXISTS menus (
 			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
 			`header` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'menu header',
@@ -291,7 +298,7 @@ switch ($instPos)
 		$dbtables_menu_data = FALSE; // We failed adding the default data first
 		$dbtables_menu_data = $Cmysql->Query("INSERT INTO menus(header, align, side) VALUES ('Main menu', 0, 'left')"); // $dbtables_menu_data sets to true if we succeeded adding default data
 		
-		// We check menus table creation
+		// We check table creation
 		if ( ( $dbtables_menu == FALSE) || ( $dbtables_menu_data == FALSE ) )
 		{
 			// Give error
@@ -314,7 +321,7 @@ switch ($instPos)
 		
 		/* Menu entries table */
 		// Stores the menu entries' data
-		$dbtables_menuEntries = FALSE; // We failed creating the tables first
+		$dbtables_menuEntries = FALSE; // We failed creating the table first
 		$dbtables_menuEntries = $Cmysql->Query("CREATE TABLE IF NOT EXISTS menu_entries (
 			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
 			`menu_id` int(10) NOT NULL COMMENT 'menu id (menus.id)',
@@ -326,7 +333,7 @@ switch ($instPos)
 		$dbtables_menuEntries_data = FALSE; // We failed adding the default data first
 		$dbtables_menuEntries_data = $Cmysql->Query("INSERT INTO menu_entries(menu_id, label, href) VALUES (1, 'Homepage', 'index.php')"); // $dbtables_menuEntries_data sets to true if we succeeded adding default data
 		
-		// We check menu entries table creation
+		// We check table creation
 		if ( ( $dbtables_menuEntries == FALSE) || ( $dbtables_menuEntries_data == FALSE ) )
 		{
 			// Give error
@@ -346,6 +353,152 @@ switch ($instPos)
 			), FALSE);
 		}
 		/* Menu entries table */
+		
+		/* Free university performers table */
+		// Stores the performers' data
+		$dbtables_fu_performers = FALSE; // We failed creating the table first
+		$dbtables_fu_performers = $Cmysql->Query("CREATE TABLE IF NOT EXISTS fu_performers (
+			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+			`pName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'name of performer',
+			`email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'contact (e-mail address)',
+			`telephone` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'contact (telephone number)',
+			`comments` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+			`status` enum('unallocated', 'pending', 'agreed', 'refused') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'unallocated' COMMENT 'performer status',
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'data for performers'"); // $dbtables_fu_performers sets to true if we succeeded creating a table
+		
+		// We check table creation
+		if ( $dbtables_fu_performers == FALSE )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
+				'TABLENAME'	=>	"fu_performers" // Table name
+			), FALSE);
+			
+			// We set the creation global error variable to false
+			$tablecreation = FALSE;
+			
+			$tablelist .= "fu_performers"; // Append table name to fail-list
+		} elseif ( $dbtables_fu_performers != FALSE )
+		{
+			// Give success
+			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
+				'TABLENAME'	=>	"fu_performers" // Table name
+			), FALSE);
+		}
+		/* Free university performers table */
+		
+		/* Free university performers <-> users relational table */
+		// Make relational links between fu_performers.id (performer_id) and users.id (user_id)
+		$dbtables_fu_perf_user_relation = FALSE; // We failed creating the table first
+		$dbtables_fu_perf_user_relation = $Cmysql->Query("CREATE TABLE IF NOT EXISTS fu_perf_user_relation (
+			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing relation ID',
+			`user_id` int(10) NOT NULL COMMENT 'user id (users.id)',
+			`performer_id` int(10) NOT NULL COMMENT 'performer id (fu_performers.id)',
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'relational table between users and performers'"); // $dbtables_fu_perf_user_relation sets to true if we succeeded creating a table
+		
+		// We check table creation
+		if ( $dbtables_fu_perf_user_relation == FALSE )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
+				'TABLENAME'	=>	"fu_perf_user_relation" // Table name
+			), FALSE);
+			
+			// We set the creation global error variable to false
+			$tablecreation = FALSE;
+			
+			$tablelist .= "fu_perf_user_relation"; // Append table name to fail-list
+		} elseif ( $dbtables_fu_perf_user_relation != FALSE )
+		{
+			// Give success
+			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
+				'TABLENAME'	=>	"fu_perf_user_relation" // Table name
+			), FALSE);
+		}
+		/* Free university performers <-> users relational table */
+		
+		/* Free university 2 lectures table */
+		// Stores information about lectures
+		$dbtables_fu2_lectures = FALSE; // We failed creating the table first
+		$dbtables_fu2_lectures = $Cmysql->Query("CREATE TABLE IF NOT EXISTS fu2_lectures (
+			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+			`lecture_name` varchar(255) NOT NULL COMMENT 'name of the lecture',
+			`lecturer` varchar(255) NOT NULL COMMENT 'name of the lecturer',
+			`hour1` enum('yes', 'no') NOT NULL DEFAULT 'no' COMMENT 'lecture takes place in hour #1',
+			`hour2` enum('yes', 'no') NOT NULL DEFAULT 'no' COMMENT 'lecture takes place in hour #2',
+			`hour3` enum('yes', 'no') NOT NULL DEFAULT 'no' COMMENT 'lecture takes place in hour #3',
+			`hour4` enum('yes', 'no') NOT NULL DEFAULT 'no' COMMENT 'lecture takes place in hour #4',
+			`limit1` int(3) NULL COMMENT 'student limit for hour #1',
+			`limit2` int(3) NULL COMMENT 'student limit for hour #2',
+			`limit3` int(3) NULL COMMENT 'student limit for hour #3',
+			`limit4` int(3) NULL COMMENT 'student limit for hour #4',
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'lecture information'"); // $dbtables_fu2_lectures sets to true if we succeeded creating a table
+		
+		// We check table creation
+		if ( $dbtables_fu2_lectures == FALSE )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
+				'TABLENAME'	=>	"fu2_lectures" // Table name
+			), FALSE);
+			
+			// We set the creation global error variable to false
+			$tablecreation = FALSE;
+			
+			$tablelist .= "fu2_lectures"; // Append table name to fail-list
+		} elseif ( $dbtables_fu2_lectures != FALSE )
+		{
+			// Give success
+			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
+				'TABLENAME'	=>	"fu2_lectures" // Table name
+			), FALSE);
+		}
+		/* Free university 2 lectures table */
+		
+		/* Free university 3 survey table */
+		// Stores information about the ending survey
+		$dbtables_fu3_survey = FALSE; // We failed creating the table first
+		$dbtables_fu3_survey = $Cmysql->Query("CREATE TABLE IF NOT EXISTS fu3_survey (
+			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+			`userid` int(10) NOT NULL COMMENT 'id of the user who took the survey',
+			`tetszes` enum('1', '2', '3', '4','5') NOT NULL DEFAULT '1' COMMENT 'how much do you like FU',
+			`ujra` enum('0', '1') NOT NULL DEFAULT '0' COMMENT 'do you want it next year',
+			`hasznos` enum('1', '2', '3', '4','5') NOT NULL DEFAULT '1' COMMENT 'how much worthwhile was it for you',
+			`liked` int(10) NULL COMMENT 'your most liked lecture (fu2_lectures.id)',
+			`not_liked` int(10) NULL COMMENT 'your most not liked lecture (fu2_lectures.id)',
+			`moreprograms` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'wether you want more programs - describing',
+			`audience` enum('0', '1', '2', '3', '4', '5') NOT NULL DEFAULT '0' COMMENT 'rating of audience - 0 no lecture 1-5 rating',
+			`tip` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'tip for the organizers',
+			`boring` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'description if you were bored',
+			`aim` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'description about what is the aim of the free university',
+			`activia` enum('1', '2', '3') NOT NULL DEFAULT '1' COMMENT 'joke question :P',
+			PRIMARY KEY (`id`),
+			UNIQUE KEY `userid` (`userid`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'phase three survey information';"); // $dbtables_fu3_survey sets to true if we succeeded creating a table
+		
+		// We check table creation
+		if ( $dbtables_fu3_survey == FALSE )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
+				'TABLENAME'	=>	"fu3_survey" // Table name
+			), FALSE);
+			
+			// We set the creation global error variable to false
+			$tablecreation = FALSE;
+			
+			$tablelist .= "fu3_survey"; // Append table name to fail-list
+		} elseif ( $dbtables_fu3_survey != FALSE )
+		{
+			// Give success
+			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
+				'TABLENAME'	=>	"fu3_survey" // Table name
+			), FALSE);
+		}
+		/* Free university 3 survey table */
 		
 		// Check global variable status
 		if ( $tablecreation == FALSE )

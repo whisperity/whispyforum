@@ -1,0 +1,65 @@
+<!--- BEGIN admin freeuni backup -->
+<!--- Usage: free university backup settings page -->
+<form>
+<h3>Biztonsági mentés beállításai</h3>
+Mentés típusa: <input type="radio" name="stype" value="normal" disabled>&nbsp;Normál <input type="radio" name="stype" value="progressive" checked disabled>&nbsp;Progresszív pásztázású<br>
+A mentés alapvető típusaként két mód közül választhatsz:
+<ul>
+	<li><font class="emphasis">Normál</font> mentés esetén a mentési időközönként az adatbázis teljes tartalma lementésre kerül a beállított formátumban. Ez a hagyományos változat. Az adatbázis ilyenkor <i>TÁBLA LÉTREHOZÁSA</i> és <i>TÁBLÁBA BESZÚR</i> parancsokkal jön létre. Visszaállításkor az egész adatbázis <i>eldobása</i> után helyreállítható a tartalom.<br>Előnye, hogy egy fájlból a teljes tartalom visszaállítható.</li>
+	<li>A <font class="emphasis">progresszív pásztázású</font> mentés esetén egy bonyolultabb folyamat zajlik le. Minden mentési alkalomkor az előző mentés óta bekövetkezett változások mentődnek le <i>TÁBLÁT MÓDOSÍT</i>, <i>BESZÚR</i>, <i>TÖRÖL</i> parancsokkal. A visszaállítás során minden alkalom módosításain végig kell haladni.<br>Előnye, hogy a mentés nem tart hosszú ideig nagy adattáblák esetén sem, reprezentatív időközökben a módosulás mértéke átlátható. Ha használod és kedveled az <i>SVN</i> felépítését, ez a megoldás jobban feküdhet.</li>
+</ul>
+
+<h4>Mentési időközök</h4>
+Mentés készítése: <input type="radio" name="stimes" value="daily" checked disabled>&nbsp;Naponta <input type="radio" name="stimes" value="daily_twice" disabled>&nbsp;Naponta kétszer <input type="radio" name="stimes" value="two_hours" disabled>&nbsp;Kétóránként <input type="radio" name="stimes" value="hourly" disabled>&nbsp;Óránként <input type="radio" name="stimes" value="five_minutes" disabled>&nbsp;5 percenként<br>
+Napi mentés esetén ekkor: <input type="text" name="daily_hourvalue" value="10" size="2" disabled> órakor
+<h5>Feloldások</h5>
+<input type="checkbox" name="disable_cpuload" checked disabled>&nbsp;Mentés elhalasztása, ha a megadott időpontban a rendszer terheltsége magasabb, mint <input type="text" name="disable_cpuload_value" value="15.2" size="4" disabled>&nbsp;%.<br>
+<input type="checkbox" name="disable_visitors" checked disabled>&nbsp;Mentés elhalasztása, ha a megadott időpontban a látogatók száma több, mint <input type="text" name="disable_visitors_value" value="0" size="4" disabled>&nbsp;.<br>
+<input type="checkbox" name="disable_admin" disabled>&nbsp;Mentés elhalasztása, ha a megadott időpontban legalább egy adminisztrátor be van jelentkezve.
+
+<h4>Mentési célok</h4>
+<input type="checkbox" name="target_email" checked disabled>&nbsp;E-mailben a STC_TEMI1 címre.<br>
+<input type="checkbox" name="target_whmpk" checked disabled>&nbsp;WHMPK csomagként a következő feloldási címre: <input type="text" name="whmpk_packet_target" value="w_doktorovics" size="25" disabled>&nbsp;.<br>
+<input type="checkbox" name="target_dir" checked disabled>&nbsp;Fájlként ebbe a mappába: <input type="text" name="dir_name" value="/upload/backup" size="20" disabled>, ilyen fájlnéven: <input type="text" name="file_name" value="[yyyy]-[mm]-[dd]_[hh]-[mm]-[ss]_[randomNum]" size="45" disabled>, ilyen formátumban: <select name="file_ext" disabled>
+	<option value="sql" selected>SQL</option>
+</select>&nbsp;.<br>
+A fájlnévben használhatóak az RFC 1995. dokumentum által definiált dinamikus dátumkulcsok.<br>
+<font class="emphasis">Progresszív pásztázás</font> esetén a fájl megvágása ekkora méret felett (KB): <input type="text" name="stripe_size" value="20480" size="5" disabled>&nbsp;, a fájl legyen átnevezve úgy, hogy a fájlok index száma <input type="radio" name="stripe_index" value="asc" checked disabled>&nbsp;növekvő <input type="radio" name="stripe_index" value="desc" disabled>&nbsp;csökkenő sorrendben, a következő maszkolással: <input type="text" name="stripe_mask" value="000" size="5" disabled>&nbsp; a fájl kiterjesztése <input type="radio" name="stripe_ext" value="before" checked disabled>&nbsp;előtt <input type="radio" name="stripe_ext" value="after" disabled>&nbsp;után kerüljön illesztésre.<br>
+<input type="checkbox" name="target_dortyi" disabled>&nbsp;DORTYI streaming (folytonos átvitelű) adatfolyamként az STC_DOR1 címre.<br>
+<input type="checkbox" name="target_external_tables" disabled>&nbsp;Külön adattáblákba a <input type="text" name="tables_prefix" value="fub000_" size="6" disabled>&nbsp;prefixummal.
+<br>
+<table class="errorbox">
+<tr>
+<td class="errorpicture"><img src="themes/winky/Stop_hand.png" alt="Feloldási hiba"></td>
+<td class="errortitle">Feloldozási hiba a következő helyen: <tt>/usr/dortyi/scr/wf.dlib</td>
+</tr>
+<tr>
+<td style="width: 1"></td>
+<td class="errorbox">Az űrlap nem oldható fel, mivel a megadott fájl nem kapcsolt a következő csatornán: <tt>socket-tunneler (lop1)</tt> és <i>konfigurációs</i> hibával tért vissza.<br>A nyers visszatérített hibaüzenet a következő volt:
+<pre>
+	[dortyi] (HDL) begin outputting report log...;
+	[dortyi] -SQL- requested field userLevel from table users;
+	[dortyi] -SQL- request 87 is set as "--mandate-dde";
+	[dortyi] _ERR_ submodule SQL required DDE mode, but the server is running DDE off;
+	[dortyi] _ERR_ the corresponding log entry for SQL #FORCED_DDE_START# is here:;
+	{[dortyi] (HDL)} [dortyi-sql] user <i>doktorovics.dypertkov</i> init()'d dlib
+		SQL with flag "--forced-dde-mode", but the system is DDE incompetent;
+	{[dortyi] (HDL)} [dortyi-sql] hardware DDE is disabled. trying software one, please stand by...;
+	{[dortyi] (HDL)} [dortyi-sql] software DDE is disabled. The bootstrap of software module will
+		surely panic (bsod?) the system;
+	{[dortyi] (HDL)} [dortyi-sql] bs!, going in normal mode...;
+	[dortyi] _ERR_ returning configuration error code -0x110A9A --DxDAB000 ---Ax9522A0B;
+	[dortyi] -FTC- fetching return string data...;
+	[dortyi] -FTC- written contents into /usr/dortyi/log/{HEXTOKEN};
+	[dortyi] -FSM- free space on /storage/stor1 [RAID 0 NTFS 0x9AC] after commit: 
+		logical: {FREESIZE}, virtual: 16+ Ebibytes (beyond addressable namespace)
+	[dortyi] -KRNL- * Will now hält at in on ....;
+	[dortyi] -KRNL- # ENDE;;;;;;;;
+</pre>
+</td>
+</tr>
+</table>
+<br>
+<input type="submit" name="save" value="Beállítások módosítása" disabled>
+</form>
+<!--- END admin freeuni backup -->

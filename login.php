@@ -35,8 +35,8 @@ if ( $_POST['user_loginname'] == NULL )
 	
 	$Ctemplate->useTemplate("user/login_err_novalue", array(
 		'RETURN_TO_URL'	=>	$returnURI, // Return URI
-		'VARIABLE_HEADER'	=>	"{LANG_USERNAME}", // Unentered variable (uppercase)
-		'VARIABLE_BODY'	=>	"{LANG_USERNAME_LOWERCASE}" // Unentered variable (lowercase)
+		'VARIABLE_HEADER'	=>	"Név", // Unentered variable (uppercase)
+		'VARIABLE_BODY'	=>	"név" // Unentered variable (lowercase)
 	), FALSE);
 	
 	exit; // We terminate the script
@@ -49,14 +49,28 @@ if ( $_POST['user_password'] == NULL )
 	
 	$Ctemplate->useTemplate("user/login_err_novalue", array(
 		'RETURN_TO_URL'	=>	$returnURI, // Return URI
-		'VARIABLE_HEADER'	=>	"{LANG_PASSWORD}", // Unentered variable (uppercase)
-		'VARIABLE_BODY'	=>	"{LANG_PASSWORD_LOWERCASE}" // Unentered variable (lowercase)
+		'VARIABLE_HEADER'	=>	"Jelszó", // Unentered variable (uppercase)
+		'VARIABLE_BODY'	=>	"jelszó" // Unentered variable (lowercase)
 	), FALSE);
 	
 	exit; // We terminate the script
 }
 
-$logsuccess = $Cusers->Login($_POST['user_loginname'], $_POST['user_password']); // We call the login function.
+if ( $_POST['osztaly'] == NULL )
+{
+	// If user wants to login without entering password
+	// give error message
+	
+	$Ctemplate->useTemplate("user/login_err_novalue", array(
+		'RETURN_TO_URL'	=>	$returnURI, // Return URI
+		'VARIABLE_HEADER'	=>	"Osztály", // Unentered variable (uppercase)
+		'VARIABLE_BODY'	=>	"osztály" // Unentered variable (lowercase)
+	), FALSE);
+	
+	exit; // We terminate the script
+}
+
+$logsuccess = $Cusers->Login($_POST['user_loginname'], $_POST['user_password'], strtoupper(preg_replace("/([0-9][0-9]?)(\.\s*|,\s*|\/\s*|\.\s?_*|\s?|_|\.\/)([A-Ea-e])(\.?)/","$1. $3",$_POST['osztaly'])) ); // We call the login function.
 
 // $logsuccess is TRUE if the user successfully logged in
 // $logsuccess is FALSE if there were errors during login

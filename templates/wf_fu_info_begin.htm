@@ -1,0 +1,48 @@
+<!--- BEGIN wf freeuni info begin -->
+<!--- Usage: general WF information beginning (on the index.php) -->
+
+<hr>
+
+<h3>A weboldalról úgy összességében</h3>
+<p>Amit most láttok, az az általam fejlesztett PHP alapú portálmotor 2. 
+verziójának (az első verziót a fajosztály honlapon megtalálhatod, ha érdekel az 
+a programozói világszégyene) eléggé kezdetleges kiadása.</p>
+
+<p>A weboldalon az adminisztrátorok által elérhető feladatok a normál 
+felhasználóknak nem jelennek meg. Az adminisztrátorok az ilyen feladatokat a 
+&quot;Virág néni&quot; szimbólummal (<img src="themes/winky/freeuniversity_flower.gif" alt="Adminisztrátor specifikus opció/elemeket tartalmaz">) 
+ismerhetik fel.</p>
+
+<p>A rendszert angol nyelven írom és dokumentálom. Templatizált 
+felépítést használ. Minden egyes kis blokk amit itt látsz, egy kiforrt 
+sablonkezelő szüleménye. Nyers sablonfájlokat olvas be, amelyeket a kód által 
+meghatározott adatok (pl. jobb oldalt az a szép kis számadó táblázat) 
+behelyettesít. Ezért van az, hogy a hasonló célt szolgáló elemek (hiba/siker 
+üzenetek, menüdobozok, listák) hasonlítanak egymásra. Neked csak hasonlóak, 
+mivel te már a kész, behelyettesített állapotot kapod. De a kezdetleges 
+sablonfájl egy és ugyanagyaz, így egybevágó egységekbe történik a berakodás.</p>
+
+<blockquote>
+
+<p>Például:</p>
+
+  <pre>Szia [{}KEY_GENERIC:NEVED]!</pre>
+
+<p>Ezt, ha a NEVED kulcshoz azt írnám be, hogy &quot;<i>Norbi</i>&quot;, akkor ezt adná ki:</p>
+
+  <pre>Szia Norbi!</pre>
+</blockquote>
+
+<p>Az otthon kotyvasztott változat már támogatja a többnyelvűséget. A sablonok 
+nem a &quot;Szia&quot; szót tartalmazzák, hanem egy utalást a SZIA szóra. A 
+felhasználódnál beállítható nyelv alapján tölti be ezt a szót angolul, magyarul, 
+németül, olaszul vagy épp oroszul. Ez a lehetőség az itt látható rendszeren még 
+NEM KERÜLT bevezetésre (nem is hiszem, hogy fog), sem a különálló dinamikus 
+stíluskezelés.</p>
+
+<p>Azonban bizonyos sablonok, amelyeket ti sokszor fogtok látni, magyarítva 
+lett. A felhasználói vezérlőpult (ami perpillanat egy igen értelmetlen avatarkép 
+feltöltőt foglal magába), az adminisztrátori dolgok angolok maradtak. (Nem hiszem, 
+hogy ezeket sűrűn fogjuk látogatni)</p>
+
+<!--- END wf freeuni info begin -->

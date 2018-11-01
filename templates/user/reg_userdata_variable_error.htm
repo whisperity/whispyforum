@@ -2,12 +2,12 @@
 <!--- Usage: user registration empty variable error box -->
 <table class="errorbox"> <!--- copying the errorbox template -->
 	<tr>
-		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_txt.png" alt="{LANG_ERROR_EXCLAMATION}"></td>
-		<td class="errortitle">{LANG_ERROR_EXCLAMATION}</td>
+		<td class="errorpicture"><img src="themes/winky/Nuvola_filesystems_folder_txt.png" alt="Hiba!"></td>
+		<td class="errortitle">Hiba!</td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="errorbody">{LANG_VAR_REQ_NOT_ENTERED} {VARIABLE} {LANG_VAR_REQ_CANT_BE_EMPTY} {LANG_REG_VAR_NULL_CANNOT_CONTINUE}</td>
+		<td class="errorbody">Nem töltöttél ki egy kötelező mezőt. {VARIABLE} nem lehet üres. A regisztráció nem folytatódhat amíg minden kötelező mező kitöltésre nem kerül.</td>
 	</tr>
 </table> <!--- copying the errorbox template -->
 <form method="POST" action="registration.php">
@@ -15,8 +15,9 @@
 <input type="hidden" name="password" value="{PASSWORD}">
 <input type="hidden" name="password_again" value="{PASSWORD_AGAIN}">
 <input type="hidden" name="email" value="{EMAIL}">
+<input type="hidden" name="osztaly" value="{OSZTALY}">
 <input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
-<input type="submit" value="{LANG_BB_BACK}">
+<input type="submit" value="<< Vissza">
 <input type="hidden" name="regPos" value=1> <!--- Going back to step 2 -->
 </form>
 <!--- END registration userdata variable error -->

@@ -84,6 +84,99 @@ INSERT INTO menus(header, align, side) VALUES ('Main menu', 0, 'left');
 INSERT INTO menu_entries(menu_id, label, href) VALUES (1, 'Homepage', 'index.php');
 
 #
-# Revision 537 (added multiple languages support) 
+# Revisin 581 (making users table's username and e-mail field unique)
 #
-ALTER TABLE `users` ADD `language` VARCHAR( 32 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'english' COMMENT 'user preferred language';
+ALTER TABLE `users` ADD UNIQUE (`username`);
+ALTER TABLE `users` ADD UNIQUE (`email`);
+
+#
+#
+#
+# FREE UNIVERSITY ORGANIZER SYSTEM
+#
+#
+#
+
+#
+# adding class to users
+#
+ALTER TABLE `users` ADD `osztaly` VARCHAR( 10 ) NOT NULL COMMENT 'class of the user';
+
+#
+# performers table
+#
+CREATE TABLE IF NOT EXISTS fu_performers (
+	`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+	`pName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'name of performer',
+	`email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'contact (e-mail address)',
+	`telephone` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'contact (telephone number)',
+	`comments` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+	`status` enum('unallocated', 'pending', 'agreed', 'refused') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'unallocated' COMMENT 'performer status',
+	PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'data for performers';
+
+#
+# relation table between users and performers
+#
+CREATE TABLE IF NOT EXISTS fu_perf_user_relation (
+	`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing relation ID',
+	`user_id` int(10) NOT NULL COMMENT 'user id (users.id)',
+	`performer_id` int(10) NOT NULL COMMENT 'performer id (fu_performers.id)',
+	PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'relational table between users and performers';
+
+#
+# Free Univeristy Phase 2
+#
+
+#
+# lectures table
+#
+CREATE TABLE IF NOT EXISTS fu2_lectures (
+	`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+	`lecture_name` varchar(255) NOT NULL COMMENT 'name of the lecture',
+	`lecturer` varchar(255) NOT NULL COMMENT 'name of the lecturer',
+	`hour1` enum('yes', 'no') NOT NULL DEFAULT 'no' COMMENT 'lecture takes place in hour #1',
+	`hour2` enum('yes', 'no') NOT NULL DEFAULT 'no' COMMENT 'lecture takes place in hour #2',
+	`hour3` enum('yes', 'no') NOT NULL DEFAULT 'no' COMMENT 'lecture takes place in hour #3',
+	`hour4` enum('yes', 'no') NOT NULL DEFAULT 'no' COMMENT 'lecture takes place in hour #4',
+	`limit1` int(3) NULL COMMENT 'student limit for hour #1',
+	`limit2` int(3) NULL COMMENT 'student limit for hour #2',
+	`limit3` int(3) NULL COMMENT 'student limit for hour #3',
+	`limit4` int(3) NULL COMMENT 'student limit for hour #4',
+	PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'lecture information';
+
+#
+# Relation between users and fu2_lectures
+# for relating user to it's selected lecture
+#
+ALTER TABLE `users` ADD `hour1` INT(10) NULL COMMENT 'lecture id for hour #1 (fu2_lectures.id)';
+ALTER TABLE `users` ADD `hour2` INT(10) NULL COMMENT 'lecture id for hour #2 (fu2_lectures.id)';
+ALTER TABLE `users` ADD `hour3` INT(10) NULL COMMENT 'lecture id for hour #3 (fu2_lectures.id)';
+ALTER TABLE `users` ADD `hour4` INT(10) NULL COMMENT 'lecture id for hour #4 (fu2_lectures.id)';
+
+#
+# Free Univeristy Phase 3
+#
+
+#
+# table for the survey statictics
+#
+CREATE TABLE IF NOT EXISTS fu3_survey (
+	`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+	`userid` int(10) NOT NULL COMMENT 'id of the user who took the survey',
+	`tetszes` enum('1', '2', '3', '4','5') NOT NULL DEFAULT '1' COMMENT 'how much do you like FU',
+	`ujra` enum('0', '1') NOT NULL DEFAULT '0' COMMENT 'do you want it next year',
+	`hasznos` enum('1', '2', '3', '4','5') NOT NULL DEFAULT '1' COMMENT 'how much worthwhile was it for you',
+	`liked` int(10) NULL COMMENT 'your most liked lecture (fu2_lectures.id)',
+	`not_liked` int(10) NULL COMMENT 'your most not liked lecture (fu2_lectures.id)',
+	`moreprograms` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'wether you want more programs - describing',
+	`audience` enum('0', '1', '2', '3', '4', '5') NOT NULL DEFAULT '0' COMMENT 'rating of audience - 0 no lecture 1-5 rating',
+	`tip` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'tip for the organizers',
+	`boring` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'description if you were bored',
+	`aim` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'description about what is the aim of the free university',
+	`activia` enum('1', '2', '3') NOT NULL DEFAULT '1' COMMENT 'joke question :P',
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `userid` (`userid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'phase three survey information';

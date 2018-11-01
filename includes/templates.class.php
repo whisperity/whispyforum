@@ -54,7 +54,6 @@ class class_template
 		 *	useTemplate("filename", array("variable" => "value", "another" => "replacement"), FALSE);
 		 */
 		
-		global $wf_lang; // Load the language array (/language/language_name.php loads it)
 		
 		if ( $templateName != NULL) // If template name is specified
 		{
@@ -79,31 +78,8 @@ class class_template
 					}
 			}
 			
-			/* Replacing language tokens */
-			preg_match_all('/{LANG_.*?}/', $this->_output, $lKeys, PREG_PATTERN_ORDER, 0);
-			// $lKeys[0] contains all {LANG_*} language variables (* is the string's name)
-			
-			$j = 0; // Counter reset to zero
-			
-				foreach($lKeys[0] as $lang_tag)
-				{
-					// Then replace the output, updating it
-					$this->_output=str_replace($lKeys[0][$j],$wf_lang[ $lKeys[0][$j] ],$this->_output);
-					
-					$j++; // Turn the counter by one
-				}
-			/* Replacing language tokens */
-			
-			if ( !isset($_SESSION['theme_name']) )
-			{
-				// If there isn't session data (for example while logging in or out)
-				// Replace the theme name for the default theme (winky)
-				$this->_output=str_replace('{THEME_NAME}','winky',$this->_output);
-			} else {
-				// If there is
-				// Replace the theme name for the user's preference
-				$this->_output=str_replace('{THEME_NAME}',$_SESSION['theme_name'],$this->_output);
-			}
+			// Removing the <!--- HTML TEMPLATE COMMENTS --> from the output
+			$this->_output=preg_replace("/<!---.*?-->/s","",$this->_output);
 			
 			if ( $varOutput == TRUE ) // If we decided to give return output
 			{
@@ -138,37 +114,12 @@ class class_template
 		 *	useTemplate("filename");
 		 */
 		
-		global $wf_lang; // Load the language array (/language/language_name.php loads it)
-		
 		if ( $templateName != NULL )  // If template name is specified
 		{
 			$this->__getTemplate($templateName); // We read in the template...
 			
-			if ( !isset($_SESSION['theme_name']) )
-			{
-				// If there isn't session data (for example while logging in or out)
-				// Replace the theme name for the default theme (winky)
-				$this->_output=str_replace('{THEME_NAME}','winky',$this->_output);
-			} else {
-				// If there is
-				// Replace the theme name for the user's preference
-				$this->_output=str_replace('{THEME_NAME}',$_SESSION['theme_name'],$this->_output);
-			}
-			
-			/* Replacing language tokens */
-			preg_match_all('/{LANG_.*?}/', $this->_output, $lKeys, PREG_PATTERN_ORDER, 0);
-			// $lKeys[0] contains all {LANG_*} language variables (* is the string's name)
-			
-			$j = 0; // Counter reset to zero
-			
-				foreach($lKeys[0] as $lang_tag)
-				{
-					// Then replace the output, updating it
-					$this->_output=str_replace($lKeys[0][$j],$wf_lang[ $lKeys[0][$j] ],$this->_output);
-					
-					$j++; // Turn the counter by one
-				}
-			/* Replacing language tokens */
+			// Removing the <!--- HTML TEMPLATE COMMENTS --> from the output
+			$this->_output=preg_replace("/<!---.*?-->/s","",$this->_output);
 			
 			if ( $varOutput == TRUE ) // If we decided to give return output
 			{
@@ -176,7 +127,6 @@ class class_template
 				$rVar = $this->_output;
 				
 				$this->__resetOutput(); // We clear the output stack
-				
 				// The reason of caching: after RETURN, we cannot call the clearing (becuse it exist the function)
 				// but if we call it before, it will give NULL as output
 				return $rVar; // We return cached output as a variable

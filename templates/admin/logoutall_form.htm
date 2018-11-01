@@ -1,0 +1,11 @@
+<!--- BEGIN admin logoutall form -->
+<!--- Usage: administrator control panel module 'logout all users' form -->
+A <font class="emphasis">Felhasználók kijelentkeztetése</font> funkció kitörli a bejelentkezett felhasználók munkamenetadatait, így minden belépett felhasználó a következő oldalletöltéskor hibát fog kapni és kiléptetődik. A te felhasználód is kiléptetésre kerül, és a kezdőlapra fogsz átirányítódni.<br><br>
+Csak végszügség esetén használd a funkciót, mivel korrupcióhoz vezethet!
+<br><br>
+<form method="POST" action="control_admin.php">
+<input type="hidden" name="site" value="logoutall">
+<input type="hidden" name="do" value="yes">
+<input type="submit" value="Csináld!">
+</form>
+<!--- END admin logoutall form -->

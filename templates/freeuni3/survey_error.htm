@@ -1,0 +1,28 @@
+<!--- BEGIN freeuniversity3 survey error -->
+<!--- Usage: survey error box (sql error) -->
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/winky/Nuvola_filesystems_folder_txt.png" alt="Hiba!"></td>
+		<td class="errortitle">Hiba!</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">A válaszaidat nem sikerült letárolni. Kérlek próbáld újra.</td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+<form method="POST" action="freeuni3_survey.php">
+<input type="hidden" name="tetszes" value="{TETSZES}">
+<input type="hidden" name="ujra" value="{UJRA}">
+<input type="hidden" name="hasznos" value="{HASZNOS}">
+<input type="hidden" name="liked" value="{LIKED}">
+<input type="hidden" name="not_liked" value="{NOT_LIKED}">
+<input type="hidden" name="moreprograms" value="{MOREPROGRAMS}">
+<input type="hidden" name="audience" value="{AUDIENCE}">
+<input type="hidden" name="tip" value="{TIP}">
+<input type="hidden" name="boring" value="{BORING}">
+<input type="hidden" name="aim" value="{AIM}">
+<input type="hidden" name="activia" value="{ACTIVIA}">
+<input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
+<input type="submit" value="<< Vissza">
+</form>
+<!--- END freeuniversity2 edit lecture variable error -->

@@ -2,14 +2,15 @@
 <!--- Usage: user login form -->
 <div id="menucontainer">
 	<div id="header"><div id="header_left"></div>
-	<div id="header_main">{LANG_LOGIN}</div><div id="header_right"></div></div>
+	<div id="header_main">Bejelentkezés</div><div id="header_right"></div></div>
     <div id="content">
         <form method="POST" action="login.php">
-			{LANG_USERNAME}: <input type="text" name="user_loginname" size="25"><br>
-			{LANG_PASSWORD}: <input type="password" name="user_password" size="25"><br>
-			<a href="registration.php" alt="{LANG_REGISTER_TOOLTIP}">{LANG_REGISTER}</a><br>
+			Név: <input type="text" name="user_loginname" size="25"><br>
+			Jelszó: <input type="password" name="user_password" size="25"><br>
+			Osztály: <input type="text" name="osztaly" size="10"><br>
+			<a href="registration.php" alt="Register new user">Regisztrácio</a><br>
 			<input type="hidden" name="returnto" value="{RETURN_TO}">
-			<input type="submit" value="{LANG_LOGIN}">
+			<input type="submit" value="Belépés">
 		</form>
     </div>
 </div>

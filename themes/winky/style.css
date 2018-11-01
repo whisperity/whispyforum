@@ -11,67 +11,37 @@
 /* ************************************ */
 /* General */
 
-body {
-	padding-top: 30px;
-	background-color: #CCCCCC;
-}
+body { padding-top: 30px;
+	background-color: #CCCCCC }
 
-span.red-star {
-	color: #FF0000;
-	font-weight: bold;
-}
+span.red-star { color: #FF0000;
+	font-weight: bold }
+	
+span.blue-star { color: #000BCC;
+	font-weight: bold }
 
-font.emphasis {
-	font-weight: bold;
-}
+font.emphasis { font-weight: bold}
 
 /* Framework */
-div.headerbox {
-	width: 100%;
-}
+div.headerbox { width: 100%; }
 
-div.footerbox {
-	width: 100%;
-}
+div.footerbox { width: 100%; }
 
-table.centerdiv {
-	width: 100%;
-}
+table.centerdiv { width: 100% }
 
-td.left {
-	width: 20%;
-}
+td.left { width: 20% }
 
-td.center {
-	width: 60%;
-}
+td.center { width: 60% }
 
-td.right {
-	width: 20%;
-}
+td.right { width: 20% }
 /* Framework */
 
 /* Forms */
-form {
-	font-family: Microsoft Sans Serif;
-	font-size: 10pt;
-}
+form {}
 
-input {
-	border: 1px solid #CCCCCC;
-	background-color: #FFFFFF;
-	color: #000000;
-}
+input {}
 
-input:focus {
-	border: 1px dashed #000000;
-}
-
-span.form-header { 
-	font-family: Times New Roman;
-	font-size: 14pt;
-	font-style: italic;
-}
+span.form-header {}
 
 /* Forms */
 
@@ -79,72 +49,56 @@ span.form-header {
 
 /* ************************************ */
 /* Error message box template */
-table.errorbox {
-	font-weight: bold;
-	color: Maroon;
-	background-color: #FFC0C0;
-	border: 1px solid maroon;
-	padding: 3px;
-	line-height: 125%;
-	margin: 1em auto;
-}
+table.errorbox { font-weight: bold;
+        color: Maroon;
+        background-color: #FFC0C0;
+        border: 1px solid maroon;
+        padding: 3px;
+        line-height: 125%;
+        margin: 1em auto }
+	
+td.errortitle { font-family: MS Sans Serif;
+	font-size:14pt;
+	text-decoration:underline;
+	font-weight:bold;}
 
-td.errortitle {
-	font-family: MS Sans Serif;
-	font-size: 14pt;
-	text-decoration: underline;
-	font-weight: bold;
-}
+td.errorpicture {}
 
-td.errorpicture {
-}
-
-td.errorbody {
-}
+td.errorbody {}
 /* Error message box template */
 
 /* General message box template */
-table.messagebox {
-	font-weight: bold;
-	color: DarkOrange;
-	background-color: #FFFFC0;
-	border: 1px solid orange;
-	padding: 3px;
-	line-height: 125%;
-	margin: 1em auto;
-}
+table.messagebox { font-weight: bold;
+        color: DarkOrange;
+        background-color: #FFFFC0;
+        border: 1px solid orange;
+        padding: 3px;
+        line-height: 125%;
+        margin: 1em auto }
+	
+td.messagetitle { font-family: MS Sans Serif;
+	font-size:14pt;
+	text-decoration:underline;
+	font-weight:bold;}
 
-td.messagetitle {
-	font-family: MS Sans Serif;
-	font-size: 14pt;
-	text-decoration: underline;
-	font-weight: bold;
-}
+td.messagepicture {}
 
-td.messagepicture {
-}
-
-td.messagebody {
-}
+td.messagebody {}
 /* General message box template */
 
 /* Success message box template (nearly identical to errorbox) */
-table.successbox { 
-	font-weight: bold;
-	color: DarkGreen;
-	background-color: #C0FFC0;
-	border: 1px solid darkgreen;
-	padding: 3px;
-	line-height: 125%;
-	margin: 1em auto;
-}
+table.successbox { font-weight: bold;
+        color: DarkGreen;
+        background-color: #C0FFC0;
+        border: 1px solid darkgreen;
+        padding: 3px;
+        line-height: 125%;
+        margin: 1em auto }
 	
-td.successtitle {
-	font-family: MS Sans Serif;
-	font-size: 14pt;
-	text-decoration: underline;
-	font-weight: bold;
-}
+td.successtitle { font-family: MS Sans Serif;
+	font-size:14pt;
+	text-decoration:underline;
+	font-weight:bold;}
 
 td.successpicture {}
 
@@ -153,39 +107,23 @@ td.successbody {}
 
 /* ************************************ */
 /* Install */
-table.install-header {
-	width: 100%;
-} /* Do not remove width: 100% */
+table.install-header { width: 100% } /* Do not remove width: 100% */
 
-h1.install-header {
-}
+h1.install-header {}
 
-h2.install-header {
-}
+h2.install-header {}
 
-td.install-picture {
-	width: 96px;
-}
+td.install-picture { width: 96px }
 
-table.install-center {
-	width: 100%;
-}
+table.install-center { width: 100% }
 
-td.install-block-left {
-	width: 75%;
-}
+td.install-block-left { width: 75% }
 
-td.install-block-right {
-	width: 25%;
-}
+td.install-block-right { width: 25% }
 
-span.install-menu-actual {
-	color: #AB1852;
-}
+span.install-menu-actual { color: #AB1852 }
 
-span.install-menu-entries {
-	color: #49A835;
-}
+span.install-menu-entries { color: #49A835 }
 /* Install */
 
 /* Menu box */

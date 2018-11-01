@@ -2,12 +2,12 @@
 <!--- Usage: administrator control panel module 'menus' entry creation variable error box -->
 <table class="errorbox"> <!--- copying the errorbox template -->
 	<tr>
-		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_txt.png" alt="{LANG_ERROR_EXCLAMATION}"></td>
-		<td class="errortitle">{LANG_ERROR_EXCLAMATION}</td>
+		<td class="errorpicture"><img src="themes/winky/Nuvola_filesystems_folder_txt.png" alt="Hiba!"></td>
+		<td class="errortitle">Hiba!</td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="errorbody">{LANG_VAR_REQ_NOT_ENTERED} {VARIABLE} {LANG_VAR_REQ_CANT_BE_EMPTY} {LANG_MENUS_ENTRY_CREATE_VAR_ERROR}</td>
+		<td class="errorbody">Nem töltöttél ki egy kötelező mezőt. {VARIABLE} nem lehet üres. A menüelem létrehozása nem folytatódhat amíg minden kötelező mező kitöltésre nem kerül.</td>
 	</tr>
 </table> <!--- copying the errorbox template -->
 <form method="POST" action="control_admin.php">
@@ -17,6 +17,6 @@
 <input type="hidden" name="site" value="menus">
 <input type="hidden" name="m_subsite" value="create_entry">
 <input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
-<input type="submit" value="{LANG_BB_BACK}">
+<input type="submit" value="<< Vissza">
 </form>
 <!--- END admin menus createentry error -->

@@ -1,16 +1,17 @@
 <!--- BEGIN registration userdata -->
 <!--- Usage: user registration information form -->
-{LANG_REG_DATA_INFO}<br>
-<font class="emphasis">{LANG_MANDATORY_VARIABLES_REDSTAR}</font>
+Az új felhasználó regisztrálásához írd be a belépesi adatait. Tovébbi felhasználói adatok (mint például aláírás vagy avatar) a felhasználói vezérlőpultban lesz beállítható belépés után.<br>
+<font class="emphasis">A vörös csillaggal (<span class="red-star">*</span>) jelölt mezőket kötelezően ki kell tölteni.</font>
 <br><br>
 <form method="POST" action="registration.php">
-<span class="form-header">{LANG_REG_DATA_FORM_HEADER}</span><br>
-{LANG_USERNAME}<span class="red-star">*</span>: <input type="text" name="username" value="{USERNAME}" size=35><br>
-{LANG_PASSWORD}<span class="red-star">*</span>: <input type="password" name="password" value="{PASSWORD}" size=35><br>
-{LANG_PASSWORD_AGAIN}<span class="red-star">*</span>: <input type="password" name="password_again" value="{PASSWORD_AGAIN}" size=35><br>
-{LANG_EMAIL}<span class="red-star">*</span>: <input type="text" name="email" value="{EMAIL}" size=35><br>
-<font class="emphasis">{LANG_PROCEED_CLICK_BUTTON_BELOW}</font><br>
-<input type="submit" value="Next >>">
+<span class="form-header">Új felhasználó belépési adatai</span><br>
+Név (<font class="emphasis">a teljes neved, nem becenév!</font>)<span class="red-star">*</span>: <input type="text" name="username" value="{USERNAME}" size=35><br>
+Jelszó<span class="red-star">*</span>: <input type="password" name="password" value="{PASSWORD}" size=35><br>
+Jelszó (újra)<span class="red-star">*</span>: <input type="password" name="password_again" value="{PASSWORD_AGAIN}" size=35><br>
+E-mail cím<span class="red-star">*</span>: <input type="text" name="email" value="{EMAIL}" size=35><br>
+Osztályod<span class="red-star">*</span>: <input type="text" name="osztaly" value="{OSZTALY}" size=10><br>
+<input type="submit" value="Tovább >>">
 <input type="hidden" name="regPos" value=2> <!--- Proceeding to step 3 -->
 </form>
+<font class="emphasis">A továbblépéshez kattints a gombra.</font>
 <!--- END registration userdata -->

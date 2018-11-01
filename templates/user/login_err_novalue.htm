@@ -5,14 +5,14 @@
 
 <table class="errorbox"> <!--- copying the errorbox template -->
 	<tr>
-		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_apps_kgpg.png" alt="{LANG_LOGIN_ERROR}"></td>
-		<td class="errortitle"><tt>{VARIABLE_HEADER}</tt> {LANG_IS_MANDATORY}</td>
+		<td class="errorpicture"><img src="themes/winky/Nuvola_apps_kgpg.png" alt="Bejelentkezési hiba!"></td>
+		<td class="errortitle"><tt>{VARIABLE_HEADER}</tt> kötelező</td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="errorbody">{LANG_YOU_NOT_ENTERED} {VARIABLE_BODY}. {LANG_LOGIN_CRITICAL_FOR}
-		<br><br>{LANG_LOGIN_PLEASEUSEBOX} {LANG_REDIRECT_WHERE_LEFTOFF}<br>
-		<a href="{RETURN_TO_URL}">{LANG_REDIRECT_RETURN_LINK}</a></td>
+		<td class="errorbody">{VARIABLE_BODY} mező nem lett kitöltve. Ez a változó kötelező a bejelentkezéshez.
+		<br><br>Kérlek használd a bejelentkező űrlapot. Átirányítunk...<br>
+		<a href="{RETURN_TO_URL}">Kattints ide, ha a böngésződ nem irányítana át, vagy nem akarsz várni...</a></td>
 	</tr>
 </table> <!--- copying the errorbox template -->
 <!--- END user login error novalue -->

@@ -2,18 +2,18 @@
 <!--- Usage: registration succes, forward form -->
 <table class="successbox"> <!--- copying the successbox template -->
 	<tr>
-		<td class="successpicture"><img src="themes/{THEME_NAME}/Nuvola_apps_kgpg.png" alt="{LANG_SUCCESS_EXCLAMATION}"></td>
-		<td class="successtitle">{LANG_REG_SUCCESS_TITLE}</td>
+		<td class="successpicture"><img src="themes/winky/Nuvola_apps_kgpg.png" alt="Siker!"></td>
+		<td class="successtitle">Sikeres regisztráció!</td>
 	</tr>
 	<tr>
 		<td style="width: 1"></td>
-		<td class="successbody">{LANG_REG_SUCCESS_BODY}</td>
+		<td class="successbody">Sikeresen beregisztráltál.</td>
 	</tr>
 </table> <!--- copying the successbox template -->
 
-{LANG_CAN_PROCEED_TO_NEXT_STEP}
+Továbbléphetsz.
 <form method="POST" action="registration.php">
-<input type="submit" value="{LANG_NEXT_NN}">
+<input type="submit" value="Tovább >>">
 <input type="hidden" name="regPos" value=3> <!--- Going to step 4 -->
 </form>
 <!--- END registration userdata register error -->

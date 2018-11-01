@@ -1,0 +1,17 @@
+<!--- BEGIN freeuniversity2 relation list table-row -->
+<!--- Usage: listing relation row for list table -->
+<tr>
+<td>{ID}</td>
+<td>{USERNAME}</td>
+<td>{OSZTALY}</td>
+<td>
+	<form method="POST" action="freeuni2_list_relations.php">
+		<input type="hidden" name="stud_id" value="{ID}">
+		<input type="hidden" name="hour" value="{HOUR}">
+		<input type="hidden" name="id" value="{LECT_ID}">
+		<input type="submit" value="Kényszeroldás">
+	</form>
+</td>
+<td style="background-color: #AAAAAA">&nbsp;</td>
+</tr>
+<!--- END freeuniversity2 relation list table-row -->

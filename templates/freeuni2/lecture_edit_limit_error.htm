@@ -1,0 +1,29 @@
+<!--- BEGIN freeuniversity2 edit lecture limit error -->
+<!--- Usage: lecture editing error box (limit wanted to be lower than student count) -->
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/winky/freeuni2_limit.gif" alt="Limitcsökkentési hiba"></td>
+		<td class="errortitle">Határérték-redukciós hiba!</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">A limitet kisebbre kívántad tenni, mint amennyi diák már jelentkezett az előadásra a {HOUR}. órában. A kívánt limit {LIMIT} lett volna, a már jelentkezett diákok száma {STUDENTS}.</td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+<form method="POST" action="freeuni2_list_lectures.php">
+<input type="hidden" name="lecture_id" value="{LECTURE_ID}">
+<input type="hidden" name="lecture_name" value="{LECTURE_NAME}">
+<input type="hidden" name="lecturer" value="{LECTURER}">
+<input type="hidden" name="hour1" value="{HOUR1}">
+<input type="hidden" name="limit1" value="{LIMIT1}">
+<input type="hidden" name="hour2" value="{HOUR2}">
+<input type="hidden" name="limit2" value="{LIMIT2}">
+<input type="hidden" name="hour3" value="{HOUR3}">
+<input type="hidden" name="limit3" value="{LIMIT3}">
+<input type="hidden" name="hour4" value="{HOUR4}">
+<input type="hidden" name="limit4" value="{LIMIT4}">
+<input type="hidden" name="edit" value="yes">
+<input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
+<input type="submit" value="<< Vissza">
+</form>
+<!--- END freeuniversity2 edit lecture limit error -->

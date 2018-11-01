@@ -3,12 +3,12 @@
 
 <table class="messagebox"> <!--- copying the messagebox template -->
 <tr>
-<td class="messagepicture"><img src="themes/{THEME_NAME}/Nuvola_apps_kgpg.png" alt="{LANG_PLEASE_CONFIRM_EXCLAMATION}"></td>
-<td class="messagetitle">{LANG_MENUS_MENU_DELETE_CONFIRM_HEAD} '<tt>{M_NAME}</tt>'</td>
+<td class="messagepicture"><img src="themes/{THEME_NAME}/Nuvola_apps_kgpg.png" alt="Megerősítés szükséges"></td>
+<td class="messagetitle">Kérlek erősítsd meg a menü '<tt>{M_NAME}</tt>' törlését</td>
 </tr>
 <tr>
 <td style="width: 1"></td>
-<td class="messagebody"><font class="emphasis">{LANG_MENUS_MENU_DELETE_CONFIRM_1}</font>
+<td class="messagebody"><font class="emphasis">A menü törlése minden, a menühöz hozzáadott elemet is töröl.</font>
 <table style="width: 100%"> <!--- Response forms table -->
 <tr>
 <td align="center">
@@ -17,14 +17,14 @@
 <input type="hidden" name="site" value="menus">
 <input type="hidden" name="m_subsite" value="delete_menu_confirmed">
 <input type="hidden" name="menu_id" value="{MENU_ID}">
-<input type="submit" value="{LANG_MENUS_MENU_DELETE_CONFIRM_BUTTON}">
+<input type="submit" value="Menü törlése">
 </form>
 </td>
 <td align="center">
 <!--- Cancel -->
 <form method="POST" action="control_admin.php">
 <input type="hidden" name="site" value="menus">
-<input type="submit" value="{LANG_MENUS_MENU_DELETE_REJECT_BUTTON}">
+<input type="submit" value="Nem, meggondoltam magam">
 </form>
 </td>
 </tr>
