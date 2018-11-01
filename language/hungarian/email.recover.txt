@@ -1,0 +1,15 @@
+<!--- Ez a sablon tartalmazza azt az emailt, amelyet
+	  a jelszóvisszaállítási folyamat során küldünk ki. -->
+Tisztelt {USERNAME},<br>
+<br>
+Ha kézhez kapta ezt az üzenetet, az azt jelenti, hogy az ön fiókján jelszóemlékeztetőt kértek. Biztonsági okokból az ön jelszava nem kerül kiadásra, helyette egy egyszeri zsetont kap, amelynek segítségével új jelszót állíthat be.<br>
+<br>
+Ahhoz, hogy befejezze a helyreállítási folyamatot, meg kell nyitnia <a href="{RECOVERY_SITE}" taget="_blank">ezt a weboldalt</a>.<br>
+<br>
+Felhasználónév: <b>{USERNAME}</b><br>
+Osztály: <b>{F_CLASS}</b><br>
+Aktivációs zseton: <b>{TOKEN}</b><br>
+Ezen felül meg kell adnia az új jelszavát <b>kétszer</b>. Ha kitöltötte az űrlapot, kövesse a képernyőn megjelenő utasításokat.<br>
+<br>
+Tisztelettel,<br>
+az Adminisztrátorok.

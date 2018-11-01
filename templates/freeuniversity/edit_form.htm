@@ -1,0 +1,78 @@
+<!--- BEGIN freeuniversity editlecture form -->
+<!--- Usage: form to edit lectures -->
+<form method="POST" action="f_manage.php">
+	<span class="form-header">{LANG_FREEUNIVERSITY_EDITLECTURE_HEADER}</span><br>
+	<font class="emphasis">{LANG_MANDATORY_VARIABLES_REDSTAR}</font><br>
+	{LANG_FREEUNIVERSITY_LECTURE_TITLE}<span class="red-star">*</span>: <input type="text" name="title" value="{TITLE}" size=35><br>
+	{LANG_FREEUNIVERSITY_LECTURE_DESCRIPTION} <small>(<a href="tool.bb-test.php" target="_blank">{LANG_BB_VIEWCODES}</a>, <a href="tool.emot-test.php" target="_blank">{LANG_EMOTICONS_VIEW}</a>)</small>: <textarea class="forum-post-field" rows="15" cols="50" name="description">{DESCRIPTION}</textarea><br>
+	
+	<table border="1" style="width: 100%">
+		<tr>
+			<th>{LANG_FREEUNIVERSITY_LECTURE_SINGLEHOUR}</th>
+			<th>{LANG_FREEUNIVERSITY_HOUR_1}</th>
+			<th>{LANG_FREEUNIVERSITY_HOUR_2}</th>
+			<th>{LANG_FREEUNIVERSITY_HOUR_3}</th>
+			<th>{LANG_FREEUNIVERSITY_HOUR_4}</th>
+		</tr>
+		<tr>
+			<th>{LANG_FREEUNIVERSITY_LECTURE_HOUR_HOSTED}</th>
+			<td align="center"><input type="checkbox" name="hour1" value="1"{HOUR1_CHECKED}></td>
+			<td align="center"><input type="checkbox" name="hour2" value="1"{HOUR2_CHECKED}></td>
+			<td align="center"><input type="checkbox" name="hour3" value="1"{HOUR3_CHECKED}></td>
+			<td align="center"><input type="checkbox" name="hour4" value="1"{HOUR4_CHECKED}></td>
+		</tr>
+		<tr>
+			<th>{LANG_FREEUNIVERSITY_ATTENDEES}</th>
+			<td align="center">{NUMSTUD_1}</td>
+			<td align="center">{NUMSTUD_2}</td>
+			<td align="center">{NUMSTUD_3}</td>
+			<td align="center">{NUMSTUD_4}</td>
+		</tr>
+		<tr>
+			<th>{LANG_FREEUNIVERSITY_LECTURE_HOUR_LIMIT}</th>
+			<td align="center"><input type="text" name="limit1" value="{LIMIT1}" size="3"></td>
+			<td align="center"><input type="text" name="limit2" value="{LIMIT2}" size="3"></td>
+			<td align="center"><input type="text" name="limit3" value="{LIMIT3}" size="3"></td>
+			<td align="center"><input type="text" name="limit4" value="{LIMIT4}" size="3"></td>
+		</tr>
+		<tr>
+			<td colspan="5" align="center" valign="center">{LANG_FREEUNIVERSITY_EDITLECTURE_LIMIT_WARNING}</td>
+		</tr>
+	</table>
+	<br style="clear: both">
+	<table border="1" style="width: 100%">
+		<tr>
+			<th>{LANG_FREEUNIVERSITY_LECTURE_DOUBLEHOUR}</th>
+			<th>{LANG_FREEUNIVERSITY_HOUR_12}</th>
+			<th>{LANG_FREEUNIVERSITY_HOUR_23}</th>
+			<th>{LANG_FREEUNIVERSITY_HOUR_34}</th>
+		</tr>
+		<tr>
+			<th>{LANG_FREEUNIVERSITY_LECTURE_HOUR_HOSTED}</th>
+			<td align="center"><input type="checkbox" name="hour12" value="1"{HOUR12_CHECKED}></td>
+			<td align="center"><input type="checkbox" name="hour23" value="1"{HOUR23_CHECKED}></td>
+			<td align="center"><input type="checkbox" name="hour34" value="1"{HOUR34_CHECKED}></td>
+		</tr>
+		<tr>
+			<th>{LANG_FREEUNIVERSITY_ATTENDEES}</th>
+			<td align="center">{NUMSTUD_12}</td>
+			<td align="center">{NUMSTUD_23}</td>
+			<td align="center">{NUMSTUD_34}</td>
+		</tr>
+		<tr>
+			<th>{LANG_FREEUNIVERSITY_LECTURE_HOUR_LIMIT}</th>
+			<td align="center"><input type="text" name="limit12" value="{LIMIT12}" size="3"></td>
+			<td align="center"><input type="text" name="limit23" value="{LIMIT23}" size="3"></td>
+			<td align="center"><input type="text" name="limit34" value="{LIMIT34}" size="3"></td>
+		</tr>
+		<tr>
+			<td colspan="4" align="center" valign="center">{LANG_FREEUNIVERSITY_LECTURE_DOUBLEHOUR_WARNING}</td>
+		</tr>
+	</table>
+	<br style="clear: both">
+	<input type="hidden" name="id" value="{ID}">
+	<input type="hidden" name="action" value="edit">
+	<input type="hidden" name="step" value="store-lecture">
+	<input type="submit" value="{LANG_FREEUNIVERSITY_EDITLECTURE_POST}">
+</form>
+<!--- END freeuniversity editlecture form -->

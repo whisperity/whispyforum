@@ -6,12 +6,14 @@
 <h2 class="install-header">{LANG_ADMINCFG_GENERAL}</h2>
 {LANG_ADMINCFG_TITLE}<span class="red-star">*</span>: <input type="text" name="global_title" value="{GLOBAL_TITLE}" size="35"><br>
 {LANG_ADMINCFG_HOST}<span class="red-star">*</span>: <input type="text" name="site_host" value="{SITE_HOST}" size="35"><br>
-<input type="checkbox" name="registration" value="on"{REGISTRATION_CHECK}> {LANG_ADMINCFG_REGISTER_ENABLED}
+<input type="checkbox" name="registration" value="on"{REGISTRATION_CHECK}> {LANG_ADMINCFG_REGISTER_ENABLED}<br>
+<input type="checkbox" name="freeuniversity_allow" value="on"{FREEUNIVERSITY_CHECK}> {LANG_FREEUNIVERSITY_ALLOW}
 <h2 class="install-header">{LANG_ADMINCFG_MODULES}</h2>
 {LANG_ADMINCFG_MODULES_HEAD}<br>
 <input type="checkbox" name="module_core" value="on" checked disabled> {LANG_MODULE_CORE}<br><small>{LANG_MODULE_CORE_DESCRIPTION} <font class="emphasis">{LANG_MODULE_CANNOT_BE_DISABLED}</font></small><br>
 <input type="checkbox" name="module_forum" value="on"{MODULE_FORUM_CHECK}> {LANG_MODULE_FORUM}<br><small>{LANG_MODULE_FORUM_DESCRIPTION}</small><br>
 <input type="checkbox" name="module_news" value="on"{MODULE_NEWS_CHECK}> {LANG_MODULE_NEWS}<br><small>{LANG_MODULE_NEWS_DESCRIPTION}</small><br>
+<input type="checkbox" name="module_freeuniversity" value="on"{MODULE_FREEUNIVERSITY_CHECK}> {LANG_MODULE_FREEUNIVERSITY}<br><small>{LANG_MODULE_FREEUNIVERSITY_DESCRIPTION}</small><br>
 <input type="submit" value="{LANG_NEXT_NN}">
 <input type="hidden" name="site" value="config">
 <input type="hidden" name="set_type" value="other">

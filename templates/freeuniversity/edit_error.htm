@@ -1,0 +1,44 @@
+<!--- BEGIN freeuniversity editlecture error -->
+<!--- Usage: freeuniversity lecture edition error box (sql error) -->
+<table class="errorbox"> <!--- copying the errorbox template -->
+	<tr>
+		<td class="errorpicture"><img src="themes/{THEME_NAME}/Nuvola_filesystems_folder_txt.png" alt="{LANG_ERROR_EXCLAMATION}"></td>
+		<td class="errortitle">{LANG_ERROR_EXCLAMATION}</td>
+	</tr>
+	<tr>
+		<td style="width: 1"></td>
+		<td class="errorbody">{LANG_FREEUNIVERSITY_EDITLECTURE_ERROR}</td>
+	</tr>
+</table> <!--- copying the errorbox template -->
+
+{LANG_TO_RETRY_CLICK_BACK}
+<form method="POST" action="f_manage.php">
+<input type="hidden" name="title" value="{TITLE}">
+<input type="hidden" name="description" value="{DESCRIPTION}">
+<!--- Single-hour -->
+<input type="hidden" name="hour1" value="{HOUR1}">
+<input type="hidden" name="hour2" value="{HOUR2}">
+<input type="hidden" name="hour3" value="{HOUR3}">
+<input type="hidden" name="hour4" value="{HOUR4}">
+
+<input type="hidden" name="limit1" value="{LIMIT1}">
+<input type="hidden" name="limit2" value="{LIMIT2}">
+<input type="hidden" name="limit3" value="{LIMIT3}">
+<input type="hidden" name="limit4" value="{LIMIT4}">
+
+<!--- Double-hour -->
+<input type="hidden" name="hour12" value="{HOUR12}">
+<input type="hidden" name="hour23" value="{HOUR23}">
+<input type="hidden" name="hour34" value="{HOUR34}">
+
+<input type="hidden" name="limit12" value="{LIMIT12}">
+<input type="hidden" name="limit23" value="{LIMIT23}">
+<input type="hidden" name="limit34" value="{LIMIT34}">
+
+<input type="hidden" name="id" value="{ID}">
+<input type="hidden" name="action" value="edit">
+<input type="hidden" name="step" value="lecture-data">
+<input type="hidden" name="error_goback" value="yes"> <!--- This is an error return -->
+<input type="submit" value="{LANG_BB_BACK}">
+</form>
+<!--- END freeuniversity editlecture error -->

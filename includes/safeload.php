@@ -58,12 +58,12 @@ require("includes/functions.php");
 
 /* DEVELOPEMENT */
 // PH, workaround: output HTTP POST and GET arrays
-print "<h4>GET</h4>";
-prettyVar($_GET, true);
-print "<h4>POST</h4>";
-prettyVar($_POST, true);
-print "<h4>FILES</h4>";
-prettyVar($_FILES, true);
+//print "<h4>GET</h4>";
+//prettyVar($_GET, true);
+//print "<h4>POST</h4>";
+//prettyVar($_POST, true);
+//print "<h4>FILES</h4>";
+//prettyVar($_FILES, true);
 
 /* START GENERATION */
 $Cmysql->Connect(); // Connect to database
@@ -71,8 +71,8 @@ $Cusers->Initialize(); // We initialize the userdata
 // User initialization also loads the language file
 
 /* DEVELOPEMENT */
-print "<h4>SESSION</h4>";
-prettyVar($_SESSION, true);
+//print "<h4>SESSION</h4>";
+//prettyVar($_SESSION, true);
 // print "<h4>SERVER</h4>";
 // prettyVar($_SERVER, true);
 // print "<h4>REQUEST</h4>";

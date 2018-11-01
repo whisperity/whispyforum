@@ -1,0 +1,10 @@
+<!--- BEGIN freeuniversity schedule resign-row button -->
+<!--- Usage: freeuniversity schedule own attendance listing table row with resign button -->
+<td rowspan="{ROWSPAN}" align="center" valign="center" style="width: 50%; height: {HEIGHT}%">{TITLE}{DESCRIPTION}</td>
+<td rowspan="{ROWSPAN}" align="center" valign="center" style="width: 25%; height: {HEIGHT}%"><form method="POST" action="f_schedule.php">
+	<input type="hidden" name="id" value="{ID}">
+	<input type="hidden" name="hour" value="{HOUR}">
+        <input type="hidden" name="action" value="resign">
+	<input type="submit" value="{LANG_FREEUNIVERSITY_SCHEDULE_RESIGN}"{DISABLED}>
+</form></td>
+<!--- END freeuniversity schedule resign-row button -->

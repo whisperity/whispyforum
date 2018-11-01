@@ -113,7 +113,7 @@ if ( $uLvl < $fMLvl[0] )
 			$editRight = TRUE;
 		}
 		
-		if ( ( $uLvl >= 2 ) && ( $topic_array['locked'] == 0 ) )
+		if ( ( $uLvl >= 3 ) && ( $topic_array['locked'] == 0 ) )
 		{
 			$editRight = TRUE;
 		}
@@ -241,7 +241,7 @@ if ( $uLvl < $fMLvl[0] )
 			$deleteRight = TRUE;
 		}
 		
-		if ( ( $uLvl >= 2 ) && ( $topic_array['locked'] == 0 ) )
+		if ( ( $uLvl >= 3 ) && ( $topic_array['locked'] == 0 ) )
 		{
 			$deleteRight = TRUE;
 		}
@@ -417,7 +417,7 @@ if ( $uLvl < $fMLvl[0] )
 				$editRight = TRUE;
 			}
 			
-			if ( ( $uLvl >= 2 ) && ( $topic_array['locked'] == 0 ) )
+			if ( ( $uLvl >= 3 ) && ( $topic_array['locked'] == 0 ) )
 			{
 				$editRight = TRUE;
 			}
@@ -434,7 +434,7 @@ if ( $uLvl < $fMLvl[0] )
 				$deleteRight = TRUE;
 			}
 			
-			if ( ( $uLvl >= 2 ) && ( $topic_array['locked'] == 0 ) )
+			if ( ( $uLvl >= 3 ) && ( $topic_array['locked'] == 0 ) )
 			{
 				$deleteRight = TRUE;
 			}

@@ -880,7 +880,9 @@ switch ($site) // Outputs and scripts are based on the site variable
 						'SITE_HOST'	=>	$_POST['site_host'],
 						'REGISTRATION'	=>	(@$_POST['registration'] == "on" ? "on" : "off"),
 						'MODULE_FORUM'	=>	(@$_POST['module_forum'] == "on" ? "on" : "off"),
-						'MODULE_NEWS'	=>	(@$_POST['module_news'] == "on" ? "on" : "off")
+						'MODULE_NEWS'	=>	(@$_POST['module_news'] == "on" ? "on" : "off"),
+						'MODULE_FREEUNIVERSITY'	=>	(@$_POST['module_freeuniversity'] == "on" ? "on" : "off"),
+						'FREEUNIVERSITY_ALLOW'	=>	(@$_POST['freeuniversity_allow'] == "on" ? "on" : "off")
 					), FALSE); // Output error box
 					
 					// Terminate the script
@@ -897,7 +899,9 @@ switch ($site) // Outputs and scripts are based on the site variable
 						'SITE_HOST'	=>	$_POST['site_host'],
 						'REGISTRATION'	=>	(@$_POST['registration'] == "on" ? "on" : "off"),
 						'MODULE_FORUM'	=>	(@$_POST['module_forum'] == "on" ? "on" : "off"),
-						'MODULE_NEWS'	=>	(@$_POST['module_news'] == "on" ? "on" : "off")
+						'MODULE_NEWS'	=>	(@$_POST['module_news'] == "on" ? "on" : "off"),
+						'MODULE_FREEUNIVERSITY'	=>	(@$_POST['module_freeuniversity'] == "on" ? "on" : "off"),
+						'FREEUNIVERSITY_ALLOW'	=>	(@$_POST['freeuniversity_allow'] == "on" ? "on" : "off")
 					), FALSE); // Output error box
 					
 					// Terminate the script
@@ -914,11 +918,14 @@ switch ($site) // Outputs and scripts are based on the site variable
 				$scUpdate_module_news = $Cmysql->Query("UPDATE config SET value='" .(@$_POST['module_news'] == "on" ? "on" : "off"). "' WHERE variable='module_news'");
 				$scUpdate_registration = $Cmysql->Query("UPDATE config SET value='" .(@$_POST['registration'] == "on" ? "on" : "off"). "' WHERE variable='registration'");
 				
-				if ( ( $scUpdate_global_title == TRUE ) && ( $scUpdate_site_host == TRUE ) && ( $scUpdate_module_forum == TRUE ) && ( $scUpdate_module_news == TRUE ) && ( $scUpdate_registration == TRUE ) )
+				$scUpdate_module_freeuniversity = $Cmysql->Query("UPDATE config SET value='" .(@$_POST['module_freeuniversity'] == "on" ? "on" : "off"). "' WHERE variable='module_freeuniversity'");
+				$scUpdate_freeuniversity_allow = $Cmysql->Query("UPDATE config SET value='" .(@$_POST['freeuniversity_allow'] == "on" ? "on" : "off"). "' WHERE variable='freeuniversity_allow'");
+				
+				if ( ( $scUpdate_global_title == TRUE ) && ( $scUpdate_site_host == TRUE ) && ( $scUpdate_module_forum == TRUE ) && ( $scUpdate_module_news == TRUE ) && ( $scUpdate_registration == TRUE ) && ( $scUpdate_module_freeuniversity == TRUE ) && ( $scUpdate_freeuniversity_allow == TRUE ))
 				{
 					// If we succeeded, output success message, return form
 					$Ctemplate->useStaticTemplate("admin/siteprefs_success", FALSE);
-				} elseif ( ( $scUpdate_global_title == FALSE ) || ( $scUpdate_site_host == FALSE ) || ( $scUpdate_module_forum == FALSE ) || ( $scUpdate_module_news == FALSE ) || ( $scUpdate_registration == FALSE ) )
+				} elseif ( ( $scUpdate_global_title == FALSE ) || ( $scUpdate_site_host == FALSE ) || ( $scUpdate_module_forum == FALSE ) || ( $scUpdate_module_news == FALSE ) || ( $scUpdate_registration == FALSE ) || ( $scUpdate_module_freeuniversity == FALSE ) || ( $scUpdate_freeuniversity_allow == FALSE ) )
 				{
 					// If we failed, output return form and error message
 					$Ctemplate->useTemplate("admin/siteprefs_error", array(
@@ -926,7 +933,10 @@ switch ($site) // Outputs and scripts are based on the site variable
 						'GLOBAL_TITLE'	=>	$_POST['global_title'],
 						'SITE_HOST'	=>	$_POST['site_host'],
 						'REGISTRATION'	=>	(@$_POST['registration'] == "on" ? "on" : "off"),
-						'MODEL_FORUM'	=>	(@$_POST['module_forum'] == "on" ? "on" : "off")
+						'MODULE_FORUM'	=>	(@$_POST['module_forum'] == "on" ? "on" : "off"),
+						'MODULE_NEWS'	=>	(@$_POST['module_news'] == "on" ? "on" : "off"),
+						'MODULE_FREEUNIVERSITY'	=>	(@$_POST['module_freeuniversity'] == "on" ? "on" : "off"),
+						'FREEUNIVERSITY_ALLOW'	=>	(@$_POST['freeuniversity_allow'] == "on" ? "on" : "off"),
 					), FALSE); // Output error box
 				}
 			}
@@ -1090,7 +1100,9 @@ switch ($site) // Outputs and scripts are based on the site variable
 					'SITE_HOST'	=>	$_POST['site_host'],
 					'REGISTRATION_CHECK'	=>	(@$_POST['registration'] == "on" ? " checked" : ""),
 					'MODULE_FORUM_CHECK'	=>	(@$_POST['module_forum'] == "on" ? " checked" : ""),
-					'MODULE_NEWS_CHECK'	=>	(@$_POST['module_news'] == "on" ? " checked" : "")
+					'MODULE_NEWS_CHECK'	=>	(@$_POST['module_news'] == "on" ? " checked" : ""),
+					'MODULE_FREEUNIVERSITY_CHECK'	=>	(@$_POST['module_freeuniversity'] == "on" ? " checked" : ""),
+					'FREEUNIVERSITY_CHECK'	=>	(@$_POST['freeuniversity_allow'] == "on" ? " checked" : "")
 				), FALSE);
 			} else {
 				// We output general form
@@ -1099,7 +1111,9 @@ switch ($site) // Outputs and scripts are based on the site variable
 					'SITE_HOST'	=>	config('site_host'),
 					'REGISTRATION_CHECK'	=>	(config('registration') == "on" ? " checked" : ""),
 					'MODULE_FORUM_CHECK'	=>	(config('module_forum') == "on" ? " checked" : ""),
-					'MODULE_NEWS_CHECK'	=>	(config('module_news') == "on" ? " checked" : "")
+					'MODULE_NEWS_CHECK'	=>	(config('module_news') == "on" ? " checked" : ""),
+					'MODULE_FREEUNIVERSITY_CHECK'	=>	(config('module_freeuniversity') == "on" ? " checked" : ""),
+					'FREEUNIVERSITY_CHECK'	=>	(config('freeuniversity_allow') == "on" ? " checked" : "")
 				), FALSE);
 			}
 		}

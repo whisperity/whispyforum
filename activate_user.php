@@ -28,23 +28,24 @@ if ( $_SESSION['log_bool'] == TRUE )
 // This script does the activation of fresh users
 // It needs to have two input from HTTP GET
 
-if ( ( @$_GET['username'] == NULL ) || ( @$_GET['token'] == NULL ) )
+if ( ( @$_GET['username'] == NULL ) || ( @$_GET['token'] == NULL ) || ( @$_GET['f_class'] == NULL ) )
 {
 	// If either the username or the token is missing (it includes the BOTH sceniaro)
 	// Output form, and fill it in with the known data
 	$Ctemplate->useTemplate("user/activate_form", array(
 		'USERNAME'	=>	@$_GET['username'],
-		'TOKEN'	=>	@$_GET['token']
+		'TOKEN'	=>	@$_GET['token'],
+		'F_CLASS'	=>	@$_GET['f_class']
 	), FALSE);
-} elseif ( ( @$_GET['username'] != NULL ) && ( @$_GET['token'] != NULL ) )
+} elseif ( ( @$_GET['username'] != NULL ) && ( @$_GET['token'] != NULL ) && ( @$_GET['f_class'] != NULL ) )
 {
 	// If we have all the variables
 	// Do the activation
 	
 	// First, select the user from database
-	$check = mysql_fetch_assoc($Cmysql->Query("SELECT id, activated FROM users WHERE username='" .$Cmysql->EscapeString($_GET['username']). "' AND token='" .$Cmysql->EscapeString($_GET['token']). "'")); // This will be FALSE if the username is unknown or the token is invalid, and TRUE if we're successful to find the user
+	$check = mysql_fetch_assoc($Cmysql->Query("SELECT id, token, activated FROM users WHERE username='" .$Cmysql->EscapeString($_GET['username']). "' AND f_class='" .$Cmysql->EscapeString(fClassFix($_GET['f_class'])). "'")); // This will be FALSE if the username is unknown or the token is invalid, and TRUE if we're successful to find the user
 	
-	if ( $check == FALSE )
+	if ( $check === FALSE )
 	{
 		// If the user does not exists
 		// Output an error message
@@ -54,27 +55,30 @@ if ( ( @$_GET['username'] == NULL ) || ( @$_GET['token'] == NULL ) )
 		// If the user exists
 		
 		// Check for activation
-		if ( $check['activated'] == 1 )
+		if ( $check['activated'] === "1" )
 		{
 			// If the user is already activated, output an error message
 			$Ctemplate->useStaticTemplate("user/activate_already_error", FALSE);
-		} elseif ( $check['activated'] == 0 )
+		} elseif ( $check['activated'] === "0" )
 		{
-			// If the user has not been activated yet
+			// If the user has not been activated yet and the token is okay
 			// Do activation
-			$activate = $Cmysql->Query("UPDATE users SET activated='1', token=NULL WHERE id='" .$Cmysql->EscapeString($check['id']). "'");		
-			
-			if ( $activate == FALSE )
+			if ( $_GET['token'] === $check['token'] )
 			{
-				// If we failed activating, output an error message
-				$Ctemplate->useTemplate("user/activate_error", array(
-					'USERNAME'	=>	$_GET['username'],
-					'TOKEN'	=>	$_GET['token']
-				), FALSE);
-			} elseif ( $activate == TRUE )
-			{
-				// If we succeeded, output success message (forwarding the user to the homepage)
-				$Ctemplate->useStaticTemplate("user/activate_success", FALSE);
+				$activate = $Cmysql->Query("UPDATE users SET activated='1', token=NULL WHERE id='" .$Cmysql->EscapeString($check['id']). "'");		
+				
+				if ( $activate == FALSE )
+				{
+					// If we failed activating, output an error message
+					$Ctemplate->useStaticTemplate("user/activate_error", FALSE);
+				} elseif ( $activate == TRUE )
+				{
+					// If we succeeded, output success message (forwarding the user to the homepage)
+					$Ctemplate->useStaticTemplate("user/activate_success", FALSE);
+				}
+			} else {
+				// If the token is not valid, output error
+				$Ctemplate->useStaticTemplate("user/activate_error", FALSE);
 			}
 		}
 	}

@@ -110,7 +110,7 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "newforum" ) )
 if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "edit" ) && ( isset($_POST['forum_id']) ) )
 {
 	// Editing a forum
-	if ( $uLvl < 2 )
+	if ( $uLvl < 3 )
 	{
 		// If the user does not have rights to add new forum
 		$Ctemplate->useTemplate("errormessage", array(
@@ -119,7 +119,7 @@ if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "edit" ) && ( isset($_
 			'BODY'	=>	"{LANG_REQUIRES_MODERATOR}", // Error text
 			'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
 		), FALSE ); // We give an unavailable error
-	} elseif ( $uLvl >= 2 )
+	} elseif ( $uLvl >= 3 )
 	{
 		// Access granted :)
 		if ( !isset($_POST['edit_do']) )
@@ -364,7 +364,7 @@ if ( !isset($_POST['action']) )
 		'ADMIN_CREATE_NEW_FORUM'	=>	($uLvl >= 3 ?
 			$Ctemplate->useStaticTemplate("forum/forums_admin_createnew", TRUE) // Return the button
 		: NULL ), // Output button for new forum only if the user is admin or higher
-		'ADMIN_ACTIONS'	=>	($uLvl >= 2 ? 
+		'ADMIN_ACTIONS'	=>	($uLvl >= 3 ? 
 			$Ctemplate->useStaticTemplate("forum/forums_admin_actions", TRUE) // Return the header
 		: NULL ) // Output header for admin actions only if the user is moderator or higher
 	), FALSE); // Open the table and output header
@@ -401,7 +401,7 @@ if ( !isset($_POST['action']) )
 			), TRUE) : $wf_lang['{LANG_POSTS_NO}']),
 			'THREADS'	=>	$thread_count[0],
 			'POSTS'	=>	$post_count[0],
-			'EDIT'	=>	($uLvl >= 2 ? 
+			'EDIT'	=>	($uLvl >= 3 ? 
 				$Ctemplate->useTemplate("forum/forums_admin_edit", array(
 					'FORUM_ID'	=>	$row['id'] // ID of the forum
 				), TRUE) // Return the button

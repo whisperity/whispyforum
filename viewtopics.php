@@ -94,7 +94,7 @@ if ( $uLvl < $fMLvl[0] )
 	if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "edit" ) && ( isset($_POST['topic_id']) ) )
 	{
 		// Editing a topic
-		if ( $uLvl < 2 )
+		if ( $uLvl < 3 )
 		{
 			// If the user does not have rights to add new forum
 			$Ctemplate->useTemplate("errormessage", array(
@@ -103,7 +103,7 @@ if ( $uLvl < $fMLvl[0] )
 				'BODY'	=>	"{LANG_REQUIRES_MODERATOR}", // Error text
 				'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
 			), FALSE ); // We give an unavailable error
-		} elseif ( $uLvl >= 2 )
+		} elseif ( $uLvl >= 3 )
 		{
 			// Access granted :)
 			if ( !isset($_POST['edit_do']) )
@@ -202,7 +202,7 @@ if ( $uLvl < $fMLvl[0] )
 	if ( ( isset($_POST['action']) ) && ( $_POST['action'] == "delete" ) && ( isset($_POST['topic_id']) ) )
 	{
 		// Deleting a topic
-		if ( $uLvl < 2 )
+		if ( $uLvl < 3 )
 		{
 			// If the user does not have rights to delete the topic
 			$Ctemplate->useTemplate("errormessage", array(
@@ -211,7 +211,7 @@ if ( $uLvl < $fMLvl[0] )
 				'BODY'	=>	"{LANG_REQUIRES_MODERATOR}", // Error text
 				'ALT'	=>	"{LANG_PERMISSIONS_ERROR}" // Alternate picture text
 			), FALSE ); // We give an unavailable error
-		} elseif ( $uLvl >= 2 )
+		} elseif ( $uLvl >= 3 )
 		{
 			// Access granted
 			
@@ -357,14 +357,14 @@ if ( $uLvl < $fMLvl[0] )
 					'USERID'	=>	$Hlast_post['createuser']
 				), TRUE) : $wf_lang['{LANG_POSTS_NO}']),
 				'POSTS'	=>	$Hpost_count[0],
-				'EDIT'	=>	($uLvl >= 2 ?
+				'EDIT'	=>	($uLvl >= 3 ?
 					$Ctemplate->useTemplate("forum/topics_admin_edit", array(
 						'TOPIC_ID'	=>	$Hrow['id'],
 						'FORUM_ID'	=>	$id,
 						'START_AT'	=>	(@$_GET['start_at'] == NULL ? '0' : $_GET['start_at'])
 					), TRUE)
 				: NULL ), // Edit button for admins and mods
-				'DELETE'	=>	($uLvl >= 2 ?
+				'DELETE'	=>	($uLvl >= 3 ?
 					$Ctemplate->useTemplate("forum/topics_admin_delete", array(
 						'TOPIC_ID'	=>	$Hrow['id'],
 						'FORUM_ID'	=>	$id,
@@ -432,14 +432,14 @@ if ( $uLvl < $fMLvl[0] )
 					'USERID'	=>	$last_post['createuser']
 				), TRUE) : $wf_lang['{LANG_POSTS_NO}']),
 				'POSTS'	=>	$post_count[0],
-				'EDIT'	=>	($uLvl >= 2 ?
+				'EDIT'	=>	($uLvl >= 3 ?
 					$Ctemplate->useTemplate("forum/topics_admin_edit", array(
 						'TOPIC_ID'	=>	$row['id'],
 						'FORUM_ID'	=>	$id,
 						'START_AT'	=>	(@$_GET['start_at'] == NULL ? '0' : $_GET['start_at'])
 					), TRUE)
 				: NULL ), // Edit button for admins and mods
-				'DELETE'	=>	($uLvl >= 2 ?
+				'DELETE'	=>	($uLvl >= 3 ?
 					$Ctemplate->useTemplate("forum/topics_admin_delete", array(
 						'TOPIC_ID'	=>	$row['id'],
 						'FORUM_ID'	=>	$id,

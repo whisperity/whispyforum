@@ -230,3 +230,43 @@ ALTER TABLE `topics` CHANGE `highlighted` `highlighted` TINYINT( 1 ) NOT NULL DE
 ALTER TABLE `users` ADD `news_split_value` SMALLINT( 3 ) NOT NULL DEFAULT '15' COMMENT 'user preference: how many entry to appear on one page' AFTER `post_count`;
 INSERT INTO `config` (`variable`, `value`) VALUES ('news_split_value', '15'),
 ('module_news', 'on');
+
+#
+# Revision 727 (Adding basics of Freeuniversity Organizer)
+#
+ALTER TABLE `users` ADD `f_class` VARCHAR( 6 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'school class of the user' AFTER `pwd`;
+ALTER TABLE `users` ADD `f_hour1` int( 10 ) NOT NULL COMMENT 'lecture in hour one (f_lectures.id)';
+ALTER TABLE `users` ADD `f_hour2` int( 10 ) NOT NULL COMMENT 'lecture in hour two (f_lectures.id)';
+ALTER TABLE `users` ADD `f_hour3` int( 10 ) NOT NULL COMMENT 'lecture in hour three (f_lectures.id)';
+ALTER TABLE `users` ADD `f_hour4` int( 10 ) NOT NULL COMMENT 'lecture in hour four (f_lectures.id)';
+ALTER TABLE `users` DROP INDEX `username`;
+ALTER TABLE `users` ADD UNIQUE `username` ( `username` , `f_class` );
+ALTER TABLE `users` CHANGE `pwd` `pwd` VARCHAR( 32 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'user password (md5 hashed)';
+
+CREATE TABLE IF NOT EXISTS f_lectures (
+	`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+	`createuser` int(10) NOT NULL COMMENT 'the ID of the user who posted the entry (users.id)',
+	`createdate` int(16) NOT NULL DEFAULT '0' COMMENT 'creation date',
+	`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'lecture name',
+	`description` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'lecture description',
+	`hour1` tinyint(1) DEFAULT '0' NOT NULL COMMENT 'lecture is held in hour one',
+	`hour2` tinyint(1) DEFAULT '0' NOT NULL COMMENT 'lecture is held in hour two',
+	`hour3` tinyint(1) DEFAULT '0' NOT NULL COMMENT 'lecture is held in hour three',
+	`hour4` tinyint(1) DEFAULT '0' NOT NULL COMMENT 'lecture is held in hour four',
+	`limit1` smallint(3) DEFAULT '0' NOT NULL COMMENT 'limit for hour one',
+	`limit2` smallint(3) DEFAULT '0' NOT NULL COMMENT 'limit for hour two',
+	`limit3` smallint(3) DEFAULT '0' NOT NULL COMMENT 'limit for hour three',
+	`limit4` smallint(3) DEFAULT '0' NOT NULL COMMENT 'limit for hour four',
+	`lect1_2` tinyint(1) DEFAULT '0' NOT NULL COMMENT 'double-lecturize the first and second hour',
+	`lect2_3` tinyint(1) DEFAULT '0' NOT NULL COMMENT 'double-lecturize the second and third hour',
+	`lect3_4` tinyint(1) DEFAULT '0' NOT NULL COMMENT 'double-lecturize the third and fourth hour',
+	PRIMARY KEY (`id`),
+	UNIQUE (`title`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'lecture database';
+
+#
+# Revision 789 (removed unneeded f_lectures.createuser and f_lectures.createdate)
+#
+ALTER TABLE `f_lectures`
+	DROP `createuser`,
+	DROP `createdate`;

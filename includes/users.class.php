@@ -48,6 +48,7 @@ class class_users
 		
 		$_SESSION['username'] = ""; // Empty username
 		$_SESSION['pwd'] = ""; // Empty password
+		$_SESSION['class'] = ""; // Empty class
 		$_SESSION['uid'] = ""; // Empty user id
 		$_SESSION['curr_ip'] = $_SERVER['REMOTE_ADDR']; // IP address
 		$_SESSION['curr_sessid'] = session_id(); // Session id
@@ -96,7 +97,7 @@ class class_users
 		
 		global $Cmysql, $Ctemplate; // We need to declare the mySQL and template class
 		
-		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'"));
+		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "' AND f_class='" .$Cmysql->EscapeString($_SESSION['class']). "'"));
 		if ( $userDBArray == FALSE )
 		{
 			// If we cannot do the query (because it contains false data or empty session)
@@ -119,7 +120,7 @@ class class_users
 				// also redirecting him/her to the homepage
 				$Ctemplate->useStaticTemplate("user/ip_id_forced_logout", FALSE);
 					
-				$this->Logout($userDBArray['username']); // We purge the user's session
+				$this->Logout($userDBArray['username'], $userDBArray['f_class']); // We purge the user's session
 				
 				// We need to recreate a new session
 				$this->__createSession();
@@ -183,12 +184,24 @@ class class_users
 			'USERID'	=>	$_SESSION['uid']
 		), FALSE); // User control panel link
 		
-		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'")); // We query the user's data
+		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "' AND f_class='" .$Cmysql->EscapeString($_SESSION['class']). "'")); // We query the user's data
 		
 		// If the user has Admin (3) or higher levels, output link to administrator panel
 		if ( $userDBArray['userLevel'] >= 3 )
 		{
 			$Ctemplate->useStaticTemplate("user/userform_user-ap_link", FALSE); // Output link
+		}
+		
+		// ---- Freeuniversity links ----
+		if ( config("module_freeuniversity") == "on" )
+		{
+			$Ctemplate->useStaticTemplate("freeuniversity/userform_user-schedule_link", FALSE); // Scheduler link
+			
+			// Manager link if the user is a moderator or higher
+			if ( $this->getLevel() >= 2 )
+			{
+				$Ctemplate->useStaticTemplate("freeuniversity/userform_user-manage_link", FALSE); // Manager link
+			}
 		}
 		
 		$Ctemplate->useTemplate("user/userform_logout", array(
@@ -198,18 +211,19 @@ class class_users
 		$Ctemplate->useStaticTemplate("user/userform_foot", FALSE); // Close divs
 	}
 	
-	function Login($username, $password)
+	function Login($username, $password, $class)
 	{
 		/**
 		 * This function makes the user logged in
 		 * 
 		 * @inputs: $username - (string) login username
 		 * 			$password - (string) login password (without encryption)
+		 *			$class - (string) freeuniversity organizer school class
 		 */
 		
 		global $Cmysql; // We need to declare the mySQL class
 		
-		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .$Cmysql->EscapeString($username). "' AND pwd='" .$Cmysql->EscapeString($password). "'")); // We query the user's data
+		$userDBArray = mysql_fetch_assoc($Cmysql->Query("SELECT * FROM users WHERE username='" .$Cmysql->EscapeString($username). "' AND pwd='" .$Cmysql->EscapeString($password). "' AND f_class='" .$Cmysql->EscapeString($class). "'")); // We query the user's data
 		
 		if  ( $userDBArray == TRUE ) 
 		{
@@ -222,6 +236,7 @@ class class_users
 				// we fill up the session
 				$_SESSION['username'] = $userDBArray['username'];
 				$_SESSION['pwd'] = $userDBArray['pwd'];
+				$_SESSION['class'] = $userDBArray['f_class'];
 				$_SESSION['uid'] = $userDBArray['id'];
 				$_SESSION['log_status'] = "user";
 				$_SESSION['log_bool'] = TRUE;
@@ -292,17 +307,18 @@ class class_users
 		}
 	}
 	
-	function Logout($username)
+	function Logout($username, $class)
 	{
 		/**
 		 * This function makes the user logged out
 		 * 
 		 * @inputs: $username - (string) logout username
+		 *			$class - (string) freeuniversity organizer school class
 		 */
 		
 		global $Cmysql; // We need to declare the mySQL class
 		
-		$bLogout = $Cmysql->Query("UPDATE users SET curr_ip='0.0.0.0', curr_sessid='', loggedin=0 WHERE id='" .$_SESSION['uid']. "' AND username='" .$Cmysql->EscapeString($username). "'"); // Clear session connections from database
+		$bLogout = $Cmysql->Query("UPDATE users SET curr_ip='0.0.0.0', curr_sessid='', loggedin=0 WHERE id='" .$_SESSION['uid']. "' AND username='" .$Cmysql->EscapeString($username). "' AND f_class='" .$Cmysql->EscapeString($class). "'"); // Clear session connections from database
 		
 		if ( $bLogout == FALSE )
 		{
@@ -339,7 +355,7 @@ class class_users
 		
 		global $Cmysql; // Hook MySQL class here
 		
-		$userLevel = mysql_fetch_row($Cmysql->Query("SELECT userLevel FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "'"));
+		$userLevel = mysql_fetch_row($Cmysql->Query("SELECT userLevel FROM users WHERE username='" .$Cmysql->EscapeString($_SESSION['username']). "' AND pwd='" .$Cmysql->EscapeString($_SESSION['pwd']). "' AND f_class='" .$Cmysql->EscapeString($_SESSION['class']). "'"));
 		
 		if ( $userLevel == FALSE )
 		{
@@ -347,32 +363,6 @@ class class_users
 			// Set the level to 0
 			$userLevel = array(0	=> '0');
 		}
-		
-		/* SECURITY HOLE!
-			This part of the script is only added for developer purposes
-			and thus, makes a RATHER LARGE security hole in the system.
-			
-			DO NOT USE IN PRODUCTION!
-		*/
-		echo '<span style="color: red; font-weight: bold">DO NOT USE THIS IN PRODUCTION!</span> <span style="color: maroon; font-weight: bold">This script queries the rank level of the user which, due to a developer-installed workaround, fakeable. Please remove the security hole.</span> <span style="color: red; font-weight: bold">DO NOT USE THIS IN PRODUCTION!</span><br>';
-		if ( @$_GET['fakelevel'] != NULL )
-		{
-			// If we have a fake level set in the HTTP GET header
-			// we forward that instead of the real level.
-			
-			// This is a big security hole... crater, becuase it allows
-			// those knowing how to fake their level and get superadmin rights.
-			// (Also, values outside the boundaries of 0 and 4 can break the system.)
-			echo '<span style="color: red; font-weight: bold">User level is faked to ' .$_GET['fakelevel']. '. Real value is ' .$userLevel[0]. '.</span><br>';
-			
-			return $_GET['fakelevel'];
-		}
-		/* SECURITY HOLE!
-			This part of the script is only added for developer purposes
-			and thus, makes a RATHER LARGE security hole in the system.
-			
-			DO NOT USE IN PRODUCTION!
-		*/
 		
 		return $userLevel[0]; // Return the value
 	}

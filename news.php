@@ -32,7 +32,7 @@ if ( @$_POST['action'] == "newentry" )
 {
 	// If requested a form to add a new news entry
 	
-	if ( $uLvl < 2 )
+	if ( $uLvl < 3 )
 	{
 		// If the user is on lower level than Moderator
 		
@@ -42,7 +42,7 @@ if ( @$_POST['action'] == "newentry" )
 			'BODY'	=>	$wf_lang['{LANG_NEWS_NEWENTRY_REQUIRES_MODERATOR}'], // Error text
 			'ALT'	=>	"{LANG_PERMISSIONS_ERROR}", // Alternate picture text
 		), FALSE ); // Give rights error
-	} elseif ( $uLvl >= 2 )
+	} elseif ( $uLvl >= 3 )
 	{
 		// Output form
 		if ( @$_POST['error_goback'] == "yes" )
@@ -74,7 +74,7 @@ if ( @$_POST['action'] == "newentry" )
 {
 	// If requested SQL operation to add new news entry
 	
-	if ( $uLvl < 2 )
+	if ( $uLvl < 3 )
 	{
 		// If the user is on lower level than Moderator
 		
@@ -84,7 +84,7 @@ if ( @$_POST['action'] == "newentry" )
 			'BODY'	=>	$wf_lang['{LANG_NEWS_NEWENTRY_REQUIRES_MODERATOR}'], // Error text
 			'ALT'	=>	"{LANG_PERMISSIONS_ERROR}", // Alternate picture text
 		), FALSE ); // Give rights error
-	} elseif ( $uLvl >= 2 )
+	} elseif ( $uLvl >= 3 )
 	{
 		// If the user is eligible to post the entry, do it
 		
@@ -173,7 +173,7 @@ if ( @$_POST['action'] == "newentry" )
 {
 	// If requested a form to edit an entry
 	
-	if ( $uLvl < 2 )
+	if ( $uLvl < 3 )
 	{
 		// If the user is on lower level than Moderator
 		
@@ -183,7 +183,7 @@ if ( @$_POST['action'] == "newentry" )
 			'BODY'	=>	$wf_lang['{LANG_NEWS_EDIT_REQUIRES_MODERATOR}'], // Error text
 			'ALT'	=>	"{LANG_PERMISSIONS_ERROR}", // Alternate picture text
 		), FALSE ); // Give rights error
-	} elseif ( $uLvl >= 2 )
+	} elseif ( $uLvl >= 3 )
 	{
 		// Output form
 		
@@ -223,7 +223,7 @@ if ( @$_POST['action'] == "newentry" )
 {
 	// If requested SQL operation to edit the news entry
 	
-	if ( $uLvl < 2 )
+	if ( $uLvl < 3 )
 	{
 		// If the user is on lower level than Moderator
 		
@@ -233,7 +233,7 @@ if ( @$_POST['action'] == "newentry" )
 			'BODY'	=>	$wf_lang['{LANG_NEWS_EDIT_REQUIRES_MODERATOR}'], // Error text
 			'ALT'	=>	"{LANG_PERMISSIONS_ERROR}", // Alternate picture text
 		), FALSE ); // Give rights error
-	} elseif ( $uLvl >= 2 )
+	} elseif ( $uLvl >= 3 )
 	{
 		// If the user is eligible to edit the entry, do it
 		
@@ -419,7 +419,7 @@ if ( @$_POST['action'] == "newentry" )
 			'CONTENT'	=>	bbDecode($entry_data['content']), // Full entry text
 			
 			// Button for administrative tasks
-			'EDIT'	=>	( $uLvl >= 2 ? $Ctemplate->useTemplate("news/list_admin_edit", array(
+			'EDIT'	=>	( $uLvl >= 3 ? $Ctemplate->useTemplate("news/list_admin_edit", array(
 							'ID'	=>	$entry_data['id']
 						), TRUE) : NULL),
 			'DELETE'	=>	( $uLvl >= 3 ? $Ctemplate->useTemplate("news/list_admin_delete", array(
@@ -606,7 +606,7 @@ if ( @$_POST['action'] == "newentry" )
 	// If no variables are fitting the previous cases, we list the news in a short list
 	
 	$Ctemplate->useTemplate("news/list_head", array(
-		'NEW_ENTRY'	=>	( $uLvl >= 2 ? 
+		'NEW_ENTRY'	=>	( $uLvl >= 3 ? 
 			$Ctemplate->useStaticTemplate("news/list_newentry", TRUE) : NULL)
 	), FALSE); // Table header
 	
@@ -659,7 +659,7 @@ if ( @$_POST['action'] == "newentry" )
 						), TRUE),
 			
 			// Buttons for administrative tasks
-			'EDIT'	=>	( $uLvl >= 2 ? $Ctemplate->useTemplate("news/list_admin_edit", array(
+			'EDIT'	=>	( $uLvl >= 3 ? $Ctemplate->useTemplate("news/list_admin_edit", array(
 							'ID'	=>	$row['id']
 						), TRUE) : NULL),
 			'DELETE'	=>	( $uLvl >= 3 ? $Ctemplate->useTemplate("news/list_admin_delete", array(

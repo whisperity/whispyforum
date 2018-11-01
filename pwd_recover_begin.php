@@ -27,7 +27,7 @@ if ( $_SESSION['log_bool'] == TRUE )
 	exit;
 }
 
-if ( @$_POST['username'] == NULL )
+if ( ( @$_POST['username'] == NULL ) ||( @$_POST['f_class'] == NULL ) )
 {
 	// If there is no username present, output the form
 	
@@ -35,20 +35,22 @@ if ( @$_POST['username'] == NULL )
 	{
 		// We output the form with data returned (user doesn't have to enter it again)
 		$Ctemplate->useTemplate("user/recover_begin", array(
-			'USERNAME'	=>	@$_POST['username']
+			'USERNAME'	=>	@$_POST['username'],
+			'F_CLASS'	=>	@$_POST['f_class']
 		), FALSE);
 	} else {
 		// We output general form
 		$Ctemplate->useTemplate("user/recover_begin", array(
-			'USERNAME'	=>	""
+			'USERNAME'	=>	"",
+			'F_CLASS'	=>	""
 		), FALSE);
 	}
-} elseif ( @$_POST['username'] != NULL )
+} elseif ( ( @$_POST['username'] != NULL ) && ( @$_POST['f_class'] != NULL ) )
 {
 	// If there is a username present, send message
 	
 	// First, check whether the username is registered
-	$user = mysql_fetch_assoc($Cmysql->Query("SELECT email, activated FROM users WHERE username='" .$Cmysql->EscapeString($_POST['username']). "'"));
+	$user = mysql_fetch_assoc($Cmysql->Query("SELECT email, activated FROM users WHERE username='" .$Cmysql->EscapeString($_POST['username']). "' AND f_class='" .$Cmysql->EscapeString(fClassFix($_POST['f_class'])). "'"));
 	
 	if ( $user == FALSE )
 	{
@@ -73,7 +75,7 @@ if ( @$_POST['username'] == NULL )
 	
 	// If both is true, do procedure
 	$token = generateHexTokenNoDC(); // Generate a token
-	$setToken = $Cmysql->Query("UPDATE users SET token='" .$token. "' WHERE username='" .$Cmysql->EscapeString($_POST['username']). "'"); // Set the token in database, TRUE if it was successful
+	$setToken = $Cmysql->Query("UPDATE users SET token='" .$token. "' WHERE username='" .$Cmysql->EscapeString($_POST['username']). "' AND f_class='" .$Cmysql->EscapeString(fClassFix($_POST['f_class'])). "'"); // Set the token in database, TRUE if it was successful
 	
 	if ( $setToken == FALSE )
 	{
@@ -88,7 +90,8 @@ if ( @$_POST['username'] == NULL )
 		$variables = array(
 			'RECOVERY_SITE'	=>	"http://" .config("site_host"). "/pwd_recover_do.php",
 			'USERNAME'	=>	$_POST['username'],
-			'TOKEN'	=>	$token
+			'TOKEN'	=>	$token,
+			'F_CLASS'	=>	$_POST['f_class']
 		);
 		
 		// Send out the mail

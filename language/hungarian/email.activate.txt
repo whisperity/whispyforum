@@ -1,0 +1,17 @@
+<!--- Ez a sablon tartalmazza azt az emailt, amelyet
+	  a regisztráció után küldünk ki. -->
+Tisztelt {USERNAME},<br>
+<br>
+Ha kézhez kapta ezt az üzenetet, az azt jelenti, hogy ön sikeresen regisztrált a {GLOBAL_TITLE} weboldalon (<a href="{SITE_HOST}" target="_blank">{SITE_HOST}</a>). Mielőtt használatba venné újonnan regisztrált fiókját, aktiválnia kell azt.<br>
+<br>
+Ahhoz, hogy befejezze a regisztrációs folyamatot, meg kell nyitnia ezt a linket: <a href="{ACTIVATION_LINK}" taget="_blank">{ACTIVATION_LINK}</a>.<br>
+<br>
+Ha nem tudja megnyitni ezt a linket, kérem nyissa meg a <a href="{ACTIVATION_SITE}" target="_blank">felhasználóaktivációs űrlapot</a>.<br>
+A megjelenő lapot töltse ki az alább ismertetett adatokkal.<br>
+<br>
+Felhasználónév: <b>{USERNAME}</b><br>
+Osztály: <b>{F_CLASS}</b><br>
+Aktivációs zseton: <b>{TOKEN}</b><br>
+<br>
+Tisztelettel,<br>
+az Adminisztrátorok.

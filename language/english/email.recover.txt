@@ -9,6 +9,7 @@ In the appearing site, please enter the details as follow.<br>
 <br>
 Username: <b>{USERNAME}</b><br>
 Recovery token: <b>{TOKEN}</b><br>
+Freeuniversity Class: <b>{F_CLASS}</b><br>
 You must also enter your new password <b>twice</b>. Then follow the on-screen instructions.<br>
 <br>
 Yours sincerely,<br>

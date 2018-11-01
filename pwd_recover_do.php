@@ -27,7 +27,7 @@ if ( $_SESSION['log_bool'] == TRUE )
 	exit;
 }
 
-if ( ( @$_POST['username'] == NULL ) || ( $_POST['token'] == NULL ) || ( @$_POST['step'] == NULL ) || ( $_POST['step'] == "start" ) )
+if ( ( @$_POST['username'] == NULL ) || ( $_POST['token'] == NULL ) || ( @$_POST['step'] == NULL ) || ( $_POST['step'] == "start" ) || ( @$_POST['f_class'] == NULL ) )
 {
 	// If there is no username or token present, or the current step is the begin step (getting new password)
 	// output form
@@ -37,29 +37,32 @@ if ( ( @$_POST['username'] == NULL ) || ( $_POST['token'] == NULL ) || ( @$_POST
 		// We output the form with data returned (user doesn't have to enter it again)
 		$Ctemplate->useTemplate("user/recover_do", array(
 			'USERNAME'	=>	@$_POST['username'],
-			'TOKEN'	=>	@$_POST['token']
+			'TOKEN'	=>	@$_POST['token'],
+			'F_CLASS'	=>	@$_POST['f_class']
 		), FALSE);
 	} else {
 		// We output general form
 		$Ctemplate->useTemplate("user/recover_do", array(
 			'USERNAME'	=>	"",
-			'TOKEN'	=>	""
+			'TOKEN'	=>	"",
+			'F_CLASS'	=>	""
 		), FALSE);
 	}
-} elseif ( ( @$_POST['username'] != NULL ) && ( $_POST['token'] != NULL ) && ( $_POST['step'] == "do" ) )
+} elseif ( ( @$_POST['username'] != NULL ) && ( $_POST['token'] != NULL ) && ( $_POST['step'] == "do" ) && ( $_POST['f_class'] != NULL ) )
 {
 	// If there is a username and token present, and the step is the working part
 	// Do restore
 	
 	// Check for the username and token
-	$user = mysql_fetch_assoc($Cmysql->Query("SELECT email, activated FROM users WHERE username='" .$Cmysql->EscapeString($_POST['username']). "'"));
+	$user = mysql_fetch_assoc($Cmysql->Query("SELECT email, activated FROM users WHERE username='" .$Cmysql->EscapeString($_POST['username']). "' AND f_class='" .$Cmysql->EscapeString(fClassFix($_POST['f_class'])). "'"));
 	
 	if ( $user == FALSE )
 	{
 		// If the user is not present, output error message
 		$Ctemplate->useTemplate("user/recover_do_user_error", array(
 			'USERNAME'	=>	$_POST['username'],
-			'TOKEN'	=>	$_POST['token']
+			'TOKEN'	=>	$_POST['token'],
+			'F_CLASS'	=>	$_POST['f_class']
 		), FALSE);
 		
 		// Terminate execution
@@ -73,7 +76,8 @@ if ( ( @$_POST['username'] == NULL ) || ( $_POST['token'] == NULL ) || ( @$_POST
 		// If the user is inactivated, output error message
 		$Ctemplate->useTemplate("user/recover_do_activate_error", array(
 			'USERNAME'	=>	$_POST['username'],
-			'TOKEN'	=>	$_POST['token']
+			'TOKEN'	=>	$_POST['token'],
+			'F_CLASS'	=>	$_POST['f_class']
 		), FALSE);
 		
 		// Terminate execution
@@ -87,7 +91,8 @@ if ( ( @$_POST['username'] == NULL ) || ( $_POST['token'] == NULL ) || ( @$_POST
 		// If any of the password fields is empty, output error and return form
 		$Ctemplate->useTemplate("user/recover_do_nopass_error", array(
 			'USERNAME'	=>	$_POST['username'],
-			'TOKEN'	=>	$_POST['token']
+			'TOKEN'	=>	$_POST['token'],
+			'F_CLASS'	=>	$_POST['f_class']
 		), FALSE);
 		
 		// Terminate execution
@@ -101,7 +106,8 @@ if ( ( @$_POST['username'] == NULL ) || ( $_POST['token'] == NULL ) || ( @$_POST
 		// If the two passwords are NOT identical, output error message
 		$Ctemplate->useTemplate("user/recover_do_passmatch_error", array(
 			'USERNAME'	=>	$_POST['username'],
-			'TOKEN'	=>	$_POST['token']
+			'TOKEN'	=>	$_POST['token'],
+			'F_CLASS'	=>	$_POST['f_class']
 		), FALSE);
 		
 		// Terminate execution
@@ -110,7 +116,7 @@ if ( ( @$_POST['username'] == NULL ) || ( $_POST['token'] == NULL ) || ( @$_POST
 	}
 	
 	// If both is true, and the passwords are okay, do procedure
-	$setNewPass = $Cmysql->Query("UPDATE users SET pwd='" .$Cmysql->EscapeString($_POST['pass1']). "', token=NULL WHERE username='" .$Cmysql->EscapeString($_POST['username']). "'"); // Set the new password in database, TRUE if it was successful
+	$setNewPass = $Cmysql->Query("UPDATE users SET pwd='" .$Cmysql->EscapeString($_POST['pass1']). "', token=NULL WHERE username='" .$Cmysql->EscapeString($_POST['username']). "' AND f_class='" .$Cmysql->EscapeString(fClassFix($_POST['f_class'])). "'"); // Set the new password in database, TRUE if it was successful
 	
 	if ( $setNewPass == FALSE )
 	{

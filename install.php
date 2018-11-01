@@ -56,11 +56,11 @@ if ( !isset($_POST['ins_thm']) )
 
 /* DEVELOPEMENT */
 // PH, workaround: output HTTP POST and GET arrays
-print "<h4>GET</h4>";
-print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_GET,true))."<br>"; 
-print "<h4>POST</h4>";
-print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_POST,true))."<br>"; 
-echo "\n\n\n";
+//print "<h4>GET</h4>";
+//print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_GET,true))."<br>"; 
+//print "<h4>POST</h4>";
+//print str_replace(array("\n"," "),array("<br>","&nbsp;"), var_export($_POST,true))."<br>"; 
+//echo "\n\n\n";
 // Set install poistion
 if (!isset($_POST['instPos']))
 {
@@ -387,7 +387,8 @@ switch ($instPos)
 		$dbtables_user = $Cmysql->Query("CREATE TABLE IF NOT EXISTS users (
 			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
 			`username` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'user loginname',
-			`pwd` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'user password (md5 hashed)',
+			`pwd` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'user password ',
+			`f_class` varchar(6) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'school class of the user',
 			`email` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'user e-mail address',
 			`curr_ip` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0.0.0.0' COMMENT 'current session IP address',
 			`curr_sessid` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'current session ID',
@@ -404,8 +405,12 @@ switch ($instPos)
 			`post_count` int(6) NOT NULL DEFAULT '0' COMMENT 'number of posts from the user',
 			`news_split_value` smallint(3) NOT NULL DEFAULT '15' COMMENT 'user preference: how many entry to appear on one page',
 			`news_comment_count` int(6) NOT NULL DEFAULT '0' COMMENT 'number of news comments from the user',
+			`f_hour1` int(10) NOT NULL COMMENT 'lecture in hour one (f_lectures.id)',
+			`f_hour2` int(10) NOT NULL COMMENT 'lecture in hour two (f_lectures.id)',
+			`f_hour3` int(10) NOT NULL COMMENT 'lecture in hour three (f_lectures.id)',
+			`f_hour4` int(10) NOT NULL COMMENT 'lecture in hour four (f_lectures.id)',
 			PRIMARY KEY (`id`),
-			UNIQUE KEY `username` (`username`),
+			UNIQUE KEY `username` (`username`, `f_class`),
 			UNIQUE KEY `email` (`email`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'userdata'"); // $dbtables_user sets to true if we succeeded creating a table
 		
@@ -754,6 +759,50 @@ switch ($instPos)
 		}
 		/* News comments table */
 		
+		/* Freeuniversity lectures table */
+		// Stores the comments for news entries
+		$dbtables_f_lectures = FALSE; // We failed creating the table first
+		$dbtables_f_lectures = $Cmysql->Query("CREATE TABLE IF NOT EXISTS f_lectures (
+			`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'auto increasing ID',
+			`title` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'lecture name',
+			`description` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'lecture description',
+			`hour1` tinyint(1) DEFAULT '0' NOT NULL COMMENT 'lecture is held in hour one',
+			`hour2` tinyint(1) DEFAULT '0' NOT NULL COMMENT 'lecture is held in hour two',
+			`hour3` tinyint(1) DEFAULT '0' NOT NULL COMMENT 'lecture is held in hour three',
+			`hour4` tinyint(1) DEFAULT '0' NOT NULL COMMENT 'lecture is held in hour four',
+			`limit1` smallint(3) DEFAULT '0' NOT NULL COMMENT 'limit for hour one',
+			`limit2` smallint(3) DEFAULT '0' NOT NULL COMMENT 'limit for hour two',
+			`limit3` smallint(3) DEFAULT '0' NOT NULL COMMENT 'limit for hour three',
+			`limit4` smallint(3) DEFAULT '0' NOT NULL COMMENT 'limit for hour four',
+			`lect1_2` tinyint(1) DEFAULT '0' NOT NULL COMMENT 'double-lecturize the first and second hour',
+			`lect2_3` tinyint(1) DEFAULT '0' NOT NULL COMMENT 'double-lecturize the second and third hour',
+			`lect3_4` tinyint(1) DEFAULT '0' NOT NULL COMMENT 'double-lecturize the third and fourth hour',
+			PRIMARY KEY (`id`),
+			UNIQUE (`title`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT 'lecture database'"); // $dbtables_f_lectures sets to true if we succeeded creating a table
+		
+		
+		// We check config table creation
+		if ( $dbtables_f_lectures == FALSE )
+		{
+			// Give error
+			$Ctemplate->useTemplate("install/ins_dbtables_error", array(
+				'TABLENAME'	=>	"f_lectures" // Table name
+			), FALSE);
+			
+			// We set the creation global error variable to false
+			$tablecreation = FALSE;
+			
+			$tablelist[] = "f_lectures"; // Append f_lectures table name to fail-list
+		} elseif ( $dbtables_f_lectures != FALSE )
+		{
+			// Give success
+			$Ctemplate->useTemplate("install/ins_dbtables_success", array(
+				'TABLENAME'	=>	"f_lectures" // Table name
+			), FALSE);
+		}
+		/* Freeuniversity lectures table */
+		
 		// Check global variable status
 		if ( $tablecreation == FALSE )
 		{
@@ -799,6 +848,7 @@ switch ($instPos)
 				'ROOT_NAME'	=>	$_POST['root_name'], // Root username
 				'ROOT_PASS'	=>	$_POST['root_pass'], // Password
 				'ROOT_EMAIL'	=>	$_POST['root_email'],  // E-mail address
+				'ROOT_CLASS'	=>	$_POST['root_class'], // Freeuniversity class for the root
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
 				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
@@ -808,6 +858,7 @@ switch ($instPos)
 				'ROOT_NAME'	=>	"root", // Root username (default)
 				'ROOT_PASS'	=>	"", // Root password
 				'ROOT_EMAIL'	=>	$_SERVER['SERVER_ADMIN'], // Root e-mail address (default)
+				'ROOT_CLASS'	=>	"", // Freeuniversity class of root
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
 				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE); // Config file generator
@@ -824,19 +875,21 @@ switch ($instPos)
 				'ROOT_NAME'	=>	$_POST['root_name'], // Username (should be empty)
 				'ROOT_PASS'	=>	$_POST['root_pass'], // Password
 				'ROOT_EMAIL'	=>	$_POST['root_email'], // E-mail address
+				'ROOT_CLASS'	=>	$_POST['root_class'], // Freeuniversity class
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
 				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
 			exit; // We terminate the script
 		}
 		
-		if ( $_POST['root_pass'] == NULL ) // Root password
+		if ( $_POST['root_pass'] == NULL ) // Password
 		{
 			$Ctemplate->useTemplate("install/ins_adminusr_variable_error", array(
 				'VARIABLE'	=>	"{LANG_PASSWORD}", // Errornous variable name
 				'ROOT_NAME'	=>	$_POST['root_name'], // Username
 				'ROOT_PASS'	=>	$_POST['root_pass'], // Password (should be empty)
 				'ROOT_EMAIL'	=>	$_POST['root_email'], // E-mail address
+				'ROOT_CLASS'	=>	$_POST['root_class'], // Freeuniversity class
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
 				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
@@ -850,6 +903,21 @@ switch ($instPos)
 				'ROOT_NAME'	=>	$_POST['root_name'], // Username
 				'ROOT_PASS'	=>	$_POST['root_pass'], // Password
 				'ROOT_EMAIL'	=>	$_POST['root_email'], // E-mail address (should be empty)
+				'ROOT_CLASS'	=>	$_POST['root_class'], // Freeuniversity class
+				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
+				'INSTALL_THEME'	=>	$_POST['ins_thm']
+			), FALSE);
+			exit; // We terminate the script
+		}
+		
+		if ( $_POST['root_class'] == NULL ) // Freeuniversity class
+		{
+			$Ctemplate->useTemplate("install/ins_adminusr_variable_error", array(
+				'VARIABLE'	=>	"{LANG_CLASS}", // Errornous variable name
+				'ROOT_NAME'	=>	$_POST['root_name'], // Username
+				'ROOT_PASS'	=>	$_POST['root_pass'], // Password
+				'ROOT_EMAIL'	=>	$_POST['root_email'], // E-mail address
+				'ROOT_CLASS'	=>	$_POST['root_class'], // Freeuniversity class (should be empty)
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
 				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
@@ -866,10 +934,11 @@ switch ($instPos)
 		// $adminreg isn't FALSE if the admin user was registered
 		// $adminreg is FALSE if the admin user registration failed
 		
-		$adminreg = $Cmysql->Query("INSERT INTO users(username, pwd, email, regdate, activated, userLevel, post_count) VALUES ('" .
+		$adminreg = $Cmysql->Query("INSERT INTO users(username, pwd, email, f_class, regdate, activated, userLevel, post_count) VALUES ('" .
 			$Cmysql->EscapeString($_POST['root_name']). "'," .
 			"'" .$Cmysql->EscapeString($_POST['root_pass']). "'," .
-			"'" .$Cmysql->EscapeString($_POST['root_email']). "', " .time(). ", 1, 4, 1)"); // Will be true if we succeed
+			"'" .$Cmysql->EscapeString($_POST['root_email']). "', " .
+			"'" .$Cmysql->EscapeString(fClassFix($_POST['root_class'])). "', " .time(). ", 1, 4, 1)"); // Will be true if we succeed
 		
 		if ( $adminreg == FALSE )
 		{
@@ -878,6 +947,7 @@ switch ($instPos)
 				'ROOT_NAME'	=>	$_POST['root_name'], // Username
 				'ROOT_PASS'	=>	$_POST['root_pass'], // Password
 				'ROOT_EMAIL'	=>	$_POST['root_email'], // E-mail address
+				'ROOT_CLASS'	=>	$_POST['root_class'], // Freeuniversity class
 				'INSTALL_LANGUAGE'	=>	$_POST['ins_lang'],
 				'INSTALL_THEME'	=>	$_POST['ins_thm']
 			), FALSE);
@@ -919,6 +989,7 @@ switch ($instPos)
 				/* Modules */
 				'MODULE_FORUM_CHECK'	=>	(@$_POST['module_forum'] == "on" ? " checked" : ""), // Automatically check forum module if it was selected
 				'MODULE_NEWS_CHECK'	=>	(@$_POST['module_news'] == "on" ? " checked" : ""), // Automatically check news module if it was selected
+				'MODULE_FREEUNIVERSITY_CHECK'	=>	(@$_POST['module_freeuniversity'] == "on" ? " checked" : ""), // Automatically check Freeuniversity module if it was selected
 				
 				/* Forum */
 				// Topic switch
@@ -965,6 +1036,7 @@ switch ($instPos)
 				/* Modules */
 				'MODULE_FORUM_CHECK'	=>	" checked", // Automatically check forum module
 				'MODULE_NEWS_CHECK'	=>	" checked", // Automatically check news module
+				'MODULE_FREEUNIVERSITY_CHECK'	=>	" checked", // Automatically check Freeuniversity module
 				
 				/* Forum */
 				// Topic switch
@@ -1018,6 +1090,7 @@ switch ($instPos)
 				/* Modules */
 				'MODULE_FORUM'	=>	(@$_POST['module_forum'] == "on" ? "on" : "off"),
 				'MODULE_NEWS'	=>	(@$_POST['module_news'] == "on" ? "on" : "off"),
+				'MODULE_FREEUNIVERSITY'	=>	(@$_POST['module_freeuniversity'] == "on" ? "on" : "off"),
 				
 				/* Forum */
 				'FORUM_TOPIC_COUNT_PER_PAGE'	=>	$_POST['forum_topic_count_per_page'],
@@ -1046,6 +1119,7 @@ switch ($instPos)
 				/* Modules */
 				'MODULE_FORUM'	=>	(@$_POST['module_forum'] == "on" ? "on" : "off"),
 				'MODULE_NEWS'	=>	(@$_POST['module_news'] == "on" ? "on" : "off"),
+				'MODULE_FREEUNIVERSITY'	=>	(@$_POST['module_freeuniversity'] == "on" ? "on" : "off"),
 				
 				/* Forum */
 				'FORUM_TOPIC_COUNT_PER_PAGE'	=>	$_POST['forum_topic_count_per_page'],
@@ -1068,7 +1142,8 @@ switch ($instPos)
 			('forum_topic_count_per_page', '" .$Cmysql->EscapeString($_POST['forum_topic_count_per_page']). "'),
 			('forum_post_count_per_page', '" .$Cmysql->EscapeString($_POST['forum_post_count_per_page']). "'),
 			('module_news', '" .(@$_POST['module_news'] == "on" ? "on" : "off"). "'),
-			('news_split_value', '" .$Cmysql->EscapeString($_POST['news_split_value']). "')"); // $sConfig is true if we are successful
+			('news_split_value', '" .$Cmysql->EscapeString($_POST['news_split_value']). "'),
+			('module_freeuniversity', '" .(@$_POST['module_freeuniversity'] == "on" ? "on" : "off"). "')"); // $sConfig is true if we are successful
 		
 		// Give return or proceed forms based on success
 		if ( $sConfig == FALSE )
@@ -1087,6 +1162,7 @@ switch ($instPos)
 				/* Modules */
 				'MODULE_FORUM'	=>	(@$_POST['module_forum'] == "on" ? "on" : "off"),
 				'MODULE_NEWS'	=>	(@$_POST['module_news'] == "on" ? "on" : "off"),
+				'MODULE_FREEUNIVERSITY'	=>	(@$_POST['module_freeuniversity'] == "on" ? "on" : "off"),
 				
 				/* Forum */
 				'FORUM_TOPIC_COUNT_PER_PAGE'	=>	$_POST['forum_topic_count_per_page'],

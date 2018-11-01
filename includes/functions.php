@@ -448,6 +448,42 @@ function devBox()
 	ambox("DEVELOPER");
 }
 
+function fClassFix( $value )
+{
+	/*
+	 * Because the user can (and will) be retarded, and
+	 * he/she cannot use the given format, this function
+	 * fixes the entered f_class value to fit the original
+	 * workway.
+	*/
+	
+	// Format the f_class variable
+	$f_class_fixed = strtoupper(preg_replace("/([0-9][0-9]?)(\.\s*|,\s*|\/\s*|:\s*|\.\s?_*|\s?|_|\.\/)([A-Ea-e])(\.|,)?/","$1. $3", $value));
+	
+	// Valid f_class values
+	$f_class_valid = array("TANáR",
+		"9. A", "9. B", "9. C", "9. D", "9. E",
+		"10. A", "10. B", "10. C", "10. D", "10. E",
+		"11. A", "11. B", "11. C", "11. D", "11. E",
+		"12. A", "12. B", "12. C", "12. D", "12. E",
+		"13. A", "13. B", "13. C", "13. D", "13. E"
+	);
+	
+	// Output error message if the entered f_class is improper,
+	// return proper value and continue execution if proper.
+	if ( !in_array($f_class_fixed, $f_class_valid) )
+	{
+		ambox("ERROR", "Az általad megadott osztály érvénytelen, mivel ilyen osztály nem létezik.<br>Kérlek, ellenőrizd az osztályodat az ellenőrző könyveden, vagy a bizonyítványodban.<br><br>".'<a href="index.php" alt="Kezdőlap">Visszatérés a kezdőlapra</a>', "Érvénytelen osztály!");
+		
+		echo 'A rendszerhibák elkerülése érdekében érvénytelenül megadott osztály esetén a futtatás kényszerítetten megszakad. Bizonyos megadott adatok, vagy nem mentett fájlok visszaállíthatatlanul elveszhettek.<br style="clear: both"><br><br><br><br><br style="clear: both">';
+		
+		die("Worker thread received <tt>SIGCLUSTERFUCK</tt> (killcode <tt>0x1981</tt>), execution halted. Going nowhere without my <tt>init()</tt>.");
+	} elseif ( in_array($f_class_fixed, $f_class_valid) )
+	{
+		return $f_class_fixed;
+	}
+}
+
 function selfURL()
 {
 	/* This function generates the full URL of the current request.

@@ -67,7 +67,8 @@ switch ($regPos)
 				'USERNAME'	=>	$_POST['username'], // Username
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
-				'EMAIL'	=>	$_POST['email'] // E-mail address
+				'EMAIL'	=>	$_POST['email'], // E-mail address
+				'F_CLASS'	=>	$_POST['f_class'] // Freeuniversity Organizer school class
 				), FALSE);
 		} else {
 			// We output general form
@@ -75,7 +76,8 @@ switch ($regPos)
 				'USERNAME'	=>	"", // Username
 				'PASSWORD'	=>	"", // Password
 				'PASSWORD_AGAIN'	=>	"", // Password (entered again)
-				'EMAIL'	=>	"" // E-mail address
+				'EMAIL'	=>	"", // E-mail address
+				'F_CLASS'	=>	"" // Freeuniversity Organizer school class
 				), FALSE); // Login information
 		}
 		break;
@@ -100,7 +102,8 @@ switch ($regPos)
 				'USERNAME'	=>	$_POST['username'], // Username (should be empty)
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
-				'EMAIL'	=>	$_POST['email'] // E-mail address
+				'EMAIL'	=>	$_POST['email'], // E-mail address
+				'F_CLASS'       =>      $_POST['f_class'] // Freeuniversity class
 			), FALSE);
 			// We terminate the script
 			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
@@ -115,7 +118,8 @@ switch ($regPos)
 				'USERNAME'	=>	$_POST['username'], // Username
 				'PASSWORD'	=>	$_POST['password'], // Password (should be empty)
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
-				'EMAIL'	=>	$_POST['email'] // E-mail address
+				'EMAIL'	=>	$_POST['email'], // E-mail address
+				'F_CLASS'	=>	$_POST['f_class'] // Freeuniversity class
 			), FALSE);
 			// We terminate the script
 			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
@@ -130,7 +134,8 @@ switch ($regPos)
 				'USERNAME'	=>	$_POST['username'], // Username
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again) (should be empty)
-				'EMAIL'	=>	$_POST['email'] // E-mail address
+				'EMAIL'	=>	$_POST['email'], // E-mail address
+				'F_CLASS'       =>      $_POST['f_class'] // Freeuniversity class
 			), FALSE);
 			// We terminate the script
 			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
@@ -145,7 +150,24 @@ switch ($regPos)
 				'USERNAME'	=>	$_POST['username'], // Username
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
-				'EMAIL'	=>	$_POST['email'] // E-mail address (should be empty)
+				'EMAIL'	=>	$_POST['email'], // E-mail address (should be empty)
+				'F_CLASS'       =>      $_POST['f_class'] // Freeuniversity class
+			), FALSE);
+			// We terminate the script
+			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
+			DoFooter();
+			exit;
+		}
+		
+		if ( $_POST['f_class'] == NULL ) // Freeuniversity Organizer school class
+		{
+			$Ctemplate->useTemplate("user/reg_userdata_variable_error", array(
+				'VARIABLE'	=>	"{LANG_CLASS}", // Errornous variable name
+				'USERNAME'	=>	$_POST['username'], // Username
+				'PASSWORD'	=>	$_POST['password'], // Password
+				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
+				'EMAIL'	=>	$_POST['email'], // E-mail address
+				'F_CLASS'	=>	$_POST['f_class'] // Freeuniversity organizer school class (should be empty)
 			), FALSE);
 			// We terminate the script
 			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
@@ -162,7 +184,53 @@ switch ($regPos)
 				'USERNAME'	=>	$_POST['username'], // Username
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
-				'EMAIL'	=>	$_POST['email'] // E-mail address
+				'EMAIL'	=>	$_POST['email'], // E-mail address
+				'F_CLASS'	=>	$_POST['f_class'] // Freeuniversity organizer school class
+			), FALSE);
+			// We terminate the script
+			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
+			DoFooter();
+			exit;
+		}
+		
+		// Searching for an array of substrings in a string
+		function strpos_arr($haystack, $needle)
+		{
+			// If $needle is not an array by default (it should be),
+			// we make it an array
+			if(!is_array($needle))
+				$needle = array($needle);
+			
+			// Checking every element of the $needle array,
+			foreach($needle as $what)
+			{
+				// we try it on $haystack.
+				if( ($pos = strpos($haystack, $what)) !== false ) return $pos;
+				
+				// If found, the occurence position is returned
+			}
+			
+			// If no occurences are found, we return FALSE.
+			return FALSE;
+		}
+		
+		// Check for substring matches on wrong e-mail hosts
+		$citromail_pos = strpos_arr($_POST['email'], array("@vipmail.hu", "@invitel.hu", "@nincsmail.hu", "@mailinator.com"));
+		
+		// $citromail_pos will be an integer, marking the start of the e-mail domain in
+		// $_POST['email'], or a boolean FALSE if the e-mail address is not found.
+		
+		if ( $citromail_pos !== FALSE )
+		{
+			// "if not _BOOLEAN_ false" is mandatory for this IF construct
+			
+			$Ctemplate->useTemplate("user/reg_userdata_email_error", array(
+				'USERNAME'	=>	$_POST['username'], // Username
+				'PASSWORD'	=>	$_POST['password'], // Password
+				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
+				'EMAIL'	=>	$_POST['email'], // E-mail address
+				'F_CLASS'	=>	$_POST['f_class'], // Freeuniversity organizer school class
+				'EMAIL_DOMAIN'	=>	substr($_POST['email'], $citromail_pos) // The e-mail domain which is banned (automatically retrieved from $_POST['email'] and $citromail_pos marking the beginning of it in the string)
 			), FALSE);
 			// We terminate the script
 			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
@@ -171,7 +239,7 @@ switch ($regPos)
 		}
 		
 		// Check whether the user wants to register a used name
-		$nameAllocated = mysql_num_rows($Cmysql->Query("SELECT username FROM users WHERE username='" .$Cmysql->EscapeString($_POST['username']). "'"));
+		$nameAllocated = mysql_num_rows($Cmysql->Query("SELECT username FROM users WHERE username='" .$Cmysql->EscapeString($_POST['username']). "' AND f_class='" .$Cmysql->EscapeString(fClassFix($_POST['f_class'])). "'"));
 		
 		if ( $nameAllocated != 0 )
 		{
@@ -180,7 +248,8 @@ switch ($regPos)
 				'USERNAME'	=>	$_POST['username'], // Username (errorneous)
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
-				'EMAIL'	=>	$_POST['email'] // E-mail address
+				'EMAIL'	=>	$_POST['email'], // E-mail address
+				'F_CLASS'	=>	$_POST['f_class'] // Freeuniversity organizer school class
 			), FALSE);
 			// We terminate the script
 			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
@@ -198,7 +267,8 @@ switch ($regPos)
 				'USERNAME'	=>	$_POST['username'], // Username (errorneous)
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
-				'EMAIL'	=>	$_POST['email'] // E-mail address
+				'EMAIL'	=>	$_POST['email'], // E-mail address
+				'F_CLASS'	=>	$_POST['f_class'] // Freeuniversity organizer school class
 			), FALSE);
 			// We terminate the script
 			$Ctemplate->useStaticTemplate("user/reg_foot", FALSE); // Footer
@@ -210,10 +280,12 @@ switch ($regPos)
 		$token = generateHexTokenNoDC(); // Use 32 character length generator (without doublecolons (:))
 		
 		// Everything is fine, we register the user.
-		$regQuery = $Cmysql->Query("INSERT INTO users(username, pwd, email, regdate, userLevel, activated, token, forum_topic_count_per_page, forum_post_count_per_page, news_split_value) VALUES ('" .
+		$regQuery = $Cmysql->Query("INSERT INTO users(username, pwd, f_class, email, regdate, userLevel, activated, token, language, theme, forum_topic_count_per_page, forum_post_count_per_page, news_split_value) VALUES ('" .
 			$Cmysql->EscapeString($_POST['username']). "'," .
 			"'" .$Cmysql->EscapeString($_POST['password']). "'," .
+			"'" .$Cmysql->EscapeString(fClassFix($_POST['f_class'])). "'," .
 			"'" .$Cmysql->EscapeString($_POST['email']). "', " .time(). ", 1, 0, '" .$token. "'," .
+			"'" .config("language"). "', '" .config("theme"). "'," .
 			"'" .config("forum_topic_count_per_page"). "', '". config("forum_post_count_per_page"). "'," .
 			"'". config("news_split_value"). "')"); // Will be true if we succeed
 		
@@ -224,7 +296,8 @@ switch ($regPos)
 				'USERNAME'	=>	$_POST['username'], // Username
 				'PASSWORD'	=>	$_POST['password'], // Password
 				'PASSWORD_AGAIN'	=>	$_POST['password_again'], // Password (entered again)
-				'EMAIL'	=>	$_POST['email'] // E-mail address
+				'EMAIL'	=>	$_POST['email'], // E-mail address
+				'F_CLASS'	=>	$_POST['f_class'] // Freeuniversity organizer school class
 			), FALSE); // Give error message and retry form
 		} elseif ( $regQuery == TRUE )
 		{
@@ -232,10 +305,11 @@ switch ($regPos)
 			$variables = array(
 				'GLOBAL_TITLE'	=>	config("global_title"),
 				'SITE_HOST'	=>	"http://" . config("site_host"),
-				'ACTIVATION_LINK'	=>	"http://" .config("site_host"). "/activate_user.php?username=" .$_POST['username']. "&token=" .$token,
+				'ACTIVATION_LINK'	=>	"http://" .config("site_host"). "/activate_user.php?username=" .$_POST['username']. "&token=" .$token. "&f_class=" .fClassFix($_POST['f_class']),
 				'ACTIVATION_SITE'	=>	"http://" .config("site_host"). "/activate_user.php",
 				'USERNAME'	=>	$_POST['username'],
-				'TOKEN'	=>	$token		
+				'TOKEN'	=>	$token,
+				'F_CLASS'	=>	fClassFix($_POST['f_class'])
 			);
 			
 			// Send out the mail

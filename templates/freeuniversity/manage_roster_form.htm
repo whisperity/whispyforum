@@ -1,0 +1,17 @@
+<!--- BEGIN freeuniversity manage roster form -->
+<!--- Usage: freeuniversity manage roster output form -->
+<br style="clear: both">
+{LANG_FREEUNIVERSITY_ROSTER_USAGE}
+
+<form method="GET" action="f_manage.php">
+	<select name="f_class" size="1">
+		{OPTIONS}
+	</select><br>
+	<input type="submit" value="{LANG_FREEUNIVERSITY_ROSTER_OBTAIN}">
+</form>
+
+<form method="GET" action="f_manage.php">
+	<input type="hidden" name="f_class" value="all">
+	<input type="submit" value="{LANG_FREEUNIVERSITY_ROSTER_OBTAIN_ALL}">
+</form>
+<!--- END freeuniversity manage roster form -->
